@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haier.mapper.TcaseCustomMapper">
+
+  <!--根据serviceKey和envKey查询tservice,tenvdetail-->
+  <select id="getTcaseCustomList" parameterType="com.haier.po.TcaseCustom" resultType="com.haier.po.TcaseCustom">
+       SELECT * FROM tcase,ti
+       WHERE tcase.`iId`=ti.`id`
+       AND tcase.`status`>0
+       AND ti.`iStatus`>0
+       AND ti.`serviceid`=#{ti.serviceid}
+       AND ti.`iUri`=#{ti.iuri}
+       AND (tcase.`envid`=#{tcase.envid} OR tcase.`evnid`=0)
+  </select>
+
+</mapper>

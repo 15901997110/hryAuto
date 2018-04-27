@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haier.mapper.TenvdetailCustomMapper">
+
+  <!--根据serviceKey和envKey查询tservice,tenv,tenvdetail-->
+  <select id="getTenvdetailList" parameterType="com.haier.po.TenvdetailCustom" resultType="com.haier.po.TenvdetailCustom">
+
+     SELECT * FROM tservice,tenv,tenvdetail
+     WHERE tservice.`id`=tenvDetail.`serviceId` AND tenv.`id`=tenvDetail.`envId`
+     AND tservice.`serviceKey`=#{tservice.servicekey}
+     AND tenv.`envKey`=#{tenv.envkey}
+  </select>
+
+</mapper>

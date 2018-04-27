@@ -226,72 +226,72 @@ public class TiExample {
         }
 
         public Criteria andIuriIsNull() {
-            addCriterion("iUri is null");
+            addCriterion("Iuri is null");
             return (Criteria) this;
         }
 
         public Criteria andIuriIsNotNull() {
-            addCriterion("iUri is not null");
+            addCriterion("Iuri is not null");
             return (Criteria) this;
         }
 
         public Criteria andIuriEqualTo(String value) {
-            addCriterion("iUri =", value, "iuri");
+            addCriterion("Iuri =", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotEqualTo(String value) {
-            addCriterion("iUri <>", value, "iuri");
+            addCriterion("Iuri <>", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriGreaterThan(String value) {
-            addCriterion("iUri >", value, "iuri");
+            addCriterion("Iuri >", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriGreaterThanOrEqualTo(String value) {
-            addCriterion("iUri >=", value, "iuri");
+            addCriterion("Iuri >=", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLessThan(String value) {
-            addCriterion("iUri <", value, "iuri");
+            addCriterion("Iuri <", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLessThanOrEqualTo(String value) {
-            addCriterion("iUri <=", value, "iuri");
+            addCriterion("Iuri <=", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLike(String value) {
-            addCriterion("iUri like", value, "iuri");
+            addCriterion("Iuri like", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotLike(String value) {
-            addCriterion("iUri not like", value, "iuri");
+            addCriterion("Iuri not like", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriIn(List<String> values) {
-            addCriterion("iUri in", values, "iuri");
+            addCriterion("Iuri in", values, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotIn(List<String> values) {
-            addCriterion("iUri not in", values, "iuri");
+            addCriterion("Iuri not in", values, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriBetween(String value1, String value2) {
-            addCriterion("iUri between", value1, value2, "iuri");
+            addCriterion("Iuri between", value1, value2, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotBetween(String value1, String value2) {
-            addCriterion("iUri not between", value1, value2, "iuri");
+            addCriterion("Iuri not between", value1, value2, "iuri");
             return (Criteria) this;
         }
 

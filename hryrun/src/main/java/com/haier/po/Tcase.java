@@ -112,4 +112,21 @@ public class Tcase {
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
     }
+
+    @Override
+    public String toString() {
+        return "Tcase{" +
+                "id=" + id +
+                ", casename='" + casename + '\'' +
+                ", remark='" + remark + '\'' +
+                ", iid=" + iid +
+                ", envid=" + envid +
+                ", requestparam='" + requestparam + '\'' +
+                ", asserttype='" + asserttype + '\'' +
+                ", expected='" + expected + '\'' +
+                ", status=" + status +
+                ", author='" + author + '\'' +
+                ", updatetime=" + updatetime +
+                '}';
+    }
 }
