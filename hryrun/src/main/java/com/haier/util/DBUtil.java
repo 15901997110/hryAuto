@@ -39,7 +39,7 @@ public class DBUtil {
 
         TserviceExample tserviceExample=new TserviceExample();
         TserviceExample.Criteria tserviceExampleCriteria = tserviceExample.createCriteria();
-        tserviceExampleCriteria.andServicekeyEqualTo(serviceKey).andIsdelNotEqualTo((short)0);
+        tserviceExampleCriteria.andServicekeyEqualTo(serviceKey).andIsdelNotEqualTo((short)1);
         List<Tservice> tserviceList = null;
         tserviceList = getSqlSession().getMapper(TserviceMapper.class).selectByExample(tserviceExample);
         if(tserviceList!=null){

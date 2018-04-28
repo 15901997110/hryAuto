@@ -18,7 +18,7 @@ import java.util.List;
  * */
 public class DataProviderUtil {
     private static final Log log = LogFactory.getLog(DataProviderUtil.class);
-    private static String envKey= TestPropertiesUtil.getValue("test.env");
+    private static String envKey= PropertiesUtil.getEnvPropertity("test.envKey");
     @DataProvider(name="getDataProviderWithIterator")
     public static Iterator<Object[]> getDataProvider(Method method) {
 

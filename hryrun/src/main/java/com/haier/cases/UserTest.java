@@ -1,8 +1,10 @@
 package com.haier.cases;
 
 
+import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpHeader;
+import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.Iuri;
 import com.haier.anno.ServiceKey;
 import com.haier.enums.ContentTypeEnum;
@@ -13,7 +15,7 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.mytest.MyTest;
 import com.haier.po.*;
 import com.haier.util.DBUtil;
-import com.haier.util.TestPropertiesUtil;
+import com.haier.util.PropertiesUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
@@ -41,7 +43,7 @@ public class UserTest {
 
     //无参构造器初始化环境信息
     public UserTest() {
-        this.envKey = TestPropertiesUtil.getValue("test.env");
+        this.envKey = PropertiesUtil.getEnvPropertity("test.envKey");
         this.envKeyId = EnvEnum.getId(envKey);
         this.serviceKey = this.getClass().getAnnotation(ServiceKey.class).value();
         //获取serviceId
@@ -97,7 +99,24 @@ public class UserTest {
             //...
         }
 
+        String response=null;
         //根据requestMethod发送不同方式的请求
+        if(RequestMethodTypeEnum.getValue(requestMethod).equalsIgnoreCase("get")){
+            //处理get请求
+            try {
+                response = HttpClientUtil.get(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("",e);
+            }
+        }else if(RequestMethodTypeEnum.getValue(requestMethod).equalsIgnoreCase("post")){
+            //处理post请求
+            try {
+                response=HttpClientUtil.post(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("",e);
+            }
+        }
+        log.info("返回内容为:"+response);
 
     }
 

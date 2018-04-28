@@ -6,7 +6,7 @@ import com.haier.mapper.TenvMapper;
 import com.haier.po.Tenv;
 import com.haier.po.TenvdetailCustom;
 import com.haier.util.DBUtil;
-import com.haier.util.TestPropertiesUtil;
+import com.haier.util.PropertiesUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ibatis.io.Resources;
@@ -49,7 +49,7 @@ public class MyTest {
     }
     @Test
     public void testUtilTest(){
-        String value = TestPropertiesUtil.getValue("test.env");
+        String value = PropertiesUtil.getEnvPropertity("test.envKey");
         System.out.println(value);
     }
     @Test(description = "helloworld")
@@ -60,7 +60,18 @@ public class MyTest {
     }
     @Test
     public void test2(){
-        System.out.println("hellowold");
+
+        try{
+                DBUtil.getSqlSession();
+
+        } catch (IOException e) {
+/*            log.error("打印e:"+e);
+            log.error("打印e.toString():"+e.toString());
+            log.error("打印e.getMessage():"+e.getMessage());*/
+            log.error("",e);
+            //e.printStackTrace();
+
+        }
     }
 
     @Test(dataProvider = "getDataProviderWithObjectLocaClass")
@@ -79,4 +90,5 @@ public class MyTest {
         };
         return objects;
     }
+
 }

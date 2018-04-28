@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.haier.mapper.TenvdetailCustomMapper">
-
+    <resultMap id="TenvdetailCustomResultMap" type="com.haier.po.TenvdetailCustom">
+        <result property="serviceid" column="serviceid"></result>
+        <result property="envid" column="envid"></result>
+        <result property="hostinfo" column="hostinfo"></result>
+        <result property="dbinfo" column="dbinfo"></result>
+        <association property="tservice" javaType="com.haier.po.Tservice">
+            <id property="id" column="id"></id>
+            <result property="servicekey" column="serviceKey"></result>
+            <result property="servicename" column="serviceName"></result>
+            <result property="httptype" column="httpType"></result>
+            <result property="isdel" column="isDel"></result>
+            <result property="updatetime" column="updateTime"></result>
+            <result property="editor" column="editor"></result>
+        </association>
+        <association property="tenv" javaType="com.haier.po.Tenv">
+            <id property="id" column="id"></id>
+            <result property="envkey" column="envKey"></result>
+            <result property="remark" column="remark"></result>
+        </association>
+    </resultMap>
   <!--根据serviceKey和envKey查询tservice,tenv,tenvdetail-->
-  <select id="getTenvdetailList" parameterType="com.haier.po.TenvdetailCustom" resultType="com.haier.po.TenvdetailCustom">
-
-     SELECT * FROM tservice,tenv,tenvdetail
-     WHERE tservice.`id`=tenvDetail.`serviceId` AND tenv.`id`=tenvDetail.`envId`
-     AND tservice.`serviceKey`=#{tservice.servicekey}
-     AND tenv.`envKey`=#{tenv.envkey}
+  <select id="getTenvdetailList" parameterType="com.haier.po.TenvdetailCustom" resultMap="TenvdetailCustomResultMap">
+    SELECT * FROM tservice s,tenv e,tenvdetail
+     WHERE s.`id`=tenvDetail.`serviceId` AND e.`id`=tenvDetail.`envId`
+     AND s.`serviceKey`=#{tservice.servicekey}
+     AND e.`envKey`=#{tenv.envkey}
   </select>
 
 </mapper>
