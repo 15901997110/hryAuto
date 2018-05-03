@@ -29,7 +29,7 @@ public enum EnvEnum {
         return value;
     }
 
-    public void setValue() {
+    public void setValue(String value) {
         this.value = value;
     }
 

@@ -505,62 +505,52 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeEqualTo(String value) {
+        public Criteria andAsserttypeEqualTo(Short value) {
             addCriterion("assertType =", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotEqualTo(String value) {
+        public Criteria andAsserttypeNotEqualTo(Short value) {
             addCriterion("assertType <>", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeGreaterThan(String value) {
+        public Criteria andAsserttypeGreaterThan(Short value) {
             addCriterion("assertType >", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeGreaterThanOrEqualTo(String value) {
+        public Criteria andAsserttypeGreaterThanOrEqualTo(Short value) {
             addCriterion("assertType >=", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeLessThan(String value) {
+        public Criteria andAsserttypeLessThan(Short value) {
             addCriterion("assertType <", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeLessThanOrEqualTo(String value) {
+        public Criteria andAsserttypeLessThanOrEqualTo(Short value) {
             addCriterion("assertType <=", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeLike(String value) {
-            addCriterion("assertType like", value, "asserttype");
-            return (Criteria) this;
-        }
-
-        public Criteria andAsserttypeNotLike(String value) {
-            addCriterion("assertType not like", value, "asserttype");
-            return (Criteria) this;
-        }
-
-        public Criteria andAsserttypeIn(List<String> values) {
+        public Criteria andAsserttypeIn(List<Short> values) {
             addCriterion("assertType in", values, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotIn(List<String> values) {
+        public Criteria andAsserttypeNotIn(List<Short> values) {
             addCriterion("assertType not in", values, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeBetween(String value1, String value2) {
+        public Criteria andAsserttypeBetween(Short value1, Short value2) {
             addCriterion("assertType between", value1, value2, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotBetween(String value1, String value2) {
+        public Criteria andAsserttypeNotBetween(Short value1, Short value2) {
             addCriterion("assertType not between", value1, value2, "asserttype");
             return (Criteria) this;
         }

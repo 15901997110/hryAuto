@@ -1,15 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.haier.mapper.TcaseCustomMapper">
-
-  <!--根据serviceKey和envKey查询tservice,tenv,tenvdetail-->
-  <select id="getTcaseCustomList" parameterType="com.haier.po.TcaseCustom" resultType="com.haier.po.TcaseCustom">
-       SELECT * FROM tcase,ti
-       WHERE tcase.`iId`=ti.`id`
-       AND tcase.`status`>0
-       AND ti.`iStatus`>0
-       AND tcase.`envId` IN (#{tcase.envid},0)
-       AND ti.`iUri`=#{ti.iuri}
-  </select>
+    <resultMap id="TcaseCustomResultMap" type="com.haier.po.TcaseCustom">
+        <id property="id" column="id"></id>
+        <result property="casename" column="casename"></result>
+        <result property="remark" column="remark"></result>
+        <result property="iid" column="iid"></result>
+        <result property="envid" column="envid"></result>
+        <result property="requestparam" column="requestparam"></result>
+        <result property="asserttype" column="asserttype"></result>
+        <result property="expected" column="expected"></result>
+        <result property="status" column="status"></result>
+        <result property="author" column="author"></result>
+        <result property="updatetime" column="updatetime"></result>
+        <association property="ti" javaType="com.haier.po.Ti">
+            <id property="id" column="id" ></id>
+            <result property="serviceid" column="serviceid"></result>
+            <result property="iuri" column="iuri"></result>
+            <result property="remark" column="remark"></result>
+            <result property="irequestmethod" column="irequestmethod"></result>
+            <result property="ihttptype" column="ihttptype"></result>
+            <result property="iparamtype" column="iparamtype"></result>
+            <result property="iresponsetype" column="iresponsetype"></result>
+            <result property="idev" column="idev"></result>
+            <result property="istatus" column="istatus"></result>
+            <result property="updatetime" column="updatetime"></result>
+        </association>
+    </resultMap>
+    <!--根据serviceKey和envKey查询tservice,tenvdetail-->
+    <select id="getTcaseCustomList" parameterType="com.haier.po.TcaseCustom" resultMap="TcaseCustomResultMap">
+        SELECT * FROM `tcase`,`ti`
+        WHERE `tcase`.`iId`=ti.`id`
+        AND `tcase`.`status`>0
+        AND `ti`.`iStatus`>0
+        AND `ti`.`serviceid`=#{ti.serviceid}
+        AND `ti`.`iUri`=#{ti.iuri}
+        AND (`tcase`.`envid`=#{envid} OR `tcase`.`envid`=0)
+    </select>
 
 </mapper>

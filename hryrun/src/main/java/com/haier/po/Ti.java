@@ -15,6 +15,8 @@ public class Ti {
 
     private Short ihttptype;
 
+    private Short icontenttype;
+
     private Short iparamtype;
 
     private Short iresponsetype;
@@ -71,6 +73,14 @@ public class Ti {
 
     public void setIhttptype(Short ihttptype) {
         this.ihttptype = ihttptype;
+    }
+
+    public Short getIcontenttype() {
+        return icontenttype;
+    }
+
+    public void setIcontenttype(Short icontenttype) {
+        this.icontenttype = icontenttype;
     }
 
     public Short getIparamtype() {

@@ -69,6 +69,11 @@
             <artifactId>httpclientutil</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
     </dependencies>
     <build>
         <!--编译时将mapper.xml文件复制到target目录中-->

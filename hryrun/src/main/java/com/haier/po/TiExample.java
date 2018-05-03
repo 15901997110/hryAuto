@@ -226,72 +226,72 @@ public class TiExample {
         }
 
         public Criteria andIuriIsNull() {
-            addCriterion("Iuri is null");
+            addCriterion("iUri is null");
             return (Criteria) this;
         }
 
         public Criteria andIuriIsNotNull() {
-            addCriterion("Iuri is not null");
+            addCriterion("iUri is not null");
             return (Criteria) this;
         }
 
         public Criteria andIuriEqualTo(String value) {
-            addCriterion("Iuri =", value, "iuri");
+            addCriterion("iUri =", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotEqualTo(String value) {
-            addCriterion("Iuri <>", value, "iuri");
+            addCriterion("iUri <>", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriGreaterThan(String value) {
-            addCriterion("Iuri >", value, "iuri");
+            addCriterion("iUri >", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriGreaterThanOrEqualTo(String value) {
-            addCriterion("Iuri >=", value, "iuri");
+            addCriterion("iUri >=", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLessThan(String value) {
-            addCriterion("Iuri <", value, "iuri");
+            addCriterion("iUri <", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLessThanOrEqualTo(String value) {
-            addCriterion("Iuri <=", value, "iuri");
+            addCriterion("iUri <=", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriLike(String value) {
-            addCriterion("Iuri like", value, "iuri");
+            addCriterion("iUri like", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotLike(String value) {
-            addCriterion("Iuri not like", value, "iuri");
+            addCriterion("iUri not like", value, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriIn(List<String> values) {
-            addCriterion("Iuri in", values, "iuri");
+            addCriterion("iUri in", values, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotIn(List<String> values) {
-            addCriterion("Iuri not in", values, "iuri");
+            addCriterion("iUri not in", values, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriBetween(String value1, String value2) {
-            addCriterion("Iuri between", value1, value2, "iuri");
+            addCriterion("iUri between", value1, value2, "iuri");
             return (Criteria) this;
         }
 
         public Criteria andIuriNotBetween(String value1, String value2) {
-            addCriterion("Iuri not between", value1, value2, "iuri");
+            addCriterion("iUri not between", value1, value2, "iuri");
             return (Criteria) this;
         }
 
@@ -482,6 +482,66 @@ public class TiExample {
 
         public Criteria andIhttptypeNotBetween(Short value1, Short value2) {
             addCriterion("iHttpType not between", value1, value2, "ihttptype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeIsNull() {
+            addCriterion("iContentType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeIsNotNull() {
+            addCriterion("iContentType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeEqualTo(Short value) {
+            addCriterion("iContentType =", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeNotEqualTo(Short value) {
+            addCriterion("iContentType <>", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeGreaterThan(Short value) {
+            addCriterion("iContentType >", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeGreaterThanOrEqualTo(Short value) {
+            addCriterion("iContentType >=", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeLessThan(Short value) {
+            addCriterion("iContentType <", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeLessThanOrEqualTo(Short value) {
+            addCriterion("iContentType <=", value, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeIn(List<Short> values) {
+            addCriterion("iContentType in", values, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeNotIn(List<Short> values) {
+            addCriterion("iContentType not in", values, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeBetween(Short value1, Short value2) {
+            addCriterion("iContentType between", value1, value2, "icontenttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIcontenttypeNotBetween(Short value1, Short value2) {
+            addCriterion("iContentType not between", value1, value2, "icontenttype");
             return (Criteria) this;
         }
 

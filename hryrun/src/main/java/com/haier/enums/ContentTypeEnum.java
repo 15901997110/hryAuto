@@ -14,18 +14,23 @@ public enum ContentTypeEnum {
         this.id =id;
         this.value=value;
     }
-    public int getId(){
+
+    public int getId() {
         return id;
     }
-    public void setId(int id){
-        this.id=id;
+
+    public void setId(int id) {
+        this.id = id;
     }
-    public String getValue(){
+
+    public String getValue() {
         return value;
     }
-    public void setValue(){
-        this.value=value;
+
+    public void setValue(String value) {
+        this.value = value;
     }
+
     public static String getValue(int id){
         for(ContentTypeEnum e:ContentTypeEnum.values()){
             if(e.getId()==id){

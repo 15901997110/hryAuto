@@ -1,8 +1,8 @@
 package com.haier.util;
 
 import com.haier.mapper.TcaseCustomMapper;
+import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TenvdetailCustomMapper;
-import com.haier.mapper.TenvdetailMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import org.apache.commons.logging.Log;
@@ -60,12 +60,14 @@ public class DBUtil {
         tservice.setServicekey(serviceKey);
         Tenv tenv=new Tenv();
         tenv.setEnvkey(envKey);
+
         TenvdetailCustom tenvdetailCustom=new TenvdetailCustom();
         tenvdetailCustom.setTservice(tservice);
         tenvdetailCustom.setTenv(tenv);
+
         SqlSession session=getSqlSession();
         TenvdetailCustomMapper mapper = session.getMapper(TenvdetailCustomMapper.class);
-        List<TenvdetailCustom> tenvdetailCustomList = mapper.getTenvdetailList(tenvdetailCustom);
+        List<TenvdetailCustom> tenvdetailCustomList = mapper.getTenvdetailCustomList(tenvdetailCustom);
         return tenvdetailCustomList;
 
     }
@@ -78,10 +80,17 @@ public class DBUtil {
         TcaseCustom tcaseCustom=new TcaseCustom();
         tcaseCustom.setTi(ti);
         tcaseCustom.setEnvid(envId);
-
+        
         //查询数据
         SqlSession sqlSession=getSqlSession();
         TcaseCustomMapper tcaseCustomMapper = sqlSession.getMapper(TcaseCustomMapper.class);
-        return tcaseCustomMapper.getTcaseCustomList(tcaseCustom);
+        List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.getTcaseCustomList(tcaseCustom);
+        return tcaseCustomList;
+    }
+    public static Tcase getTcaseByPrimaryKey(Integer id) throws IOException {
+        SqlSession sqlSession=getSqlSession();
+        TcaseMapper tcaseMapper = sqlSession.getMapper(TcaseMapper.class);
+        Tcase tcase = tcaseMapper.selectByPrimaryKey(id);
+        return tcase;
     }
 }

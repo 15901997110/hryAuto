@@ -15,7 +15,7 @@ public class Tcase {
 
     private String requestparam;
 
-    private String asserttype;
+    private Short asserttype;
 
     private String expected;
 
@@ -73,12 +73,12 @@ public class Tcase {
         this.requestparam = requestparam == null ? null : requestparam.trim();
     }
 
-    public String getAsserttype() {
+    public Short getAsserttype() {
         return asserttype;
     }
 
-    public void setAsserttype(String asserttype) {
-        this.asserttype = asserttype == null ? null : asserttype.trim();
+    public void setAsserttype(Short asserttype) {
+        this.asserttype = asserttype;
     }
 
     public String getExpected() {
@@ -111,22 +111,5 @@ public class Tcase {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
-    }
-
-    @Override
-    public String toString() {
-        return "Tcase{" +
-                "id=" + id +
-                ", casename='" + casename + '\'' +
-                ", remark='" + remark + '\'' +
-                ", iid=" + iid +
-                ", envid=" + envid +
-                ", requestparam='" + requestparam + '\'' +
-                ", asserttype='" + asserttype + '\'' +
-                ", expected='" + expected + '\'' +
-                ", status=" + status +
-                ", author='" + author + '\'' +
-                ", updatetime=" + updatetime +
-                '}';
     }
 }

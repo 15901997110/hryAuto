@@ -14,7 +14,9 @@ import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.mapper.TcaseMapper;
 import com.haier.mytest.MyTest;
 import com.haier.po.*;
+import com.haier.util.AssertUtil;
 import com.haier.util.DBUtil;
+import com.haier.util.HryHttpClientUtil;
 import com.haier.util.PropertiesUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -86,38 +88,11 @@ public class UserTest {
 
     @Iuri("/loginFacade/generateCode")
     @Test(groups = "loginFacade", dataProvider = "getCaseWithObject", description = "验证码生成接口测试")
-    public void loginFacade_generateCode_test(int requestMethod, String uri, String param, Integer paramType, Integer responseType, String expected, String assertType) {
-        String url = httpType + "://" + host + uri;//组装请求地址
-        Header[] headers= HttpHeader.custom().other("content-type", ContentTypeEnum.getValue(paramType)+";charset=utf-8").build();
-
-        HttpConfig httpConfig= HttpConfig.custom().headers(headers).url(url).encoding("utf-8");
-        //根据paramType配置请求参数类型
-        if(ContentTypeEnum.getValue(paramType).equalsIgnoreCase("application/json")){
-            httpConfig.json(param);
-        }else if (ContentTypeEnum.getValue(paramType).equalsIgnoreCase("application/x-www-form-urlencoded")){
-            //do application/x-www-form-urlencoded post
-            //...
-        }
-
-        String response=null;
-        //根据requestMethod发送不同方式的请求
-        if(RequestMethodTypeEnum.getValue(requestMethod).equalsIgnoreCase("get")){
-            //处理get请求
-            try {
-                response = HttpClientUtil.get(httpConfig);
-            } catch (HttpProcessException e) {
-                log.error("",e);
-            }
-        }else if(RequestMethodTypeEnum.getValue(requestMethod).equalsIgnoreCase("post")){
-            //处理post请求
-            try {
-                response=HttpClientUtil.post(httpConfig);
-            } catch (HttpProcessException e) {
-                log.error("",e);
-            }
-        }
-        log.info("返回内容为:"+response);
-
+    public void loginFacade_generateCode_test(int requestMethod, String uri, String param, Integer paramType, Integer responseType, String expected, Integer assertType) {
+        //模拟请求
+        String actual=HryHttpClientUtil.send(requestMethod,httpType+"://"+host+uri,paramType,param);
+        //断言结果
+        AssertUtil.supperAssert(assertType,expected,actual,responseType);
     }
 
     @DataProvider(name = "getCaseWithIterator")
@@ -167,7 +142,7 @@ public class UserTest {
                     new Integer(c.getTi().getIparamtype()),
                     new Integer(c.getTi().getIresponsetype()),
                     new String(c.getExpected()),
-                    new String(c.getAsserttype())
+                    new Integer(c.getAsserttype())
             };
         }
         return o;

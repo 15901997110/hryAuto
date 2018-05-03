@@ -22,7 +22,7 @@
         </association>
     </resultMap>
   <!--根据serviceKey和envKey查询tservice,tenv,tenvdetail-->
-  <select id="getTenvdetailList" parameterType="com.haier.po.TenvdetailCustom" resultMap="TenvdetailCustomResultMap">
+  <select id="getTenvdetailCustomList" parameterType="com.haier.po.TenvdetailCustom" resultMap="TenvdetailCustomResultMap">
     SELECT * FROM tservice s,tenv e,tenvdetail
      WHERE s.`id`=tenvDetail.`serviceId` AND e.`id`=tenvDetail.`envId`
      AND s.`serviceKey`=#{tservice.servicekey}
