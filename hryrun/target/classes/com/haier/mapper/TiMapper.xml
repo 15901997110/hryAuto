@@ -8,6 +8,7 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="iRequestMethod" jdbcType="SMALLINT" property="irequestmethod" />
     <result column="iHttpType" jdbcType="SMALLINT" property="ihttptype" />
+    <result column="iContentType" jdbcType="SMALLINT" property="icontenttype" />
     <result column="iParamType" jdbcType="SMALLINT" property="iparamtype" />
     <result column="iResponseType" jdbcType="SMALLINT" property="iresponsetype" />
     <result column="iDev" jdbcType="VARCHAR" property="idev" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, serviceId, iUri, remark, iRequestMethod, iHttpType, iParamType, iResponseType, 
-    iDev, iStatus, updateTime
+    id, serviceId, iUri, remark, iRequestMethod, iHttpType, iContentType, iParamType, 
+    iResponseType, iDev, iStatus, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TiExample" resultMap="BaseResultMap">
     select
@@ -109,12 +110,14 @@
   <insert id="insert" parameterType="com.haier.po.Ti">
     insert into ti (id, serviceId, iUri, 
       remark, iRequestMethod, iHttpType, 
-      iParamType, iResponseType, iDev, 
-      iStatus, updateTime)
+      iContentType, iParamType, iResponseType, 
+      iDev, iStatus, updateTime
+      )
     values (#{id,jdbcType=INTEGER}, #{serviceid,jdbcType=INTEGER}, #{iuri,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{irequestmethod,jdbcType=SMALLINT}, #{ihttptype,jdbcType=SMALLINT}, 
-      #{iparamtype,jdbcType=SMALLINT}, #{iresponsetype,jdbcType=SMALLINT}, #{idev,jdbcType=VARCHAR}, 
-      #{istatus,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP})
+      #{icontenttype,jdbcType=SMALLINT}, #{iparamtype,jdbcType=SMALLINT}, #{iresponsetype,jdbcType=SMALLINT}, 
+      #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Ti">
     insert into ti
@@ -136,6 +139,9 @@
       </if>
       <if test="ihttptype != null">
         iHttpType,
+      </if>
+      <if test="icontenttype != null">
+        iContentType,
       </if>
       <if test="iparamtype != null">
         iParamType,
@@ -171,6 +177,9 @@
       </if>
       <if test="ihttptype != null">
         #{ihttptype,jdbcType=SMALLINT},
+      </if>
+      <if test="icontenttype != null">
+        #{icontenttype,jdbcType=SMALLINT},
       </if>
       <if test="iparamtype != null">
         #{iparamtype,jdbcType=SMALLINT},
@@ -216,6 +225,9 @@
       <if test="record.ihttptype != null">
         iHttpType = #{record.ihttptype,jdbcType=SMALLINT},
       </if>
+      <if test="record.icontenttype != null">
+        iContentType = #{record.icontenttype,jdbcType=SMALLINT},
+      </if>
       <if test="record.iparamtype != null">
         iParamType = #{record.iparamtype,jdbcType=SMALLINT},
       </if>
@@ -244,6 +256,7 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       iRequestMethod = #{record.irequestmethod,jdbcType=SMALLINT},
       iHttpType = #{record.ihttptype,jdbcType=SMALLINT},
+      iContentType = #{record.icontenttype,jdbcType=SMALLINT},
       iParamType = #{record.iparamtype,jdbcType=SMALLINT},
       iResponseType = #{record.iresponsetype,jdbcType=SMALLINT},
       iDev = #{record.idev,jdbcType=VARCHAR},
@@ -271,6 +284,9 @@
       <if test="ihttptype != null">
         iHttpType = #{ihttptype,jdbcType=SMALLINT},
       </if>
+      <if test="icontenttype != null">
+        iContentType = #{icontenttype,jdbcType=SMALLINT},
+      </if>
       <if test="iparamtype != null">
         iParamType = #{iparamtype,jdbcType=SMALLINT},
       </if>
@@ -296,6 +312,7 @@
       remark = #{remark,jdbcType=VARCHAR},
       iRequestMethod = #{irequestmethod,jdbcType=SMALLINT},
       iHttpType = #{ihttptype,jdbcType=SMALLINT},
+      iContentType = #{icontenttype,jdbcType=SMALLINT},
       iParamType = #{iparamtype,jdbcType=SMALLINT},
       iResponseType = #{iresponsetype,jdbcType=SMALLINT},
       iDev = #{idev,jdbcType=VARCHAR},

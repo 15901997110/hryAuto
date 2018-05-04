@@ -7,6 +7,8 @@ import com.haier.util.DBUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.testng.annotations.Test;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,7 +30,27 @@ public class MyTest {
     }
     @Test
     public void test3(){
-
+        this.tree(new File("c:/workspace/hryAuto/hryrun"),1);
     }
+    public void tree(File f,int level) {
+        String preStr = "";
+        for(int i=0;i<level;i++) {
+            preStr += "|&nbsp;&nbsp;&nbsp;&nbsp;";
+        }
+        File[] childs = f.listFiles();
+        for(int i=0;i<childs.length;i++) {
+
+            System.out.println(preStr.substring(0,preStr.lastIndexOf("&nbsp;&nbsp;&nbsp;&nbsp;")) + "__"+childs[i].getName()+"<br>");
+            if(childs[i].isDirectory()){
+                tree(childs[i],level + 1);
+            }
+        }
+    }
+    @Test
+    public void test4(){
+        String str="|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|_RequestMethodTypeEnum.java";
+        System.out.println(str.length());
+    }
+
 
 }

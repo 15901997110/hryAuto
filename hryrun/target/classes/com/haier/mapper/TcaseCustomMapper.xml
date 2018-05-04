@@ -20,6 +20,7 @@
             <result property="remark" column="remark"></result>
             <result property="irequestmethod" column="irequestmethod"></result>
             <result property="ihttptype" column="ihttptype"></result>
+            <result property="icontenttype" column="icontenttype"></result>
             <result property="iparamtype" column="iparamtype"></result>
             <result property="iresponsetype" column="iresponsetype"></result>
             <result property="idev" column="idev"></result>

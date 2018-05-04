@@ -8,7 +8,7 @@
     <result column="iId" jdbcType="INTEGER" property="iid" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
     <result column="requestParam" jdbcType="VARCHAR" property="requestparam" />
-    <result column="assertType" jdbcType="CHAR" property="asserttype" />
+    <result column="assertType" jdbcType="SMALLINT" property="asserttype" />
     <result column="expected" jdbcType="VARCHAR" property="expected" />
     <result column="status" jdbcType="SMALLINT" property="status" />
     <result column="author" jdbcType="VARCHAR" property="author" />
@@ -113,7 +113,7 @@
       author, updateTime)
     values (#{id,jdbcType=INTEGER}, #{casename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{iid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{requestparam,jdbcType=VARCHAR}, 
-      #{asserttype,jdbcType=CHAR}, #{expected,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
+      #{asserttype,jdbcType=SMALLINT}, #{expected,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
       #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcase">
@@ -173,7 +173,7 @@
         #{requestparam,jdbcType=VARCHAR},
       </if>
       <if test="asserttype != null">
-        #{asserttype,jdbcType=CHAR},
+        #{asserttype,jdbcType=SMALLINT},
       </if>
       <if test="expected != null">
         #{expected,jdbcType=VARCHAR},
@@ -217,7 +217,7 @@
         requestParam = #{record.requestparam,jdbcType=VARCHAR},
       </if>
       <if test="record.asserttype != null">
-        assertType = #{record.asserttype,jdbcType=CHAR},
+        assertType = #{record.asserttype,jdbcType=SMALLINT},
       </if>
       <if test="record.expected != null">
         expected = #{record.expected,jdbcType=VARCHAR},
@@ -244,7 +244,7 @@
       iId = #{record.iid,jdbcType=INTEGER},
       envId = #{record.envid,jdbcType=INTEGER},
       requestParam = #{record.requestparam,jdbcType=VARCHAR},
-      assertType = #{record.asserttype,jdbcType=CHAR},
+      assertType = #{record.asserttype,jdbcType=SMALLINT},
       expected = #{record.expected,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=SMALLINT},
       author = #{record.author,jdbcType=VARCHAR},
@@ -272,7 +272,7 @@
         requestParam = #{requestparam,jdbcType=VARCHAR},
       </if>
       <if test="asserttype != null">
-        assertType = #{asserttype,jdbcType=CHAR},
+        assertType = #{asserttype,jdbcType=SMALLINT},
       </if>
       <if test="expected != null">
         expected = #{expected,jdbcType=VARCHAR},
@@ -296,7 +296,7 @@
       iId = #{iid,jdbcType=INTEGER},
       envId = #{envid,jdbcType=INTEGER},
       requestParam = #{requestparam,jdbcType=VARCHAR},
-      assertType = #{asserttype,jdbcType=CHAR},
+      assertType = #{asserttype,jdbcType=SMALLINT},
       expected = #{expected,jdbcType=VARCHAR},
       status = #{status,jdbcType=SMALLINT},
       author = #{author,jdbcType=VARCHAR},
