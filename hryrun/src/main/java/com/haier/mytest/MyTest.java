@@ -35,12 +35,19 @@ public class MyTest {
     public void tree(File f,int level) {
         String preStr = "";
         for(int i=0;i<level;i++) {
-            preStr += "|&nbsp;&nbsp;&nbsp;&nbsp;";
+            preStr += "|  ";
         }
         File[] childs = f.listFiles();
         for(int i=0;i<childs.length;i++) {
 
-            System.out.println(preStr.substring(0,preStr.lastIndexOf("&nbsp;&nbsp;&nbsp;&nbsp;")) + "__"+childs[i].getName()+"<br>");
+            int t=65-(preStr+childs[i].getName()).length();
+            String tStr="";
+            while(t>0){
+                tStr+="-";
+                t--;
+            }
+
+            System.out.println(preStr.trim() + "__"+childs[i].getName()+tStr);
             if(childs[i].isDirectory()){
                 tree(childs[i],level + 1);
             }
@@ -48,7 +55,7 @@ public class MyTest {
     }
     @Test
     public void test4(){
-        String str="|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;|_RequestMethodTypeEnum.java";
+        String str="|  |  |  |  |  |  |__TenvdetailCustomMapper.java";
         System.out.println(str.length());
     }
 
