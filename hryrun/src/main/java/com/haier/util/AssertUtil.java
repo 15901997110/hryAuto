@@ -19,7 +19,10 @@ public class AssertUtil {
     private static final Log log = LogFactory.getLog(AssertUtil.class);
 
     public static Boolean supperAssert(Integer assertType, String expected, String actual, Integer actualType) {
-
+        log.info("assertType:"+assertType);
+        log.info("expected:"+expected);
+        log.info("actual:"+actual);
+        log.info("actualType:"+actualType);
         switch (assertType) {
             //1.assertType=equal,完全相等
             case 1:
@@ -62,18 +65,23 @@ public class AssertUtil {
 
                         for (Map.Entry<String, Object> entries : expectJsonObj.entrySet()) {
                             Object actualO = actualJsonObj.get(entries.getKey());
-                            //actualO为null,说明get(key)时获取为null,说明返回结果中不存在 此key,故直接返回false
-                            if(Objects.isNull(actualO))
-                                return false;
-                            log.debug(actualO);
                             Object expectO = entries.getValue();
-                            log.debug(expectO);
+                            //actualO为null,说明get(key)时获取为null,说明返回结果中不存在 此key,故直接返回false
+                            if(Objects.isNull(actualO)||Objects.isNull(expectO)){
+                                if(Objects.isNull(actualO)&&Objects.isNull(expectO)){
+                                    //两个同时为null时,直接跳过,进行下一个元素的比较
+                                    continue;
+                                }
+                                else{
+                                    //一个为null,一个不为null
+                                    return false;
+                                }
+                            }
 
                             try {
                                 if(!(actualO.equals(expectO) || actualO.toString().contains(expectO.toString())||actualO.toString().matches(expectO.toString()))){
                                     return false;
                                 }
-
                             } catch (PatternSyntaxException e) {
                                 log.error("", e);
                                 return false;

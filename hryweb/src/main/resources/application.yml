@@ -1,0 +1,38 @@
+server:
+  port: 8885
+
+spring:
+  application:
+    name: hryweb
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.180.100:3306/hry?serverTimezone=CTT&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: root
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  mvc:
+    view:
+      prefix: /WEB-INF/templates/
+      suffix: .jsp
+mybatis:
+  mapper-locations: com/haier/mapper/*.xml
+  type-aliases-package: com.haier.po
+
+
+
+
+

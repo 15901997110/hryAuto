@@ -1,25 +1,20 @@
 package com.haier.enums;
 
 /**
- * 测试环境枚举
+ * @Description: 断言方式枚举
+ * @Author: luqiwei
+ * @Date: 2018/5/2 17:44
  */
-public enum EnvEnum {
-    ENV_CS1(1, "CS1","测试1环境"),//测试1
-    ENV_CS2(2, "CS2","测试2环境"),//测试2
-    ENV_CS3(3, "CS3","测试3环境"),//测试3
-    ENV_CS4(4, "CS4","测试4环境"),//测试4
-    ENV_ZSC(5, "ZSC","准生产环境");//准生产
+public enum AssertTypeEnum {
+    ASSERT_EQUAL(1,"equal","实际值与期望值完全相等"),//完全相等
+    ASSERT_CONTAIN(2,"contain","实际值包含期望值,期望值可以填写正则表达式"),
+    ASSERT_KEY_VALUE(3,"key-value","实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则")
+    ;
 
-
-
-    private int id;
-    private String value;
-    private String desc;
-
-    EnvEnum(int id, String value,String desc) {
+    AssertTypeEnum(int id, String value, String desc) {
         this.id = id;
         this.value = value;
-        this.desc=desc;
+        this.desc = desc;
     }
 
     public int getId() {
@@ -46,8 +41,12 @@ public enum EnvEnum {
         this.desc = desc;
     }
 
+    private int id;
+    private String value;
+    private String desc;
+
     public static String getValue(int id) {
-        for (EnvEnum e : EnvEnum.values()) {
+        for (AssertTypeEnum e : AssertTypeEnum.values()) {
             if (e.getId() == id) {
                 return e.getValue();
             }
@@ -56,7 +55,7 @@ public enum EnvEnum {
     }
 
     public static Integer getId(String value) {
-        for (EnvEnum e : EnvEnum.values()) {
+        for (AssertTypeEnum e : AssertTypeEnum.values()) {
             if (e.getValue().equalsIgnoreCase(value)) {
                 return e.getId();
             }

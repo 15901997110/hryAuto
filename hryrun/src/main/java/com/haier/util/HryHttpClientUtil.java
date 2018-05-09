@@ -54,7 +54,6 @@ public class HryHttpClientUtil {
             //处理post请求
             try {
                 response=HttpClientUtil.post(httpConfig);
-                log.info(response);
             } catch (HttpProcessException e) {
                 log.error("",e);
             }

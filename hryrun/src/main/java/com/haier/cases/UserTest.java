@@ -22,6 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.Header;
 import org.apache.ibatis.session.SqlSession;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -88,11 +89,13 @@ public class UserTest {
 
     @Iuri("/loginFacade/generateCode")
     @Test(groups = "loginFacade", dataProvider = "getCaseWithObject", description = "验证码生成接口测试")
-    public void loginFacade_generateCode_test(int requestMethod, String uri, String param, Integer paramType, Integer responseType, String expected, Integer assertType) {
+    public void loginFacade_generateCode_test(Integer requestMethod, String uri, Integer paramType,String param, Integer responseType, String expected, Integer assertType) {
         //模拟请求
         String actual=HryHttpClientUtil.send(requestMethod,httpType+"://"+host+uri,paramType,param);
         //断言结果
-        AssertUtil.supperAssert(assertType,expected,actual,responseType);
+        Boolean result = AssertUtil.supperAssert(assertType, expected, actual, responseType);
+
+        Assert.assertTrue(result);
     }
 
     @DataProvider(name = "getCaseWithIterator")
@@ -138,8 +141,8 @@ public class UserTest {
             o[i] = new Object[]{
                     new Integer(c.getTi().getIrequestmethod()),
                     new String(c.getTi().getIuri()),
-                    new String(c.getRequestparam()),
                     new Integer(c.getTi().getIparamtype()),
+                    new String(c.getRequestparam()),
                     new Integer(c.getTi().getIresponsetype()),
                     new String(c.getExpected()),
                     new Integer(c.getAsserttype())

@@ -30,7 +30,7 @@ public class MyTest {
     }
     @Test
     public void test3(){
-        this.tree(new File("c:/workspace/hryAuto/hryrun"),1);
+        this.tree(new File("c:/workspace/hryAuto/hryweb"),1);
     }
     public void tree(File f,int level) {
         String preStr = "";
