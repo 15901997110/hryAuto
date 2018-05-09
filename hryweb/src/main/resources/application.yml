@@ -1,6 +1,10 @@
 server:
   port: 8885
 
+logging:
+  file: hryweb.log
+
+
 spring:
   application:
     name: hryweb
@@ -31,6 +35,7 @@ spring:
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po
+
 
 
 
