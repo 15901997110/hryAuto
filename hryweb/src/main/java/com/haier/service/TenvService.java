@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TenvService {
     List<Tenv> selectAll();
-    Tenv findOne(Integer tenvId);
-    Integer updateTenv(Integer tenvId,Tenv tenv);
-    Integer insertTenv(Tenv tenv);
+    Tenv selectOne(Integer tenvId);
+    Integer updateOne(Integer tenvId, Tenv tenv);
+    Integer insertOne(Tenv tenv);
 }

@@ -27,17 +27,17 @@ public class TenvServiceImpl implements TenvService {
     }
 
     @Override
-    public Tenv findOne(Integer tenvId) {
+    public Tenv selectOne(Integer tenvId) {
         return tenvMapper.selectByPrimaryKey(tenvId);
     }
 
     @Override
-    public Integer updateTenv(Integer tenvId, Tenv tenv) {
+    public Integer updateOne(Integer tenvId, Tenv tenv) {
         return null;
     }
 
     @Override
-    public Integer insertTenv(Tenv tenv) {
+    public Integer insertOne(Tenv tenv) {
         return null;
     }
 }

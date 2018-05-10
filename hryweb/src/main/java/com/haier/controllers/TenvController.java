@@ -33,7 +33,7 @@ public class TenvController {
     public ModelAndView findOne(@PathVariable("id")Integer envId){
         ModelAndView modelAndView=new ModelAndView();
 
-        Tenv tenv = tenvService.findOne(2);
+        Tenv tenv = tenvService.selectOne(2);
         modelAndView.addObject("tenv",tenv).setViewName("tenvDetail");
         return modelAndView;
     }
