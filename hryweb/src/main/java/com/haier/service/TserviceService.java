@@ -1,8 +1,6 @@
 package com.haier.service;
 
 import com.haier.po.Tservice;
-import sun.security.timestamp.TSRequest;
-
 import java.util.List;
 
 /**
@@ -12,7 +10,7 @@ import java.util.List;
  */
 public interface TserviceService {
     Tservice selectOne(Integer id);
-    List<TSRequest> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
+    List<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
     Integer updateOne(Integer id, Tservice tservice);
     Integer insertOne(Tservice tservice);
 }
