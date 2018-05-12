@@ -1,6 +1,6 @@
 server:
   port: 8885
-
+  servlet-path: /
 logging:
   file: hryweb.log
 
@@ -28,10 +28,9 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
-  mvc:
-    view:
-      prefix: /WEB-INF/templates/
-      suffix: .jsp
+  thymeleaf:
+    cache: false
+    mode: HTML5
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po

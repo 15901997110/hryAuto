@@ -1,9 +1,8 @@
 package com.haier.controllers;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
  * @Author: luqiwei
  * @Date: 2018/5/4 16:32
  */
+@Slf4j
 @Controller
 public class HelloController {
-
-    @RequestMapping(value = "/index")
+    @RequestMapping(value = "/hello")
     public String index(){
-        return "index";
+        return"helloworld";
     }
 }
