@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Author: luqiwei
  * @Date: 2018/5/12 17:00
  */
-@Controller
+/*@Controller
 public class HomeController {
     @GetMapping("/")
     public String goHome(){
-        return "login";
+        return "index";
     }
-}
+}*/

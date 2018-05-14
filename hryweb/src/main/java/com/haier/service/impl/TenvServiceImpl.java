@@ -38,6 +38,6 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer insertOne(Tenv tenv) {
-        return null;
+        return tenvMapper.insert(tenv);
     }
 }
