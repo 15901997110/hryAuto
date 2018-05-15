@@ -19,9 +19,11 @@
             <result property="iuri" column="iuri"></result>
             <result property="remark" column="remark"></result>
             <result property="irequestmethod" column="irequestmethod"></result>
-            <result property="ihttptype" column="ihttptype"></result>
+            <!--ihttptype字段这里删除,此字段现在体现在tservice.httptype-->
+            <!--<result property="ihttptype" column="ihttptype"></result>-->
             <result property="icontenttype" column="icontenttype"></result>
             <result property="iparamtype" column="iparamtype"></result>
+            <result property="iparamsample" column="iparamsample"></result>
             <result property="iresponsetype" column="iresponsetype"></result>
             <result property="idev" column="idev"></result>
             <result property="istatus" column="istatus"></result>

@@ -13,11 +13,11 @@ public class Ti {
 
     private Short irequestmethod;
 
-    private Short ihttptype;
-
     private Short icontenttype;
 
     private Short iparamtype;
+
+    private String iparamsample;
 
     private Short iresponsetype;
 
@@ -67,14 +67,6 @@ public class Ti {
         this.irequestmethod = irequestmethod;
     }
 
-    public Short getIhttptype() {
-        return ihttptype;
-    }
-
-    public void setIhttptype(Short ihttptype) {
-        this.ihttptype = ihttptype;
-    }
-
     public Short getIcontenttype() {
         return icontenttype;
     }
@@ -89,6 +81,14 @@ public class Ti {
 
     public void setIparamtype(Short iparamtype) {
         this.iparamtype = iparamtype;
+    }
+
+    public String getIparamsample() {
+        return iparamsample;
+    }
+
+    public void setIparamsample(String iparamsample) {
+        this.iparamsample = iparamsample == null ? null : iparamsample.trim();
     }
 
     public Short getIresponsetype() {
