@@ -425,66 +425,6 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIhttptypeIsNull() {
-            addCriterion("iHttpType is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeIsNotNull() {
-            addCriterion("iHttpType is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeEqualTo(Short value) {
-            addCriterion("iHttpType =", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeNotEqualTo(Short value) {
-            addCriterion("iHttpType <>", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeGreaterThan(Short value) {
-            addCriterion("iHttpType >", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeGreaterThanOrEqualTo(Short value) {
-            addCriterion("iHttpType >=", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeLessThan(Short value) {
-            addCriterion("iHttpType <", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeLessThanOrEqualTo(Short value) {
-            addCriterion("iHttpType <=", value, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeIn(List<Short> values) {
-            addCriterion("iHttpType in", values, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeNotIn(List<Short> values) {
-            addCriterion("iHttpType not in", values, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeBetween(Short value1, Short value2) {
-            addCriterion("iHttpType between", value1, value2, "ihttptype");
-            return (Criteria) this;
-        }
-
-        public Criteria andIhttptypeNotBetween(Short value1, Short value2) {
-            addCriterion("iHttpType not between", value1, value2, "ihttptype");
-            return (Criteria) this;
-        }
-
         public Criteria andIcontenttypeIsNull() {
             addCriterion("iContentType is null");
             return (Criteria) this;
@@ -602,6 +542,76 @@ public class TiExample {
 
         public Criteria andIparamtypeNotBetween(Short value1, Short value2) {
             addCriterion("iParamType not between", value1, value2, "iparamtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleIsNull() {
+            addCriterion("iParamSample is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleIsNotNull() {
+            addCriterion("iParamSample is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleEqualTo(String value) {
+            addCriterion("iParamSample =", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleNotEqualTo(String value) {
+            addCriterion("iParamSample <>", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleGreaterThan(String value) {
+            addCriterion("iParamSample >", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleGreaterThanOrEqualTo(String value) {
+            addCriterion("iParamSample >=", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleLessThan(String value) {
+            addCriterion("iParamSample <", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleLessThanOrEqualTo(String value) {
+            addCriterion("iParamSample <=", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleLike(String value) {
+            addCriterion("iParamSample like", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleNotLike(String value) {
+            addCriterion("iParamSample not like", value, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleIn(List<String> values) {
+            addCriterion("iParamSample in", values, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleNotIn(List<String> values) {
+            addCriterion("iParamSample not in", values, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleBetween(String value1, String value2) {
+            addCriterion("iParamSample between", value1, value2, "iparamsample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIparamsampleNotBetween(String value1, String value2) {
+            addCriterion("iParamSample not between", value1, value2, "iparamsample");
             return (Criteria) this;
         }
 
