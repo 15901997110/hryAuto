@@ -23,14 +23,15 @@ import java.util.Enumeration;
 public class HelloController {
     @Autowired
     TenvService tenvService;
-    @RequestMapping(value = "/hello",method = RequestMethod.POST)
-    @ResponseBody
-    public Integer index(HttpServletRequest request){
-        String name=request.getParameter("userName");
-        String password=request.getParameter("password");
-        log.info("环境名称="+name+"，描述="+password);
 
-        Tenv tenv=new Tenv();
+    @RequestMapping(value = "/hello", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer index(HttpServletRequest request) {
+        String name = request.getParameter("userName");
+        String password = request.getParameter("password");
+        log.info("环境名称=" + name + "，描述=" + password);
+
+        Tenv tenv = new Tenv();
         tenv.setEnvkey(name);
         tenv.setRemark(password);
         return tenvService.insertOne(tenv);
