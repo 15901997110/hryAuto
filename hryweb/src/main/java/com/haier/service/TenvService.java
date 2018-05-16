@@ -15,4 +15,5 @@ public interface TenvService {
     Tenv selectOne(Integer tenvId);
     Integer updateOne(Integer tenvId, Tenv tenv);
     Integer insertOne(Tenv tenv);
+    Integer deleteOne(Integer tenvId);
 }

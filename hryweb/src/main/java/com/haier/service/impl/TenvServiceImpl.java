@@ -40,4 +40,9 @@ public class TenvServiceImpl implements TenvService {
     public Integer insertOne(Tenv tenv) {
         return tenvMapper.insert(tenv);
     }
+
+    @Override
+    public Integer deleteOne(Integer tenvId) {
+        return  tenvMapper.deleteByPrimaryKey(tenvId);
+    }
 }
