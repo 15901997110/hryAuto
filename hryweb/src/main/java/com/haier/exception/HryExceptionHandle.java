@@ -26,6 +26,6 @@ public class HryExceptionHandle {
             return ResultUtil.error(hryException.getCode(),hryException.getMessage());
         }
         log.error("【系统异常】{}",e);
-        return ResultUtil.error(StatusCodeEnum.UNKNOWN_BIZ_ERROR);
+        return ResultUtil.error(9999,e.getMessage());
     }
 }

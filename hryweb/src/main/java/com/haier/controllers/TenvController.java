@@ -1,18 +1,19 @@
 package com.haier.controllers;
 
+import com.haier.enums.StatusCodeEnum;
 import com.haier.po.Tenv;
+import com.haier.response.Result;
 import com.haier.service.TenvService;
+import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description: 环境维护
@@ -20,7 +21,7 @@ import java.util.List;
  * @Date: 2018/5/8 20:26
  */
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/tenv")
 public class TenvController {
     @Autowired
@@ -29,34 +30,27 @@ public class TenvController {
     /**
      * 查询全部环境列表处理
      * */
-    @RequestMapping(value="/tenvList",method = RequestMethod.POST)
-    @ResponseBody
-    public List<Tenv> tenvList(){
-        return tenvService.selectAll();
+    @PostMapping(value="/tenvList")
+    public Result tenvList(){
+        return ResultUtil.success(tenvService.selectAll());
     }
 
     /**
      * 查询单个环境信息
      * */
-    @RequestMapping(value="/tenvOne",method = RequestMethod.POST)
-    @ResponseBody
-    public Tenv tenvOne(HttpServletRequest request){
-
-        Integer id=Integer.parseInt(request.getParameter("envId"));
-        log.info("要查询的环境id="+id);
-        Tenv tenv = new Tenv();
-        tenv=tenvService.selectOne(id);
-        log.info("要查询的环境标识="+tenv.getEnvkey()+"环境描述="+tenv.getRemark());
-        return  tenv;
+    @PostMapping(value="/tenvOne")
+    public Result tenvOne(Integer envId){
+        Tenv tenv=tenvService.selectOne(envId);
+        return ResultUtil.success(tenv);
     }
 
     /**
      * 新增环境处理
      * */
-    @RequestMapping(value="/tenvAdd",method = RequestMethod.POST)
-    @ResponseBody
-    public String  tenvAdd(HttpServletRequest request){
-        String envKey = request.getParameter("envKey");
+    @PostMapping(value="/tenvAdd")
+    public Result tenvAdd(Tenv tenv){
+        return ResultUtil.success(tenvService.insertOne(tenv));
+       /* String envKey = request.getParameter("envKey");
         String remark = request.getParameter("remark");
         log.info("环境名称=" + envKey + "，描述=" + remark);
 
@@ -75,15 +69,17 @@ public class TenvController {
             log.error("插入数据异常",e);
             return e.toString();
         }
-
+        */
     }
 
     /**
      * 删除环境处理
      * */
-    @RequestMapping(value="/tenvDel",method=RequestMethod.POST)
-    @ResponseBody
-    public String tenvDel(HttpServletRequest request){
+    @PostMapping(value="/tenvDel")
+    public Result tenvDel(Integer envId){
+        return ResultUtil.success(tenvService.deleteOne(envId));
+    }
+/*    public String tenvDel(HttpServletRequest request){
         Integer id=Integer.parseInt(request.getParameter("envId"));
         log.info("要删除的环境id="+id);
         try{
@@ -94,14 +90,20 @@ public class TenvController {
             return e.toString();
         }
 
-    }
+    }*/
 
     /**
      * 编辑环境处理
      * */
-    @RequestMapping(value="/tenvEdit",method=RequestMethod.POST)
-    @ResponseBody
-    public String editTenv(HttpServletRequest request){
+    @PostMapping(value="/tenvEdit")
+    public Result tenvEdit(Tenv tenv){
+        if(Objects.isNull(tenv.getId())||Objects.isNull(tenv.getEnvkey())){
+            return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        tenvService.updateOne(tenv.getId(),tenv);
+        return ResultUtil.success();
+    }
+    /*public String editTenv(HttpServletRequest request){
         Integer id=Integer.parseInt(request.getParameter("envId").trim());
         String envKey = request.getParameter("envKey");
         String remark = request.getParameter("remark");
@@ -124,16 +126,6 @@ public class TenvController {
             return e.toString();
         }
 
-    }
-
-    @RequestMapping(value="/{id}",method=RequestMethod.GET)
-    public ModelAndView findOne(@PathVariable("id")Integer envId){
-        ModelAndView modelAndView=new ModelAndView();
-
-        Tenv tenv = tenvService.selectOne(2);
-        modelAndView.addObject("tenv",tenv).setViewName("tenvDetail");
-        return modelAndView;
-    }
-
+    }*/
 
 }
