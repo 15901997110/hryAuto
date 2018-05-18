@@ -39,6 +39,8 @@ public enum ContentTypeEnum {
         }
         return null;
     }
+
+
     public static Integer getId(String value){
         for(ContentTypeEnum e:ContentTypeEnum.values()){
             if(e.getValue().equalsIgnoreCase(value)){
