@@ -59,7 +59,7 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-	/**$(function(){
+	*$(function(){
 	$(".permission-list dt input:checkbox").click(function(){
 		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
 	});
@@ -79,23 +79,8 @@
 			}
 		}
 	});
-	
-	$("#form-admin-role-add").validate({
-		rules:{
-			roleName:{
-				required:true,
-			},
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			parent.layer.close(index);
-		}
-	});
-});*/
+
+});
 
 	//添加环境
 	function addTenv(){
