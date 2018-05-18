@@ -33,7 +33,8 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer updateOne(Integer tenvId, Tenv tenv) {
-        return null;
+        tenv.setId(tenvId);
+        return tenvMapper.updateByPrimaryKey(tenv);
     }
 
     @Override
