@@ -8,6 +8,7 @@ import com.haier.po.Tservice;
 import com.haier.po.TserviceExample;
 import com.haier.service.TserviceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/18 14:11
  */
+@Service
 public class TserviceServiceImpl implements TserviceService{
 
     @Autowired
