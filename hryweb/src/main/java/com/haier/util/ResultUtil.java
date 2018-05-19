@@ -12,8 +12,8 @@ public class ResultUtil {
     //需要出参的,传入返回体出参
     public static <T>Result success(T t){
         Result result=new Result();
-        result.setStatus(0);
-        result.setMsg("success");
+        result.setStatus(StatusCodeEnum.SUCCESS.getCode());
+        result.setMsg(StatusCodeEnum.SUCCESS.getMsg());
         result.setData(t);
         return  result;
     }
@@ -24,7 +24,7 @@ public class ResultUtil {
         return success(null);
     }
 
-    //返回异常信息,在已经的范围内
+    //返回异常信息,在已知的范围内
     public static Result error(StatusCodeEnum statusCodeEnum){
         Result result=new Result();
         result.setStatus(statusCodeEnum.getCode());

@@ -12,5 +12,6 @@ public interface TserviceService {
     Tservice selectOne(Integer id);
     List<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
     Integer updateOne(Integer id, Tservice tservice);
+    //返回主键
     Integer insertOne(Tservice tservice);
 }
