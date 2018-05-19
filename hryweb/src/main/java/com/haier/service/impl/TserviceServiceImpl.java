@@ -1,6 +1,7 @@
 package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TserviceMapper;
@@ -30,7 +31,7 @@ public class TserviceServiceImpl implements TserviceService{
     }
 
     @Override
-    public List<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
+    public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
         TserviceExample tserviceExample=new TserviceExample();
 
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
@@ -49,8 +50,14 @@ public class TserviceServiceImpl implements TserviceService{
             criteria.andIsdelEqualTo((short)0);//删除状态是0的记录
         }
 
+
         PageHelper.startPage(pageNum,pageSize);
-        return tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
+
+        List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
+
+        PageInfo<Tservice> pageInfo=new PageInfo<>(tservices);
+
+        return pageInfo;
     }
 
     @Override
