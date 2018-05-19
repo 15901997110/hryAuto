@@ -35,7 +35,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">环境描述：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
 			</div>
@@ -59,35 +59,37 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-	*$(function(){
-	$(".permission-list dt input:checkbox").click(function(){
-		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
-	});
-	$(".permission-list2 dd input:checkbox").click(function(){
-		var l =$(this).parent().parent().find("input:checked").length;
-		var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
-		if($(this).prop("checked")){
-			$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
-			$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
-		}
-		else{
-			if(l==0){
-				$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
-			}
-			if(l2==0){
-				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
-			}
-		}
-	});
 
-});
+	//loading
+    $(function () {
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在提交请稍等...")
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
+    });
 
 	//添加环境
 	function addTenv(){
         var envkey = $("#envkey").val();
         var remark = $("#remark").val();
-        if(envkey == null || remark == null || envkey == "" || remark == ""){
-            alert("不能为空！");
+        if(envkey == null || envkey == ""){
+            alert("环境标识不能为空！");
+            return;
+		}else if(remark == null || remark == ""){
+            alert("环境描述不能为空！");
             return;
 		}else{
             $.ajax({

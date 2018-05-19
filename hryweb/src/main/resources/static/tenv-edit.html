@@ -69,6 +69,27 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 
+    //loading
+    $(function () {
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在提交请稍等...")
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
+    });
+
     function getParameter(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -110,7 +131,7 @@
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\">环境描述：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境描述：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
                         "            </div>\n" +
@@ -140,34 +161,43 @@
         var envkey = $("#envkey").val();
         var remark = $("#remark").val();
         //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
-        $.ajax({
-            type: 'POST',
-            url: '/tenv/tenvEdit',
-            data:{
-                id:id,
-                envkey:envkey,
-                remark:remark
-            },
-            dataType: 'json',
-            success: function(data){
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
+        if(envkey == null || envkey == ""){
+            alert("环境标识不能为空！");
+            return;
+        }else if(remark == null || remark == ""){
+            alert("环境描述不能为空！");
+            return;
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: '/tenv/tenvEdit',
+                data:{
+                    id:id,
+                    envkey:envkey,
+                    remark:remark
+                },
+                dataType: 'json',
+                success: function(data){
+                    var status=data.status;
+                    var msg=data.msg;
+                    var list=data.data;
 
-                if(status == 0){
-                    alert("更新成功！");
-                    parent.window.location.reload();
-                    var index = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(index);
-                }else{
-                    alert(JSON.stringify(data));
-                }
+                    if(status == 0){
+                        //alert("更新成功！");
+                        parent.window.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
 
-            },
-            error:function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
-            },
-        });
+                },
+                error:function(xhr) {
+                    alert('error:' + JSON.stringify(xhr));
+                },
+            });
+        }
+
     }
 
 </script>
