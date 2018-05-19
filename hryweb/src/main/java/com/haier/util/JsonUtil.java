@@ -3,7 +3,7 @@ package com.haier.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.parser.Feature;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,8 +14,8 @@ import java.util.Map;
  * @Author: luqiwei
  * @Date: 2018/5/3 11:28
  */
+@Slf4j
 public class JsonUtil {
-    private static final Log log= LogFactory.getLog(JsonUtil.class);
 
     public static JSONObject str2JsonObj(String json){
         try {
@@ -41,5 +41,13 @@ public class JsonUtil {
             log.error("",e);
             return null;
         }
+    }
+    public static String getParam(JSONObject definitions,String definitionName){
+        if(definitionName.contains("/")){
+            definitionName.substring(definitionName.lastIndexOf("/"));
+        }
+        JSONObject jsonObject = definitions.getJSONObject(definitionName);
+        jsonObject.getJSONObject("properties");
+        return null;
     }
 }

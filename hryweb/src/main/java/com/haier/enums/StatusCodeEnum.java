@@ -13,6 +13,9 @@ public enum StatusCodeEnum {
     NO_IMPLEMENT(4, "方法未实现"),
     EXIST_RECORD(5, "记录已经存在"),
 
+    HTTP_ERROR(100,"发送http请求时异常"),
+    PARSE_JSON_ERROR(101,"字符串转换为JSONObject时异常"),
+
     NOT_FOUND(1000, "查询记录不存在！"),
     CHECK_ERROR(1001, "校验不满足条件"),
     END_TIME_BEFORE_START_TIME(1003, "开始时间不能大于结束时间!"),

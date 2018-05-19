@@ -108,7 +108,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.haier.po.Ti">
-    insert into ti (id, serviceId, iUri, 
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ti (id, serviceId, iUri,
       remark, iRequestMethod, iContentType, 
       iParamType, iParamSample, iResponseType, 
       iDev, iStatus, updateTime
