@@ -81,7 +81,6 @@
         var id = getParameter('id');
         $("#id").val(id);
 
-
         $.ajax({
             type: "post",
             url: "/tenv/tenvOne",
@@ -90,39 +89,45 @@
             },
             dataType: "json",
             success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
                 console.log(data);
-                var envKey = data.envkey;
-                var remark = data.remark;
 
-                //alert("envKey="+envKey+"remark="+remark);
+                if(status == 0){
+                    var envkey = list.envkey;
+                    var remark = list.remark;
+                    var html = "<div class=\"row cl\" style=\"display:none;\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境id：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input class=\"input-text\" value=\""+id+"\" placeholder=\"\" id=\"id\" name=\"id\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境标识：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+envkey+"\" placeholder=\"\" id=\"envkey\" name=\"envkey\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">环境描述：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\"\n" +
+                        "                        onclick=\"editEnv("+id+")\"><i class=\"icon-ok\"></i> 确定\n" +
+                        "                </button>\n" +
+                        "            </div>\n" +
+                        "        </div>";
 
-                var html = "<div class=\"row cl\" style=\"display:none;\">\n" +
-                    "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境id：</label>\n" +
-                    "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                    "                <input class=\"input-text\" value=\"\" placeholder=\"\" id=\"id\" name=\"id\">\n" +
-                    "            </div>\n" +
-                    "        </div>\n" +
-                    "        <div class=\"row cl\">\n" +
-                    "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境标识：</label>\n" +
-                    "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                    "                <input type=\"text\" class=\"input-text\" value=\""+envKey+"\" placeholder=\"\" id=\"envKey\" name=\"envKey\">\n" +
-                    "            </div>\n" +
-                    "        </div>\n" +
-                    "        <div class=\"row cl\">\n" +
-                    "            <label class=\"form-label col-xs-4 col-sm-3\">环境描述：</label>\n" +
-                    "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                    "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
-                    "            </div>\n" +
-                    "        </div>\n" +
-                    "        <div class=\"row cl\">\n" +
-                    "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
-                    "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\"\n" +
-                    "                        onclick=\"editEnv("+id+")\"><i class=\"icon-ok\"></i> 确定\n" +
-                    "                </button>\n" +
-                    "            </div>\n" +
-                    "        </div>";
+                    $("#form").append(html);
+                }else{
+                    alert(JSON.stringify(data));
+                }
 
-                $("#form").append(html);
             }
         });
 
@@ -132,27 +137,30 @@
     //编辑环境
     function editEnv(tenvId){
         var id = tenvId;
-        var envKey = $("#envKey").val();
+        var envkey = $("#envkey").val();
         var remark = $("#remark").val();
         //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
         $.ajax({
             type: 'POST',
             url: '/tenv/tenvEdit',
             data:{
-                envId:id,
-                envKey:envKey,
+                id:id,
+                envkey:envkey,
                 remark:remark
             },
             dataType: 'json',
             success: function(data){
-                if(data == "1"){
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+
+                if(status == 0){
                     alert("更新成功！");
                     parent.window.location.reload();
                     var index = parent.layer.getFrameIndex(window.name);
                     parent.layer.close(index);
-
                 }else{
-                    alert("更新失败！");
+                    alert(JSON.stringify(data));
                 }
 
             },
