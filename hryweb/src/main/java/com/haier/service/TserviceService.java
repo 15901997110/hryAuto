@@ -1,5 +1,6 @@
 package com.haier.service;
 
+import com.github.pagehelper.PageInfo;
 import com.haier.po.Tservice;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface TserviceService {
     Tservice selectOne(Integer id);
-    List<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
+    PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
     Integer updateOne(Integer id, Tservice tservice);
     //返回主键
     Integer insertOne(Tservice tservice);
