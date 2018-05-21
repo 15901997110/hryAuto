@@ -101,10 +101,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tservice">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+  <insert id="insert" parameterType="com.haier.po.Tservice" useGeneratedKeys="true" keyProperty="id">
     insert into tservice (id, serviceKey, serviceName, 
       httpType, isDel, updateTime, 
       editor)
@@ -112,7 +109,7 @@
       #{httptype,jdbcType=SMALLINT}, #{isdel,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP}, 
       #{editor,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tservice">
+  <insert id="insertSelective" parameterType="com.haier.po.Tservice" useGeneratedKeys="true" keyProperty="id">
     insert into tservice
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

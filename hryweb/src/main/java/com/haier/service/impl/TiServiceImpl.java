@@ -24,18 +24,17 @@ public class TiServiceImpl implements TiService {
     TiMapper tiMapper;
     @Override
     public Integer insertOne(Ti ti) {
-        tiMapper.insert(ti);
+        tiMapper.insertSelective(ti);
         return ti.getId();
     }
 
     @Override
     public Integer updateOne(Integer id, Ti ti) {
-        if(id==0||id==null|| Objects.isNull(ti)||ti.getIuri()==null||ti.getServiceid()==null||"".equals(ti.getIuri())||
-                "".equals(ti.getServiceid())){
+        if(id==0||id==null|| Objects.isNull(ti)){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         ti.setId(id);
-        return tiMapper.updateByPrimaryKey(ti);
+        return tiMapper.updateByPrimaryKeySelective(ti);
     }
 
     @Override

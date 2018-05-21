@@ -107,10 +107,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Ti">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+  <insert id="insert" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
     insert into ti (id, serviceId, iUri,
       remark, iRequestMethod, iContentType, 
       iParamType, iParamSample, iResponseType, 
@@ -122,7 +119,7 @@
       #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Ti">
+  <insert id="insertSelective" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
     insert into ti
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

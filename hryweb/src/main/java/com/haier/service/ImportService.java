@@ -11,5 +11,5 @@ import com.haier.po.ImportInterfaceResult;
 public interface ImportService {
     String sendGet(String url);
     Integer findServiceId(String serviceKey,String serviceName);
-    ImportInterfaceResult importInterface(Integer serviceId,String serviceKey, JSONObject jsonObject,Boolean overwrite);
+    ImportInterfaceResult importInterface(Integer serviceId,String serviceKey, JSONObject jsonObject,Boolean overwrite,String developerEmail);
 }
