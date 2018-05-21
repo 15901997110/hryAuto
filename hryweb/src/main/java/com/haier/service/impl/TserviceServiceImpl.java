@@ -47,7 +47,7 @@ public class TserviceServiceImpl implements TserviceService{
                 criteria.andIsdelEqualTo((short)0);
             }
         }else{
-            criteria.andIsdelEqualTo((short)0);//删除状态是0的记录
+            criteria.andIsdelEqualTo((short)0);
         }
 
 
@@ -62,12 +62,12 @@ public class TserviceServiceImpl implements TserviceService{
 
     @Override
     public Integer updateOne(Integer id, Tservice tservice) {
-        if(id==0||id==null||tservice==null||tservice.getServicekey()==null){
+        if(id==0||id==null||tservice==null){
             //参数异常时,直接抛出
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         tservice.setId(id);
-        return tserviceMapper.updateByPrimaryKey(tservice);
+        return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class TserviceServiceImpl implements TserviceService{
         if(Objects.isNull(tservice)||tservice.getServicekey()==null||"".equals(tservice.getServicekey())){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
-        tserviceMapper.insert(tservice);
+        tserviceMapper.insertSelective(tservice);
         return tservice.getId();//返回插入的主键,注意,此返回需要先在sqlMapperXml文件中配置
     }
 }

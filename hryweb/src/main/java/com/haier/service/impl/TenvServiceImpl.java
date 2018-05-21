@@ -1,5 +1,7 @@
 package com.haier.service.impl;
 
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.mapper.TenvMapper;
 import com.haier.po.Tenv;
 import com.haier.service.TenvService;
@@ -33,13 +35,16 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer updateOne(Integer tenvId, Tenv tenv) {
+        if(tenvId==null||tenv==null){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
         tenv.setId(tenvId);
-        return tenvMapper.updateByPrimaryKey(tenv);
+        return tenvMapper.updateByPrimaryKeySelective(tenv);
     }
 
     @Override
     public Integer insertOne(Tenv tenv) {
-        return tenvMapper.insert(tenv);
+        return tenvMapper.insertSelective(tenv);
     }
 
     @Override

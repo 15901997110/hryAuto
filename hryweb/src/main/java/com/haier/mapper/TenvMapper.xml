@@ -97,13 +97,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tenv">
+  <insert id="insert" parameterType="com.haier.po.Tenv" useGeneratedKeys="true" keyProperty="id">
     insert into tenv (id, envKey, remark
       )
     values (#{id,jdbcType=INTEGER}, #{envkey,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tenv">
+  <insert id="insertSelective" parameterType="com.haier.po.Tenv" useGeneratedKeys="true" keyProperty="id">
     insert into tenv
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

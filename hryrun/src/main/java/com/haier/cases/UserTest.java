@@ -1,16 +1,11 @@
 package com.haier.cases;
 
-
-import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpHeader;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.Iuri;
 import com.haier.anno.ServiceKey;
-import com.haier.enums.ContentTypeEnum;
+
 import com.haier.enums.EnvEnum;
 import com.haier.enums.HttpTypeEnum;
-import com.haier.enums.RequestMethodTypeEnum;
+
 import com.haier.mapper.TcaseMapper;
 import com.haier.mytest.MyTest;
 import com.haier.po.*;
@@ -18,9 +13,10 @@ import com.haier.util.AssertUtil;
 import com.haier.util.DBUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.PropertiesUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.Header;
+
 import org.apache.ibatis.session.SqlSession;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -35,7 +31,7 @@ import java.util.Objects;
 
 @ServiceKey("User")
 public class UserTest {
-    private static Log log = LogFactory.getLog(MyTest.class);
+    private static Log log = LogFactory.getLog(UserTest.class);
     private String envKey;
     private int envKeyId;
     private String serviceKey;

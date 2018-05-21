@@ -32,7 +32,8 @@ public class ImportController {
     @PostMapping("/interfaceImport")
     public Result interfaceImport(@RequestParam("url") String url,
                                   @RequestParam("servicekey") String servicekey,
-                                  @RequestParam("overwrite") Boolean overwrite//是否覆盖ti表中的记录
+                                  @RequestParam("overwrite") Boolean overwrite,//是否覆盖ti表中的记录
+                                  @RequestParam("developer") String developerEmail//接口开发人员邮箱
                                   ){
         //1.通过url发送get请求,得到返回json
         String responseJson = importService.sendGet(url);
@@ -41,6 +42,7 @@ public class ImportController {
         }
         JSONObject jsonObject=null;
         try{
+            //DisableCircularReferenceDetect禁止引用传递,(fastJson在此处对$ref对象处理不好,故这里直接禁用)
             jsonObject= JSON.parseObject(responseJson, Feature.DisableCircularReferenceDetect);
         }catch(Exception e){
             log.error("",e);
@@ -49,15 +51,11 @@ public class ImportController {
 
         String serviceName = jsonObject.getJSONObject("info").getString("title");
 
-        Object o= jsonObject.getJSONObject("paths").getJSONObject("/accountFacade/balanceCheckDetail").getJSONObject("post").getJSONArray("parameters").getJSONObject(0).getString("in");
-
-        //2.通过servicekey查询serviceId,没有查询不到,则新插入一条service记录,返回新插入的id
+        //2.通过servicekey查询serviceId,没有查询到,则新插入一条service记录,返回新插入的id
         Integer serviceId=importService.findServiceId(servicekey,serviceName);
         //3.解析json,插入数据到ti表
-        ImportInterfaceResult importInterfaceResult=importService.importInterface(serviceId,servicekey,jsonObject,overwrite);
+        ImportInterfaceResult importInterfaceResult=importService.importInterface(serviceId,servicekey,jsonObject,overwrite,developerEmail);
 
-
-        return ResultUtil.success();
-
+        return ResultUtil.success(importInterfaceResult);
     }
 }
