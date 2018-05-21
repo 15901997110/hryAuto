@@ -47,7 +47,7 @@ public class TenvController {
      * */
     @PostMapping(value="/tenvAdd")
     public Result tenvAdd(Tenv tenv){
-        log.info("环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
+        log.info("新增的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
         return ResultUtil.success(tenvService.insertOne(tenv));
 
     }
@@ -70,10 +70,12 @@ public class TenvController {
     public Result tenvEdit(Tenv tenv){
         if(Objects.isNull(tenv.getId())||Objects.isNull(tenv.getEnvkey())){
             return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
+        }else{
+            log.info("更新后的环境id="+tenv.getId()+"更新后的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
+            tenvService.updateOne(tenv.getId(),tenv);
+            return ResultUtil.success();
         }
-        log.info("更新后的环境id="+tenv.getId()+"更新后的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
-        tenvService.updateOne(tenv.getId(),tenv);
-        return ResultUtil.success();
+
     }
 
 

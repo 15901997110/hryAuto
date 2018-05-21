@@ -10,7 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="/favicon.ico">
     <link rel="Shortcut Icon" href="/favicon.ico"/>
-    <!--[if lt IE 9]>
+    <!--[if lt IE 9]-->
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
@@ -19,41 +19,16 @@
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
-    <!--[if IE 6]>
+    <!--[if IE 6]-->
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>环境编辑</title>
+    <title>服务编辑</title>
 </head>
 <body>
 <article class="page-container">
     <form method="post" class="form form-horizontal" id="form">
-        <!--<div class="row cl" style="display:none;">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境id：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input class="input-text" value="" placeholder="" id="id" name="id">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境标识：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="envKey" name="envKey">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">环境描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
-            </div>
-        </div>
-        <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
-                        onclick="addTenv()"><i class="icon-ok"></i> 确定
-                </button>
-            </div>
-        </div>-->
     </form>
 </article>
 
@@ -101,12 +76,12 @@
     $(document).ready(function () {
         var id = getParameter('id');
         $("#id").val(id);
-
+        //alert("要编辑的服务id="+id);
         $.ajax({
             type: "post",
-            url: "/tenv/tenvOne",
+            url: "/tservice/tserviceOne",
             data: {
-                envId: id
+                tserviceId: id
             },
             dataType: "json",
             success: function (data) {
@@ -116,31 +91,43 @@
                 console.log(data);
 
                 if(status == 0){
-                    var envkey = list.envkey;
-                    var remark = list.remark;
-                    var html = "<div class=\"row cl\" style=\"display:none;\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境id：</label>\n" +
+                    var servicekey = list.servicekey;
+                    var servicename = list.servicename;
+                    var httptype=list.httptype;
+                    var option="";
+                    if(httptype == 1){
+                        option="<option value=\"1\" selected>Http</option>\n" +
+                            "   <option value=\"2\">Https</option>\n";
+                    }else if(httptype == 2){
+                        option="<option value=\"1\">Http</option>\n" +
+                        "   <option value=\"2\" selected>Https</option>\n";
+                    }
+                    var html = "<div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务简称：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input class=\"input-text\" value=\""+id+"\" placeholder=\"\" id=\"id\" name=\"id\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+servicekey+"\" placeholder=\"\" id=\"servicekey\" name=\"servicekey\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境标识：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务名称：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+envkey+"\" placeholder=\"\" id=\"envkey\" name=\"envkey\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+servicename+"\" placeholder=\"\" id=\"servicename\" name=\"servicename\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境描述：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>协议类型：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"httptype\" id=\"httptype\">\n" +
+                        "                        <option value=\"\" selected>请选择协议</option>\n" +
+                        "                        "+option+" "+
+                        "                    </select>\n" +
+                        "                </span>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
-                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\"\n" +
-                        "                        onclick=\"editTservice("+id+")\"><i class=\"icon-ok\"></i> 确定\n" +
-                        "                </button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTservice("+id+")\"><i class=\"icon-ok\"></i> 确定</button>\n" +
                         "            </div>\n" +
                         "        </div>";
 
@@ -155,26 +142,34 @@
 
     });
 
-    //编辑环境
+    //编辑服务
     function editTservice(tserviceId){
-        var id = tenvId;
-        var envkey = $("#envkey").val();
-        var remark = $("#remark").val();
-        //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
-        if(envkey == null || envkey == ""){
-            alert("环境标识不能为空！");
+        var id=tserviceId;
+        var servicekey = $("#servicekey").val();
+        var servicename = $("#servicename").val();
+        var httptype = $("#httptype").val();
+        //alert("选择的协议类型="+httptype);
+        var editor="lishanghan@kjtpay.com.cn";
+        if(servicekey == null || servicekey == ""){
+            alert("服务简称不能为空！");
             return;
-        }else if(remark == null || remark == ""){
-            alert("环境描述不能为空！");
+        }else if(servicename == null || servicename == ""){
+            alert("服务名称不能为空！");
+            return;
+        }else if(httptype == null || httptype == ""){
+            alert("请选择协议类型！");
             return;
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tenv/tenvEdit',
+                url: '/tservice/tserviceEdit',
                 data:{
                     id:id,
-                    envkey:envkey,
-                    remark:remark
+                    servicekey:servicekey,
+                    servicename:servicename,
+                    httptype:httptype,
+                    editor:editor,
+                    isdel:0
                 },
                 dataType: 'json',
                 success: function(data){

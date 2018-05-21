@@ -4194,7 +4194,7 @@ input[type="radio"], input[type="checkbox"] {
     border: solid 1px #ddd;
     box-sizing: border-box;
     vertical-align: middle;
-    width: 100%;
+    width: 80%;
     display: inline-block
 }
 
