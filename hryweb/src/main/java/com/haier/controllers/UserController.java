@@ -38,6 +38,7 @@ public class UserController {
         else{
             session.setAttribute("user",user.getIdentity());
             Cookie cookie=new Cookie("userCookie",user.getIdentity());
+            cookie.setPath("/");
             response.addCookie(cookie);
             return ResultUtil.success();
         }
