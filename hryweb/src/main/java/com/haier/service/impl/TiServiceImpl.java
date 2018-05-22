@@ -6,6 +6,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TiMapper;
 import com.haier.po.Ti;
+import com.haier.po.TiExample;
 import com.haier.service.TiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,17 @@ public class TiServiceImpl implements TiService {
     TiMapper tiMapper;
     @Override
     public Integer insertOne(Ti ti) {
+        //插入数据之前判断记录是否存在
+        TiExample tiExample=new TiExample();
+        tiExample.createCriteria()
+                .andServiceidEqualTo(ti.getServiceid())
+                .andIuriEqualTo(ti.getIuri())
+                .andIstatusNotEqualTo((short)-1);
+        List<Ti> tis = tiMapper.selectByExample(tiExample);
+        if(tis!=null&&tis.size()>0){
+            throw new HryException(StatusCodeEnum.EXIST_RECORD);
+        }
+        //插入数据
         tiMapper.insertSelective(ti);
         return ti.getId();
     }

@@ -73,9 +73,20 @@ public class TserviceServiceImpl implements TserviceService{
 
     @Override
     public Integer insertOne(Tservice tservice) {
+        //参数校验
         if(Objects.isNull(tservice)||tservice.getServicekey()==null||"".equals(tservice.getServicekey())){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
+        //数据重复性校验
+        TserviceExample tserviceExample=new TserviceExample();
+        tserviceExample.createCriteria()
+                .andServicekeyEqualTo(tservice.getServicekey())
+                .andIsdelEqualTo((short)0);
+        List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
+        if(tservices!=null&&tservices.size()>0){
+            throw new HryException(StatusCodeEnum.EXIST_RECORD);
+        }
+        //插入数据
         tserviceMapper.insertSelective(tservice);
         return tservice.getId();//返回插入的主键,注意,此返回需要先在sqlMapperXml文件中配置
     }

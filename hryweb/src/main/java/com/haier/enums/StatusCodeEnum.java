@@ -12,7 +12,7 @@ public enum StatusCodeEnum {
     SAVE_ERROR(3, "保存失败"),
     NO_IMPLEMENT(4, "方法未实现"),
     EXIST_RECORD(5, "记录已经存在"),
-
+    LOGIN_ERROR(6,"用户名或密码错误"),
     HTTP_ERROR(100,"发送http请求时异常"),
     PARSE_JSON_ERROR(101,"字符串转换为JSONObject时异常"),
 
