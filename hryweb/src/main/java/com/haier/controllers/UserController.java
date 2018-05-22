@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,13 +29,16 @@ public class UserController {
     @Autowired
     UserService userService;
     @PostMapping("/login.do")
-    public Result login(HttpSession session, String identity, String password){
+    public Result login(HttpServletRequest request,HttpServletResponse response, String identity, String password){
+        HttpSession session=request.getSession();
         User user = userService.findUser(identity, password);
         if(user==null){
             return ResultUtil.error(StatusCodeEnum.LOGIN_ERROR);
         }
         else{
             session.setAttribute("user",user.getIdentity());
+            Cookie cookie=new Cookie("userCookie",user.getIdentity());
+            response.addCookie(cookie);
             return ResultUtil.success();
         }
     }
