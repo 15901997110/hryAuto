@@ -93,7 +93,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tservice/tserviceList",
+            url: "/tservice/tserviceList.do",
             data: {
                 pageNum:1,
                 pageSize:10
@@ -170,7 +170,7 @@
             alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tservice/tserviceDel',
+                url: '/tservice/tserviceDel.do',
                 data:{
                     id:id
                 },

@@ -79,7 +79,7 @@
         //alert("要编辑的服务id="+id);
         $.ajax({
             type: "post",
-            url: "/tservice/tserviceOne",
+            url: "/tservice/tserviceOne.do",
             data: {
                 tserviceId: id
             },
@@ -162,7 +162,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tservice/tserviceEdit',
+                url: '/tservice/tserviceEdit.do',
                 data:{
                     id:id,
                     servicekey:servicekey,
