@@ -31,7 +31,7 @@ public class TserviceController {
     /**
      * 查询服务列表
      * */
-    @PostMapping(value="/tserviceList")
+    @PostMapping(value="/tserviceList.do")
     public Result tserviceList(Tservice tservice, Integer pageNum, Integer pageSize){
         return ResultUtil.success(tserviceService.selectByCondition(null,pageNum,pageSize));
     }
@@ -39,7 +39,7 @@ public class TserviceController {
     /**
      *查询单个服务信息
      * */
-    @PostMapping(value="/tserviceOne")
+    @PostMapping(value="/tserviceOne.do")
     public Result tserviceOne(Integer tserviceId){
         Tservice tservice=tserviceService.selectOne(tserviceId);
         log.info("查询单条服务id="+tserviceId);
@@ -49,7 +49,7 @@ public class TserviceController {
     /**
      *添加服务
      * */
-    @PostMapping(value="/tserviceAdd")
+    @PostMapping(value="/tserviceAdd.do")
     public Result tserviceAdd(Tservice tservice){
         log.info("新增的服务简称="+tservice.getServicekey()+",服务名称="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
         return ResultUtil.success(tserviceService.insertOne(tservice));
@@ -58,7 +58,7 @@ public class TserviceController {
     /**
      * 编辑服务
      * */
-    @PostMapping(value = "/tserviceEdit")
+    @PostMapping(value = "/tserviceEdit.do")
     public Result tserviceEdit(Tservice tservice){
         if(Objects.isNull(tservice.getServicekey())|| Objects.isNull(tservice.getServicename()) || Objects.isNull(tservice.getHttptype())){
             return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
@@ -73,7 +73,7 @@ public class TserviceController {
     /**
      * 删除服务
      * */
-    @PostMapping(value = "/tserviceDel")
+    @PostMapping(value = "/tserviceDel.do")
     public Result tserviceDel(Tservice tservice){
         log.info("要删除的服务id="+tservice.getId());
         Short i=1;

@@ -104,7 +104,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tenv/tenvOne",
+            url: "/tenv/tenvOne.do",
             data: {
                 envId: id
             },
@@ -156,7 +156,7 @@
     });
 
     //编辑环境
-    function editTservice(tserviceId){
+    function editTservice(tenvId){
         var id = tenvId;
         var envkey = $("#envkey").val();
         var remark = $("#remark").val();
@@ -170,7 +170,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tenv/tenvEdit',
+                url: '/tenv/tenvEdit.do',
                 data:{
                     id:id,
                     envkey:envkey,
