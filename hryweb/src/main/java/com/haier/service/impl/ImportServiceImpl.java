@@ -59,6 +59,7 @@ public class ImportServiceImpl implements ImportService {
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andServicekeyEqualTo(serviceKey).andIsdelEqualTo((short)0);
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
+
         if (tservices != null && tservices.size()>0) {//有记录,则取出第一条记录的ID
             return tservices.get(0).getId();
 
@@ -84,7 +85,8 @@ public class ImportServiceImpl implements ImportService {
         //获取接口表(ti)存在记录,by serviceId
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
-        criteria.andServiceidEqualTo(serviceId);
+        criteria.andServiceidEqualTo(serviceId);//筛选serviceId
+        criteria.andIstatusNotEqualTo((short)-1);//筛选状态!=-1(非删除的数据)
         List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(包括删除的)
         List<String> existIuri = new ArrayList<String>();
         Map<String,Integer> existIuriId=new HashMap<String,Integer>();//后续更新记录时会用到primaryKey

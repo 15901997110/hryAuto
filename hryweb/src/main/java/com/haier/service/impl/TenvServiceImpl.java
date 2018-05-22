@@ -4,6 +4,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TenvMapper;
 import com.haier.po.Tenv;
+import com.haier.po.TenvExample;
 import com.haier.service.TenvService;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,13 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer insertOne(Tenv tenv) {
+        //先判断数据是否存在
+        TenvExample example=new TenvExample();
+        example.createCriteria().andEnvkeyEqualTo(tenv.getEnvkey());
+        List<Tenv> tenvList = tenvMapper.selectByExample(example);
+        if(tenvList!=null&&tenvList.size()>0){
+            throw new HryException(StatusCodeEnum.EXIST_RECORD);//抛出异常:记录存在
+        }
         return tenvMapper.insertSelective(tenv);
     }
 
