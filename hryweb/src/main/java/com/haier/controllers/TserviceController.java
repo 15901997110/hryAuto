@@ -33,7 +33,7 @@ public class TserviceController {
      * */
     @PostMapping(value="/tserviceList.do")
     public Result tserviceList(Tservice tservice, Integer pageNum, Integer pageSize){
-        return ResultUtil.success(tserviceService.selectByCondition(null,pageNum,pageSize));
+        return ResultUtil.success(tserviceService.selectByCondition(tservice,pageNum,pageSize));
     }
 
     /**
