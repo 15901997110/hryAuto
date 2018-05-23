@@ -33,7 +33,8 @@ public class TserviceController {
      * */
     @PostMapping(value="/tserviceList.do")
     public Result tserviceList(Tservice tservice, Integer pageNum, Integer pageSize){
-        return ResultUtil.success(tserviceService.selectByCondition(null,pageNum,pageSize));
+        log.info("筛选的数据="+tservice.getServicename());
+        return ResultUtil.success(tserviceService.selectByCondition(tservice,pageNum,pageSize));
     }
 
     /**

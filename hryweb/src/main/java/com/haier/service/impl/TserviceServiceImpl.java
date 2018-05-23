@@ -8,6 +8,7 @@ import com.haier.mapper.TserviceMapper;
 import com.haier.po.Tservice;
 import com.haier.po.TserviceExample;
 import com.haier.service.TserviceService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/18 14:11
  */
+@Slf4j
 @Service
 public class TserviceServiceImpl implements TserviceService{
 
@@ -38,6 +40,7 @@ public class TserviceServiceImpl implements TserviceService{
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         //如果传入的对象不是null,则设置查询条件
         if(tservice!=null){
+            log.debug("查询条件：tserviceName:{}",tservice.getServicename());
             criteria.andIdEqualTo(tservice.getId())
             .andServicekeyLike(tservice.getServicekey())
             .andServicenameLike(tservice.getServicename());
