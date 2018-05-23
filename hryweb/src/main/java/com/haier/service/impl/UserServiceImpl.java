@@ -19,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser(String username,String password) {
+        if(!username.contains("@")){
+            username+="@kjtpay.com.cn";//支持只输入邮箱前辍登录
+        }
         User finded = userMapper.selectByUsername(username);
         if (finded == null) {
             return null;

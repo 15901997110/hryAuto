@@ -21,11 +21,12 @@ public class LoginConfig implements WebMvcConfigurer {
     public void  addInterceptors(InterceptorRegistry registry){
         InterceptorRegistration interceptorRegistration = registry.addInterceptor(loginInterceptor);
         //拦截配置
-        //interceptorRegistration.addPathPatterns("/**");
+        interceptorRegistration.addPathPatterns("/**");
         //排除配置
         interceptorRegistration.excludePathPatterns("/**.do");
         interceptorRegistration.excludePathPatterns("/login**");
         interceptorRegistration.excludePathPatterns("/user/login.do");
+        interceptorRegistration.excludePathPatterns("/user/login2.do");
         interceptorRegistration.excludePathPatterns("/error**");
         interceptorRegistration.excludePathPatterns("/static/**");
         interceptorRegistration.excludePathPatterns("/lib/**");

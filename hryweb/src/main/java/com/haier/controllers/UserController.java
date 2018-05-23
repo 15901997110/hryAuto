@@ -37,6 +37,7 @@ public class UserController {
         }
         else{
             session.setAttribute("user",user.getIdentity());
+            //设置cookie信息
             Cookie cookie=new Cookie("userCookie",user.getIdentity());
             cookie.setPath("/");
             response.addCookie(cookie);
