@@ -27,7 +27,7 @@
 <div class="header"></div>
 <div class="loginWraper">
   <div id="loginform" class="loginBox">
-    <form class="form form-horizontal" action="index.html" method="post">
+    <form class="form form-horizontal" action="#">
       <div class="row cl">
         <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
         <div class="formControls col-xs-8">
@@ -40,10 +40,10 @@
           <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
-      <div class="row cl">
+      <!--<div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;visibility:hidden">
-          <!--<img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>-->
+          &lt;!&ndash;<img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>&ndash;&gt;
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
@@ -51,7 +51,7 @@
             <input type="checkbox" name="online" id="online" value="">
             使我保持登录状态</label>
         </div>
-      </div>
+      </div>-->
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <!--尚涵的-->
@@ -70,15 +70,23 @@
 <script type="text/javascript">
 
     //loading
-    $(function () {
+    /*$(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
-                $('#admin-role-save').val("正在登录请稍等...")
+               // this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                this.layerIndex = layer.msg('登录中，请稍等...', {
+                    icon: 16
+                    ,shade: 0.01
+                });
+                //$('#login').val("正在登录请稍等...")
             },
             complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
+                //layer.close(this.layerIndex); //完成加载后关闭loading
+
+            },
+            success: function(){
+                //layer.close(this.layerIndex); //完成加载后关闭loading
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -88,7 +96,7 @@
                 });
             }
         });
-    });
+    });*/
 
   //登录处理
   function login_submit(){
@@ -101,6 +109,10 @@
       }else if(password == null || password == ""){
           alert("密码不能为空！")
       }else{
+          this.layerIndex = layer.msg('登录中，请稍等...', {
+              icon: 16
+              ,shade: 0.01
+          });
           $.ajax({
               type: 'POST',
               url: '/user/login.do',
@@ -114,13 +126,24 @@
                   var msg=data.msg;
                   if(status == 0){
                       window.location.href="index.html";
+                      //layer.close(this.layerIndex); //完成加载后关闭loading
                   }else{
+                      layer.close(this.layerIndex); //完成加载后关闭loading
                       alert(msg);
                   }
 
               },
+              complete: function () { //完成加载后执行
+                  layer.close(this.layerIndex); //完成加载后关闭loading
+
+              },
               error:function(data) {
                   console.log(data);
+                  layer.alert('显示异常，请刷新后重试', {
+                      skin: 'layui-layer-molv'
+                      , closeBtn: 0
+                      , shift: 4 //动画类型
+                  });
               },
           });
       }
