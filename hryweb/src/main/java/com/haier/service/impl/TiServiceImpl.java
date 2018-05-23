@@ -7,6 +7,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TiMapper;
 import com.haier.po.Ti;
+import com.haier.po.TiCustom;
 import com.haier.po.TiExample;
 import com.haier.service.TiService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,19 +57,12 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
-    public PageInfo<Ti> selectByCondition(Ti ti, Integer pageNum, Integer pageSize) {
-        TiExample tiExample=new TiExample();
-        if(ti!=null){
-            tiExample.createCriteria()
-                    .andIstatusNotEqualTo((short)-1)//过滤删除的数据
-                    .andIuriLike(ti.getIuri())//模糊查询Iuri
-                    .andServiceidEqualTo(ti.getServiceid())//精确查询serviceId
-                    .andRemarkLike(ti.getRemark())//模糊查询接口说明字段
-                    .andIdevLike(ti.getIdev());//模糊查询开发人员字段
-        }
-        PageHelper.startPage(pageNum,pageSize);
-        List<Ti> tis = tiMapper.selectByExample(tiExample);
+    public PageInfo<Ti> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
+
+/*        PageHelper.startPage(pageNum,pageSize);
+
         PageInfo<Ti> pageInfo=new PageInfo<>(tis);
-        return pageInfo;
+        return pageInfo;*/
+        return null;
     }
 }
