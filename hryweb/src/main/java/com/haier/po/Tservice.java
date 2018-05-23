@@ -1,5 +1,9 @@
 package com.haier.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Tservice {
@@ -12,7 +16,7 @@ public class Tservice {
     private Short httptype;
 
     private Short isdel;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     private String editor;
@@ -56,6 +60,7 @@ public class Tservice {
     public void setIsdel(Short isdel) {
         this.isdel = isdel;
     }
+    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 
     public Date getUpdatetime() {
         return updatetime;

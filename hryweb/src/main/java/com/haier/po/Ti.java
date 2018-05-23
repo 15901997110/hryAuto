@@ -1,5 +1,7 @@
 package com.haier.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Ti {
@@ -25,6 +27,7 @@ public class Ti {
 
     private Short istatus;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     public Integer getId() {

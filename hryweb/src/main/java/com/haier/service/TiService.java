@@ -1,5 +1,6 @@
 package com.haier.service;
 
+import com.github.pagehelper.PageInfo;
 import com.haier.po.Ti;
 
 import java.util.List;
@@ -20,5 +21,5 @@ public interface TiService {
     Integer insertOne(Ti ti);
     Integer updateOne(Integer id,Ti ti);
     Ti selectOne(Integer id);
-    List<Ti> selectByCondition(Ti ti, Integer pageNum, Integer pageSize);
+    PageInfo<Ti> selectByCondition(Ti ti, Integer pageNum, Integer pageSize);
 }

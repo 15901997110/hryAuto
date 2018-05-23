@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TiMapper;
@@ -55,9 +56,19 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
-    public List<Ti> selectByCondition(Ti ti, Integer pageNum, Integer pageSize) {
+    public PageInfo<Ti> selectByCondition(Ti ti, Integer pageNum, Integer pageSize) {
+        TiExample tiExample=new TiExample();
+        if(ti!=null){
+            tiExample.createCriteria()
+                    .andIstatusNotEqualTo((short)-1)//过滤删除的数据
+                    .andIuriLike(ti.getIuri())//模糊查询Iuri
+                    .andServiceidEqualTo(ti.getServiceid())//精确查询serviceId
+                    .andRemarkLike(ti.getRemark())//模糊查询接口说明字段
+                    .andIdevLike(ti.getIdev());//模糊查询开发人员字段
+        }
         PageHelper.startPage(pageNum,pageSize);
-        List<Ti> tis = tiMapper.selectByExample(null);
-        return tis;
+        List<Ti> tis = tiMapper.selectByExample(tiExample);
+        PageInfo<Ti> pageInfo=new PageInfo<>(tis);
+        return pageInfo;
     }
 }

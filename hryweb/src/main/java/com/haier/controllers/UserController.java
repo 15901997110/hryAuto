@@ -30,16 +30,19 @@ public class UserController {
     UserService userService;
     @PostMapping("/login.do")
     public Result login(HttpServletRequest request,HttpServletResponse response, String identity, String password){
-        HttpSession session=request.getSession();
+        HttpSession session;
         User user = userService.findUser(identity, password);
         if(user==null){
             return ResultUtil.error(StatusCodeEnum.LOGIN_ERROR);
         }
         else{
+            session=request.getSession(true);
+            session.setMaxInactiveInterval(60*60*24*30);//秒为单位,设置一个月的有效时间
             session.setAttribute("user",user.getIdentity());
             //设置cookie信息
             Cookie cookie=new Cookie("userCookie",user.getIdentity());
             cookie.setPath("/");
+            cookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
             response.addCookie(cookie);
             return ResultUtil.success();
         }
