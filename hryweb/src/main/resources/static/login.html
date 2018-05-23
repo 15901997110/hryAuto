@@ -64,7 +64,29 @@
 <div class="footer">Copyright 很容易测试 contact:luqiwei@kjtpay.com.cn</div>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript">
+
+    //loading
+    $(function () {
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在登录请稍等...")
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
+    });
 
   //登录处理
   function login_submit(){
@@ -72,28 +94,35 @@
       var identity = $("#identity").val();
       var password = $("#password").val();
 
-      $.ajax({
-          type: 'POST',
-          url: '/user/login.do',
-          data:{
-              identity:identity,
-              password:password
-          },
-          dataType: 'json',
-          success: function(data){
-              var status=data.status;
-              var msg=data.msg;
-              if(status == 0){
-                  window.location.href="index.html";
-              }else{
-                  alert(msg);
-              }
+      if(identity == null || identity == ""){
+          alert("用户名不能为空！")
+      }else if(password == null || password == ""){
+          alert("密码不能为空！")
+      }else{
+          $.ajax({
+              type: 'POST',
+              url: '/user/login.do',
+              data:{
+                  identity:identity,
+                  password:password
+              },
+              dataType: 'json',
+              success: function(data){
+                  var status=data.status;
+                  var msg=data.msg;
+                  if(status == 0){
+                      window.location.href="index.html";
+                  }else{
+                      alert(msg);
+                  }
 
-          },
-          error:function(data) {
-              console.log(data);
-          },
-      });
+              },
+              error:function(data) {
+                  console.log(data);
+              },
+          });
+      }
+
 
 
 
