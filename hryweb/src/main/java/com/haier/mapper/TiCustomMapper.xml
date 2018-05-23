@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haier.mapper.TiCustomMapper">
+    <resultMap id="BaseResultMap" type="com.haier.po.TiCustom">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="serviceId" jdbcType="INTEGER" property="serviceid"/>
+        <result column="serviceKey" jdbcType="VARCHAR" property="servicekey"/>
+        <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
+        <result column="iUri" jdbcType="VARCHAR" property="iuri"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="iRequestMethod" jdbcType="SMALLINT" property="irequestmethod"/>
+        <result column="iContentType" jdbcType="SMALLINT" property="icontenttype"/>
+        <result column="iParamType" jdbcType="SMALLINT" property="iparamtype"/>
+        <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample"/>
+        <result column="iResponseType" jdbcType="SMALLINT" property="iresponsetype"/>
+        <result column="iDev" jdbcType="VARCHAR" property="idev"/>
+        <result column="iStatus" jdbcType="SMALLINT" property="istatus"/>
+        <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+    </resultMap>
+    <select id="selectByCondition" parameterType="com.haier.po.TiCustom" resultMap="BaseResultMap">
+        SELECT ti.*,tservice.serviceKey,tservice.serviceName
+        FROM ti INNER JOIN tservice ON ti.`serviceId`=tservice.`id` AND ti.`iStatus`>0 AND tservice.`isDel`=0
+<!--        <WHERE>
+            <if test="iuri!=null and iuri!=''">
+                AND ti.`iUri` LIKE CONCAT('%',${iUri},'%')
+            </if>
+            <if test="remark!=null and remark!=''">
+                AND ti.`remark` LIKE CONCAT('%',${remark},'%')
+            </if>
+            <if test="idev!=null and idev!=''">
+                AND ti.`iDev` LIKE'autoImport'
+            </if>
+            <if test="serviceid!=null and serviceid!=0">
+                AND ti.`serviceId`=${serviceid}
+            </if>
+            <if test="tservicekey!=null and tservicekey!=''">
+                AND (tservice.`serviceKey` LIKE'user'
+                OR tservice.`serviceName` LIKE 'user'
+            </if>
+        </WHERE>-->
+    </select>
+
+</mapper>

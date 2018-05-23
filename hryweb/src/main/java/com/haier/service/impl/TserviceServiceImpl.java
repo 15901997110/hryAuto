@@ -38,11 +38,18 @@ public class TserviceServiceImpl implements TserviceService{
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         //如果传入的对象不是null,则设置查询条件
         if(tservice!=null){
-            criteria.andIdEqualTo(tservice.getId())
-            .andServicekeyLike(tservice.getServicekey())
-            .andServicenameLike(tservice.getServicename());
+            if(tservice.getIsdel()!=null){
+                criteria.andIdEqualTo(tservice.getId());
+            }
+            if(tservice.getServicekey()!=null)
+            {
+                criteria.andServicekeyLike("%"+tservice.getServicekey()+"%");
+            }
+            if(tservice.getServicename()!=null) {
+                criteria.andServicenameLike("%"+tservice.getServicename()+"%");
+            }
             //除非调用者指定查询isdel==1的数据,则查询删除的数据
-            if(tservice.getIsdel()==1){
+            if(tservice.getIsdel()!=null&&tservice.getIsdel()==1){
                 criteria.andIsdelEqualTo((short)1);
             }else{//否则只查询未删除的数据
                 criteria.andIsdelEqualTo((short)0);
