@@ -10,6 +10,6 @@ import lombok.Data;
  */
 @Data
 public class TiCustom extends Ti {
-    private String serviceKey;
-    private String serviceName;
+    private String servicekey;
+    private String servicename;
 }
