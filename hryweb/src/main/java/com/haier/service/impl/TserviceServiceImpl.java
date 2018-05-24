@@ -46,7 +46,7 @@ public class TserviceServiceImpl implements TserviceService{
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         //如果传入的对象不是null,则设置查询条件
         if(tservice!=null){
-            if(tservice.getIsdel()!=null){
+            if(tservice.getId()!=null){
                 criteria.andIdEqualTo(tservice.getId());
             }
             if(tservice.getServicekey()!=null)
