@@ -22,5 +22,5 @@ public interface TiService {
     Integer insertOne(Ti ti);
     Integer updateOne(Integer id,Ti ti);
     Ti selectOne(Integer id);
-    PageInfo<Ti> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize);
+    PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize);
 }

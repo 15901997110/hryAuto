@@ -5,11 +5,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
+import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
 import com.haier.po.TiExample;
 import com.haier.service.TiService;
+import com.haier.util.ReflectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import java.util.Objects;
 public class TiServiceImpl implements TiService {
     @Autowired
     TiMapper tiMapper;
+    @Autowired
+    TiCustomMapper tiCustomMapper;
     @Override
     public Integer insertOne(Ti ti) {
         //插入数据之前判断记录是否存在
@@ -57,12 +61,17 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
-    public PageInfo<Ti> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
-
-/*        PageHelper.startPage(pageNum,pageSize);
-
-        PageInfo<Ti> pageInfo=new PageInfo<>(tis);
-        return pageInfo;*/
-        return null;
+    public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
+        if(tiCustom!=null){
+            try {
+                ReflectUtil.setStringFields(tiCustom,true);
+            } catch (IllegalAccessException e) {
+                throw new HryException(6666,e.getMessage());
+            }
+        }
+        PageHelper.startPage(pageNum,pageSize);
+        List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
+        PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);
+        return pageInfo;
     }
 }
