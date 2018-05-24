@@ -33,8 +33,22 @@ public class TiController {
      *@author: luqiwei
      *@date: 2018-05-24
      */
-    @PostMapping("/selectByCondition")
+    @PostMapping("/selectByCondition.do")
     public Result selectByCondition(TiCustom tiCustom,Integer pageNum,Integer pageSize){
         return ResultUtil.success(tiService.selectByCondition(tiCustom,pageNum,pageSize));
+    }
+
+
+
+    /**
+     *@description: 根据serviceId删除service记录,并且连带删除tcase表中的记录
+     *@params: [id]
+     *@return: com.haier.response.Result
+     *@author: luqiwei
+     *@date: 2018-05-24
+     */
+    @PostMapping("/deleteOne.do")
+    public Result deleteOne(Integer id){
+        return ResultUtil.success(tiService.deleteOne(id));
     }
 }

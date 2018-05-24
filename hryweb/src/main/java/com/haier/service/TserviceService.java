@@ -15,4 +15,5 @@ public interface TserviceService {
     Integer updateOne(Integer id, Tservice tservice);
     //返回主键
     Integer insertOne(Tservice tservice);
+    Integer deleteOne(Integer id);
 }

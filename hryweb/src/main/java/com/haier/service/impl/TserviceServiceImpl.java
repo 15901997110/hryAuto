@@ -4,7 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
+import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
+import com.haier.po.Ti;
+import com.haier.po.TiExample;
 import com.haier.po.Tservice;
 import com.haier.po.TserviceExample;
 import com.haier.service.TserviceService;
@@ -27,6 +30,9 @@ public class TserviceServiceImpl implements TserviceService{
 
     @Autowired
     TserviceMapper tserviceMapper;
+
+    @Autowired
+    TiMapper tiMapper;
 
     @Override
     public Tservice selectOne(Integer id) {
@@ -99,5 +105,23 @@ public class TserviceServiceImpl implements TserviceService{
         //插入数据
         tserviceMapper.insertSelective(tservice);
         return tservice.getId();//返回插入的主键,注意,此返回需要先在sqlMapperXml文件中配置
+    }
+
+    @Override
+    public Integer deleteOne(Integer id) {
+        if(id==null||id==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        //先删除ti表的数据
+        Ti ti=new Ti();
+        ti.setIstatus((short)-1);
+        TiExample tiExample=new TiExample();
+        tiExample.createCriteria().andServiceidEqualTo(id);
+        tiMapper.updateByExampleSelective(ti,tiExample);
+        //再删除tservice表的数据
+        Tservice tservice=new Tservice();
+        tservice.setId(id);
+        tservice.setIsdel((short)1);
+        return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 }
