@@ -34,7 +34,7 @@ public enum StatusCodeEnum {
     UNKNOWN_BIZ_ERROR(9998, "未知的业务异常！"),
     SYSTEM_ERROR(9999, "系统错误"),
     NETWORK_ERROR(9998, "网络异常");
-    ;
+
     private Integer code;
     private String msg;
     StatusCodeEnum(Integer code, String msg){
