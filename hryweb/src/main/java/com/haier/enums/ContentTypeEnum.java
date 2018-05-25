@@ -6,7 +6,9 @@ public enum ContentTypeEnum {
     JAVASCRIPT(3,"application/javascript"),
     TEXT_HTML(4,"text/html"),
     TEXT_XML(5,"text/xml"),
-    TEXT_CSS(6,"text/css");
+    TEXT_CSS(6,"text/css"),
+    FORM_DATA(7,"multipart/form-data"),
+    IMAGE_PNG(8,"image/png");
 
     private int id;
     private String value;
