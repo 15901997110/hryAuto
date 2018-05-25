@@ -5,6 +5,9 @@ import com.haier.po.Tenv;
 import com.haier.response.Result;
 import com.haier.service.TenvService;
 import com.haier.util.ResultUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.util.Objects;
  * @Date: 2018/5/8 20:26
  */
 @Slf4j
+@Api(value="tenv")
 @RestController
 @RequestMapping("/tenv")
 public class TenvController {
@@ -25,6 +29,7 @@ public class TenvController {
     /**
      * 查询全部环境列表处理
      * */
+    @ApiOperation(value = "获取全部环境信息")
     @PostMapping(value="/tenvList.do")
     public Result tenvList(){
         return ResultUtil.success(tenvService.selectAll());
@@ -34,6 +39,7 @@ public class TenvController {
      * 查询单个环境信息
      *  update by lish 2018-05-18 17:41
      * */
+    @ApiOperation(value="根据环境Id查询环境信息")
     @PostMapping(value="/tenvOne.do")
     public Result tenvOne(Integer envId){
         Tenv tenv=tenvService.selectOne(envId);
@@ -45,6 +51,7 @@ public class TenvController {
      * 新增环境处理
      * update by lish 2018-05-18 17:41
      * */
+    @ApiOperation(value="添加环境信息")
     @PostMapping(value="/tenvAdd.do")
     public Result tenvAdd(Tenv tenv){
         log.info("新增的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
@@ -56,6 +63,7 @@ public class TenvController {
      * 删除环境处理
      *  update by lish 2018-05-18 17:41
      * */
+    @ApiOperation("删除环境信息")
     @PostMapping(value="/tenvDel.do")
     public Result tenvDel(Integer envId){
         log.info("要删除的环境id="+envId);
@@ -66,6 +74,7 @@ public class TenvController {
      * 编辑环境处理
      *  update by lish 2018-05-18 17:41
      * */
+    @ApiOperation("更新环境信息")
     @PostMapping(value="/tenvEdit.do")
     public Result tenvEdit(Tenv tenv){
         if(Objects.isNull(tenv.getId())||Objects.isNull(tenv.getEnvkey())){
