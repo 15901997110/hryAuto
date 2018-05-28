@@ -62,11 +62,6 @@
             <span>当前第 <strong id="now"></strong> 页</span>
         </div>
         <div class="dataTables_paginate paging_simple_numbers" id="pager">
-           <!-- <a class="paginate_button previous disabled" aria-controls="table" data-dt-idx="0" tabindex="0" id="table_previous">上一页</a>
-            <span id="pages">
-                <a class="paginate_button current" aria-controls="table" data-dt-idx="1" tabindex="0">1</a>
-            </span>
-            <a class="paginate_button next disabled" aria-controls="table" data-dt-idx="2" tabindex="0" id="table_next">下一页</a>-->
         </div>
     </div>
 </div>
@@ -196,6 +191,9 @@
 
     //分页查询
     function pageSkip(index){
+        if(index==0){
+            return;
+        }
         var id = $("#id").val();
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();
@@ -207,7 +205,7 @@
                 servicekey:servicekey,
                 servicename:servicename,
                 pageNum:index,
-                pageSize:10
+                pageSize:15
             },
             dataType: "json",
             success: function (data) {
@@ -256,7 +254,7 @@
                         html = html + rowHtml;
                     }
 
-                    if(pages<6){
+                    if(pages<5){
                         for(var k=0;k<pages;k++){
                             if((k+1)==now){
                                 var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
@@ -266,21 +264,53 @@
 
                             pagesHtml= pagesHtml + pageHtml;
                         }
-                    }else{
-                    }else{
-                    }else{
-                    }else{
-                        for(var i=0;i<5;i++){
-                            if((i+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }
 
-                            pagesHtml= pagesHtml + pageHtml;
+                    }else{
+                        if(now>4 && now<(pages-3)){
+                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+                                "<span> …</span>";
+                            for(i=(now-1);i<now+2;i++){
+                                if(i==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }
+                                pagesHtml = pagesHtml+pageHtml;
+                            }
+                            pagesHtml= pagesHtml + "<span> …</span>\n" +
+                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+
+
+                        }else if(now>(pages-4) && now<=pages){
+                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+                                "<span> …</span>";
+                            for(i=(pages-4);i<=pages;i++){
+                                if(i==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }
+                                pagesHtml = pagesHtml+pageHtml;
+
+                            }
+                            //pagesHtml= pagesHtml + "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+
+
+                        }else if(now>0 && now<=4){
+
+                            for(var i=0;i<=4;i++){
+                                if((i+1)==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                                }
+
+                                pagesHtml= pagesHtml + pageHtml;
+                            }
+                            pagesHtml= pagesHtml + "<span> …</span>\n" +
+                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
                         }
-                        pagesHtml= pagesHtml + "<span> …</span>\n" +
-                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+
                     }
 
                     $("#total").append(total);
