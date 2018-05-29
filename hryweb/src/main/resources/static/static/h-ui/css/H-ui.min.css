@@ -4541,7 +4541,8 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 label, .placeholder {
-    font-size: 14px
+    font-size: 14px;
+    margin-left:50px
 }
 
 .form legend {

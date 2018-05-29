@@ -192,9 +192,14 @@
     $(document).ready(function () {
 
         var loginName=$.cookie('userCookie'); // 读取 cookie
-        //var loginName=$.session.get('user');
-        //alert("登录名="+loginName);
         $("#userName").append(loginName);
+        if(loginName != "lishanghan@kjtpay.com.cn"){
+            $("#menu-comments").hide();
+            $("#menu-member").hide();
+            $("#menu-admin").hide();
+            $("#menu-tongji").hide();
+            $("#menu-system").hide();
+        }
 
     });
 

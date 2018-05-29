@@ -24,14 +24,11 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div class="text-c"> <!--日期范围：
-        <input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin" class="input-text Wdate" style="width:120px;">
-        -
-        <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}',maxDate:'%y-%M-%d' })" id="logmax" class="input-text Wdate" style="width:120px;">-->
-        <input type="text" name="id" id="id" placeholder=" 服务id" style="width:250px" class="input-text">
-        <input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:250px" class="input-text">
-        <input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:250px" class="input-text">
-        <button name="find" id="find" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
+    <div >
+        <label>服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
+        <label>服务简称：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:12%" class="input-text">
+        <label>服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">
+        <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -57,7 +54,7 @@
             </tbody>
         </table>
         <!--分页-->
-        <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
+        <div class="dataTables_info">
             <span>共有 <strong id="totalPages"></strong> 页</span>
             <span>当前第 <strong id="now"></strong> 页</span>
         </div>
@@ -205,7 +202,7 @@
                 servicekey:servicekey,
                 servicename:servicename,
                 pageNum:index,
-                pageSize:15
+                pageSize:10
             },
             dataType: "json",
             success: function (data) {
