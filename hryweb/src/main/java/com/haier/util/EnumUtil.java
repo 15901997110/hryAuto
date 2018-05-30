@@ -16,6 +16,14 @@ import java.util.Map;
  */
 @Slf4j
 public class EnumUtil {
+
+    /**
+     *@description: 获取所有枚举项
+     *@params: [t]
+     *@return: java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     *@author: luqiwei
+     *@date: 2018-05-30
+     */
     public static <T extends Enum> List<Map<String,Object>> getEnumList(T[] t){
         List<Map<String,Object>> list=new ArrayList<>();
         for(T _t:t){
