@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/enum")
 public class EnumController {
+    @GetMapping("/allEnum")
+    public Map<String,List<Map<String, Object>>> getAllEnum(){
+        Map<String,List<Map<String,Object>>> map=new LinkedHashMap<>();
+        map.put("assertTypeEnum",EnumUtil.getEnumList(AssertTypeEnum.values()));
+        map.put("contentTypeEnum",EnumUtil.getEnumList(ContentTypeEnum.values()));
+        map.put("envEnum",EnumUtil.getEnumList(EnvEnum.values()));
+        map.put("httpTypeEnum",EnumUtil.getEnumList(HttpTypeEnum.values()));
+        map.put("requestMethodTypeEnum",EnumUtil.getEnumList(RequestMethodTypeEnum.values()));
+        map.put("responseTypeEnum",EnumUtil.getEnumList(ResponseTypeEnum.values()));
+        map.put("statusCodeEnum",EnumUtil.getEnumList(StatusCodeEnum.values()));
+        return map;
+    }
     @GetMapping("/assertTypeEnum")
     public List<Map<String, Object>> getAssertTypeEnum() {
         return EnumUtil.getEnumList(AssertTypeEnum.values());
