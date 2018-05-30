@@ -1,6 +1,5 @@
-package com.haier.controllers;
+package com.haier.controller;
 
-import com.haier.po.Tenv;
 import com.haier.po.Tservice;
 import com.haier.service.TenvService;
 import com.haier.service.TserviceService;

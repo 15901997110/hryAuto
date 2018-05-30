@@ -1,4 +1,4 @@
-package com.haier.controllers;
+package com.haier.controller;
 
 
 import com.haier.enums.StatusCodeEnum;

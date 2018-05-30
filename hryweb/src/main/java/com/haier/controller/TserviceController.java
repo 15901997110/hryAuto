@@ -1,4 +1,4 @@
-package com.haier.controllers;
+package com.haier.controller;
 
 import com.haier.po.Tservice;
 import com.haier.response.Result;
@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.haier.enums.StatusCodeEnum;
 
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 /**

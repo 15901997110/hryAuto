@@ -24,7 +24,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.haier.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("com.haier.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

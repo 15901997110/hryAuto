@@ -1,4 +1,4 @@
-package com.haier.controllers;
+package com.haier.controller;
 
 import com.haier.enums.StatusCodeEnum;
 import com.haier.po.Tenv;
@@ -6,7 +6,6 @@ import com.haier.response.Result;
 import com.haier.service.TenvService;
 import com.haier.util.ResultUtil;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
