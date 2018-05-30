@@ -1,16 +1,21 @@
 package com.haier.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
+import com.haier.mapper.TcaseCustomMapper;
 import com.haier.mapper.TcaseMapper;
 import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
 import com.haier.po.TcaseExample;
 import com.haier.service.TcaseService;
+import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -23,6 +28,10 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Autowired
     TcaseMapper tcaseMapper;
+
+    @Autowired
+    TcaseCustomMapper tcaseCustomMapper;
+
     @Override
     public Integer insertOne(Tcase tcase) {
         if(tcase==null||tcase.getIid()==null||tcase.getIid()==0){
@@ -34,8 +43,13 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer deleteOne(Integer tcaseId) {
-
-        return null;
+        if(tcaseId==null||tcaseId==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        Tcase tcase=new Tcase();
+        tcase.setId(tcaseId);
+        tcase.setStatus((short)-1);
+        return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
@@ -54,6 +68,14 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
-        return null;
+        //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
+        if(tcaseCustom!=null) {
+            ReflectUtil.setStringFields(tcaseCustom, true);
+        }
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
+        PageInfo<TcaseCustom> pageInfo=new PageInfo<>(tcaseCustomList);
+        return pageInfo;
     }
 }

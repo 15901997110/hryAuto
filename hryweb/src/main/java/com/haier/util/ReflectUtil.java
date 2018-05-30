@@ -19,7 +19,7 @@ public class ReflectUtil {
      *@author: luqiwei
      *@date: 2018-05-23
      */
-    public static <T>void setStringFields(T t, Boolean isExtendsClass) throws IllegalAccessException {
+    public static <T>void setStringFields(T t, Boolean isExtendsClass) {
         Field[] declaredFields = t.getClass().getDeclaredFields();
         setField(t, declaredFields);
         //如果是继承类,则这里再处理父类的字段值
@@ -29,13 +29,17 @@ public class ReflectUtil {
         }
     }
 
-    private static <T> void setField(T t, Field[] declaredFields) throws IllegalAccessException {
+    private static <T> void setField(T t, Field[] declaredFields) {
         for(Field field:declaredFields){
             if(field.getType()==String.class){//设置String类型字段
                 field.setAccessible(true);
-                String fieldValue=(String) field.get(t);
-                if(fieldValue!=null&&!"".equals(fieldValue.trim())){
-                    field.set(t,"%"+fieldValue+"%");
+                try {
+                    String fieldValue=(String) field.get(t);
+                    if(fieldValue!=null&&!"".equals(fieldValue.trim())){
+                        field.set(t,"%"+fieldValue.trim()+"%");
+                    }
+                } catch (IllegalAccessException e) {
+                    log.error("javabean前后添加%时出现异常!!");
                 }
             }
         }

@@ -11,6 +11,7 @@ import com.haier.mapper.TiMapper;
 import com.haier.po.*;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/9 16:21
  */
+@Slf4j
 @Service
 public class TiServiceImpl implements TiService {
     @Autowired
@@ -91,13 +93,11 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
-        if(tiCustom!=null){
-            try {
-                ReflectUtil.setStringFields(tiCustom,true);
-            } catch (IllegalAccessException e) {
-                throw new HryException(6666,e.getMessage());
-            }
+        //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
+        if(tiCustom!=null) {
+            ReflectUtil.setStringFields(tiCustom, true);
         }
+
         PageHelper.startPage(pageNum,pageSize);
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
         PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);

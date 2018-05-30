@@ -106,7 +106,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tcase">
+  <insert id="insert" parameterType="com.haier.po.Tcase" useGeneratedKeys="true" keyProperty="id">
     insert into tcase (id, caseName, remark, 
       iId, envId, requestParam, 
       assertType, expected, status, 
@@ -116,7 +116,7 @@
       #{asserttype,jdbcType=SMALLINT}, #{expected,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
       #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tcase">
+  <insert id="insertSelective" parameterType="com.haier.po.Tcase" useGeneratedKeys="true" keyProperty="id">
     insert into tcase
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

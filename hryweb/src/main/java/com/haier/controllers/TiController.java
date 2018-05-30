@@ -1,5 +1,8 @@
 package com.haier.controllers;
 
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
+import com.haier.po.Ti;
 import com.haier.po.TiCustom;
 import com.haier.response.Result;
 import com.haier.service.TiService;
@@ -21,9 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class TiController {
     @Autowired
     TiService tiService;
+    //增
+    @PostMapping("/insertOne.do")
+    public Result insertOne(Ti ti){
+        return ResultUtil.success(tiService.insertOne(ti));
+    }
 
 
-
+    //查
     /**
      *@description: 根据条件查询ti表记录,关联查询tservice
      * 支持的查询条件有:ti.iuri(like) , ti.remark(like) , ti.idev(like) ,
@@ -39,7 +47,19 @@ public class TiController {
     }
 
 
+    //改
+    @PostMapping("updateOne.do")
+    public Result updateOne(Ti ti){
+        //参数校验
+        if(ti==null||ti.getId()==null){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        //更新数据
+        return ResultUtil.success(tiService.updateOne(ti.getId(),ti));
+    }
 
+
+    //删
     /**
      *@description: 根据serviceId删除service记录,并且连带删除tcase表中的记录
      *@params: [id]
