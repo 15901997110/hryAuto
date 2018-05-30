@@ -1,10 +1,12 @@
 package com.haier.controllers;
 
+import com.haier.po.Ti;
 import com.haier.po.TiCustom;
 import com.haier.response.Result;
 import com.haier.service.TiService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +40,14 @@ public class TiController {
         return ResultUtil.success(tiService.selectByCondition(tiCustom,pageNum,pageSize));
     }
 
-
+    /**
+     * 添加接口
+     * */
+    @PostMapping(value="/addInterface")
+    public Result addInterface(Ti ti){
+        log.info("新增的接口地址="+ti.getIuri()+",接口描述="+ti.getRemark());
+        return ResultUtil.success(tiService.insertOne(ti));
+    }
 
     /**
      *@description: 根据serviceId删除service记录,并且连带删除tcase表中的记录

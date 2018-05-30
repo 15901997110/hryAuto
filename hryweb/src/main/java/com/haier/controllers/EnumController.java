@@ -45,7 +45,7 @@ public class EnumController {
         return EnumUtil.getEnumList(EnvEnum.values());
     }
 
-    @GetMapping("/httpTypeEnum")
+    @GetMapping("/httpTypeEnum.do")
     public List<Map<String, Object>> getHttpTypeEnum() {
         return EnumUtil.getEnumList(HttpTypeEnum.values());
     }
