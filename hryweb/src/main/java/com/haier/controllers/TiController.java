@@ -28,6 +28,12 @@ public class TiController {
     //增
     @PostMapping("/insertOne.do")
     public Result insertOne(Ti ti){
+        //简单参数校验
+        if(ti==null||ti.getServiceid()==null||
+                ti.getServiceid()==0||ti.getIuri()==null
+                ||"".equals(ti.getIuri())){
+            throw new HryException(10086,"入参错误:"+ti.toString());
+        }
         return ResultUtil.success(tiService.insertOne(ti));
     }
 
@@ -59,9 +65,7 @@ public class TiController {
     }
 
 /*=======
-    *//**
-     * 添加接口
-     * *//*
+   //尚涵的
     @PostMapping(value="/addInterface")
     public Result addInterface(Ti ti){
         log.info("新增的接口地址="+ti.getIuri()+",接口描述="+ti.getRemark());
