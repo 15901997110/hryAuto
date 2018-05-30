@@ -22,7 +22,7 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>H-ui.admin v3.1</title>
+    <title>好容易自动化测试平台</title>
 </head>
 <body>
 <header class="navbar-wrapper">
@@ -193,7 +193,9 @@
 
         var loginName=$.cookie('userCookie'); // 读取 cookie
         $("#userName").append(loginName);
-        if(loginName != "lishanghan@kjtpay.com.cn"){
+        if(loginName == null || loginName== ""){
+            $(location).attr('href', 'login.html');
+        }else if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
             $("#menu-member").hide();
             $("#menu-admin").hide();
@@ -207,6 +209,7 @@
     function login_out(){
         $.cookie('userCookie', '', { expires: -1 }); // 删除 cookie
         document.location.reload();
+        $(location).attr('href', 'login.html');
     }
 
     /*个人信息*/

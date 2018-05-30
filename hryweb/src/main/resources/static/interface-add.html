@@ -23,28 +23,100 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增服务</title>
+    <title>新增接口</title>
 </head>
 <body>
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务简称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="servicekey" name="servicekey">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务名称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="servicename" name="servicename">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>协议类型：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务id：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="httptype" id="httptype">
+                    <select class="select" size="1" name="httptype" id="serviceid">
+                        <!--<option value="" selected>请选择协议</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口地址：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="iuri" name="iuri">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口描述：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求方式：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="iRequestMethod" id="iRequestMethod">
+                        <!--<option value="" selected>请选择请求方式</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>iContentType：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="icontenttype" id="icontenttype">
+                        <!--<option value="" selected>请选择</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求参数类型：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="iparamtype" id="iparamtype">
+                        <!--<option value="" selected>请选择请求参数类型</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求参数示例：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="iparamsample" id="iparamsample">
+                        <!--<option value="" selected>请选择请求参数类型</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>返回值类型：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="iresponsetype" id="iresponsetype">
+                        <!--<option value="" selected>请选择请求参数类型</option>
+                        <option value="1">Http</option>
+                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口开发人员：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="idev" id="idev">
                         <!--<option value="" selected>请选择协议</option>
                         <option value="1">Http</option>
                         <option value="2">Https</option>-->
@@ -102,13 +174,13 @@
             },
             dataType: "json",
             success: function (data) {
-               var html="<option value=\"\" selected>请选择协议</option>";
-               for(i=0;i<data.length;i++){
-                   var row=data[i];
-                   var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
-                   html=html+rowHtml;
+                var html="<option value=\"\" selected>请选择协议</option>";
+                for(i=0;i<data.length;i++){
+                    var row=data[i];
+                    var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
+                    html=html+rowHtml;
 
-               }
+                }
                 $("#httptype").append(html);
             },
             fail:function (data) {
@@ -121,7 +193,7 @@
         });
     });
 
-    //添加服务
+    //添加接口
     function addTservice(){
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();

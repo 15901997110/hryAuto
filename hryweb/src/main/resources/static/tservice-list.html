@@ -25,16 +25,16 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div >
-        <label>服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
-        <label>服务简称：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:12%" class="input-text">
-        <label>服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">
+        <label style="margin-left:50px">服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
+        <label style="margin-left:50px">服务简称：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:12%" class="input-text">
+        <label style="margin-left:50px">服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">
         <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
             <a class="btn btn-primary radius" onclick="tservice_add('添加服务','tservice-add.html','800','300')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务</a>
         </span>
-        <span class="r">共有数据：<strong id="total"></strong> 条</span>
+        <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
         <table class="table table-border table-bordered table-bg table-hover table-sort" id="table">
@@ -54,7 +54,7 @@
             </tbody>
         </table>
         <!--分页-->
-        <div class="dataTables_info">
+        <div class="dataTables_info" id="dataTables_info">
             <span>共有 <strong id="totalPages"></strong> 页</span>
             <span>当前第 <strong id="now"></strong> 页</span>
         </div>
@@ -63,13 +63,10 @@
     </div>
 </div>
 
-<!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
-
-<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
@@ -97,93 +94,7 @@
 
     //查询环境列表
     $(document).ready(function () {
-       /* var id = $("#id").val();
-        var servicekey = $("#servicekey").val();
-        var servicename = $("#servicename").val();
-        $.ajax({
-            type: "post",
-            url: "/tservice/tserviceList.do",
-            data: {
-                id:id,
-                servicekey:servicekey,
-                servicename:servicename,
-                pageNum:1,
-                pageSize:10
-            },
-            dataType: "json",
-            success: function (data) {
-                //alert( JSON.stringify(data).);
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var before=data.data.prePage;
-                var next=data.data.nextPage;
-                console.log(data);
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
-
-
-                if(status == 0){
-                    for(var i=0;i<list.length;i++){
-                        var row = list[i];
-                        var type="";
-                        if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
-                        }
-                        var rowHtml = "<tr class=\"text-c\">\n" +
-                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
-                            "</tr>";
-                        html = html + rowHtml;
-                    }
-
-                    if(pages<6){
-                        for(var k=0;k<pages;k++){
-                            var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                    }else{
-                        for(var i=0;i<5;i++){
-                            var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                        pagesHtml= pagesHtml + "<span> …</span>\n" +
-                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                    }
-
-                    $("#total").append(total);
-                    $("#teserviceList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
-
-
-                }else{
-                    alert(JSON.stringify(data));
-                }
-            }
-        });*/
        pageSkip(1);
-
-
     });
 
     //分页查询
@@ -229,6 +140,7 @@
                     $("#totalPages").html("");
                     $("#now").html("");
                     $("#pager").html("");
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
                         var type="";
@@ -349,6 +261,11 @@
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
+                if(data.data.list.length==0){
+                    $("#dataTables_info").hide();
+                    $("#teserviceList").append("<span style='color:red;'>没有数据！</span>");
+                    return;
+                }
 
                 var status=data.status;
                 var msg=data.msg;
@@ -365,7 +282,6 @@
                     "            <span id=\"pages\">";
                 var pageEnd="</span>\n" +
                     "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
-
 
                 if(status == 0){
                     for(var i=0;i<list.length;i++){

@@ -40,18 +40,6 @@
           <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
         </div>
       </div>
-      <!--<div class="row cl">
-        <div class="formControls col-xs-8 col-xs-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;visibility:hidden">
-          &lt;!&ndash;<img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>&ndash;&gt;
-      </div>
-      <div class="row cl">
-        <div class="formControls col-xs-8 col-xs-offset-3">
-          <label for="online">
-            <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态</label>
-        </div>
-      </div>-->
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <!--尚涵的-->
@@ -97,7 +85,6 @@
             }
         });
     });*/
-
   //登录处理
   function login_submit(){
 
@@ -146,7 +133,15 @@
                   });
               },
           });
+
       }
+
+     /* $("body").keydown(function() {
+          if (event.keyCode == "13") {//keyCode=13是回车键
+              $('#login').click();
+          }
+      });*/
+
 
 
 
