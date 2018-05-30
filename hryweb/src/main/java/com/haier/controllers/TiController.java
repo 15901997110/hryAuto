@@ -1,5 +1,6 @@
 package com.haier.controllers;
 
+
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
@@ -46,7 +47,6 @@ public class TiController {
         return ResultUtil.success(tiService.selectByCondition(tiCustom,pageNum,pageSize));
     }
 
-
     //改
     @PostMapping("updateOne.do")
     public Result updateOne(Ti ti){
@@ -58,6 +58,16 @@ public class TiController {
         return ResultUtil.success(tiService.updateOne(ti.getId(),ti));
     }
 
+/*=======
+    *//**
+     * 添加接口
+     * *//*
+    @PostMapping(value="/addInterface")
+    public Result addInterface(Ti ti){
+        log.info("新增的接口地址="+ti.getIuri()+",接口描述="+ti.getRemark());
+        return ResultUtil.success(tiService.insertOne(ti));
+    }
+>>>>>>> master*/
 
     //删
     /**
