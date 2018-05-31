@@ -32,10 +32,8 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务id：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="httptype" id="serviceid">
-                        <!--<option value="" selected>请选择协议</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                    <select class="select" size="1" name="serviceid" id="serviceid">
+                        <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
@@ -56,10 +54,8 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求方式：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="iRequestMethod" id="iRequestMethod">
-                        <!--<option value="" selected>请选择请求方式</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                    <select class="select" size="1" name="irequestmethod" id="irequestmethod">
+                        <option value="" selected>请选择请求方式</option>
                     </select>
 				</span>
             </div>
@@ -69,9 +65,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="icontenttype" id="icontenttype">
-                        <!--<option value="" selected>请选择</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                        <option value="" selected>请选择iContentType</option>
                     </select>
 				</span>
             </div>
@@ -81,9 +75,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="iparamtype" id="iparamtype">
-                        <!--<option value="" selected>请选择请求参数类型</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                        <option value="" selected>请选择请求参数类型</option>
                     </select>
 				</span>
             </div>
@@ -91,13 +83,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求参数示例：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
-                    <select class="select" size="1" name="iparamsample" id="iparamsample">
-                        <!--<option value="" selected>请选择请求参数类型</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
-                    </select>
-				</span>
+                <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入接口示例..."></textarea>
+               <!-- <input type="text" class="input-text" value="" placeholder="" id="iparamsample" name="iparamsample">-->
             </div>
         </div>
         <div class="row cl">
@@ -105,9 +92,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="iresponsetype" id="iresponsetype">
-                        <!--<option value="" selected>请选择请求参数类型</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                        <option value="" selected>请选择返回值类型</option>
                     </select>
 				</span>
             </div>
@@ -115,18 +100,19 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口开发人员：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
+                <input type="text" class="input-text" value="" placeholder="请输入开发人员邮箱" id="idev" name="idev">
+                <!--<span class="select-box">
                     <select class="select" size="1" name="idev" id="idev">
-                        <!--<option value="" selected>请选择协议</option>
+                        &lt;!&ndash;<option value="" selected>请选择协议</option>
                         <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                        <option value="2">Https</option>&ndash;&gt;
                     </select>
-				</span>
+				</span>-->
             </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTservice()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTi()"><i class="icon-ok"></i> 确定</button>
             </div>
         </div>
     </form>
@@ -168,20 +154,78 @@
     //协议类型获取
     $(document).ready(function () {
         $.ajax({
+            type: "post",
+            url: "/tservice/tserviceList.do",
+            data: {
+                pageNum:1,
+                pageSize:1000
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data.list;
+                if(status == 0){
+                    var html="";
+                    for(i=0;i<list.length;i++){
+                        var row=list[i];
+                        var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
+                        html=html+rowHtml;
+                    }
+                    $("#serviceid").append(html);
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                // report error
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+
+        $.ajax({
             type: "get",
-            url: "/enum/httpTypeEnum.do",
+            url: "/enum/allEnum",
             data: {
             },
             dataType: "json",
             success: function (data) {
-                var html="<option value=\"\" selected>请选择协议</option>";
-                for(i=0;i<data.length;i++){
-                    var row=data[i];
+               // var iRequestMethod="<option value=\"\" selected>请选服务</option>";
+                var RequestMethodTypeEnum=data.RequestMethodTypeEnum;
+                var html="";
+                for(i=0;i<RequestMethodTypeEnum.length;i++){
+                    var row=RequestMethodTypeEnum[i];
                     var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
                     html=html+rowHtml;
-
                 }
-                $("#httptype").append(html);
+                $("#irequestmethod").append(html);
+
+                var ContentTypeEnum=data.ContentTypeEnum;
+                var html1="";
+                for(i=0;i<ContentTypeEnum.length;i++){
+                    var row=ContentTypeEnum[i];
+                    var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
+                    html1=html1+rowHtml;
+                }
+                $("#icontenttype").append(html1);
+
+                var ResponseTypeEnum=data.ResponseTypeEnum;
+                var html2="";
+                for(i=0;i<ResponseTypeEnum.length;i++){
+                    var row=ResponseTypeEnum[i];
+                    var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
+                    html2=html2+rowHtml;
+                }
+                $("#iparamtype").append(html2);
+                $("#iresponsetype").append(html2);
+
+
+
+
             },
             fail:function (data) {
                 alert(JSON.stringify(data));
@@ -194,31 +238,59 @@
     });
 
     //添加接口
-    function addTservice(){
-        var servicekey = $("#servicekey").val();
-        var servicename = $("#servicename").val();
-        var httptype = $("#httptype").val();
-        //alert("选择的协议类型="+httptype);
-        var editor="lishanghan@kjtpay.com.cn";
-        if(servicekey == null || servicekey == ""){
-            alert("服务简称不能为空！");
+    function addTi(){
+        var serviceid = $("#serviceid").val();
+        var iuri = $("#iuri").val();
+        var remark = $("#remark").val();
+        var irequestmethod = $("#irequestmethod").val();
+        var icontenttype = $("#icontenttype").val();
+        var iparamtype = $("#iparamtype").val();
+        var iparamsample = $("#iparamsample").val();
+        var iresponsetype = $("#iresponsetype").val();
+        var idev = $("#idev").val();
+
+        if(serviceid == null || serviceid == ""){
+            alert("请选择服务！");
             return;
-        }else if(servicename == null || servicename == ""){
-            alert("服务名称不能为空！");
+        }else if(iuri == null || iuri == ""){
+            alert("接口地址不能为空！");
             return;
-        }else if(httptype == null || httptype == ""){
-            alert("请选择协议类型！");
+        }else if(remark == null || remark == ""){
+            alert("接口描述不能为空！");
+            return;
+        }else if(irequestmethod == null || irequestmethod == ""){
+            alert("请选择请求方式！");
+            return;
+        }else if(icontenttype == null || icontenttype == ""){
+            alert("请选icontenttype！");
+            return;
+        }else if(iparamtype == null || iparamtype == ""){
+            alert("请选请求参数类型！");
+            return;
+        }else if(iparamsample == null || iparamsample == ""){
+            alert("请求示例不能为空！");
+            return;
+        }else if(iresponsetype == null || iresponsetype == ""){
+            alert("请选择返回值类型！");
+            return;
+        }else if(idev == null || idev == ""){
+            alert("接口开发人员不能为空！");
             return;
         }else{
             $.ajax({
                 type: "post",
-                url: "/tservice/tserviceAdd.do",
+                url: "/ti/insertOne.do",
                 data: {
-                    servicekey:servicekey,
-                    servicename:servicename,
-                    httptype:httptype,
-                    editor:editor,
-                    isdel:0
+                    serviceid:serviceid,
+                    iuri:iuri,
+                    remark:remark,
+                    irequestmethod:irequestmethod,
+                    icontenttype:icontenttype,
+                    iparamtype:iparamtype,
+                    iparamsample:iparamsample,
+                    iresponsetype:iresponsetype,
+                    idev:idev,
+                    istatus:1
                 },
                 dataType: "json",
                 success: function (data) {

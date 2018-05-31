@@ -75,7 +75,7 @@ public class TserviceController {
         log.info("要删除的服务id="+tservice.getId());
         Short i=1;
         tservice.setIsdel(i);
-        tserviceService.updateOne(tservice.getId(),tservice);
+        tserviceService.deleteOne(tservice.getId());
         return ResultUtil.success();
     }
 
