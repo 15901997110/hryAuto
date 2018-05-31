@@ -35,7 +35,7 @@
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <a href="javascript:;" onclick="interface_add('添加接口','interface-add.html','','610')" class="btn btn-primary radius">
+            <a href="javascript:;" onclick="interface_add('添加接口','interface-add.html','','650')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加接口
             </a>
         </span>
@@ -151,17 +151,76 @@
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
+                        var irequestmethod="";
+                        if(row.irequestmethod == 1){
+                            irequestmethod="post";
+                        }else if(row.irequestmethod == 2){
+                            irequestmethod="get";
+                        }
+
+                        var iContentType="";
+                        switch (row.icontenttype){
+                            case 1:
+                                iContentType="application/json";
+                                break;
+                            case 2:
+                                iContentType="application/x-www-form-urlencoded";
+                                break;
+                            case 3:
+                                iContentType="application/javascript";
+                                break;
+                            case 4:
+                                iContentType="text/html";
+                                break;
+                            case 5:
+                                iContentType="text/xml";
+                                break;
+                            case 6:
+                                iContentType="text/css";
+                                break;
+                            case 7:
+                                iContentType="multipart/form-data";
+                                break;
+                            case 8:
+                                iContentType="image/png";
+                                break;
+                        }
+
+                        var iParamType="";
+                        switch(row.iparamtype){
+                            case 1:
+                                iParamType="json";
+                                break;
+                            case 2:
+                                iParamType="map";
+                                break;
+                            case 3:
+                                iParamType="text";
+                                break;
+                        }
+
+                        var iResponseType="";
+                        switch(row.iresponsetype){
+                            case 1:
+                                iResponseType="json";
+                                break;
+                            case 2:
+                                iResponseType="map";
+                                break;
+                            case 3:
+                                iResponseType="text";
+                                break;
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.serviceid+"</td>\n" +
                             "<td>"+row.iuri+"</td>\n" +
-                            "<td >"+row.irequestmethod+"</td>\n" +
-                            "<td>"+row.icontenttype+"</td>\n" +
-                            "<td>"+row.iparamtype+"</td>\n" +
-                            "<td>"+row.iresponsetype+"</td>\n" +
+                            "<td >"+irequestmethod+"</td>\n" +
+                            "<td>"+iContentType+"</td>\n" +
+                            "<td>"+iParamType+"</td>\n" +
+                            "<td>"+iResponseType+"</td>\n" +
                             "<td>"+row.iparamsample+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
@@ -248,7 +307,7 @@
     function find(){
         var serviceid = $("#serviceid").val();
         var remark = $("#remark").val();
-        alert("服务id="+serviceid)
+        //alert("服务id="+serviceid)
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition.do",
@@ -262,7 +321,7 @@
             success: function (data) {
 
                 $("#total").html("");
-                $("#teserviceList").html("");
+                $("#interfaceList").html("");
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
@@ -291,17 +350,75 @@
                 if(status == 0){
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
+                        var irequestmethod="";
+                        if(row.irequestmethod == 1){
+                            irequestmethod="post";
+                        }else if(row.irequestmethod == 2){
+                            irequestmethod="get";
+                        }
+                        var iContentType="";
+                        switch (row.icontenttype){
+                            case 1:
+                                iContentType="application/json";
+                                break;
+                            case 2:
+                                iContentType="application/x-www-form-urlencoded";
+                                break;
+                            case 3:
+                                iContentType="application/javascript";
+                                break;
+                            case 4:
+                                iContentType="text/html";
+                                break;
+                            case 5:
+                                iContentType="text/xml";
+                                break;
+                            case 6:
+                                iContentType="text/css";
+                                break;
+                            case 7:
+                                iContentType="multipart/form-data";
+                                break;
+                            case 8:
+                                iContentType="image/png";
+                                break;
+                        }
+
+                        var iParamType="";
+                        switch(row.iparamtype){
+                            case 1:
+                                iParamType="json";
+                                break;
+                            case 2:
+                                iParamType="map";
+                                break;
+                            case 3:
+                                iParamType="text";
+                                break;
+                        }
+
+                        var iResponseType="";
+                        switch(row.iresponsetype){
+                            case 1:
+                                iResponseType="json";
+                                break;
+                            case 2:
+                                iResponseType="map";
+                                break;
+                            case 3:
+                                iResponseType="text";
+                                break;
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.serviceid+"</td>\n" +
                             "<td>"+row.iuri+"</td>\n" +
-                            "<td >"+row.irequestmethod+"</td>\n" +
-                            "<td>"+row.icontenttype+"</td>\n" +
-                            "<td>"+row.iparamtype+"</td>\n" +
-                            "<td>"+row.iresponsetype+"</td>\n" +
+                            "<td >"+irequestmethod+"</td>\n" +
+                            "<td>"+iContentType+"</td>\n" +
+                            "<td>"+iParamType+"</td>\n" +
+                            "<td>"+iResponseType+"</td>\n" +
                             "<td>"+row.iparamsample+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
@@ -333,7 +450,7 @@
                     }
 
                     $("#total").append(total);
-                    $("#teserviceList").append(html);
+                    $("#interfaceList").append(html);
                     $("#totalPages").append(pages);
                     $("#now").append(now);
                     $("#pager").append(pageStart);

@@ -3182,7 +3182,7 @@ table.dataTable thead .sorting_desc {
 
 .textarea {
     height: 100px;
-    resize: none;
+   /* resize: none;*/
     font-size: 14px;
     padding: 4px
 }
