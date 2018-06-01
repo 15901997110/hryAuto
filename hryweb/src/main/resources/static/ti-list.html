@@ -25,9 +25,10 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span class="c-gray en">&gt;</span> 接口列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div>
-        <label style="margin-left:50px">服务id：</label><input type="text" name="serviceid" id="serviceid" placeholder=" 服务id" style="width:12%" class="input-text">
-        <label style="margin-left:50px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:12%" class="input-text">
-       <!-- <label style="margin-left:50px">服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">-->
+        <label style="margin-left:30px">服务：</label><input type="text" name="serviceid" id="serviceid" placeholder=" servicekey或servicename" style="width:10%" class="input-text">
+        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:10%" class="input-text">
+        <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址" style="width:15%" class="input-text">
+        <label style="margin-left:30px">开发人员：</label><input type="text" name="idev" id="idev" placeholder=" 开发人员" style="width:10%" class="input-text">
         <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -35,7 +36,7 @@
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <a href="javascript:;" onclick="interface_add('添加接口','interface-add.html','','650')" class="btn btn-primary radius">
+            <a href="javascript:;" onclick="interface_add('添加接口','ti-add.html','','650')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加接口
             </a>
         </span>
@@ -44,16 +45,18 @@
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
             <tr class="text-c">
-                <th width="5%"><input type="checkbox" name="" value=""></th>
+                <th width="3%"><input type="checkbox" name="" value=""></th>
                 <th width="5%">ID</th>
-                <th width="5%">服务ID</th>
-                <th width="10%">接口地址</th>
+                <th width="5%">服务</th>
+                <th width="23%" style="text-align:left;">接口地址</th>
+                <th width="13%">接口描述</th>
                 <th width="7%">请求方式</th>
-                <th width="10%">iContentType</th>
+                <th width="7%">iContentType</th>
                 <th width="8%">请求参数类型</th>
                 <th width="5%">返回类型</th>
-                <th width="25%">请求参数</th>
-                <th width="10%">更新时间</th>
+                <th width="5%">开发人员</th>
+                <!--<th width="25%">请求参数</th>-->
+                <th width="9%">更新时间</th>
                 <th width="10%">操作</th>
             </tr>
             </thead>
@@ -215,16 +218,17 @@
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.serviceid+"</td>\n" +
-                            "<td>"+row.iuri+"</td>\n" +
+                            "<td>"+row.servicekey+"</td>\n" +
+                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
+                            "<td >"+row.remark+"</td>\n" +
                             "<td >"+irequestmethod+"</td>\n" +
                             "<td>"+iContentType+"</td>\n" +
                             "<td>"+iParamType+"</td>\n" +
                             "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.iparamsample+"</td>\n" +
+                            "<td>"+row.idev+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -268,8 +272,6 @@
                                 pagesHtml = pagesHtml+pageHtml;
 
                             }
-                            //pagesHtml= pagesHtml + "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
 
                         }else if(now>0 && now<=4){
 
@@ -307,12 +309,16 @@
     function find(){
         var serviceid = $("#serviceid").val();
         var remark = $("#remark").val();
+        var iuri = $("#iuri").val();
+        var idev = $("#idev").val();
         //alert("服务id="+serviceid)
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition.do",
             data: {
-                serviceid:serviceid,
+                servicekey:serviceid,
+                iuri:iuri,
+                idev:idev,
                 remark:remark,
                 pageNum:1,
                 pageSize:10
@@ -327,7 +333,7 @@
                 $("#pager").html("");
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
-                    $("#teserviceList").append("<span style='color:red;'>没有数据！</span>");
+                    $("#interfaceList").append("<span style='color:red;'>没有数据！</span>");
                     return;
                 }
 
@@ -413,16 +419,17 @@
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.serviceid+"</td>\n" +
-                            "<td>"+row.iuri+"</td>\n" +
+                            "<td>"+row.servicekey+"</td>\n" +
+                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
+                            "<td >"+row.remark+"</td>\n" +
                             "<td >"+irequestmethod+"</td>\n" +
                             "<td>"+iContentType+"</td>\n" +
                             "<td>"+iParamType+"</td>\n" +
                             "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.iparamsample+"</td>\n" +
+                            "<td>"+row.idev+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -467,6 +474,42 @@
     //添加接口
     function interface_add(title,url,w,h){
         layer_show(title,url,w,h);
+    }
+
+    //编辑接口
+    function ti_edit(title,url,id,w,h){
+        url= url + "?id="+id;
+        layer_show(title,url,w,h);
+    }
+
+    //删除接口
+    function ti_del(obj,id){
+        layer.confirm('接口删除需谨慎，请确认是否删除...！',function(index){
+            //alert("要删除的id="+id);
+            $.ajax({
+                type: 'POST',
+                url: '/ti/deleteOne.do',
+                data:{
+                    id:id
+                },
+                dataType: 'json',
+                success: function(data){
+                    var status=data.status;
+                    var msg=data.msg;
+                    if(status == 0){
+                        $(obj).parents("tr").remove();
+                        window.location.reload();
+                        layer.msg('已删除!',{icon:1,time:1000});
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
+
+                },
+                error:function(data) {
+                    console.log(data);
+                },
+            });
+        });
     }
 
 

@@ -1,0 +1,413 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico"/>
+    <!--[if lt IE 9]-->
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+    <!--[if IE 6]-->
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <!--/meta 作为公共模版分离出去-->
+    <title>接口编辑</title>
+</head>
+<body>
+<article class="page-container">
+    <form method="post" class="form form-horizontal" id="form">
+    </form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+
+    //loading
+    $(function () {
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在提交请稍等...")
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
+    });
+
+    function getParameter(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    //获取服务列表数组
+    function getService(){
+        var service=new Array();
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/tserviceList.do",
+            data: {
+                pageNum:1,
+                pageSize:1000
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data.list;
+                if(status == 0){
+                    service=list;
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        //alert("服务数组长度="+(service.length));
+        return service;
+    }
+
+    //获取枚举值数组
+    function getAllEnum(){
+        var allEnum=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/allEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                allEnum=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return allEnum;
+    }
+
+    //页面加载处理
+    $(document).ready(function () {
+        var id = getParameter('id');
+        $("#id").val(id);
+        //alert("要编辑的接口id="+id);
+
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne.do",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+                console.log(data);
+
+                if(status == 0){
+                    var id = list.id;
+                    var serviceid = list.serviceid;
+                    var iuri=list.iuri;
+                    var remark=list.remark;
+                    var irequestmethod=list.irequestmethod;
+                    var icontenttype=list.icontenttype;
+                    var iparamtype=list.iparamtype;
+                    var iparamsample=list.iparamsample;
+                    var iresponsetype=list.iresponsetype;
+                    var idev=list.idev;
+                    var services=getService();
+                    var allEnum=getAllEnum();
+
+                    var service="";
+                    for(var i=0;i<services.length;i++){
+                        var option="";
+                        var row=services[i];
+                        if(serviceid == row.id){
+                            option="<option value=\""+row.id+"\" selected>"+row.servicekey+"</option>";
+                        }else{
+                            option="<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+                        }
+                        service=service+option;
+                    }
+
+                    var requestMethod="";
+                    var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
+                    for(var i=0;i<RequestMethodTypeEnum.length;i++){
+                        var option="";
+                        var row=RequestMethodTypeEnum[i];
+                        if(irequestmethod == row.id){
+                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        }else{
+                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                        }
+                        requestMethod=requestMethod+option;
+                    }
+
+                    var contentType="";
+                    var ContentTypeEnum=allEnum.ContentTypeEnum;
+                    for(var i=0;i<ContentTypeEnum.length;i++){
+                        var option="";
+                        var row=ContentTypeEnum[i];
+                        if(icontenttype == row.id){
+                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        }else{
+                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                        }
+                        contentType=contentType+option;
+                    }
+
+                    var paramType="";
+                    var ResponseTypeEnum=allEnum.ResponseTypeEnum;
+                    for(var i=0;i<ResponseTypeEnum.length;i++){
+                        var option="";
+                        var row=ResponseTypeEnum[i];
+                        if(iparamtype == row.id || iresponsetype == row.id){
+                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        }else{
+                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                        }
+                        paramType=paramType+option;
+                    }
+
+                    var responseType="";
+                    for(var i=0;i<ResponseTypeEnum.length;i++){
+                        var option="";
+                        var row=ResponseTypeEnum[i];
+                        if(iresponsetype == row.id){
+                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        }else{
+                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                        }
+                        responseType=responseType+option;
+                    }
+
+
+
+                    var html = "<div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"serviceid\" id=\"serviceid\">\n" +
+                        "                        "+service+"" +
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口地址：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+iuri+"\" placeholder=\"\" id=\"iuri\" name=\"iuri\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口描述：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>请求方式：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"irequestmethod\" id=\"irequestmethod\">\n" +
+                        "                        "+requestMethod+"" +
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>iContentType：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"icontenttype\" id=\"icontenttype\">\n" +
+                        "                        "+contentType+"" +
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>请求参数类型：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"iparamtype\" id=\"iparamtype\">\n" +
+                        "                        "+paramType+"" +
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>示例参数：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">"+iparamsample+"</textarea>\n" +
+                        "               <!-- <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"\" id=\"iparamsample\" name=\"iparamsample\">-->\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>返回值类型：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"iresponsetype\" id=\"iresponsetype\">\n" +
+                        "                        "+responseType+"" +
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口开发人员：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+idev+"\" placeholder=\"请输入开发人员邮箱\" id=\"idev\" name=\"idev\">\n" +
+                        "                <!--<span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
+                        "                        &lt;!&ndash;<option value=\"\" selected>请选择协议</option>\n" +
+                        "                        <option value=\"1\">Http</option>\n" +
+                        "                        <option value=\"2\">Https</option>&ndash;&gt;\n" +
+                        "                    </select>\n" +
+                        "                    </span>-->\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTi("+id+")\"><i class=\"icon-ok\"></i> 确定</button>\n" +
+                        "            </div>\n" +
+                        "        </div>";
+
+                    $("#form").append(html);
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
+            }
+        });
+
+
+    });
+
+    //编辑接口
+    function editTi(tiId){
+        var id = tiId;
+        var serviceid = $("#serviceid").val();
+        var iuri = $("#iuri").val();
+        var remark = $("#remark").val();
+        var irequestmethod = $("#irequestmethod").val();
+        var icontenttype = $("#icontenttype").val();
+        var iparamtype = $("#iparamtype").val();
+        var iparamsample = $("#iparamsample").val();
+        var iresponsetype = $("#iresponsetype").val();
+        var idev = $("#idev").val();
+
+        if(serviceid == null || serviceid == ""){
+            alert("请选择服务！");
+            return;
+        }else if(iuri == null || iuri == ""){
+            alert("接口地址不能为空！");
+            return;
+        }else if(remark == null || remark == ""){
+            alert("接口描述不能为空！");
+            return;
+        }else if(irequestmethod == null || irequestmethod == ""){
+            alert("请选择请求方式！");
+            return;
+        }else if(icontenttype == null || icontenttype == ""){
+            alert("请选icontenttype！");
+            return;
+        }else if(iparamtype == null || iparamtype == ""){
+            alert("请选请求参数类型！");
+            return;
+        }else if(iparamsample == null || iparamsample == ""){
+            alert("请求示例不能为空！");
+            return;
+        }else if(iresponsetype == null || iresponsetype == ""){
+            alert("请选择返回值类型！");
+            return;
+        }else if(idev == null || idev == ""){
+            alert("接口开发人员不能为空！");
+            return;
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: '/ti/updateOne.do',
+                data:{
+                    id:id,
+                    serviceid:serviceid,
+                    iuri:iuri,
+                    remark:remark,
+                    irequestmethod:irequestmethod,
+                    icontenttype:icontenttype,
+                    iparamtype:iparamtype,
+                    iparamsample:iparamsample,
+                    iresponsetype:iresponsetype,
+                    idev:idev,
+                    istatus:1
+                },
+                dataType: 'json',
+                success: function(data){
+                    var status=data.status;
+                    var msg=data.msg;
+                    var list=data.data;
+
+                    if(status == 0){
+                        //alert("更新成功！");
+                        parent.window.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
+
+                },
+                error:function(xhr) {
+                    alert('error:' + JSON.stringify(xhr));
+                },
+            });
+        }
+
+    }
+
+</script>
+
+</body>
+</html>

@@ -29,7 +29,7 @@
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务id：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="serviceid" id="serviceid">
@@ -81,9 +81,9 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请求参数示例：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>示例参数：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入接口示例..."></textarea>
+                <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入示例参数..."></textarea>
                <!-- <input type="text" class="input-text" value="" placeholder="" id="iparamsample" name="iparamsample">-->
             </div>
         </div>
@@ -151,7 +151,7 @@
         });
     });
 
-    //协议类型获取
+    //下拉相关数据获取
     $(document).ready(function () {
         $.ajax({
             type: "post",
@@ -169,7 +169,7 @@
                     var html="";
                     for(i=0;i<list.length;i++){
                         var row=list[i];
-                        var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
+                        var rowHtml="<option value=\""+row.id+"\">"+row.servicekey+"</option>";
                         html=html+rowHtml;
                     }
                     $("#serviceid").append(html);
@@ -182,7 +182,6 @@
                 alert(JSON.stringify(data));
             },
             error: function(xhr) {
-                // report error
                 alert('error:' + JSON.stringify(xhr));
             }
         });

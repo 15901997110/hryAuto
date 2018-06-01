@@ -37,8 +37,19 @@ public class TiController {
         return ResultUtil.success(tiService.insertOne(ti));
     }
 
+    /**
+     * 查询单个接口信息
+     * */
+    @PostMapping("/selectOne.do")
+    public Result selectOne(Integer id){
+        Ti ti=tiService.selectOne(id);
+        log.info("查询单个接口id="+id);
+        return ResultUtil.success(ti);
+    }
 
-    //查
+
+
+    //查所有
     /**
      *@description: 根据条件查询ti表记录,关联查询tservice
      * 支持的查询条件有:ti.iuri(like) , ti.remark(like) , ti.idev(like) ,
@@ -64,14 +75,6 @@ public class TiController {
         return ResultUtil.success(tiService.updateOne(ti.getId(),ti));
     }
 
-/*=======
-   //尚涵的
-    @PostMapping(value="/addInterface")
-    public Result addInterface(Ti ti){
-        log.info("新增的接口地址="+ti.getIuri()+",接口描述="+ti.getRemark());
-        return ResultUtil.success(tiService.insertOne(ti));
-    }
->>>>>>> master*/
 
     //删
     /**
