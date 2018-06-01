@@ -32,7 +32,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tuser_add('添加用户','tservice-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务</a>
+            <a class="btn btn-primary radius" onclick="tuser_add('添加用户','tservice-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用户</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -140,22 +140,16 @@
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
-                        /*if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
-                        }*/
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
+                            "<td>"+row.groupid+"</td>\n" +
+                            "<td>"+row.identity+"</td>\n" +
+                            "<td >"+row.realname+"</td>\n" +
+                            "<td>"+row.remark+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -244,7 +238,7 @@
             data: {
                 identity:identity,
                 realname:realname,
-                pageNum:index,
+                pageNum:1,
                 pageSize:10
             },
             dataType: "json",
@@ -280,22 +274,16 @@
                 if(status == 0){
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
-                        if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
-                        }
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td>"+row.groupid+"</td>\n" +
+                            "<td>"+row.identity+"</td>\n" +
+                            "<td >"+row.realname+"</td>\n" +
+                            "<td>"+row.remark+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -337,20 +325,20 @@
         });
     }
 
-    /*服务-添加*/
-    function tservice_add(title,url,w,h){
+    /*用户-添加*/
+    function tuser_add(title,url,w,h){
         layer_show(title,url,w,h);
 
     }
 
-    /*服务-编辑*/
-    function tservice_edit(title,url,id,w,h){
+    /*用户-编辑*/
+    function tuser_edit(title,url,id,w,h){
         url= url + "?id="+id;
         layer_show(title,url,w,h);
     }
 
-    /*服务-删除*/
-    function tservice_del(obj,id){
+    /*用户-删除*/
+    function tuser_del(obj,id){
         layer.confirm('服务删除将会删除接口表记录，确定要这样做吗？\n注意：我们会记录你的操作！',function(index){
             //alert("要删除的id="+id);
             $.ajax({

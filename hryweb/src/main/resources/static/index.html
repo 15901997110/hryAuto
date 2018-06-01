@@ -202,9 +202,10 @@
         var loginName=$.cookie('userCookie'); // 读取 cookie
         //var realName=$.cookie('userCookie');
         $("#userName").append(loginName);
-        if(loginName == null || loginName== ""){
-           /* $(location).attr('href', 'login.html');*/
-        }else if(loginName != "lishanghan@kjtpay.com.cn"){
+       /* if(loginName == null || loginName== ""){
+           /!* $(location).attr('href', 'login.html');*!/
+        }else */
+       if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
             $("#menu-member").hide();
             $("#menu-admin").hide();
