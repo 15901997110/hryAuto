@@ -2,26 +2,22 @@ package com.haier.cases;
 
 import com.haier.anno.Iuri;
 import com.haier.anno.ServiceKey;
-
 import com.haier.enums.EnvEnum;
 import com.haier.enums.HttpTypeEnum;
-
 import com.haier.mapper.TcaseMapper;
-import com.haier.mytest.MyTest;
 import com.haier.po.*;
 import com.haier.util.AssertUtil;
 import com.haier.util.DBUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.PropertiesUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ibatis.session.SqlSession;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -85,9 +81,12 @@ public class UserTest {
 
     @Iuri("/loginFacade/generateCode")
     @Test(groups = "loginFacade", dataProvider = "getCaseWithObject", description = "验证码生成接口测试")
-    public void loginFacade_generateCode_test(Integer requestMethod, String uri, Integer paramType,String param, Integer responseType, String expected, Integer assertType) {
+    public void loginFacade_generateCode_test(Integer requestMethod,
+
+
+                                              String uri, Integer paramType, String param, Integer responseType, String expected, Integer assertType) {
         //模拟请求
-        String actual=HryHttpClientUtil.send(requestMethod,httpType+"://"+host+uri,paramType,param);
+        String actual = HryHttpClientUtil.send(requestMethod, httpType + "://" + host + uri, paramType, param);
         //断言结果
         Boolean result = AssertUtil.supperAssert(assertType, expected, actual, responseType);
 
@@ -146,5 +145,4 @@ public class UserTest {
         }
         return o;
     }
-
 }

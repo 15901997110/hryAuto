@@ -46,6 +46,15 @@ public class ReflectUtil {
         }
     }
 
+
+    /**
+     *@description: 过滤对象中无用的字段,将其设置为null,比如String类型的字段值为"",Integer类型的字段值为0,
+     * 都将统一设置为null
+     *@params: [po, isExtendsClass]
+     *@return: void
+     *@author: luqiwei
+     *@date: 2018-06-01
+     */
     public static <T> void setInvalidFieldToNull(T po, Boolean isExtendsClass) {
         Field[] declaredFields = po.getClass().getDeclaredFields();
         setFieldToNull(po, declaredFields);

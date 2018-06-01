@@ -4,7 +4,6 @@
     <resultMap id="TiCustomResultMap" type="com.haier.po.TiCustom">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="serviceId" jdbcType="INTEGER" property="serviceid"/>
-
         <result column="serviceKey" jdbcType="VARCHAR" property="servicekey"/>
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <result column="iUri" jdbcType="VARCHAR" property="iuri"/>
