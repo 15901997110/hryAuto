@@ -29,7 +29,7 @@
                     AND ti.`remark` LIKE #{remark}
                 </if>
                 <if test="idev!=null and idev!=''">
-                    AND ti.`iDev` LIKE #{iDev}
+                    AND ti.`iDev` LIKE #{idev}
                 </if>
                 <if test="serviceid!=null and serviceid!=0">
                     AND ti.`serviceId`=#{serviceid}
