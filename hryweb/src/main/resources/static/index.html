@@ -84,6 +84,14 @@
                 </ul>
             </dd>
         </dl>
+        <dl id="menu-user">
+            <dt><i class="Hui-iconfont">&#xe60d;</i> 用户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="tuser-list.html" data-title="用户列表" href="javascript:;">用户列表</a></li>
+                </ul>
+            </dd>
+        </dl>
         <dl id="menu-comments">
             <dt><i class="Hui-iconfont">&#xe622;</i> 评论管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
@@ -195,7 +203,7 @@
         //var realName=$.cookie('userCookie');
         $("#userName").append(loginName);
         if(loginName == null || loginName== ""){
-            $(location).attr('href', 'login.html');
+           /* $(location).attr('href', 'login.html');*/
         }else if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
             $("#menu-member").hide();
