@@ -199,18 +199,17 @@
 
     $(document).ready(function () {
 
-        var loginName=$.cookie('userCookie'); // 读取 cookie
-        //var realName=$.cookie('userCookie');
-        $("#userName").append(loginName);
-       /* if(loginName == null || loginName== ""){
-           /!* $(location).attr('href', 'login.html');*!/
-        }else */
+        var loginName=$.cookie('identityCookie'); // 读取 cookie
+        var realName=$.cookie('realnameCookie');
+        var groupId=$.cookie('groupidCookie');
+        $("#userName").append(realName);
        if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
             $("#menu-member").hide();
             $("#menu-admin").hide();
             $("#menu-tongji").hide();
             $("#menu-system").hide();
+            $("#menu-user").hide();
         }
 
     });
