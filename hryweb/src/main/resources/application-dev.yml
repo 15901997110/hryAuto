@@ -2,6 +2,10 @@ server:
   port: 8885
 logging:
   file: hryweb.log
+  level:
+    com.haier.controller: debug
+    com.haier.interceptor: debug
+    com.haier.service: debug
 spring:
   application:
     name: hryweb

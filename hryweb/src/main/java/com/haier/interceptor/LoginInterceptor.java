@@ -20,24 +20,24 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return true;//暂时关闭拦截器功能便于调试
-/*        HttpSession session = request.getSession();
+        //return true;//暂时关闭拦截器功能便于调试
+        HttpSession session = request.getSession();
         if(session.getAttribute("userSession")!=null){//服务端session信息存在
-            log.debug("用户session值:{}",session.getAttribute("user").toString());
+            log.debug("userSession:"+session.getAttribute("userSession").toString());
             Cookie[] cookies = request.getCookies();
             int i=0;
             for(Cookie cookie:cookies){
 
                 if("identityCookie".equals(cookie.getName())){//客户端有Cookie信息
-                    log.debug("identityCookie:{}",cookie.getValue());
+                    log.debug("identityCookie:"+cookie.getValue());
                     i++;
                 }
                 if("realnameCookie".equals(cookie.getName())){
-                    log.debug("realnameCookie:{}",cookie.getValue());
+                    log.debug("realnameCookie:"+cookie.getValue());
                     i++;
                 }
                 if("groupidCookie".equals(cookie.getName())){
-                    log.debug("groupidCookie:",cookie.getValue());
+                    log.debug("groupidCookie:"+cookie.getValue());
                     i++;
                 }
             }
@@ -48,7 +48,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         //跳转登录页面
         response.sendRedirect("/login.html");
-        return false;*/
+        return false;
     }
 
 }
