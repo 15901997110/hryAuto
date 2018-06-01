@@ -1,6 +1,5 @@
 package com.haier.service.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.StatusCodeEnum;
@@ -95,7 +94,7 @@ public class TiServiceImpl implements TiService {
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
         if(tiCustom!=null) {
-            ReflectUtil.setStringFields(tiCustom, true);
+            ReflectUtil.setStringFieldAddPercent(tiCustom, true);
         }
 
         PageHelper.startPage(pageNum,pageSize);

@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.UserMapper;
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
             throw new HryException(10086,"identity,password,realname必填");
         }
         //用户名校验,只支持邮箱
-        if(!user.getIdentity().matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$")){
+        if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
             throw new HryException(StatusCodeEnum.REGEX_ERROR);
         }
         //查询是否存在重复用户
@@ -79,20 +80,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> selectByCondition(User user,Integer pageNum,Integer pageSize) {
         if(user!=null){
-            ReflectUtil.setStringFields(user,false);
+            ReflectUtil.setInvalidFieldToNull(user,false);
+            ReflectUtil.setStringFieldAddPercent(user,false);
         }
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         if(user.getId()!=null){
             criteria.andIdEqualTo(user.getId());
         }
-        if(user.getIdentity()!=null&&"".equals(user.getIdentity())){
+        if(user.getIdentity()!=null){
             criteria.andIdentityLike(user.getIdentity());
         }
-        if(user.getRealname()!=null&&"".equals(user.getRealname())){
+        if(user.getRealname()!=null){
             criteria.andRealnameLike(user.getRealname());
         }
-        if(user.getRemark()!=null&&"".equals(user.getRemark())){
+        if(user.getRemark()!=null){
             criteria.andRemarkLike(user.getRemark());
         }
         criteria.andStatusGreaterThan((short)0);
@@ -108,29 +110,15 @@ public class UserServiceImpl implements UserService {
             throw new HryException(StatusCodeEnum.PRIMARYKEY_NULL);
         }
         user.setId(id);
+        ReflectUtil.setInvalidFieldToNull(user,false);
         if(user.getIdentity()!=null){
-            if("".equals(user.getIdentity().trim())){
-                throw new HryException(10086,"不可将identity修改为空");
-            }else{
-                user.setIdentity(user.getIdentity().trim());
+            if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
+                throw new HryException(StatusCodeEnum.REGEX_ERROR);
             }
         }
         if(user.getPassword()!=null){
-            if("".equals(user.getPassword().trim())){
-                throw new HryException(10086,"不可将Password修改为空");
-            }else{
-                user.setPassword(DigestUtils.md5Hex(user.getPassword().trim()));
-            }
+            user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         }
-        if(user.getRealname()!=null){
-            if("".equals(user.getRealname().trim())){
-                throw new HryException(10086,"不可将realname修改为空");
-            }else{
-                user.setRealname(user.getRealname().trim());
-            }
-        }
-
-
         return userMapper.updateByPrimaryKeySelective(user);
     }
 

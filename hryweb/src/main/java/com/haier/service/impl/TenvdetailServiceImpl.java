@@ -67,7 +67,7 @@ public class TenvdetailServiceImpl implements TenvdetailService {
     @Override
     public PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom ,Integer pageNum,Integer pageSize) {
         if(tenvdetailCustom!=null){
-            ReflectUtil.setStringFields(tenvdetailCustom,true);
+            ReflectUtil.setStringFieldAddPercent(tenvdetailCustom,true);
         } else {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }

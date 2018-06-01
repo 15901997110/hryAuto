@@ -42,9 +42,6 @@ public class UserController {
     //更新用户
     @PostMapping("/updateOne.do")
     public Result updateOne(User user){
-        if(user==null||user.getId()==null){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
         return ResultUtil.success(userService.updateOne(user.getId(),user));
     }
 
