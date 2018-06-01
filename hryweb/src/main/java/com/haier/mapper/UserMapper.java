@@ -1,12 +1,34 @@
 package com.haier.mapper;
 
 import com.haier.po.User;
+import com.haier.po.UserExample;
+import org.apache.ibatis.annotations.Param;
 
-/**
- * @Description:
- * @Author: luqiwei
- * @Date: 2018/5/12 14:34
- */
+import java.util.List;
+
 public interface UserMapper {
-    User selectByUsername(String username);
+    long countByExample(UserExample example);
+
+    int deleteByExample(UserExample example);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    List<User> selectByExample(UserExample example);
+
+    User selectByPrimaryKey(Integer id);
+
+    //专门为登录添加的接口
+    User selectByUsername(String identity);
+
+    int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByExample(@Param("record") User record, @Param("example") UserExample example);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
 }
