@@ -68,14 +68,24 @@ public class UserController {
         else{
             session=request.getSession(true);
             session.setMaxInactiveInterval(60*60*24*30);//秒为单位,设置一个月的有效时间
-            session.setAttribute("user",user.getIdentity());
+            session.setAttribute("userSession",user.getIdentity());
             //设置cookie信息
-            Cookie cookie=new Cookie("userCookie",
-                    "identity="+user.getIdentity()+"&realname="
-                            +user.getRealname()+"&groupid="+user.getGroupid());
-            cookie.setPath("/");
-            cookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
-            response.addCookie(cookie);
+            Cookie identityCookie=new Cookie("identityCookie",user.getIdentity());
+            identityCookie.setPath("/");
+            identityCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
+
+            Cookie realnameCookie=new Cookie("realnameCookie",user.getRealname());
+            realnameCookie.setPath("/");
+            realnameCookie.setMaxAge(Integer.MAX_VALUE);
+
+            Cookie groupidCookie=new Cookie("groupidCookie",user.getGroupid().toString());
+            groupidCookie.setPath("/");
+            groupidCookie.setMaxAge(Integer.MAX_VALUE);
+
+            response.addCookie(identityCookie);
+            response.addCookie(realnameCookie);
+            response.addCookie(groupidCookie);
+
             return ResultUtil.success();
         }
     }
