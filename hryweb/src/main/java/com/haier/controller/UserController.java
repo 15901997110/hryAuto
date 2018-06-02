@@ -91,7 +91,7 @@ public class UserController {
     }
 
     //登出
-    @PostMapping("/logout")
+    @PostMapping("/logout.do")
     public Result logout(HttpSession session){
         //清除session即可
         session.invalidate();
