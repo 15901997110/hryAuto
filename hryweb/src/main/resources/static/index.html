@@ -216,7 +216,9 @@
 
     //退出
     function login_out(){
-        $.cookie('userCookie', '', { expires: -1 }); // 删除 cookie
+        $.cookie('identityCookie', '', { expires: -1 }); // 删除 cookie
+        $.cookie('realnameCookie', '', { expires: -1 });
+        $.cookie('groupidCookie', '', { expires: -1 });
         document.location.reload();
         $(location).attr('href', 'login.html');
     }
