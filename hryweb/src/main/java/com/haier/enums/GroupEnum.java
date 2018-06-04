@@ -6,7 +6,7 @@ package com.haier.enums;
  * @Date: 2018/6/4 12:19
  */
 public enum GroupEnum {
-    NULL(0,"未分组"),
+    NULL(-1,"未分组"),
     ADMIN(1,"超级管理员"),
     LEADER(2,"领导"),
     PM(3,"项目经理"),

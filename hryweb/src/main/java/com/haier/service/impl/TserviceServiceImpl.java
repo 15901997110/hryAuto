@@ -42,6 +42,7 @@ public class TserviceServiceImpl implements TserviceService{
     @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
         TserviceExample tserviceExample=new TserviceExample();
+        tserviceExample.setOrderByClause("");
 
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         //如果传入的对象不是null,则设置查询条件
@@ -66,6 +67,7 @@ public class TserviceServiceImpl implements TserviceService{
         }else{
             criteria.andIsdelEqualTo((short)0);
         }
+
 
 
         PageHelper.startPage(pageNum,pageSize);
