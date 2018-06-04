@@ -97,7 +97,7 @@ public class TiServiceImpl implements TiService {
             ReflectUtil.setStringFieldAddPercent(tiCustom, true);
         }
 
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize,"updateTime desc");
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
         PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);
         return pageInfo;

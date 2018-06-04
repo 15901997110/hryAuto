@@ -42,7 +42,6 @@ public class TserviceServiceImpl implements TserviceService{
     @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
         TserviceExample tserviceExample=new TserviceExample();
-        tserviceExample.setOrderByClause("");
 
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         //如果传入的对象不是null,则设置查询条件
@@ -70,7 +69,7 @@ public class TserviceServiceImpl implements TserviceService{
 
 
 
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize," updateTime desc");
 
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
 

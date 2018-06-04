@@ -71,6 +71,12 @@ public class Tservice {
     }
 
     public String getEditor() {
+        //将邮箱截取用户名返回
+        if(this.editor!=null){
+            if(editor.contains("@")){
+                return editor.split("@")[0];
+            }
+        }
         return editor;
     }
 

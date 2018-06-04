@@ -72,7 +72,7 @@ public class TcaseServiceImpl implements TcaseService {
             ReflectUtil.setStringFieldAddPercent(tcaseCustom, true);
         }
 
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum,pageSize,"updateTime desc");
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
         PageInfo<TcaseCustom> pageInfo=new PageInfo<>(tcaseCustomList);
         return pageInfo;
