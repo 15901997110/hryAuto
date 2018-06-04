@@ -93,10 +93,25 @@ public class ReflectUtil {
 
             }
 
-            if (field.getType() == Integer.class || field.getType() == Short.class) {//如果值为0,设置为null
+            if (field.getType() == Integer.class) {//如果值为0,设置为null
                 Integer value;
                 try {
                     value = (Integer) field.get(t);
+                } catch (IllegalAccessException e) {
+                    continue;
+                }
+                if (value != null && value == 0) {
+                    try {
+                        field.set(t, null);
+                    } catch (IllegalAccessException e) {
+                        continue;
+                    }
+                }
+            }
+            if (field.getType() == Short.class) {//如果值为0,设置为null
+                Short value;
+                try {
+                    value = (Short) field.get(t);
                 } catch (IllegalAccessException e) {
                     continue;
                 }

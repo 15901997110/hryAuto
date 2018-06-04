@@ -85,6 +85,11 @@ public class UserServiceImpl implements UserService {
         }
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
+
+        if(user.getGroupid()!=null){
+            criteria.andGroupidEqualTo(user.getGroupid());
+        }
+
         if(user.getId()!=null){
             criteria.andIdEqualTo(user.getId());
         }
