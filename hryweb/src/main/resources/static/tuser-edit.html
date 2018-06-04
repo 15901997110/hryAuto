@@ -5,29 +5,30 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="Bookmark" href="/favicon.ico" >
-    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico"/>
     <!--[if lt IE 9]-->
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]-->
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增用户</title>
+    <title>用户编辑</title>
 </head>
 <body>
 <article class="page-container">
-    <form  method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form method="post" class="form form-horizontal" id="form">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户组：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -45,26 +46,19 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录密码：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" value="" placeholder="" id="password" name="password">
-            </div>
-        </div>
-        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="realname" name="realname">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->备注：</label>
+            <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
             </div>
         </div>
         <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addUser()"><i class="icon-ok"></i> 确定</button>
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" id="submit">
             </div>
         </div>
     </form>
@@ -103,8 +97,16 @@
         });
     });
 
-    //用户组获取
-    $(document).ready(function () {
+    function getParameter(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    function userGroup(){
+        var usergroup=null;
+        $.ajaxSetup({async : false});
         $.ajax({
             type: "get",
             url: "/enum/groupEnum",
@@ -112,14 +114,7 @@
             },
             dataType: "json",
             success: function (data) {
-                var html="";
-                for(i=0;i<data.length;i++){
-                    var row=data[i];
-                    var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
-                    html=html+rowHtml;
-
-                }
-                $("#groupid").append(html);
+                usergroup=data;
             },
             fail:function (data) {
                 alert(JSON.stringify(data));
@@ -128,13 +123,66 @@
                 alert('error:' + JSON.stringify(xhr));
             }
         });
+        return usergroup;
+    }
+
+    //页面加载处理
+    $(document).ready(function () {
+        var id = getParameter('id');
+        $("#id").val(id);
+        //alert("要编辑的用户id="+id);
+        $.ajax({
+            type: "post",
+            url: "/user/selectOne.do",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+                console.log(data);
+
+                if(status == 0){
+                    var groupid = list.groupid;
+                    var identity = list.identity;
+                    var realname=list.realname;
+                    var remark=list.remark;
+                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTuser("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+                    $("#submit").append(submit);
+                    var html = "";
+                    var groups=userGroup();
+                    for(var i=0;i<groups.length;i++){
+                        var row=groups[i];
+                        if( row.groupId == groupid){
+                            var rowHtml="<option value=\""+row.groupId+"\" selected>"+row.desc+"</option>";
+                        }else{
+                            var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
+                        }
+
+                        html=html+rowHtml;
+                    }
+                    $("#groupid").append(html);
+                    $("#identity").val(identity);
+                    $("#realname").val(realname);
+                    $("#remark").val(remark);
+
+                }else{
+                    alert(JSON.stringify(data));
+                }
+
+            }
+        });
+
+
     });
 
-    //添加用户
-    function addUser(){
+    //编辑用户
+    function editTuser(userid){
+        var id=userid;
         var groupid = $("#groupid").val();
         var identity = $("#identity").val();
-        var password = $("#password").val();
         var realname = $("#realname").val();
         var remark = $("#remark").val();
 
@@ -144,29 +192,28 @@
         }else if(identity == null || identity == ""){
             alert("用户名不能为空！");
             return;
-        }else if(password == null || password == ""){
-            alert("密码不能为空！");
-            return;
         }else if(realname == null || realname == ""){
             alert("姓名不能为空！");
             return;
         }else{
             $.ajax({
-                type: "post",
-                url: "/user/insertOne.do",
-                data: {
+                type: 'POST',
+                url: '/user/updateOne.do',
+                data:{
+                    id:id,
                     groupid:groupid,
                     identity:identity,
-                    password:password,
                     realname:realname,
-                    status:1,
                     remark:remark
                 },
-                dataType: "json",
-                success: function (data) {
+                dataType: 'json',
+                success: function(data){
                     var status=data.status;
                     var msg=data.msg;
+                    var list=data.data;
+
                     if(status == 0){
+                        //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
@@ -175,16 +222,14 @@
                     }
 
                 },
-                fail:function (data) {
-                    alert(JSON.stringify(data));
-                },
-                error: function(xhr) {
+                error:function(xhr) {
                     alert('error:' + JSON.stringify(xhr));
-                }
+                },
             });
         }
 
     }
+
 </script>
 
 </body>

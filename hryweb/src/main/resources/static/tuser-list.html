@@ -27,7 +27,12 @@
     <div >
         <label style="margin-left:50px">登录名：</label><input type="text" name="identity" id="identity" placeholder=" 用户名" style="width:12%" class="input-text">
         <label style="margin-left:50px">姓名：</label><input type="text" name="realname" id="realname" placeholder=" 姓名" style="width:12%" class="input-text">
-        <!--<label style="margin-left:50px">服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">-->
+        <label style="margin-left:50px">用户组：</label>
+        <span class="select-box" style="width:12%">
+            <select class="select" size="1" name="groupid" id="groupid">
+                <option value="" selected>请选择用户组</option>
+            </select>
+        </span>
         <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -91,8 +96,38 @@
         });
     });
 
+    function userGroup(){
+        var usergroup=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/groupEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                usergroup=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return usergroup;
+    }
+
     //查询用户列表
     $(document).ready(function () {
+        var list=userGroup();
+         var html="";
+            for(i=0;i<list.length;i++){
+                var row=list[i];
+                var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
+                html=html+rowHtml;
+            }
+        $("#groupid").append(html);
         pageSkip(1);
     });
 
@@ -103,12 +138,14 @@
         }
         var identity = $("#identity").val();
         var realname = $("#realname").val();
+        var groupid = $("#groupid").val();
         $.ajax({
             type: "post",
             url: "/user/selectByCondition.do",
             data: {
                 identity:identity,
                 realname:realname,
+                groupid:groupid,
                 pageNum:index,
                 pageSize:10
             },
@@ -138,17 +175,32 @@
                     $("#now").html("");
                     $("#pager").html("");
 
+                    var groups=userGroup();
+                    var groupName="";
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
+
+                        for(var k=0;k<groups.length;k++){
+                            var one=groups[k];
+                            if(one.groupId == row.groupid){
+                                groupName=one.desc;
+                            }
+                        }
+
+                        var remark=row.remark;
+                        if(row.remark == null){
+                            remark="";
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.groupid+"</td>\n" +
+                            "<td>"+groupName+"</td>\n" +
                             "<td>"+row.identity+"</td>\n" +
                             "<td >"+row.realname+"</td>\n" +
-                            "<td>"+row.remark+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('用户编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td>"+remark+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tuser-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -232,12 +284,14 @@
     function find(){
         var identity = $("#identity").val();
         var realname = $("#realname").val();
+        var groupid = $("#groupid").val();
         $.ajax({
             type: "post",
             url: "/user/selectByCondition.do",
             data: {
                 identity:identity,
                 realname:realname,
+                groupid:groupid,
                 pageNum:1,
                 pageSize:10
             },
@@ -272,17 +326,29 @@
                     "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
+                    var groups=userGroup();
+                    var groupName="";
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
+                        for(var k=0;k<groups.length;k++){
+                            var one=groups[k];
+                            if(one.groupId == row.groupid){
+                                groupName=one.desc;
+                            }
+                        }
+                        var remark=row.remark;
+                        if(row.remark == null){
+                            remark="";
+                        }
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.groupid+"</td>\n" +
+                            "<td>"+groupName+"</td>\n" +
                             "<td>"+row.identity+"</td>\n" +
                             "<td >"+row.realname+"</td>\n" +
-                            "<td>"+row.remark+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td>"+remark+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tuser-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -339,11 +405,11 @@
 
     /*用户-删除*/
     function tuser_del(obj,id){
-        layer.confirm('服务删除将会删除接口表记录，确定要这样做吗？\n注意：我们会记录你的操作！',function(index){
+        layer.confirm('用户删除需谨慎，请确认是否删除！',function(index){
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tservice/tserviceDel.do',
+                url: '/user/deleteOne.do',
                 data:{
                     id:id
                 },
