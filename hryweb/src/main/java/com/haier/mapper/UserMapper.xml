@@ -74,6 +74,9 @@
   <select id="selectByUsername" parameterType="java.lang.String" resultType="com.haier.po.User">
     SELECT * FROM `user` WHERE `user`.status>0 AND `user`.`identity`=#{identity}
   </select>
+  <select id="selectAllByUsername" parameterType="java.lang.String" resultType="com.haier.po.User">
+    SELECT * from `user` where `user`.identity=#{identity}
+  </select>
   <select id="selectByExample" parameterType="com.haier.po.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">

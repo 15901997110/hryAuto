@@ -24,6 +24,9 @@ public interface UserMapper {
     //专门为登录添加的接口
     User selectByUsername(String identity);
 
+    //查询所有状态的用户,包括删除状态
+    User selectAllByUsername(String identity);
+
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
     int updateByExample(@Param("record") User record, @Param("example") UserExample example);
