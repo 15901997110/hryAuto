@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.acl.Group;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class EnumController {
         map.put(AssertTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(AssertTypeEnum.values()));
         map.put(ContentTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(ContentTypeEnum.values()));
         map.put(EnvEnum.class.getSimpleName(),EnumUtil.getEnumList(EnvEnum.values()));
+        map.put(GroupEnum.class.getSimpleName(),this.getGroupEnum());
         map.put(HttpTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(HttpTypeEnum.values()));
         map.put(RequestMethodTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(RequestMethodTypeEnum.values()));
         map.put(ResponseTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(ResponseTypeEnum.values()));
@@ -45,9 +47,14 @@ public class EnumController {
         return EnumUtil.getEnumList(EnvEnum.values());
     }
 
-    @GetMapping("/httpTypeEnum.do")
+    @GetMapping("/httpTypeEnum")
     public List<Map<String, Object>> getHttpTypeEnum() {
         return EnumUtil.getEnumList(HttpTypeEnum.values());
+    }
+
+    @GetMapping("/groupEnum")
+    public List<Map<String,Object>> getGroupEnum(){
+        return EnumUtil.getEnumList(GroupEnum.values());
     }
 
     @GetMapping("/requestMethodTypeEnum")
