@@ -38,10 +38,17 @@ public class UserServiceImpl implements UserService {
         if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
             throw new HryException(StatusCodeEnum.REGEX_ERROR);
         }
-        //查询是否存在重复用户
-        User existUser = userMapper.selectByUsername(user.getIdentity().trim());
+        //查询是否存在重复用户,将删除的用户激活
+        User existUser = userMapper.selectAllByUsername(user.getIdentity().trim());
         if(existUser!=null){
-            throw new HryException(StatusCodeEnum.EXIST_RECORD);
+            if(existUser.getStatus()>0){
+                throw new HryException(StatusCodeEnum.EXIST_RECORD);
+            }
+            ReflectUtil.setInvalidFieldToNull(user,false);
+            user.setId(existUser.getId());
+            user.setStatus((short)1);
+            user.setPassword(DigestUtils.md5Hex(user.getPassword().trim()));
+            return userMapper.updateByPrimaryKeySelective(user);
         }
 
         user.setIdentity(user.getIdentity().trim());//用户名去前后空格
