@@ -183,14 +183,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectByGroupId(Integer groupid) {
+    public List<User> selectByGroupId(Integer groupId) {
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andStatusGreaterThan((short)0);
-        if(groupid!=null){
-            if(groupid.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
+        if(groupId!=null){
+            if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
                 criteria.andGroupidBetween((short)12,(short)19);//上海组对应的GroupID为11-19
-            }else  if(groupid.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
+            }else  if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
                 criteria.andGroupidBetween((short)22,(short)29);//杭州组对应的GroupID为21-29
             }else {
                 criteria.andGroupidBetween((short)10,(short)8888);
