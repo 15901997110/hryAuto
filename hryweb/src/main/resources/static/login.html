@@ -96,10 +96,7 @@
       }else if(password == null || password == ""){
           alert("密码不能为空！")
       }else{
-          this.layerIndex = layer.msg('登录中，请稍等...', {
-              icon: 16
-              ,shade: 0.01
-          });
+
           $.ajax({
               type: 'POST',
               url: '/user/login.do',
@@ -112,6 +109,10 @@
                   var status=data.status;
                   var msg=data.msg;
                   if(status == 0){
+                      this.layerIndex = layer.msg('登录中，请稍等...', {
+                          icon: 16
+                          ,shade: 0.01
+                      });
                       window.location.href="index.html";
 
                   }else{

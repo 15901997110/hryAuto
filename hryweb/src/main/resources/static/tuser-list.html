@@ -72,20 +72,20 @@
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!--<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+    var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
-                //$('#submit').val("正在加载请稍等...")
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
-            },
+            /*complete: function () { //完成加载后执行
+                layer.close(this.layerIndex);
+            },*/
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
                     skin: 'layui-layer-molv'
@@ -96,39 +96,20 @@
         });
     });
 
-    function userGroup(){
-        var usergroup=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "get",
-            url: "/enum/groupEnum",
-            data: {
-            },
-            dataType: "json",
-            success: function (data) {
-                usergroup=data;
-            },
-            fail:function (data) {
-                alert(JSON.stringify(data));
-            },
-            error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
-            }
-        });
-        return usergroup;
-    }
+
 
     //查询用户列表
     $(document).ready(function () {
-        var list=userGroup();
-         var html="";
-            for(i=0;i<list.length;i++){
-                var row=list[i];
-                var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
-                html=html+rowHtml;
-            }
-        $("#groupid").append(html);
         pageSkip(1);
+        var list=userGroup();
+        var html="";
+        for(i=0;i<list.length;i++){
+            var row=list[i];
+            var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
+            html=html+rowHtml;
+        }
+        $("#groupid").append(html);
+
     });
 
     //分页查询
@@ -139,23 +120,7 @@
         var identity = $("#identity").val();
         var realname = $("#realname").val();
         var groupid = $("#groupid").val();
-        $.ajaxSetup({
-            layerIndex:-1,
-            beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
 
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
-            },
-            error: function () { //报错时执行
-                layer.alert('显示异常，请刷新后重试', {
-                    skin: 'layui-layer-molv'
-                    , closeBtn: 0
-                    , shift: 4 //动画类型
-                });
-            }
-        });
         $.ajax({
             type: "post",
             url: "/user/selectByCondition.do",
@@ -167,6 +132,7 @@
                 pageSize:10
             },
             dataType: "json",
+
             success: function (data) {
 
                 var status=data.status;
@@ -262,8 +228,6 @@
                                 pagesHtml = pagesHtml+pageHtml;
 
                             }
-                            //pagesHtml= pagesHtml + "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
 
                         }else if(now>0 && now<=4){
 
@@ -290,12 +254,17 @@
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
 
+                    layer.close(layerIndex);
+
                 }else{
                     alert(JSON.stringify(data));
                 }
-            }
+            },
+
 
         });
+
+
     }
 
     //筛选
@@ -324,6 +293,7 @@
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
                     $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    layer.close(layerIndex);
                     return;
                 }
 
@@ -401,12 +371,35 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
                 }else{
                     alert(JSON.stringify(data));
                 }
             }
         });
+    }
+
+    function userGroup(){
+        var usergroup=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/groupEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                usergroup=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return usergroup;
     }
 
     /*用户-添加*/
