@@ -97,7 +97,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "get",
-            url: "/enum/httpTypeEnum.do",
+            url: "/enum/httpTypeEnum",
             data: {
             },
             dataType: "json",
@@ -126,8 +126,11 @@
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
+        var loginName=$.cookie('identityCookie'); // 读取 cookie
+        var realName=$.cookie('realnameCookie');
+        var groupId=$.cookie('groupidCookie');
         //alert("选择的协议类型="+httptype);
-        var editor="lishanghan@kjtpay.com.cn";
+        //var editor="lishanghan@kjtpay.com.cn";
         if(servicekey == null || servicekey == ""){
             alert("服务简称不能为空！");
             return;
@@ -145,7 +148,7 @@
                     servicekey:servicekey,
                     servicename:servicename,
                     httptype:httptype,
-                    editor:editor,
+                    editor:realName,
                     isdel:0
                 },
                 dataType: "json",
