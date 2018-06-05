@@ -139,6 +139,23 @@
         var identity = $("#identity").val();
         var realname = $("#realname").val();
         var groupid = $("#groupid").val();
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
+
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
         $.ajax({
             type: "post",
             url: "/user/selectByCondition.do",
@@ -277,6 +294,7 @@
                     alert(JSON.stringify(data));
                 }
             }
+
         });
     }
 
