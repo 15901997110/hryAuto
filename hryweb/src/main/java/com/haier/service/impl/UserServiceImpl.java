@@ -11,10 +11,12 @@ import com.haier.po.User;
 import com.haier.po.UserExample;
 import com.haier.service.UserService;
 import com.haier.util.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +25,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/12 15:27
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -184,16 +187,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectByGroupId(Integer groupId) {
+        log.debug(groupId.toString());
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andStatusGreaterThan((short)0);
         if(groupId!=null){
             if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
-                criteria.andGroupidBetween((short)12,(short)19);//上海组对应的GroupID为11-19
-            }else  if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
-                criteria.andGroupidBetween((short)22,(short)29);//杭州组对应的GroupID为21-29
-            }else {
-                criteria.andGroupidBetween((short)10,(short)8888);
+                criteria.andGroupidEqualTo((short)12);//上海组对应的GroupID为11-19
+            }
+            if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
+                criteria.andGroupidEqualTo((short)22);//杭州组对应的GroupID为21-29
             }
         }
 

@@ -6,6 +6,7 @@ import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.UserService;
 import com.haier.util.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
  * @Author: luqiwei
  * @Date: 2018/5/12 15:11
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -62,6 +64,7 @@ public class UserController {
     //根据GroupId查询相应组的用户列表
     @PostMapping("/selectByGroupId.do")
     public Result selectByGroupId(Integer groupId){
+        log.debug(groupId.toString());
         return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 

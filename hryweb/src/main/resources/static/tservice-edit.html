@@ -147,8 +147,10 @@
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
-        //alert("选择的协议类型="+httptype);
-        var editor="lishanghan@kjtpay.com.cn";
+        var loginName=$.cookie('identityCookie'); // 读取 cookie
+        var realName=$.cookie('realnameCookie');
+        var groupId=$.cookie('groupidCookie');
+
         if(servicekey == null || servicekey == ""){
             alert("服务简称不能为空！");
             return;
@@ -167,7 +169,7 @@
                     servicekey:servicekey,
                     servicename:servicename,
                     httptype:httptype,
-                    editor:editor,
+                    editor:realName,
                     isdel:0
                 },
                 dataType: 'json',
