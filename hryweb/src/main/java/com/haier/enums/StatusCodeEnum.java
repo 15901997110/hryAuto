@@ -13,8 +13,9 @@ public enum StatusCodeEnum {
     NO_IMPLEMENT(4, "方法未实现"),
     EXIST_RECORD(5, "记录已经存在"),
     LOGIN_ERROR(6,"用户名或密码错误"),
-    REGEX_ERROR(7,"存在正则无法匹配的字符"),
+    REGEX_ERROR_EMAIL(7,"邮箱正则不匹配,请输入xxx@xx.xx格式"),
     PRIMARYKEY_NULL(8,"主键不可为空"),
+    REGEX_ERROR_PWD(9,"密码不符合规范,密码构成只能是数字,字母,英文符号(不包括空格),长度至少6位"),
     HTTP_ERROR(100,"发送http请求时异常"),
 
 

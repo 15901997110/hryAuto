@@ -6,7 +6,12 @@ package com.haier.enums;
  * @Date: 2018/6/1 14:56
  */
 public enum RegexEnum {
-    EMAIL_REGEX("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$","邮箱正则");
+    EMAIL_REGEX("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z0-9]{2,6}$","邮箱正则"),
+
+    PWD_REGEX("^[A-Za-z0-9~`!@#\\$%^&\\*\\(\\),\\.\\+\\<>\\?\\-_\\=\\\\/:;\"'\\|\\[\\]\\{\\}]{6,}+$","密码正则,字母,数字,英文符号不包括空格"),
+
+
+    ;
     private String regex;
     private String desc;
 

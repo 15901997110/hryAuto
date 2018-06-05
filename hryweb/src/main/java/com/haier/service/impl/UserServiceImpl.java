@@ -37,7 +37,11 @@ public class UserServiceImpl implements UserService {
         }
         //用户名校验,只支持邮箱
         if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
-            throw new HryException(StatusCodeEnum.REGEX_ERROR);
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL);
+        }
+        //密码校验,密码只能是数字,字母,英文符号,不包括空格
+        if(!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
         }
         //查询是否存在重复用户,将删除的用户激活
         User existUser = userMapper.selectAllByUsername(user.getIdentity().trim());
@@ -126,10 +130,13 @@ public class UserServiceImpl implements UserService {
         ReflectUtil.setInvalidFieldToNull(user,false);
         if(user.getIdentity()!=null){
             if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
-                throw new HryException(StatusCodeEnum.REGEX_ERROR);
+                throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL);
             }
         }
         if(user.getPassword()!=null){
+            if(!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())){
+                throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
+            }
             user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         }
         return userMapper.updateByPrimaryKeySelective(user);
@@ -147,6 +154,9 @@ public class UserServiceImpl implements UserService {
         if(Objects.isNull(identity)||Objects.isNull(oldPwd)||Objects.isNull(newPwd)
                 ||"".equals(identity.trim())||"".equals(oldPwd.trim())||"".equals(newPwd.trim())){
             throw new HryException(10086,"identity,oldPwd,newPwd不可为空!");
+        }
+        if(!newPwd.matches(RegexEnum.PWD_REGEX.getRegex())){
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
         }
         //根据identity查询status>0的用户名
         User user = userMapper.selectByUsername(identity.trim());
