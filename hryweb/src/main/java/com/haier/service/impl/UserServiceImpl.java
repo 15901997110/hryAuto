@@ -95,6 +95,12 @@ public class UserServiceImpl implements UserService {
             ReflectUtil.setInvalidFieldToNull(user,false);
             ReflectUtil.setStringFieldAddPercent(user,false);
         }
+
+        if(pageNum==null||pageSize==null){
+            pageNum=1;
+            pageSize=10;
+        }
+
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
 

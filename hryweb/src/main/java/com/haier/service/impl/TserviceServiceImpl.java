@@ -42,6 +42,11 @@ public class TserviceServiceImpl implements TserviceService{
 
     @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
+        if(pageNum==null||pageSize==null){
+            pageNum=1;
+            pageSize=10;
+        }
+
         TserviceExample tserviceExample=new TserviceExample();
 
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
@@ -68,9 +73,7 @@ public class TserviceServiceImpl implements TserviceService{
             criteria.andIsdelEqualTo((short)0);
         }
 
-
-
-        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue());
+        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue()+","+SortEnum.ID.getValue());
 
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
 

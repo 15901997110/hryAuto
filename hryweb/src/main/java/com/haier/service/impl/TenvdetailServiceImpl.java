@@ -68,11 +68,13 @@ public class TenvdetailServiceImpl implements TenvdetailService {
     public PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom ,Integer pageNum,Integer pageSize) {
         if(tenvdetailCustom!=null){
             ReflectUtil.setStringFieldAddPercent(tenvdetailCustom,true);
-        } else {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
 
-        PageHelper.startPage(pageNum,pageSize);
+        if(pageNum==null||pageSize==null){
+            pageNum=1;
+            pageSize=10;
+        }
+        PageHelper.startPage(pageNum,pageSize,"serviceId ,envId");
         List<TenvdetailCustom> tenvdetailCustomList = tenvdetailCustomMapper.selectByCondition(tenvdetailCustom);
         PageInfo<TenvdetailCustom> pageInfo=new PageInfo<>(tenvdetailCustomList);
         return pageInfo;
