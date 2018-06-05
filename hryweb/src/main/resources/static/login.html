@@ -57,6 +57,14 @@
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript">
 
+    $(document).ready(function(){
+        $("body").keydown(function() {
+            if (event.keyCode == "13") {//keyCode=13是回车键
+                $('#login').click();
+            }
+        });
+    });
+
     //loading
     /*$(function () {
         $.ajaxSetup({
@@ -137,23 +145,10 @@
 
       }
 
-     /* $("body").keydown(function() {
-          if (event.keyCode == "13") {//keyCode=13是回车键
-              $('#login').click();
-          }
-      });*/
-
-
-
-
-
-
 
 
 
   }
-
-
 
 
 
