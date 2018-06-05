@@ -129,6 +129,38 @@
         return allEnum;
     }
 
+
+    function devGroup(){
+        var dev=null;
+        var groupId=$.cookie('groupidCookie');
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectByGroupId.do",
+            data: {
+                groupId:groupId
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    dev=data.data;
+                }else{
+                    alert(msg);
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return dev;
+    }
+
     //页面加载处理
     $(document).ready(function () {
         var id = getParameter('id');
@@ -225,6 +257,19 @@
                         responseType=responseType+option;
                     }
 
+                    var devhtml="";
+                    var dev=devGroup();
+                    for(var i=0;i<dev.length;i++){
+                        var option="";
+                        var row=dev[i];
+                        if(idev == row.realname){
+                            option="<option value=\""+row.realname+"\" selected>"+row.realname+"</option>";
+                        }else{
+                            option="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+                        }
+                        devhtml=devhtml+option;
+                    }
+
 
 
                     var html = "<div class=\"row cl\">\n" +
@@ -299,14 +344,12 @@
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口开发人员：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+idev+"\" placeholder=\"请输入开发人员邮箱\" id=\"idev\" name=\"idev\">\n" +
-                        "                <!--<span class=\"select-box\">\n" +
+                        /*"                <input type=\"text\" class=\"input-text\" value=\""+idev+"\" placeholder=\"请输入开发人员邮箱\" id=\"idev\" name=\"idev\">\n" +*/
+                        "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
-                        "                        &lt;!&ndash;<option value=\"\" selected>请选择协议</option>\n" +
-                        "                        <option value=\"1\">Http</option>\n" +
-                        "                        <option value=\"2\">Https</option>&ndash;&gt;\n" +
+                        "                        "+devhtml+"" +
                         "                    </select>\n" +
-                        "                    </span>-->\n" +
+                        "               </span>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
