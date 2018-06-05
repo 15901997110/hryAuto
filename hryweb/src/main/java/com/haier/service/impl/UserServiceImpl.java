@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.enums.GroupEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
@@ -179,5 +180,23 @@ public class UserServiceImpl implements UserService {
             throw new HryException(10087,"旧密码不匹配");
         }
 
+    }
+
+    @Override
+    public List<User> selectByGroupId(Integer groupid) {
+        UserExample userExample=new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andStatusGreaterThan((short)0);
+        if(groupid!=null){
+            if(groupid.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
+                criteria.andGroupidBetween((short)12,(short)19);//上海组对应的GroupID为11-19
+            }else  if(groupid.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
+                criteria.andGroupidBetween((short)22,(short)29);//杭州组对应的GroupID为21-29
+            }else {
+                criteria.andGroupidBetween((short)10,(short)8888);
+            }
+        }
+
+        return userMapper.selectByExample(userExample);
     }
 }

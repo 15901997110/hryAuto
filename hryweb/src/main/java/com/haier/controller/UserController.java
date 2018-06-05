@@ -33,6 +33,8 @@ public class UserController {
         return ResultUtil.success(userService.selectOne(id));
     }
 
+    //
+
     //新增用户
     @PostMapping("/insertOne.do")
     public Result insertOne(User user){
@@ -55,6 +57,12 @@ public class UserController {
     @PostMapping("/selectByCondition.do")
     public Result selectByCondition(User user,Integer pageNum,Integer pageSize){
         return ResultUtil.success(userService.selectByCondition(user,pageNum,pageSize));
+    }
+
+    //根据GroupId查询相应组的用户列表
+    @PostMapping("/selectByGroupId.do")
+    public Result selectByGroupId(Integer groupId){
+        return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 
     //修改用户密码
