@@ -203,9 +203,11 @@
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
         $("#userName").append(realName);
+        //alert("groupid="+groupId+"loginName="+loginName)
         if(groupId != 1){
             $("#menu-user").hide();
-        }else if(loginName != "lishanghan@kjtpay.com.cn"){
+        }
+        if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
             $("#menu-member").hide();
             $("#menu-admin").hide();
