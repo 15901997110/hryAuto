@@ -1,6 +1,7 @@
 package com.haier.controller;
 
 import com.haier.po.Tservice;
+import com.haier.response.Result;
 import com.haier.service.TenvService;
 import com.haier.service.TserviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/lunimei")
 public class LunimeiController {
-    @Autowired
-    TenvService tenvService;
-    @Autowired
-    TserviceService tserviceService;
-    @GetMapping("/batchAddEnv.do")
-    public String batchAddEnv(){
-        for(int i=0;i<100;i++){
-/*            Tenv tenv=new Tenv();
-            tenv.setEnvkey("servicekey"+i);
-            tenv.setRemark("remark"+i);
-            tenvService.insertOne(tenv);*/
-
-            Tservice tservice =new Tservice();
-            tservice.setServicekey("servkcekey"+i);
-            tservice.setServicename("servicename"+i);
-            tserviceService.insertOne(tservice);
-
-        }
-        return "操作成功";
-    }
+   @GetMapping("/test")
+    public Integer test(){
+       int i=0;
+       int j=100/i;
+       return j;
+   }
 }
