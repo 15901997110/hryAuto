@@ -58,7 +58,7 @@ public class UserController {
     }
 
     //修改用户密码
-    @PostMapping("modifyPwd.do")
+    @PostMapping("/modifyPwd.do")
     public Result modifyPwd(String identity,String oldPwd,String newPwd){
         return ResultUtil.success(userService.modifyPwd(identity,oldPwd,newPwd));
     }
