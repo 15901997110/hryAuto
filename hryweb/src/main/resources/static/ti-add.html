@@ -104,8 +104,6 @@
                 <span class="select-box">
                     <select class="select" size="1" name="idev" id="idev">
                         <option value="" selected>请选开发人员</option>
-                       <!-- <option value="1">Http</option>
-                        <option value="2">Https</option>-->
                     </select>
 				</span>
             </div>
@@ -151,7 +149,36 @@
         });
     });
 
-    function dev
+    function devGroup(){
+        var dev=null;
+        var groupId=$.cookie('groupidCookie');
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectByGroupId.do",
+            data: {
+                groupId:groupId
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    dev=data.data;
+                }else{
+                    alert(msg);
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return dev;
+    }
 
     //下拉相关数据获取
     $(document).ready(function () {
@@ -235,6 +262,16 @@
                 alert('error:' + JSON.stringify(xhr));
             }
         });
+
+        var dev=devGroup();
+        var htmldev="";
+        for(var i=0;i<dev.length;i++){
+            var row=dev[i];
+            var rowHtml="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+            htmldev=htmldev+rowHtml;
+        }
+        $("#idev").append(htmldev);
+
     });
 
     //添加接口

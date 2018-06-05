@@ -116,12 +116,16 @@
         }
         var serviceid = $("#serviceid").val();
         var remark = $("#remark").val();
+        var iuri = $("#iuri").val();
+        var idev = $("#idev").val();
 
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition.do",
             data: {
-                serviceid:serviceid,
+                iuri:iuri,
+                idev:idev,
+                servicekey:serviceid,
                 remark:remark,
                 pageNum:index,
                 pageSize:10
