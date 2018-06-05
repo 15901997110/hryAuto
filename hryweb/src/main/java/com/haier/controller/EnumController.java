@@ -22,14 +22,14 @@ public class EnumController {
     @GetMapping("/allEnum")
     public Map<String,List<Map<String, Object>>> getAllEnum(){
         Map<String,List<Map<String,Object>>> map=new LinkedHashMap<>();
-        map.put(AssertTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(AssertTypeEnum.values()));
-        map.put(ContentTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(ContentTypeEnum.values()));
-        map.put(EnvEnum.class.getSimpleName(),EnumUtil.getEnumList(EnvEnum.values()));
+        map.put(AssertTypeEnum.class.getSimpleName(),this.getAssertTypeEnum());
+        map.put(ContentTypeEnum.class.getSimpleName(),this.getContentTypeEnum());
+        map.put(EnvEnum.class.getSimpleName(),this.getEnvEnum());
         map.put(GroupEnum.class.getSimpleName(),this.getGroupEnum());
-        map.put(HttpTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(HttpTypeEnum.values()));
-        map.put(RequestMethodTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(RequestMethodTypeEnum.values()));
-        map.put(ResponseTypeEnum.class.getSimpleName(),EnumUtil.getEnumList(ResponseTypeEnum.values()));
-        map.put(StatusCodeEnum.class.getSimpleName(),EnumUtil.getEnumList(StatusCodeEnum.values()));
+        map.put(HttpTypeEnum.class.getSimpleName(),this.getHttpTypeEnum());
+        map.put(RequestMethodTypeEnum.class.getSimpleName(),this.getRequestMethodTypeEnum());
+        map.put(ResponseTypeEnum.class.getSimpleName(),this.getResponseTypeEnum());
+        map.put(StatusCodeEnum.class.getSimpleName(),this.getStatusCodeEnum());
         return map;
     }
     @GetMapping("/assertTypeEnum")

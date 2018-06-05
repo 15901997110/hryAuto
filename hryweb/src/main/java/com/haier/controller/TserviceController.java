@@ -36,8 +36,8 @@ public class TserviceController {
     /**
      *查询单个服务信息
      * */
-    @PostMapping(value="/tserviceOne.do")
-    public Result tserviceOne(Integer tserviceId){
+    @PostMapping(value= "/selectOne.do")
+    public Result selectOne(Integer tserviceId){
         Tservice tservice=tserviceService.selectOne(tserviceId);
         log.info("查询单条服务id="+tserviceId);
         return ResultUtil.success(tservice);

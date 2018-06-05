@@ -34,36 +34,40 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer insertOne(Tcase tcase) {
-        if(tcase==null||tcase.getIid()==null||tcase.getIid()==0){
-            log.error("接收到的参数为:"+tcase);
+        //参数校验,注意,这些参数应该在前端直接js校验效果会更好
+        if(tcase==null||tcase.getIid()==null||tcase.getCasename()==null
+                ||tcase.getIid()==0||"".equals(tcase.getCasename())){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         return tcaseMapper.insertSelective(tcase);
     }
 
     @Override
-    public Integer deleteOne(Integer tcaseId) {
-        if(tcaseId==null||tcaseId==0){
+    public Integer deleteOne(Integer id) {
+        if(id==null||id==0){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         Tcase tcase=new Tcase();
-        tcase.setId(tcaseId);
+        tcase.setId(id);
         tcase.setStatus((short)-1);
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
-    public Integer updateOne(Integer tcaseId, Tcase tcase) {
-        if(tcaseId==null||tcaseId==0) {
-            throw new HryException(10086,"tcaseId参数不正确");
+    public Integer updateOne(Integer id, Tcase tcase) {
+        if(tcase==null||tcase.getId()==null||tcase.getId()==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
-        tcase.setId(tcaseId);
+        tcase.setId(id);
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
-    public Tcase selectOne(Integer tcaseId) {
-        return tcaseMapper.selectByPrimaryKey(tcaseId);
+    public Tcase selectOne(Integer id) {
+        if(id==null||id==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        return tcaseMapper.selectByPrimaryKey(id);
     }
 
     @Override

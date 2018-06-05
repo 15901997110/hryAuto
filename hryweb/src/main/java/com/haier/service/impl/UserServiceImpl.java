@@ -187,7 +187,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectByGroupId(Integer groupId) {
-        log.debug(groupId.toString());
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andStatusGreaterThan((short)0);

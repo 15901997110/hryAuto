@@ -18,7 +18,6 @@ import java.util.Objects;
  * @Date: 2018/5/8 20:26
  */
 @Slf4j
-@Api(value="tenv")
 @RestController
 @RequestMapping("/tenv")
 public class TenvController {
@@ -28,7 +27,6 @@ public class TenvController {
     /**
      * 查询全部环境列表处理
      * */
-    @ApiOperation(value = "获取全部环境信息")
     @PostMapping(value="/tenvList.do")
     public Result tenvList(){
         return ResultUtil.success(tenvService.selectAll());
@@ -38,7 +36,7 @@ public class TenvController {
      * 查询单个环境信息
      *  update by lish 2018-05-18 17:41
      * */
-    @ApiOperation(value="根据环境Id查询环境信息")
+
     @PostMapping(value="/tenvOne.do")
     public Result tenvOne(Integer envId){
         Tenv tenv=tenvService.selectOne(envId);

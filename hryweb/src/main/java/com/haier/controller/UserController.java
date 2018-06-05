@@ -64,7 +64,6 @@ public class UserController {
     //根据GroupId查询相应组的用户列表
     @PostMapping("/selectByGroupId.do")
     public Result selectByGroupId(Integer groupId){
-        log.debug(groupId.toString());
         return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 
