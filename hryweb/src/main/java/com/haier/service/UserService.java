@@ -23,4 +23,6 @@ public interface UserService {
     Integer updateOne(Integer id,User user);
     //删除用户(逻辑删除)
     Integer deleteOne(Integer id);
+    //修改用户密码
+    Integer modifyPwd(String identity,String oldPwd,String newPwd);
 }

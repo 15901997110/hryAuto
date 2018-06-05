@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.enums.SortEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcaseCustomMapper;
@@ -72,7 +73,7 @@ public class TcaseServiceImpl implements TcaseService {
             ReflectUtil.setStringFieldAddPercent(tcaseCustom, true);
         }
 
-        PageHelper.startPage(pageNum,pageSize,"updateTime desc");
+        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue());
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
         PageInfo<TcaseCustom> pageInfo=new PageInfo<>(tcaseCustomList);
         return pageInfo;

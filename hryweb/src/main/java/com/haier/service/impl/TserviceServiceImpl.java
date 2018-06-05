@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.enums.SortEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TiMapper;
@@ -69,7 +70,7 @@ public class TserviceServiceImpl implements TserviceService{
 
 
 
-        PageHelper.startPage(pageNum,pageSize," updateTime desc");
+        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue());
 
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
 

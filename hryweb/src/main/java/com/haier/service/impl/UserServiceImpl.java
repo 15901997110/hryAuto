@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description:
@@ -139,5 +140,28 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         user.setStatus((short)-1);
         return updateOne(id,user);
+    }
+
+    @Override
+    public Integer modifyPwd(String identity, String oldPwd, String newPwd) {
+        if(Objects.isNull(identity)||Objects.isNull(oldPwd)||Objects.isNull(newPwd)
+                ||"".equals(identity.trim())||"".equals(oldPwd.trim())||"".equals(newPwd.trim())){
+            throw new HryException(10086,"identity,oldPwd,newPwd不可为空!");
+        }
+        //根据identity查询status>0的用户名
+        User user = userMapper.selectByUsername(identity.trim());
+        if(user==null){
+            throw new HryException(StatusCodeEnum.NOT_FOUND);
+        }
+
+        //用户存在 ,并且旧密码输入正确,则使用新密码更新
+        if(user.getPassword().equals(DigestUtils.md5Hex(oldPwd.trim()))){
+            user.setPassword(DigestUtils.md5Hex(newPwd.trim()));
+
+            return userMapper.updateByPrimaryKeySelective(user);
+        }else{
+            throw new HryException(10087,"旧密码不匹配");
+        }
+
     }
 }
