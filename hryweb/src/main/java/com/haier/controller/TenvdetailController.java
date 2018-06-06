@@ -32,8 +32,8 @@ public class TenvdetailController {
 
     //删
     @PostMapping("/deleteOne.do")
-    public Result deleteOne(Tenvdetail tenvdetail){
-        return ResultUtil.success(tenvdetailService.deleteOne(tenvdetail));
+    public Result deleteOne(Integer id){
+        return ResultUtil.success(tenvdetailService.deleteOne(id));
     }
 
     //查

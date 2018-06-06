@@ -11,6 +11,8 @@ import com.haier.po.TenvdetailCustom;
  */
 public interface TenvdetailService {
     Integer insertOne(Tenvdetail tenvdetail);
-    Integer deleteOne(Tenvdetail tenvdetail);
+    Integer deleteOne(Integer id);
+    Tenvdetail selectOne(Integer id);
+    Integer updateOne(Tenvdetail tenvdetail);
     PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize);
 }

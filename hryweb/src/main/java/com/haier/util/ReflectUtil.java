@@ -19,52 +19,82 @@ public class ReflectUtil {
      * @author: luqiwei
      * @date: 2018-05-23
      */
-    public static <T> void setStringFieldAddPercent(T po, Boolean isExtendsClass) {
+    public static <T> void setFieldAddPercentAndCleanZero(T po, Boolean isExtendsClass) {
+        if (po == null) {
+            return;
+        }
         Field[] declaredFields = po.getClass().getDeclaredFields();
-        setField(po, declaredFields);
+        setField(po, declaredFields, true);
         //如果是继承类,则这里再处理父类的字段值
         if (isExtendsClass) {
             Field[] supperDeclaredFields = po.getClass().getSuperclass().getDeclaredFields();
-            setField(po, supperDeclaredFields);
+            setField(po, supperDeclaredFields, true);
         }
     }
 
-    private static <T> void setField(T t, Field[] declaredFields) {
+    /**
+     * @description: 过滤对象中无用的字段, 将其设置为null, 比如String类型的字段值为"",Integer|Short类型的字段值为0,
+     * 都将统一设置为null
+     * @params: [po, isExtendsClass]
+     * @return: void
+     * @author: luqiwei
+     * @date: 2018-06-01
+     */
+    public static <T> void setInvalidFieldToNull(T po, Boolean isExtendsClass) {
+        if (po == null) {
+            return;
+        }
+        Field[] declaredFields = po.getClass().getDeclaredFields();
+        setField(po, declaredFields, false);
+        if (isExtendsClass) {
+            Field[] supperDeclaredFields = po.getClass().getSuperclass().getDeclaredFields();
+            setField(po, supperDeclaredFields, false);
+        }
+    }
+
+    private static <T> void setField(T t, Field[] declaredFields, Boolean addPercent) {
+        if (addPercent == null) {
+            addPercent = false;
+        }
         for (Field field : declaredFields) {
-            if (field.getType() == String.class) {//设置String类型字段
-                field.setAccessible(true);
-                try {
+            field.setAccessible(true);
+            try {
+                if (field.getType() == String.class) {//设置String类型字段
                     String fieldValue = (String) field.get(t);
-                    if (fieldValue != null && !"".equals(fieldValue.trim())) {
-                        field.set(t, "%" + fieldValue.trim() + "%");
+                    if (fieldValue != null) {//字段值不为null
+                        if ("".equals(fieldValue.trim())) {//为""字段直接设置为null
+                            field.set(t, null);
+                        } else if (addPercent) {//不为"",且需要加%
+                            field.set(t, "%" + fieldValue.trim() + "%");
+                        } else {//不为"",且不需要加%
+                            field.set(t, fieldValue.trim());
+                        }
                     }
-                } catch (IllegalAccessException e) {
-                    log.error("javabean前后添加%时出现异常!!");
-                    continue;
                 }
+
+                if (field.getType() == Integer.class) {
+                    Integer fieldValue = (Integer) field.get(t);
+                    if (fieldValue != null && fieldValue == 0) {
+                        field.set(t, null);
+                    }
+                }
+                if (field.getType() == Short.class) {
+                    Short fieldValue = (Short) field.get(t);
+                    if (fieldValue != null && fieldValue == 0) {
+                        field.set(t, null);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                log.error("处理对象字段时IllegalAccessException异常", e);
+                continue;
             }
         }
     }
 
 
-    /**
-     *@description: 过滤对象中无用的字段,将其设置为null,比如String类型的字段值为"",Integer类型的字段值为0,
-     * 都将统一设置为null
-     *@params: [po, isExtendsClass]
-     *@return: void
-     *@author: luqiwei
-     *@date: 2018-06-01
-     */
-    public static <T> void setInvalidFieldToNull(T po, Boolean isExtendsClass) {
-        Field[] declaredFields = po.getClass().getDeclaredFields();
-        setFieldToNull(po, declaredFields);
-        if (isExtendsClass) {
-            Field[] supperDeclaredFields = po.getClass().getSuperclass().getDeclaredFields();
-            setFieldToNull(po, supperDeclaredFields);
-        }
-    }
 
-    private static <T> void setFieldToNull(T t, Field[] declaredFields) {
+
+    /*  private static <T> void setFieldToNull(T t, Field[] declaredFields) {
         for (Field field : declaredFields) {
             field.setAccessible(true);
             if (field.getType() == String.class) {//如果默认值为"",设置为null
@@ -81,7 +111,7 @@ public class ReflectUtil {
                         } catch (IllegalAccessException e) {
                             continue;
                         }
-                    }else{
+                    } else {
                         try {
                             field.set(t, str.trim());
                         } catch (IllegalAccessException e) {
@@ -124,5 +154,5 @@ public class ReflectUtil {
                 }
             }
         }
-    }
+    }*/
 }

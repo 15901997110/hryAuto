@@ -2,7 +2,6 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.haier.enums.GroupEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
@@ -16,7 +15,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,7 +95,7 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selectByCondition(User user,Integer pageNum,Integer pageSize) {
         if(user!=null){
             ReflectUtil.setInvalidFieldToNull(user,false);
-            ReflectUtil.setStringFieldAddPercent(user,false);
+            ReflectUtil.setFieldAddPercentAndCleanZero(user,false);
         }
 
         if(pageNum==null||pageSize==null){

@@ -1,6 +1,8 @@
 package com.haier.po;
 
 public class Tenvdetail {
+    private Integer id;
+
     private Integer serviceid;
 
     private Integer envid;
@@ -8,6 +10,18 @@ public class Tenvdetail {
     private String hostinfo;
 
     private String dbinfo;
+
+    private String swaggerurl;
+
+    private Integer status;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getServiceid() {
         return serviceid;
@@ -39,5 +53,21 @@ public class Tenvdetail {
 
     public void setDbinfo(String dbinfo) {
         this.dbinfo = dbinfo == null ? null : dbinfo.trim();
+    }
+
+    public String getSwaggerurl() {
+        return swaggerurl;
+    }
+
+    public void setSwaggerurl(String swaggerurl) {
+        this.swaggerurl = swaggerurl == null ? null : swaggerurl.trim();
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

@@ -74,7 +74,7 @@ public class TcaseServiceImpl implements TcaseService {
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
         if(tcaseCustom!=null) {
-            ReflectUtil.setStringFieldAddPercent(tcaseCustom, true);
+            ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
         }
 
         PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue()+","+SortEnum.ID.getValue());
