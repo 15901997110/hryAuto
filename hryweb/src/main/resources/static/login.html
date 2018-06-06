@@ -56,6 +56,14 @@
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript">
+    var layerIndex;
+    $(document).ready(function(){
+        $("body").keydown(function() {
+            if (event.keyCode == "13") {
+                $('#login').click();
+            }
+        });
+    });
 
     //loading
     /*$(function () {
@@ -96,7 +104,11 @@
       }else if(password == null || password == ""){
           alert("密码不能为空！")
       }else{
-
+          layerIndex = layer.msg('登录中，请稍等...', {
+              icon: 16,
+              shade: 0.01,
+              time:false
+          });
           $.ajax({
               type: 'POST',
               url: '/user/login.do',
@@ -109,20 +121,15 @@
                   var status=data.status;
                   var msg=data.msg;
                   if(status == 0){
-                      this.layerIndex = layer.msg('登录中，请稍等...', {
-                          icon: 16
-                          ,shade: 0.01
-                      });
                       window.location.href="index.html";
-
                   }else{
-                      layer.close(this.layerIndex); //完成加载后关闭loading
+                      layer.close(layerIndex);
                       alert(msg);
                   }
 
               },
-              complete: function () { //完成加载后执行
-                  layer.close(this.layerIndex); //完成加载后关闭loading
+              complete: function () {
+                  layer.close(layerIndex);
 
               },
               error:function(data) {
@@ -137,23 +144,10 @@
 
       }
 
-     /* $("body").keydown(function() {
-          if (event.keyCode == "13") {//keyCode=13是回车键
-              $('#login').click();
-          }
-      });*/
-
-
-
-
-
-
 
 
 
   }
-
-
 
 
 
