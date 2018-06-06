@@ -36,11 +36,12 @@ public class ImportServiceImpl implements ImportService {
 
     @Override
     public String sendGet(String url) {
-        String jsonResponse = null;
+        String jsonResponse;
         try {
             jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET, null);
         } catch (HttpProcessException e) {
-            log.error("", e);
+            log.info("请求地址为:"+url);
+            log.error("请求swaggerUrl时发生异常", e);
             return null;
         }
         return jsonResponse;
@@ -73,10 +74,14 @@ public class ImportServiceImpl implements ImportService {
     }
 
     @Override
-    public ImportInterfaceResult importInterface(Integer serviceId, String serviceKey, JSONObject jsonObject, Boolean overwrite,String iDev) {
+    public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite,String iDev) {
+        String serviceKey=jsonObject.getJSONObject("info").getString("title").trim();
+        String serviceName=jsonObject.getJSONObject("info").getString("description").trim();
+
         ImportInterfaceResult result = new ImportInterfaceResult();
         result.setServiceId(serviceId);
         result.setServiceKey(serviceKey);
+        result.setServiceName(serviceName);
         List<String> insertList = new ArrayList<String>();
         List<String> updateList = new ArrayList<String>();
         List<String> failList = new ArrayList<String>();

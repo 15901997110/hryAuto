@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.haier.po.Tenvdetail;
 import com.haier.po.TenvdetailCustom;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: luqiwei
@@ -14,5 +16,6 @@ public interface TenvdetailService {
     Integer deleteOne(Integer id);
     Tenvdetail selectOne(Integer id);
     Integer updateOne(Tenvdetail tenvdetail);
+    List<Tenvdetail> selectByCondition(Tenvdetail tenvdetail);
     PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize);
 }
