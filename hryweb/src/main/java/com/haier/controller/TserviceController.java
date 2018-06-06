@@ -26,11 +26,21 @@ public class TserviceController {
     TserviceService tserviceService;
 
     /**
-     * 查询服务列表
+     * 查询服务列表,返回分页信息
      * */
-    @PostMapping(value="/tserviceList.do")
-    public Result tserviceList(Tservice tservice, Integer pageNum, Integer pageSize){
+    @PostMapping(value="/selectByCondition.do")
+    public Result selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize){
         return ResultUtil.success(tserviceService.selectByCondition(tservice,pageNum,pageSize));
+    }
+
+    /**
+     * 查询服务列表,不带分页信息
+     * @param tservice
+     * @return
+     */
+    @PostMapping("/selectByConditionSimple.do")
+    public Result selectByConditionSimple(Tservice tservice){
+        return ResultUtil.success(tserviceService.selectByCondition(tservice));
     }
 
     /**
@@ -46,8 +56,8 @@ public class TserviceController {
     /**
      *添加服务
      * */
-    @PostMapping(value="/tserviceAdd.do")
-    public Result tserviceAdd(Tservice tservice){
+    @PostMapping(value="/insertOne.do")
+    public Result insertOne(Tservice tservice){
         log.info("新增的服务简称="+tservice.getServicekey()+",服务名称="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
         return ResultUtil.success(tserviceService.insertOne(tservice));
     }
@@ -55,8 +65,8 @@ public class TserviceController {
     /**
      * 编辑服务
      * */
-    @PostMapping(value = "/tserviceEdit.do")
-    public Result tserviceEdit(Tservice tservice){
+    @PostMapping(value = "/updateOne.do")
+    public Result updateOne(Tservice tservice){
         if(Objects.isNull(tservice.getServicekey())|| Objects.isNull(tservice.getServicename()) || Objects.isNull(tservice.getHttptype())){
             return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
         }else{
@@ -70,13 +80,9 @@ public class TserviceController {
     /**
      * 删除服务
      * */
-    @PostMapping(value = "/tserviceDel.do")
-    public Result tserviceDel(Tservice tservice){
-        log.info("要删除的服务id="+tservice.getId());
-        Short i=1;
-        tservice.setIsdel(i);
-        tserviceService.deleteOne(tservice.getId());
-        return ResultUtil.success();
+    @PostMapping(value = "/deleteOne.do")
+    public Result deleteOne(Integer id){
+        return ResultUtil.success(tserviceService.deleteOne(id));
     }
 
 

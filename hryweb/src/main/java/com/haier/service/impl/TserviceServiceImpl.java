@@ -12,6 +12,7 @@ import com.haier.po.TiExample;
 import com.haier.po.Tservice;
 import com.haier.po.TserviceExample;
 import com.haier.service.TserviceService;
+import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,28 @@ public class TserviceServiceImpl implements TserviceService{
         PageInfo<Tservice> pageInfo=new PageInfo<>(tservices);
 
         return pageInfo;
+    }
+
+    @Override
+    public List<Tservice> selectByCondition(Tservice tservice) {
+        TserviceExample tserviceExample=new TserviceExample();
+        tserviceExample.setOrderByClause("updateTime desc,id desc");
+        TserviceExample.Criteria criteria = tserviceExample.createCriteria();
+        criteria.andIsdelNotEqualTo((short)1);
+        ReflectUtil.setFieldAddPercentAndCleanZero(tservice,false);
+        if(tservice!=null){
+            if(tservice.getId()!=null)
+                criteria.andIdEqualTo(tservice.getId());
+            if(tservice.getServicekey()!=null) {
+                criteria.andServicekeyLike(tservice.getServicekey());
+                criteria.andServicenameLike(tservice.getServicekey());
+            }
+            if(tservice.getEditor()!=null)
+                criteria.andEditorLike(tservice.getEditor());
+
+        }
+
+        return tserviceMapper.selectByExample(tserviceExample);
     }
 
     @Override

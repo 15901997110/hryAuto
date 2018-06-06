@@ -83,7 +83,7 @@
 	$(document).ready(function () {
         $.ajax({
             type: "post",
-            url: "/tenv/tenvList.do",
+            url: "/tenv/selectAll.do",
             data: {
             },
             dataType: "json",
@@ -147,7 +147,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tenv/tenvDel.do',
+                url: '/tenv/deleteOne.do',
                 data:{
                     envId:id
                 },

@@ -94,7 +94,7 @@
 		}else{
             $.ajax({
                 type: "post",
-                url: "/tenv/tenvAdd.do",
+                url: "/tenv/insertOne.do",
 				data: $("#form-admin-role-add").serialize(),
                 dataType: "json",
                 success: function (data) {
