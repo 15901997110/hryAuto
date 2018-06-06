@@ -13,6 +13,7 @@
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="lib/comboSelect/css/combo.select.css">
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
@@ -80,8 +81,12 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/comboSelect/js/jquery.combo.select.js"></script>
+<script type="text/javascript" src="lib/comboSelect/js/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-
+    $(function() {
+        $('select').comboSelect();
+    });
     //loading
     $(function () {
         $.ajaxSetup({
@@ -112,6 +117,7 @@
             },
             dataType: "json",
             success: function (data) {
+
                 var html="";
                 for(i=0;i<data.length;i++){
                     var row=data[i];
