@@ -31,7 +31,7 @@ public class ImportController {
     public Result interfaceImport(@RequestParam("url") String url,
                                   @RequestParam("servicekey") String servicekey,
                                   @RequestParam("overwrite") Boolean overwrite,//是否覆盖ti表中的记录
-                                  @RequestParam("developer") String developerEmail//接口开发人员邮箱
+                                  @RequestParam("developer") String developerEmail//接口开发人员-realname
                                   ){
         //1.通过url发送get请求,得到返回json
         String responseJson = importService.sendGet(url);
