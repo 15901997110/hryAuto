@@ -23,7 +23,7 @@ public class HryExceptionHandler {
             HryException hryException=(HryException) e;
             return ResultUtil.error(hryException.getCode(),hryException.getMessage());
         }
-        log.error("【系统异常】",e);
+        log.error("【系统异常】,详细信息如下:",e);
         return ResultUtil.error(9999,e.toString());
     }
 }
