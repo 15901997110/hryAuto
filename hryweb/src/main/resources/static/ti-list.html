@@ -72,27 +72,21 @@
         </div>
     </div>
 </div>
-<!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
-
-<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<!--<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+    var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
-                //$('#submit').val("正在加载请稍等...")
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -104,9 +98,10 @@
         });
     });
 
+
     //查询接口列表
     $(document).ready(function () {
-       pageSkip(1);
+        pageSkip(1);
     });
 
     //分页查询
@@ -118,6 +113,12 @@
         var remark = $("#remark").val();
         var iuri = $("#iuri").val();
         var idev = $("#idev").val();
+
+        var allEnum=getAllEnum();
+        var ContentTypeEnum=allEnum.ContentTypeEnum;
+        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
+        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
+
 
         $.ajax({
             type: "post",
@@ -166,57 +167,27 @@
                         }
 
                         var iContentType="";
-                        switch (row.icontenttype){
-                            case 1:
-                                iContentType="application/json";
-                                break;
-                            case 2:
-                                iContentType="application/x-www-form-urlencoded";
-                                break;
-                            case 3:
-                                iContentType="application/javascript";
-                                break;
-                            case 4:
-                                iContentType="text/html";
-                                break;
-                            case 5:
-                                iContentType="text/xml";
-                                break;
-                            case 6:
-                                iContentType="text/css";
-                                break;
-                            case 7:
-                                iContentType="multipart/form-data";
-                                break;
-                            case 8:
-                                iContentType="image/png";
-                                break;
+                        for(var m=0;m<ContentTypeEnum.length;m++){
+                            var row1=ContentTypeEnum[m];
+                            if(row.icontenttype == row1.id){
+                                iContentType=row1.value;
+                            }
                         }
 
                         var iParamType="";
-                        switch(row.iparamtype){
-                            case 1:
-                                iParamType="json";
-                                break;
-                            case 2:
-                                iParamType="map";
-                                break;
-                            case 3:
-                                iParamType="text";
-                                break;
+                        for(var n=0;n<ResponseTypeEnum.length;n++){
+                            var row2=ResponseTypeEnum[n];
+                            if(row.iparamtype == row2.id){
+                                iParamType=row2.value;
+                            }
                         }
 
                         var iResponseType="";
-                        switch(row.iresponsetype){
-                            case 1:
-                                iResponseType="json";
-                                break;
-                            case 2:
-                                iResponseType="map";
-                                break;
-                            case 3:
-                                iResponseType="text";
-                                break;
+                        for(var k=0;k<ResponseTypeEnum.length;k++){
+                            var row3=ResponseTypeEnum[k];
+                            if(row.iresponsetype == row3.id){
+                                iResponseType=row3.value;
+                            }
                         }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
@@ -301,6 +272,7 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
                 }else{
                     alert(JSON.stringify(data));
@@ -315,7 +287,11 @@
         var remark = $("#remark").val();
         var iuri = $("#iuri").val();
         var idev = $("#idev").val();
-        //alert("服务id="+serviceid)
+
+        var allEnum=getAllEnum();
+        var ContentTypeEnum=allEnum.ContentTypeEnum;
+        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
+        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition.do",
@@ -336,6 +312,7 @@
                 $("#now").html("");
                 $("#pager").html("");
                 if(data.data.list.length==0){
+                    layer.close(layerIndex);
                     $("#dataTables_info").hide();
                     $("#interfaceList").append("<span style='color:red;'>没有数据！</span>");
                     return;
@@ -367,57 +344,27 @@
                             irequestmethod="get";
                         }
                         var iContentType="";
-                        switch (row.icontenttype){
-                            case 1:
-                                iContentType="application/json";
-                                break;
-                            case 2:
-                                iContentType="application/x-www-form-urlencoded";
-                                break;
-                            case 3:
-                                iContentType="application/javascript";
-                                break;
-                            case 4:
-                                iContentType="text/html";
-                                break;
-                            case 5:
-                                iContentType="text/xml";
-                                break;
-                            case 6:
-                                iContentType="text/css";
-                                break;
-                            case 7:
-                                iContentType="multipart/form-data";
-                                break;
-                            case 8:
-                                iContentType="image/png";
-                                break;
+                        for(var m=0;m<ContentTypeEnum.length;m++){
+                            var row1=ContentTypeEnum[m];
+                            if(row.icontenttype == row1.id){
+                                iContentType=row1.value;
+                            }
                         }
 
                         var iParamType="";
-                        switch(row.iparamtype){
-                            case 1:
-                                iParamType="json";
-                                break;
-                            case 2:
-                                iParamType="map";
-                                break;
-                            case 3:
-                                iParamType="text";
-                                break;
+                        for(var n=0;n<ResponseTypeEnum.length;n++){
+                            var row2=ResponseTypeEnum[n];
+                            if(row.iparamtype == row2.id){
+                                iParamType=row2.value;
+                            }
                         }
 
                         var iResponseType="";
-                        switch(row.iresponsetype){
-                            case 1:
-                                iResponseType="json";
-                                break;
-                            case 2:
-                                iResponseType="map";
-                                break;
-                            case 3:
-                                iResponseType="text";
-                                break;
+                        for(var k=0;k<ResponseTypeEnum.length;k++){
+                            var row3=ResponseTypeEnum[k];
+                            if(row.iresponsetype == row3.id){
+                                iResponseType=row3.value;
+                            }
                         }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
@@ -467,6 +414,7 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
                 }else{
                     alert(JSON.stringify(data));
@@ -514,6 +462,29 @@
                 },
             });
         });
+    }
+
+    //获取枚举值数组
+    function getAllEnum(){
+        var allEnum=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/allEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                allEnum=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return allEnum;
     }
 
 

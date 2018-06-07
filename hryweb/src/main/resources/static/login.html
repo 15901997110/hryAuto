@@ -22,7 +22,7 @@
 <meta name="keywords" content="hry">
 <meta name="description" content="hry auto">
 </head>
-<body>
+<body onkeydown="enterkey(event)">
 <input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header"></div>
 <div class="loginWraper">
@@ -55,15 +55,29 @@
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<!--<script type="text/javascript" src="lib/jquery.hotkeys.js"></script>-->
 <script type="text/javascript">
     var layerIndex;
-    $(document).ready(function(){
+
+    function enterkey(et){
+
+        if(et.keyCode){
+            if (et.keyCode==13)
+                $('#login').click();
+        }else{
+            if (et.which==13)
+                $('#login').click();
+        }
+
+    }
+
+    /*$(document).ready(function(){
         $("body").keydown(function() {
             if (event.keyCode == "13") {
                 $('#login').click();
             }
         });
-    });
+    });*/
 
     //loading
     /*$(function () {
