@@ -30,7 +30,7 @@ public class LunimeiController {
    public String test2(){
       String result=null;
       try {
-         result=HryHttpClientUtil.send("http://www.baidu.com", RequestMethodTypeEnum.REQUEST_METHOD_GET,null);
+         result=HryHttpClientUtil.send("http://www.baidu.com", RequestMethodTypeEnum.REQUEST_METHOD_GET.getId(),null);
       } catch (HttpProcessException e) {
          e.printStackTrace();
       }
