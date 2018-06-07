@@ -210,11 +210,11 @@
                     var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
                     for(var i=0;i<RequestMethodTypeEnum.length;i++){
                         var option="";
-                        var row=RequestMethodTypeEnum[i];
-                        if(irequestmethod == row.id){
-                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        var row1=RequestMethodTypeEnum[i];
+                        if(irequestmethod == row1.id){
+                            option="<option value=\""+row1.id+"\" selected>"+row1.value+"</option>";
                         }else{
-                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                            option="<option value=\""+row1.id+"\">"+row1.value+"</option>";
                         }
                         requestMethod=requestMethod+option;
                     }
@@ -223,11 +223,11 @@
                     var ContentTypeEnum=allEnum.ContentTypeEnum;
                     for(var i=0;i<ContentTypeEnum.length;i++){
                         var option="";
-                        var row=ContentTypeEnum[i];
-                        if(icontenttype == row.id){
-                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        var row2=ContentTypeEnum[i];
+                        if(icontenttype == row2.id){
+                            option="<option value=\""+row2.id+"\" selected>"+row2.value+"</option>";
                         }else{
-                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                            option="<option value=\""+row2.id+"\">"+row2.value+"</option>";
                         }
                         contentType=contentType+option;
                     }
@@ -236,11 +236,11 @@
                     var ResponseTypeEnum=allEnum.ResponseTypeEnum;
                     for(var i=0;i<ResponseTypeEnum.length;i++){
                         var option="";
-                        var row=ResponseTypeEnum[i];
-                        if(iparamtype == row.id || iresponsetype == row.id){
-                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        var row3=ResponseTypeEnum[i];
+                        if(iparamtype == row3.id){
+                            option="<option value=\""+row3.id+"\" selected>"+row3.value+"</option>";
                         }else{
-                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                            option="<option value=\""+row3.id+"\">"+row3.value+"</option>";
                         }
                         paramType=paramType+option;
                     }
@@ -248,11 +248,11 @@
                     var responseType="";
                     for(var i=0;i<ResponseTypeEnum.length;i++){
                         var option="";
-                        var row=ResponseTypeEnum[i];
-                        if(iresponsetype == row.id){
-                            option="<option value=\""+row.id+"\" selected>"+row.value+"</option>";
+                        var row4=ResponseTypeEnum[i];
+                        if(iresponsetype == row4.id){
+                            option="<option value=\""+row4.id+"\" selected>"+row4.value+"</option>";
                         }else{
-                            option="<option value=\""+row.id+"\">"+row.value+"</option>";
+                            option="<option value=\""+row4.id+"\">"+row4.value+"</option>";
                         }
                         responseType=responseType+option;
                     }
@@ -261,11 +261,11 @@
                     var dev=devGroup();
                     for(var i=0;i<dev.length;i++){
                         var option="";
-                        var row=dev[i];
-                        if(idev == row.realname){
-                            option="<option value=\""+row.realname+"\" selected>"+row.realname+"</option>";
+                        var row5=dev[i];
+                        if(idev == row5.realname){
+                            option="<option value=\""+row5.realname+"\" selected>"+row5.realname+"</option>";
                         }else{
-                            option="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+                            option="<option value=\""+row5.realname+"\">"+row5.realname+"</option>";
                         }
                         devhtml=devhtml+option;
                     }
@@ -328,7 +328,6 @@
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>示例参数：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">"+iparamsample+"</textarea>\n" +
-                        "               <!-- <input type=\"text\" class=\"input-text\" value=\"\" placeholder=\"\" id=\"iparamsample\" name=\"iparamsample\">-->\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
@@ -344,10 +343,10 @@
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口开发人员：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        /*"                <input type=\"text\" class=\"input-text\" value=\""+idev+"\" placeholder=\"请输入开发人员邮箱\" id=\"idev\" name=\"idev\">\n" +*/
                         "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
-                        "                        "+devhtml+"" +
+                        "                        <option id='autoReport' value='自动导入' style='display:none' selected>自动导入</option>\n" +
+                        "                        "+devhtml+"\n" +
                         "                    </select>\n" +
                         "               </span>\n" +
                         "            </div>\n" +
@@ -359,6 +358,9 @@
                         "        </div>";
 
                     $("#form").append(html);
+                    if(idev == "自动导入"){
+                        document.getElementById("autoReport").style.display = "block";
+                    }
                 }else{
                     alert(JSON.stringify(data));
                 }
