@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcase;
@@ -56,5 +57,11 @@ public class TcaseController {
     @PostMapping("/selectOne.do")
     public Result selectOne(Integer id){
         return ResultUtil.success(tcaseService.selectOne(id));
+    }
+
+    //运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
+    @PostMapping("/runCaseOne.do")
+    public Result runCaseOne(Tcase tcase) throws HttpProcessException {
+        return ResultUtil.success(tcaseService.runOne(tcase));
     }
 }

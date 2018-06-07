@@ -3,9 +3,9 @@ package com.haier.enums;
 public enum RequestMethodTypeEnum {
     REQUEST_METHOD_POST(1,"post"),
     REQUEST_METHOD_GET(2,"get");
-    private int id;
+    private Integer id;
     private String value;
-    RequestMethodTypeEnum(int id, String value){
+    RequestMethodTypeEnum(Integer id, String value){
         this.id =id;
         this.value=value;
     }
@@ -14,7 +14,7 @@ public enum RequestMethodTypeEnum {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -26,7 +26,7 @@ public enum RequestMethodTypeEnum {
         this.value = value;
     }
 
-    public static String getValue(int id){
+    public static String getValue(Integer id){
         for(RequestMethodTypeEnum e:RequestMethodTypeEnum.values()){
             if(e.getId()==id){
                 return e.getValue();
@@ -38,6 +38,22 @@ public enum RequestMethodTypeEnum {
         for(RequestMethodTypeEnum e:RequestMethodTypeEnum.values()){
             if(e.getValue().equalsIgnoreCase(value)){
                 return e.getId();
+            }
+        }
+        return null;
+    }
+    public static RequestMethodTypeEnum getRequestMethodTypeEnum(String value){
+        for(RequestMethodTypeEnum e:RequestMethodTypeEnum.values()){
+            if(e.getValue().equalsIgnoreCase(value)){
+                return e;
+            }
+        }
+        return null;
+    }
+    public static RequestMethodTypeEnum getRequestMethodTypeEnum( Integer id){
+        for(RequestMethodTypeEnum e:RequestMethodTypeEnum.values()){
+            if(e.getId()==id){
+                return e;
             }
         }
         return null;

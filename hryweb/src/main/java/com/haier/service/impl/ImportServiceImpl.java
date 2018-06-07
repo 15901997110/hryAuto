@@ -38,7 +38,7 @@ public class ImportServiceImpl implements ImportService {
     public String sendGet(String url) {
         String jsonResponse;
         try {
-            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET, null);
+            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET.getId(), null);
         } catch (HttpProcessException e) {
             log.info("请求地址为:"+url);
             log.error("请求swaggerUrl时发生异常", e);
