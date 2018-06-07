@@ -35,8 +35,8 @@ public class TcaseServiceImpl implements TcaseService {
     @Override
     public Integer insertOne(Tcase tcase) {
         //参数校验,注意,这些参数应该在前端直接js校验效果会更好
-        if(tcase==null||tcase.getIid()==null||tcase.getCasename()==null
-                ||tcase.getIid()==0||"".equals(tcase.getCasename())){
+        if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
+                || tcase.getIid() == 0 || "".equals(tcase.getCasename())) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         return tcaseMapper.insertSelective(tcase);
@@ -44,18 +44,18 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer deleteOne(Integer id) {
-        if(id==null||id==0){
+        if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setId(id);
-        tcase.setStatus((short)-1);
+        tcase.setStatus((short) -1);
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
     public Integer updateOne(Integer id, Tcase tcase) {
-        if(tcase==null||tcase.getId()==null||tcase.getId()==0){
+        if (tcase == null || tcase.getId() == null || tcase.getId() == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         tcase.setId(id);
@@ -64,7 +64,7 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Tcase selectOne(Integer id) {
-        if(id==null||id==0){
+        if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         return tcaseMapper.selectByPrimaryKey(id);
@@ -73,13 +73,28 @@ public class TcaseServiceImpl implements TcaseService {
     @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
-        if(tcaseCustom!=null) {
+        if (tcaseCustom != null) {
             ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
         }
 
-        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue()+","+SortEnum.ID.getValue());
+        PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
-        PageInfo<TcaseCustom> pageInfo=new PageInfo<>(tcaseCustomList);
+        PageInfo<TcaseCustom> pageInfo = new PageInfo<>(tcaseCustomList);
         return pageInfo;
+    }
+
+    @Override
+    public Void runOne(Tcase tcase) {
+        if(tcase==null){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"tcase对象不可为空!");
+        }
+        //准备数据
+
+
+        //发送http请求
+
+        //断言结果
+
+        return null;
     }
 }

@@ -22,4 +22,12 @@ public interface TcaseService {
     //查-综合查询
     PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize);
 
+    /**
+     * 运行单条Case
+     * @param caseId caseId
+     * @param envId 环境Id
+     * @return
+     */
+    Void runOne(Integer caseId,Integer envId);
+
 }
