@@ -133,7 +133,11 @@
                 </includes>
             </resource>
             <resource>
-                <directory>${basedir}/src/main/resources</directory>
+                <directory>${basedir}/src/main/resources/</directory>
+                <!--<includes>-->
+                    <!--<include>application-prod.yml</include>-->
+                    <!--&lt;!&ndash;<include>application.yml</include>&ndash;&gt;-->
+                <!--</includes>-->
             </resource>
         </resources>
         <plugins>
