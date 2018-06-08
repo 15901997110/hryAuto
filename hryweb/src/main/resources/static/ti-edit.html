@@ -257,17 +257,22 @@
                         responseType=responseType+option;
                     }
 
+                    var existIdev=false;
                     var devhtml="";
                     var dev=devGroup();
                     for(var i=0;i<dev.length;i++){
                         var option="";
                         var row5=dev[i];
                         if(idev == row5.realname){
+                            existIdev=true;
                             option="<option value=\""+row5.realname+"\" selected>"+row5.realname+"</option>";
                         }else{
                             option="<option value=\""+row5.realname+"\">"+row5.realname+"</option>";
                         }
                         devhtml=devhtml+option;
+                    }
+                    if(!existIdev){
+                        devhtml+="<option value=\""+idev+"\" selected>"+idev+"</option>";
                     }
 
 
@@ -345,7 +350,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
-                        "                        <option id='autoReport' value='自动导入' style='display:none' selected>自动导入</option>\n" +
+                        // "                        <option id='autoReport' value='自动导入' style='display:none' selected>自动导入</option>\n" +
                         "                        "+devhtml+"\n" +
                         "                    </select>\n" +
                         "               </span>\n" +
@@ -358,9 +363,9 @@
                         "        </div>";
 
                     $("#form").append(html);
-                    if(idev == "自动导入"){
-                        document.getElementById("autoReport").style.display = "block";
-                    }
+                    // if(idev == "自动导入"){
+                    //     document.getElementById("autoReport").style.display = "block";
+                    // }
                 }else{
                     alert(JSON.stringify(data));
                 }
