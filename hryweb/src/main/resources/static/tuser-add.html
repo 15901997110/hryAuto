@@ -13,7 +13,7 @@
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="lib/comboSelect/css/combo.select.css">
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
@@ -79,7 +79,7 @@
 
 <!--请在下方写此页面业务相关的脚本-->
 <!--<script type="text/javascript" src="lib/comboSelect/js/jquery-1.11.3.min.js"></script>-->
-<script type="text/javascript" src="lib/comboSelect/js/jquery.combo.select.js"></script>
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
@@ -125,7 +125,7 @@
 
                 }
                 $("#groupid").append(html);
-                $('select').comboSelect();
+                $("select").select2();
             },
             fail:function (data) {
                 alert(JSON.stringify(data));
