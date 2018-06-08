@@ -1,7 +1,6 @@
 package com.haier.service;
 
 import com.haier.po.Tenv;
-import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 

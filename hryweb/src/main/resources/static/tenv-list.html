@@ -126,11 +126,12 @@
 				}else{
                     alert(JSON.stringify(data));
 				}
-
+                $("tr:odd").css("background-color","AliceBlue");
             }
         });
 
     });
+
     /*环境-添加*/
     function tenv_add(title,url,w,h){
         layer_show(title,url,w,h);
