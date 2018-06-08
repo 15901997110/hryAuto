@@ -36,11 +36,12 @@ public class ImportServiceImpl implements ImportService {
 
     @Override
     public String sendGet(String url) {
-        String jsonResponse = null;
+        String jsonResponse;
         try {
-            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET, null);
+            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET.getId(), null);
         } catch (HttpProcessException e) {
-            log.error("", e);
+            log.info("请求地址为:"+url);
+            log.error("请求swaggerUrl时发生异常", e);
             return null;
         }
         return jsonResponse;
@@ -55,7 +56,7 @@ public class ImportServiceImpl implements ImportService {
      * @date: 2018-05-21
      */
     @Override
-    public Integer findServiceId(String serviceKey, String serviceName) {
+    public Integer findServiceId(String serviceKey, String serviceName,String realName) {
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andServicekeyEqualTo(serviceKey).andIsdelEqualTo((short)0);
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
@@ -66,28 +67,32 @@ public class ImportServiceImpl implements ImportService {
         } else {//无记录,则插入一条记录,返回插入serviceId
             tservice.setServicekey(serviceKey);
             tservice.setServicename(serviceName);
-            tservice.setEditor("luqiwei@kjtpay.com.cn");
+            tservice.setEditor(realName);
             tserviceMapper.insertSelective(tservice);
             return tservice.getId();
         }
     }
 
     @Override
-    public ImportInterfaceResult importInterface(Integer serviceId, String serviceKey, JSONObject jsonObject, Boolean overwrite,String developerEmail) {
+    public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite,String iDev) {
+        String serviceKey=jsonObject.getJSONObject("info").getString("title").trim();
+        String serviceName=jsonObject.getJSONObject("info").getString("description").trim();
+
         ImportInterfaceResult result = new ImportInterfaceResult();
         result.setServiceId(serviceId);
         result.setServiceKey(serviceKey);
+        result.setServiceName(serviceName);
         List<String> insertList = new ArrayList<String>();
         List<String> updateList = new ArrayList<String>();
         List<String> failList = new ArrayList<String>();
 
 
-        //获取接口表(ti)存在记录,by serviceId
+        //获取接口表(ti)已经存在的记录,by serviceId
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
         criteria.andServiceidEqualTo(serviceId);//筛选serviceId
         criteria.andIstatusNotEqualTo((short)-1);//筛选状态!=-1(非删除的数据)
-        List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(包括删除的)
+        List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
         List<String> existIuri = new ArrayList<String>();
         Map<String,Integer> existIuriId=new HashMap<String,Integer>();//后续更新记录时会用到primaryKey
         if (tis != null) {
@@ -113,7 +118,7 @@ public class ImportServiceImpl implements ImportService {
             ti.setServiceid(serviceId);
             ti.setIuri(iUri);
             ti.setRemark(summary);
-            ti.setIdev(developerEmail);
+            ti.setIdev(iDev);
 
 
             if (Objects.isNull(existIuri) || !existIuri.contains(iUri)) {//如果existIurl==null,说明此serviceId没有对应

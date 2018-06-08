@@ -10,7 +10,9 @@ public enum RegexEnum {
 
     PWD_REGEX("^[A-Za-z0-9~`!@#\\$%^&\\*\\(\\),\\.\\+\\<>\\?\\-_\\=\\\\/:;\"'\\|\\[\\]\\{\\}]{6,}+$","密码正则,字母,数字,英文符号不包括空格"),
 
+    GROUP_SH_REGEX("^1[0-9]$","上海组"),
 
+    GROUP_HZ_REGEX("^2[0-9]$","杭州组"),
     ;
     private String regex;
     private String desc;

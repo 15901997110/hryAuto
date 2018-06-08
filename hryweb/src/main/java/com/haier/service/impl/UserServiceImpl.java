@@ -10,6 +10,7 @@ import com.haier.po.User;
 import com.haier.po.UserExample;
 import com.haier.service.UserService;
 import com.haier.util.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/12 15:27
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -93,8 +95,14 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selectByCondition(User user,Integer pageNum,Integer pageSize) {
         if(user!=null){
             ReflectUtil.setInvalidFieldToNull(user,false);
-            ReflectUtil.setStringFieldAddPercent(user,false);
+            ReflectUtil.setFieldAddPercentAndCleanZero(user,false);
         }
+
+        if(pageNum==null||pageSize==null){
+            pageNum=1;
+            pageSize=10;
+        }
+
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
 
@@ -173,5 +181,22 @@ public class UserServiceImpl implements UserService {
             throw new HryException(10087,"旧密码不匹配");
         }
 
+    }
+
+    @Override
+    public List<User> selectByGroupId(Integer groupId) {
+        UserExample userExample=new UserExample();
+        UserExample.Criteria criteria = userExample.createCriteria();
+        criteria.andStatusGreaterThan((short)0);
+        if(groupId!=null){
+            if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
+                criteria.andGroupidEqualTo((short)12);//上海组对应的GroupID为11-19
+            }
+            if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
+                criteria.andGroupidEqualTo((short)22);//杭州组对应的GroupID为21-29
+            }
+        }
+
+        return userMapper.selectByExample(userExample);
     }
 }

@@ -88,7 +88,8 @@
             <dt><i class="Hui-iconfont">&#xe60d;</i> 用户管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="tuser-list.html" data-title="用户列表" href="javascript:;">用户列表</a></li>
+                    <li id="userList"><a data-href="tuser-list.html" data-title="用户列表" href="javascript:;">用户列表</a></li>
+                    <li id="updatePassword"><a data-href="tuser-updatePassword.html" data-title="修改密码" href="javascript:;">修改密码</a></li>
                 </ul>
             </dd>
         </dl>
@@ -199,13 +200,12 @@
 
     $(document).ready(function () {
 
-        var loginName=$.cookie('identityCookie'); // 读取 cookie
+        var loginName=$.cookie('identityCookie');
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
         $("#userName").append(realName);
-        //alert("groupid="+groupId+"loginName="+loginName)
         if(groupId != 1){
-            $("#menu-user").hide();
+            $("#userList").hide();
         }
         if(loginName != "lishanghan@kjtpay.com.cn"){
             $("#menu-comments").hide();
@@ -240,40 +240,7 @@
         });
     }
 
-    /*资讯-添加*/
-    function article_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
 
-    /*图片-添加*/
-    function picture_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-
-    /*产品-添加*/
-    function product_add(title, url) {
-        var index = layer.open({
-            type: 2,
-            title: title,
-            content: url
-        });
-        layer.full(index);
-    }
-
-    /*用户-添加*/
-    function member_add(title, url, w, h) {
-        layer_show(title, url, w, h);
-    }
 
 
 </script>

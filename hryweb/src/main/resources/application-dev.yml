@@ -6,6 +6,7 @@ logging:
     com.haier.controller: debug
     com.haier.interceptor: debug
     com.haier.service: debug
+    com.haier.service.impl: debug
 spring:
   application:
     name: hryweb

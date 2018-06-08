@@ -2,18 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.haier.mapper.TenvdetailCustomMapper">
     <resultMap id="TenvdetailCustomResultMap" type="com.haier.po.TenvdetailCustom">
+        <id column="id" property="id"/>
         <result column="serviceid" property="serviceid"></result>
-        <result column="envid" property="envid"></result>
-        <result column="hostinfo" property="hostinfo"></result>
-        <result column="dbinfo" property="dbinfo"></result>
         <result column="servicekey" property="servicekey"/>
         <result column="servicename" property="servicename"/>
+        <result column="envid" property="envid"></result>
         <result column="envkey" property="envkey"/>
         <result column="remark" property="envremark"/>
+        <result column="hostinfo" property="hostinfo"></result>
+        <result column="dbinfo" property="dbinfo"></result>
+        <result column="swaggerurl" property="swaggerurl"/>
+        <result column="status" property="status"/>
     </resultMap>
     <select id="selectByCondition" parameterType="com.haier.po.TenvdetailCustom"
             resultMap="TenvdetailCustomResultMap">
         SELECT
+        tenvdetail.`id`,
         tenvdetail.`serviceId`,
         tservice.`serviceKey`,
         tservice.`serviceName`,
@@ -21,29 +25,37 @@
         tenv.`envKey`,
         tenv.`remark`,
         tenvdetail.`hostInfo`,
-        tenvdetail.`dbInfo`
+        tenvdetail.`dbInfo`,
+        tenvdetail.`swaggerUrl`,
+        tenvdetail.`status`
         FROM tenvdetail
         INNER JOIN tservice ON tenvdetail.`serviceId` = tservice.`id` AND tservice.`isDel` = 0
         INNER JOIN tenv ON tenvdetail.`envId` = tenv.`id`
-        WHERE 1=1
+        WHERE tenvdetail.status>0
         <if test="_parameter!=null">
-            <if test="serviceid!=null and serviceid!=0">
+            <if test="id!=null">
+                AND tenvdetail.id=#{id}
+            </if>
+            <if test="serviceid!=null">
                 AND tenvdetail.serviceId=#{serviceid}
             </if>
-            <if test="envid!=null and envid!=0">
+            <if test="envid!=null">
                 AND tenvdetail.envId=#{envid}
             </if>
-            <if test="servicekey!=null and servicekey!=''">
+            <if test="servicekey!=null">
                 AND (tservice.serviceKey like #{servicekey} or tservice.serviceName like #{servicekey})
             </if>
-            <if test="envkey!=null and envkey!=''">
+            <if test="envkey!=null">
                 AND (tenv.envKey like #{envkey} or tenv.remark like #{envkey})
             </if>
-            <if test="hostinfo!=null and hostinfo!=''">
+            <if test="hostinfo!=null">
                 AND tenvdetail.hostInfo like #{hostinfo}
             </if>
-            <if test="dbinfo!=null and dbinfo !=''">
+            <if test="dbinfo!=null">
                 AND tenvdetail.dbInfo like #{dbinfo}
+            </if>
+            <if test="swaggerurl!=null">
+                AND tenvdetail.swaggerUrl like #{swaggerurl}
             </if>
         </if>
     </select>

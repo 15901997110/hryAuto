@@ -18,7 +18,6 @@ import java.util.Objects;
  * @Date: 2018/5/8 20:26
  */
 @Slf4j
-@Api(value="tenv")
 @RestController
 @RequestMapping("/tenv")
 public class TenvController {
@@ -28,9 +27,8 @@ public class TenvController {
     /**
      * 查询全部环境列表处理
      * */
-    @ApiOperation(value = "获取全部环境信息")
-    @PostMapping(value="/tenvList.do")
-    public Result tenvList(){
+    @PostMapping(value="/selectAll.do")
+    public Result selectAll(){
         return ResultUtil.success(tenvService.selectAll());
     }
 
@@ -38,9 +36,9 @@ public class TenvController {
      * 查询单个环境信息
      *  update by lish 2018-05-18 17:41
      * */
-    @ApiOperation(value="根据环境Id查询环境信息")
-    @PostMapping(value="/tenvOne.do")
-    public Result tenvOne(Integer envId){
+
+    @PostMapping(value="/selectOne.do")
+    public Result selectOne(Integer envId){
         Tenv tenv=tenvService.selectOne(envId);
         log.info("查询单条环境id="+envId);
         return ResultUtil.success(tenv);
@@ -50,9 +48,8 @@ public class TenvController {
      * 新增环境处理
      * update by lish 2018-05-18 17:41
      * */
-    @ApiOperation(value="添加环境信息")
-    @PostMapping(value="/tenvAdd.do")
-    public Result tenvAdd(Tenv tenv){
+    @PostMapping(value="/insertOne.do")
+    public Result insertOne(Tenv tenv){
         log.info("新增的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
         return ResultUtil.success(tenvService.insertOne(tenv));
 
@@ -63,8 +60,8 @@ public class TenvController {
      *  update by lish 2018-05-18 17:41
      * */
     @ApiOperation("删除环境信息")
-    @PostMapping(value="/tenvDel.do")
-    public Result tenvDel(Integer envId){
+    @PostMapping(value="/deleteOne.do")
+    public Result deleteOne(Integer envId){
         log.info("要删除的环境id="+envId);
         return ResultUtil.success(tenvService.deleteOne(envId));
     }
@@ -74,16 +71,9 @@ public class TenvController {
      *  update by lish 2018-05-18 17:41
      * */
     @ApiOperation("更新环境信息")
-    @PostMapping(value="/tenvEdit.do")
-    public Result tenvEdit(Tenv tenv){
-        if(Objects.isNull(tenv.getId())||Objects.isNull(tenv.getEnvkey())){
-            return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
-        }else{
-            log.info("更新后的环境id="+tenv.getId()+"更新后的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
-            tenvService.updateOne(tenv.getId(),tenv);
-            return ResultUtil.success();
-        }
-
+    @PostMapping(value="/updateOne.do")
+    public Result updateOne(Tenv tenv){
+        return ResultUtil.success(tenvService.updateOne(tenv.getId(),tenv));
     }
 
 

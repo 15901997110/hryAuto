@@ -104,7 +104,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tenv/tenvOne.do",
+            url: "/tenv/selectOne.do",
             data: {
                 envId: id
             },
@@ -170,7 +170,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tenv/tenvEdit.do',
+                url: '/tenv/updateOne.do',
                 data:{
                     id:id,
                     envkey:envkey,

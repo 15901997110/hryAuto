@@ -104,6 +104,66 @@ public class TenvdetailExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
+        public Criteria andIdIsNull() {
+            addCriterion("id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdIsNotNull() {
+            addCriterion("id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdEqualTo(Integer value) {
+            addCriterion("id =", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdNotEqualTo(Integer value) {
+            addCriterion("id <>", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdGreaterThan(Integer value) {
+            addCriterion("id >", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("id >=", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdLessThan(Integer value) {
+            addCriterion("id <", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdLessThanOrEqualTo(Integer value) {
+            addCriterion("id <=", value, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdIn(List<Integer> values) {
+            addCriterion("id in", values, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdNotIn(List<Integer> values) {
+            addCriterion("id not in", values, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdBetween(Integer value1, Integer value2) {
+            addCriterion("id between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
         public Criteria andServiceidIsNull() {
             addCriterion("serviceId is null");
             return (Criteria) this;
@@ -361,6 +421,136 @@ public class TenvdetailExample {
 
         public Criteria andDbinfoNotBetween(String value1, String value2) {
             addCriterion("dbInfo not between", value1, value2, "dbinfo");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlIsNull() {
+            addCriterion("swaggerUrl is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlIsNotNull() {
+            addCriterion("swaggerUrl is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlEqualTo(String value) {
+            addCriterion("swaggerUrl =", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlNotEqualTo(String value) {
+            addCriterion("swaggerUrl <>", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlGreaterThan(String value) {
+            addCriterion("swaggerUrl >", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlGreaterThanOrEqualTo(String value) {
+            addCriterion("swaggerUrl >=", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlLessThan(String value) {
+            addCriterion("swaggerUrl <", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlLessThanOrEqualTo(String value) {
+            addCriterion("swaggerUrl <=", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlLike(String value) {
+            addCriterion("swaggerUrl like", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlNotLike(String value) {
+            addCriterion("swaggerUrl not like", value, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlIn(List<String> values) {
+            addCriterion("swaggerUrl in", values, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlNotIn(List<String> values) {
+            addCriterion("swaggerUrl not in", values, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlBetween(String value1, String value2) {
+            addCriterion("swaggerUrl between", value1, value2, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andSwaggerurlNotBetween(String value1, String value2) {
+            addCriterion("swaggerUrl not between", value1, value2, "swaggerurl");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Integer value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Integer value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Integer value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Integer> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Integer> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
     }

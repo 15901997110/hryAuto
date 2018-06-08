@@ -16,28 +16,20 @@ public enum StatusCodeEnum {
     REGEX_ERROR_EMAIL(7,"邮箱正则不匹配,请输入xxx@xx.xx格式"),
     PRIMARYKEY_NULL(8,"主键不可为空"),
     REGEX_ERROR_PWD(9,"密码不符合规范,密码构成只能是数字,字母,英文符号(不包括空格),长度至少6位"),
+
     HTTP_ERROR(100,"发送http请求时异常"),
-
-
     PARSE_JSON_ERROR(101,"字符串转换为JSONObject时异常"),
 
     NOT_FOUND(1000, "查询记录不存在！"),
     CHECK_ERROR(1001, "校验不满足条件"),
     END_TIME_BEFORE_START_TIME(1003, "开始时间不能大于结束时间!"),
     PHONE_EMPTY(1004, "手机号码为空"),
-    TEMPLATE_PARAMS_EMPTY(1005, "模板参数为空"),
-    TEMPLATE_NOT_FOUND(1006, "未找到模板,或者模板不在有效期"),
-    PHONE_PARAMS_NOT_CONSISTENT(1007, "手机号与参数不一致"),
     PHONE_FORMAT_ERROR(1008, "手机号格式不对"),
     PARAMS_FORMAT_ERROR(1009, "模板参数格式不对"),
-    MQ_SEND_ERROR(1010, "MQ消息发送失败"),
-    SMS_RESEND_STATUS_ERROR(1011, "短信状态不是'发送失败',不能重新发送"),
-
     DB_ERROR(9001, "数据库错误！"),
     PARSE_DATE_ERROR(9002, "时间转换出错！"),
     SYSTEM_MAINTAIN(9990, "第三方系统维护中！"),
-    UNKNOWN_BIZ_ERROR(9998, "未知的业务异常！"),
-    SYSTEM_ERROR(9999, "系统错误"),
+    UNKNOWN_BIZ_ERROR(9997, "未知的业务异常！"),
     NETWORK_ERROR(9998, "网络异常");
 
     private Integer code;

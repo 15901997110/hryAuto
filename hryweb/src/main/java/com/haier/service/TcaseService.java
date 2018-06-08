@@ -1,6 +1,8 @@
 package com.haier.service;
 
+import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.github.pagehelper.PageInfo;
+import com.haier.po.RunOneResult;
 import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
 
@@ -21,5 +23,10 @@ public interface TcaseService {
     Tcase selectOne(Integer tcaseId);
     //查-综合查询
     PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize);
+
+    /**
+     * 运行单条Case
+     */
+    RunOneResult runOne(Tcase tcase) throws HttpProcessException;
 
 }

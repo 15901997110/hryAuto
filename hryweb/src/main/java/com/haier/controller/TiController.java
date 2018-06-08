@@ -28,12 +28,6 @@ public class TiController {
     //增
     @PostMapping("/insertOne.do")
     public Result insertOne(Ti ti){
-        //简单参数校验
-        if(ti==null||ti.getServiceid()==null||
-                ti.getServiceid()==0||ti.getIuri()==null
-                ||"".equals(ti.getIuri())){
-            throw new HryException(10086,"入参错误:"+ti.toString());
-        }
         return ResultUtil.success(tiService.insertOne(ti));
     }
 
@@ -42,9 +36,7 @@ public class TiController {
      * */
     @PostMapping("/selectOne.do")
     public Result selectOne(Integer id){
-        Ti ti=tiService.selectOne(id);
-        log.info("查询单个接口id="+id);
-        return ResultUtil.success(ti);
+        return ResultUtil.success(tiService.selectOne(id));
     }
 
 
@@ -67,11 +59,6 @@ public class TiController {
     //改
     @PostMapping("updateOne.do")
     public Result updateOne(Ti ti){
-        //参数校验
-        if(ti==null||ti.getId()==null){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
-        //更新数据
         return ResultUtil.success(tiService.updateOne(ti.getId(),ti));
     }
 

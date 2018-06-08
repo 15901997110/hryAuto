@@ -9,6 +9,7 @@ import com.haier.enums.StatusCodeEnum;
  */
 public class HryException extends RuntimeException {
     private Integer code;
+
     public Integer getCode() {
         return code;
     }
@@ -22,8 +23,15 @@ public class HryException extends RuntimeException {
         super(statusCodeEnum.getMsg());
         this.code = statusCodeEnum.getCode();
     }
+
+    //追加错误信息
+    public HryException(StatusCodeEnum statusCodeEnum, String msg) {
+        super(statusCodeEnum.getMsg() + "--" + msg);
+        this.code = statusCodeEnum.getCode();
+    }
+
     //自定义错误信息
-    public HryException(Integer code,String msg) {
+    public HryException(Integer code, String msg) {
         super(msg);
         this.code = code;
     }

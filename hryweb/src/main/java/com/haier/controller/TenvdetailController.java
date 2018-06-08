@@ -32,11 +32,17 @@ public class TenvdetailController {
 
     //删
     @PostMapping("/deleteOne.do")
-    public Result deleteOne(Tenvdetail tenvdetail){
-        return ResultUtil.success(tenvdetailService.deleteOne(tenvdetail));
+    public Result deleteOne(Integer id){
+        return ResultUtil.success(tenvdetailService.deleteOne(id));
     }
 
-    //查
+    //查-仅查询tenvdetail表数据,返回list
+    @PostMapping("/selectByConditionSimple.do")
+    public Result selectByConditionSimple(Tenvdetail tenvdetail){
+        return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetail));
+    }
+
+    //查-关联表查询,返回包装类,并且携带pageinfo
     @PostMapping("/selectByCondition.do")
     public Result selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize){
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom,pageNum,pageSize));

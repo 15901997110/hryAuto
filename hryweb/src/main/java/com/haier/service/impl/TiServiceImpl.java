@@ -34,6 +34,13 @@ public class TiServiceImpl implements TiService {
     TcaseMapper tcaseMapper;
     @Override
     public Integer insertOne(Ti ti) {
+        //简单参数校验
+        if(ti==null||ti.getServiceid()==null||
+                ti.getServiceid()==0||ti.getIuri()==null
+                ||"".equals(ti.getIuri())){
+            throw new HryException(10086,"入参错误:"+ti.toString());
+        }
+
         //插入数据之前判断记录是否存在
         TiExample tiExample=new TiExample();
         tiExample.createCriteria()
@@ -95,10 +102,14 @@ public class TiServiceImpl implements TiService {
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
         if(tiCustom!=null) {
-            ReflectUtil.setStringFieldAddPercent(tiCustom, true);
+            ReflectUtil.setFieldAddPercentAndCleanZero(tiCustom, true);
         }
-
-        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue());
+        //如果未传入分页信息,默认查询第一页总共10条数据
+        if(pageNum==null||pageSize==null){
+            pageNum=1;
+            pageSize=10;
+        }
+        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue()+","+SortEnum.ID.getValue());
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
         PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);
         return pageInfo;

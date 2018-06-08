@@ -13,6 +13,7 @@ import java.util.List;
 public class ImportInterfaceResult {
     private Integer serviceId;//服务ID,tservice.id
     private String serviceKey;//tservice.servicekey
+    private String serviceName;
     private Integer totalCount;//总共解析到多少个接口
     private Integer insertCount;//插入多个个接口
     private List<String> insertList;

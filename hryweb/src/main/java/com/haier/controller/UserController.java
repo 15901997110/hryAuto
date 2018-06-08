@@ -6,6 +6,7 @@ import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.UserService;
 import com.haier.util.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpSession;
  * @Author: luqiwei
  * @Date: 2018/5/12 15:11
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -32,6 +34,8 @@ public class UserController {
     public Result selectOne(Integer id){
         return ResultUtil.success(userService.selectOne(id));
     }
+
+    //
 
     //新增用户
     @PostMapping("/insertOne.do")
@@ -55,6 +59,12 @@ public class UserController {
     @PostMapping("/selectByCondition.do")
     public Result selectByCondition(User user,Integer pageNum,Integer pageSize){
         return ResultUtil.success(userService.selectByCondition(user,pageNum,pageSize));
+    }
+
+    //根据GroupId查询相应组的用户列表
+    @PostMapping("/selectByGroupId.do")
+    public Result selectByGroupId(Integer groupId){
+        return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 
     //修改用户密码
