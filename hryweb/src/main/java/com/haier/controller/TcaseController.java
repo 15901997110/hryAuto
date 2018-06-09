@@ -34,12 +34,25 @@ public class TcaseController {
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
 
-    //删
+    /**
+     * 删除单个tcase记录
+     * @param id
+     * @return
+     */
     @PostMapping("/deleteOne.do")
     public Result deleteOne(Integer id){
         return ResultUtil.success(tcaseService.deleteOne(id));
     }
 
+    /**
+     * 根据条件删除tcase记录,现在仅支持根据iId和envId删除tcase记录
+     * @param tcase
+     * @return
+     */
+    @PostMapping("/deleteByCondition.do")
+    public Result deleteByCondition(Tcase tcase){
+        return ResultUtil.success(tcaseService.deleteByCondition(tcase));
+    }
 
     //改
     @PostMapping("/updateOne.do")

@@ -13,8 +13,16 @@ import java.util.List;
  */
 public interface TiService {
     Integer insertOne(Ti ti);
-    Integer updateOne(Integer id,Ti ti);
+
+    Integer updateOne(Integer id, Ti ti);
+
     Integer deleteOne(Integer id);//需谨慎操作,删除ti表的记录,将会连带删除tcase表的记录
+
+    Integer deleteByCondition(Ti ti);
+
     Ti selectOne(Integer id);
+
     PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize);
+
+    List<Ti> selectByCondition(Ti ti);
 }

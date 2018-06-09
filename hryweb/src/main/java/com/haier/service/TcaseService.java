@@ -15,14 +15,21 @@ public interface TcaseService {
 
     //增
     Integer insertOne(Tcase tcase);
+
     //删
     Integer deleteOne(Integer tcaseId);
+
+    //删-根据iId和envId删除case记录
+    Integer deleteByCondition(Tcase tcase);
+
     //改
-    Integer updateOne(Integer tcaseId,Tcase tcase);
+    Integer updateOne(Integer tcaseId, Tcase tcase);
+
     //查-根据主键查询
     Tcase selectOne(Integer tcaseId);
+
     //查-综合查询
-    PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize);
+    PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize);
 
     /**
      * 运行单条Case

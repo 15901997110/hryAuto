@@ -67,14 +67,7 @@ public class TserviceController {
      * */
     @PostMapping(value = "/updateOne.do")
     public Result updateOne(Tservice tservice){
-        if(Objects.isNull(tservice.getServicekey())|| Objects.isNull(tservice.getServicename()) || Objects.isNull(tservice.getHttptype())){
-            return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
-        }else{
-            log.info("更新后服务简称="+tservice.getServicekey()+"更新后的服务名称=" + tservice.getServicename() + "，协议类型=" + tservice.getHttptype());
-            tserviceService.updateOne(tservice.getId(),tservice);
-            return ResultUtil.success();
-        }
-
+        return ResultUtil.success(tserviceService.updateOne(tservice.getId(),tservice));
     }
 
     /**

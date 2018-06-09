@@ -9,6 +9,7 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
 import com.haier.po.*;
+import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class TiServiceImpl implements TiService {
     TiCustomMapper tiCustomMapper;
     @Autowired
     TcaseMapper tcaseMapper;
+    @Autowired
+    TcaseService tcaseService;
+
     @Override
     public Integer insertOne(Ti ti) {
         //简单参数校验
@@ -81,10 +85,8 @@ public class TiServiceImpl implements TiService {
 
         //1.先删除tcase表中的记录
         Tcase tcase=new Tcase();
-        tcase.setStatus((short)-1);
-        TcaseExample tcaseExample=new TcaseExample();
-        tcaseExample.createCriteria().andIidEqualTo(id);
-        tcaseMapper.updateByExampleSelective(tcase,tcaseExample);
+        tcase.setIid(id);
+        tcaseService.deleteByCondition(tcase);
 
         //2.再删除ti表中的记录
         Ti ti=new Ti();
@@ -94,7 +96,40 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
+    public Integer deleteByCondition(Ti ti) {
+        ReflectUtil.setInvalidFieldToNull(ti,false);
+        if(ti==null||ti.getServiceid()==null){
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION,"暂时只支持根据serviceid删除接口");
+        }
+        //先删除tcase表中的记录
+        int countDeleteTcase=0;
+        Ti t=new Ti();
+        t.setServiceid(ti.getServiceid());
+        List<Ti> tis = this.selectByCondition(t);
+        if(tis!=null&&tis.size()>0){
+            for(Ti tt:tis){
+                Tcase tcase=new Tcase();
+                tcase.setIid(tt.getId());
+                Integer integer = tcaseService.deleteByCondition(tcase);
+                countDeleteTcase+=integer;
+            }
+        }
+
+        //再删除ti中的记录
+        TiExample tiExample=new TiExample();
+        tiExample.createCriteria()
+                .andIstatusGreaterThan((short)0)
+                .andServiceidEqualTo(ti.getServiceid());
+        Ti i=new Ti();
+        i.setIstatus((short)-1);
+        return tiMapper.updateByExampleSelective(i,tiExample);
+    }
+
+    @Override
     public Ti selectOne(Integer id) {
+        if(id==null||id==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        }
         return tiMapper.selectByPrimaryKey(id);
     }
 
@@ -113,5 +148,29 @@ public class TiServiceImpl implements TiService {
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
         PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);
         return pageInfo;
+    }
+
+    @Override
+    public List<Ti> selectByCondition(Ti ti) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(ti,false);
+        TiExample tiExample=new TiExample();
+        TiExample.Criteria criteria = tiExample.createCriteria();
+        criteria.andIstatusGreaterThan((short)0);
+        if(ti.getServiceid()!=null){
+            criteria.andServiceidEqualTo(ti.getServiceid());
+        }
+        if(ti.getIuri()!=null){
+            criteria.andIuriLike(ti.getIuri());
+        }
+        if(ti.getRemark()!=null){
+            criteria.andRemarkLike(ti.getRemark());
+        }
+        if(ti.getIdev()!=null){
+            criteria.andIdevLike(ti.getIdev());
+        }
+        if(ti.getIparamsample()!=null){
+            criteria.andIparamsampleLike(ti.getIparamsample());
+        }
+        return tiMapper.selectByExample(tiExample);
     }
 }

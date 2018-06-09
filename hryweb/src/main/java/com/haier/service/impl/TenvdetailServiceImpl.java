@@ -25,9 +25,11 @@ import java.util.List;
 @Slf4j
 @Service
 public class TenvdetailServiceImpl implements TenvdetailService {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     TenvdetailMapper tenvdetailMapper;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     TenvdetailCustomMapper tenvdetailCustomMapper;
 
@@ -59,7 +61,33 @@ public class TenvdetailServiceImpl implements TenvdetailService {
         if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
-        return tenvdetailMapper.deleteByPrimaryKey(id);
+        Tenvdetail tenvdetail =new Tenvdetail();
+        tenvdetail.setId(id);
+        tenvdetail.setStatus(-1);
+        return this.updateOne(tenvdetail);
+    }
+
+    /**
+     * 根据条件删除tenvdetail记录,现在支持的条件 有serviceid和envid
+     * @param tenvdetail
+     * @return
+     */
+    @Override
+    public Integer deleteByCondition(Tenvdetail tenvdetail){
+        ReflectUtil.setInvalidFieldToNull(tenvdetail,false);
+        if(tenvdetail==null||(tenvdetail.getServiceid()==null&&tenvdetail.getEnvid()==null)){
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION,"暂时只支持根据serviceid和envid删除tenvdetail记录");
+        }
+        TenvdetailExample tenvdetailExample=new TenvdetailExample();
+        TenvdetailExample.Criteria criteria = tenvdetailExample.createCriteria();
+        criteria.andStatusGreaterThan(0);
+        if(tenvdetail.getServiceid()!=null)
+            criteria.andServiceidEqualTo(tenvdetail.getServiceid());
+        if(tenvdetail.getEnvid()!=null)
+            criteria.andEnvidEqualTo(tenvdetail.getEnvid());
+        Tenvdetail t=new Tenvdetail();
+        t.setStatus(-1);
+        return tenvdetailMapper.updateByExampleSelective(t,tenvdetailExample);
     }
 
     @Override
@@ -72,10 +100,10 @@ public class TenvdetailServiceImpl implements TenvdetailService {
 
     @Override
     public Integer updateOne(Tenvdetail tenvdetail) {
+        ReflectUtil.setInvalidFieldToNull(tenvdetail, false);
         if (tenvdetail == null || tenvdetail.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
-        ReflectUtil.setInvalidFieldToNull(tenvdetail, false);
         return tenvdetailMapper.updateByPrimaryKeySelective(tenvdetail);
     }
 

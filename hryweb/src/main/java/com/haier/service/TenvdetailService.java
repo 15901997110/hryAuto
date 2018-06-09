@@ -13,9 +13,16 @@ import java.util.List;
  */
 public interface TenvdetailService {
     Integer insertOne(Tenvdetail tenvdetail);
+
     Integer deleteOne(Integer id);
+
+    Integer deleteByCondition(Tenvdetail tenvdetail);
+
     Tenvdetail selectOne(Integer id);
+
     Integer updateOne(Tenvdetail tenvdetail);
+
     List<Tenvdetail> selectByCondition(Tenvdetail tenvdetail);
-    PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize);
+
+    PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom, Integer pageNum, Integer pageSize);
 }

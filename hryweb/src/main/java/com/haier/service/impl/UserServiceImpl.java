@@ -26,6 +26,7 @@ import java.util.Objects;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     UserMapper userMapper;
 

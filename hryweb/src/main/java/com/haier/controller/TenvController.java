@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Objects;
 
 /**
@@ -26,59 +27,43 @@ public class TenvController {
 
     /**
      * 查询全部环境列表处理
-     * */
-    @PostMapping(value="/selectAll.do")
-    public Result selectAll(){
+     */
+    @PostMapping(value = "/selectAll.do")
+    public Result selectAll() {
         return ResultUtil.success(tenvService.selectAll());
     }
 
     /**
      * 查询单个环境信息
-     *  update by lish 2018-05-18 17:41
-     * */
+     * update by lish 2018-05-18 17:41
+     */
 
-    @PostMapping(value="/selectOne.do")
-    public Result selectOne(Integer envId){
-        Tenv tenv=tenvService.selectOne(envId);
-        log.info("查询单条环境id="+envId);
-        return ResultUtil.success(tenv);
+    @PostMapping(value = "/selectOne.do")
+    public Result selectOne(Integer id) {
+        return ResultUtil.success(tenvService.selectOne(id));
     }
 
     /**
      * 新增环境处理
      * update by lish 2018-05-18 17:41
-     * */
-    @PostMapping(value="/insertOne.do")
-    public Result insertOne(Tenv tenv){
-        log.info("新增的环境名称=" + tenv.getEnvkey() + "，描述=" + tenv.getRemark());
+     */
+    @PostMapping(value = "/insertOne.do")
+    public Result insertOne(Tenv tenv) {
         return ResultUtil.success(tenvService.insertOne(tenv));
 
     }
 
-    /**
-     * 删除环境处理
-     *  update by lish 2018-05-18 17:41
-     * */
-    @ApiOperation("删除环境信息")
-    @PostMapping(value="/deleteOne.do")
-    public Result deleteOne(Integer envId){
-        log.info("要删除的环境id="+envId);
-        return ResultUtil.success(tenvService.deleteOne(envId));
-    }
 
-    /**
-     * 编辑环境处理
-     *  update by lish 2018-05-18 17:41
-     * */
-    @ApiOperation("更新环境信息")
-    @PostMapping(value="/updateOne.do")
-    public Result updateOne(Tenv tenv){
-        return ResultUtil.success(tenvService.updateOne(tenv.getId(),tenv));
+    @PostMapping(value = "/deleteOne.do")
+    public Result deleteOne(Integer id) {
+        return ResultUtil.success(tenvService.deleteOne(id));
     }
 
 
-
-
+    @PostMapping(value = "/updateOne.do")
+    public Result updateOne(Tenv tenv) {
+        return ResultUtil.success(tenvService.updateOne(tenv.getId(), tenv));
+    }
 
 
 }

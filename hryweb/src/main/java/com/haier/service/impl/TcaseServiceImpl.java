@@ -24,6 +24,7 @@ import java.util.List;
  * @Author: luqiwei
  * @Date: 2018/5/24 17:07
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Service
 public class TcaseServiceImpl implements TcaseService {
@@ -65,6 +66,27 @@ public class TcaseServiceImpl implements TcaseService {
         tcase.setId(id);
         tcase.setStatus((short) -1);
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
+    }
+
+    @Override
+    public Integer deleteByCondition(Tcase tcase){
+        //暂时只实现根据iId,envId删除的功能
+        ReflectUtil.setInvalidFieldToNull(tcase,false);
+        if(tcase==null||(tcase.getIid()==null&&tcase.getEnvid()==null)){
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION,"只支持根据iid和envid删除case");
+        }
+        TcaseExample tcaseExample=new TcaseExample();
+        TcaseExample.Criteria criteria = tcaseExample.createCriteria();
+        criteria.andStatusGreaterThan((short)0);
+        if(tcase.getIid()!=null){
+            criteria.andIidEqualTo(tcase.getIid());
+        }
+        if(tcase.getEnvid()!=null){
+            criteria.andEnvidEqualTo(tcase.getEnvid());
+        }
+        Tcase t=new Tcase();
+        t.setStatus((short)-1);
+        return tcaseMapper.updateByExampleSelective(t, tcaseExample);
     }
 
     @Override
