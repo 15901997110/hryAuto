@@ -73,6 +73,7 @@
             <dd>
                 <ul>
                     <li><a data-href="tservice-list.html" data-title="服务管理" href="javascript:void(0)">服务管理</a></li>
+                    <li><a data-href="tenvdetail.html" data-title="服务与环境映射管理" href="javascript:void(0)">服务与环境映射</a></li>
                 </ul>
             </dd>
         </dl>
@@ -221,11 +222,36 @@
 
     //退出
     function login_out(){
-        $.cookie('identityCookie', '', { expires: -1 }); // 删除 cookie
-        $.cookie('realnameCookie', '', { expires: -1 });
-        $.cookie('groupidCookie', '', { expires: -1 });
-        document.location.reload();
-        $(location).attr('href', 'login.html');
+        $.ajax({
+            type: "post",
+            url: "/user/logout.do",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    $.cookie('identityCookie', '', { expires: -1 }); // 删除 cookie
+                    $.cookie('realnameCookie', '', { expires: -1 });
+                    $.cookie('groupidCookie', '', { expires: -1 });
+                    //document.location.reload();
+                    $(location).attr('href', 'login.html');
+                }else{
+                    alert(msg);
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+
+
     }
 
     /*个人信息*/

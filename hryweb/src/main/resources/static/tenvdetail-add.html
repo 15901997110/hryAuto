@@ -24,48 +24,52 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增用户</title>
+    <title>新增服务与环境绑定关系</title>
 </head>
 <body>
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户组：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="groupid" id="groupid">
-                        <option value="" selected>请选择用户组</option>
+                    <select class="select" size="1" name="service" id="service">
+                        <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="邮箱地址" id="identity" name="identity">
+                <span class="select-box">
+                    <select class="select" size="1" name="env" id="env">
+                        <option value="" selected>请选择环境</option>
+                    </select>
+				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>登录密码：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>Host：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" value="" placeholder="" id="password" name="password">
+                <input type="text" class="input-text" value="" placeholder="对应host信息" id="hostInfo" name="hostInfo">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
+            <label class="form-label col-xs-4 col-sm-3">数据库信息：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="realname" name="realname">
+                <input type="text" class="input-text" value="" placeholder="" id="dbInfo" name="dbInfo">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->备注：</label>
+            <label class="form-label col-xs-4 col-sm-3">swagger地址：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
+                <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl" name="swaggerUrl">
             </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addUser()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTenvDetail()"><i class="icon-ok"></i> 确定</button>
             </div>
         </div>
     </form>
@@ -86,15 +90,12 @@
 
 <script type="text/javascript">
     //loading
+    var layerIndex;
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
-                $('#admin-role-save').val("正在提交请稍等...")
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
+                layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -106,25 +107,25 @@
         });
     });
 
-    //用户组获取
-    $(document).ready(function () {
+    function getServiceList(){
+        var service=null;
+        $.ajaxSetup({async : false});
         $.ajax({
-            type: "get",
-            url: "/enum/groupEnum",
+            type: "post",
+            url: "/tservice/selectByConditionSimple.do",
             data: {
+
             },
             dataType: "json",
             success: function (data) {
-
-                var html="";
-                for(i=0;i<data.length;i++){
-                    var row=data[i];
-                    var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
-                    html=html+rowHtml;
-
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    service=data.data;
+                }else{
+                    alert(msg);
                 }
-                $("#groupid").append(html);
-                $("select").select2();
+
             },
             fail:function (data) {
                 alert(JSON.stringify(data));
@@ -133,39 +134,89 @@
                 alert('error:' + JSON.stringify(xhr));
             }
         });
+        return service;
+    }
+
+    function getTenvList(){
+        var env=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tenv/selectAll.do",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    env=data.data;
+                }else{
+                    alert(msg);
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return env;
+    }
+
+    $(document).ready(function () {
+        var serviceList=getServiceList();
+        var env=getTenvList();
+        var services="";
+        for(i=0;i<serviceList.length;i++){
+            var row=serviceList[i];
+            var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
+            services=services+rowHtml;
+        }
+        $("#service").append(services);
+
+        var tenv="";
+        for(k=0;k<env.length;k++){
+            var row=env[k];
+            var rowHtml="<option value=\""+row.id+"\">"+row.remark+"</option>";
+            tenv=tenv+rowHtml;
+        }
+        $("#env").append(tenv);
+        layer.close(layerIndex);
+
     });
 
-    //添加用户
-    function addUser(){
-        var groupid = $("#groupid").val();
-        var identity = $("#identity").val();
-        var password = $("#password").val();
-        var realname = $("#realname").val();
-        var remark = $("#remark").val();
+    //添加绑定关系
+    function addTenvDetail(){
+        var service = $("#service").val();
+        var env = $("#env").val();
+        var hostInfo = $("#hostInfo").val();
+        var dbInfo = $("#dbInfo").val();
+        var swaggerUrl = $("#swaggerUrl").val();
 
-        if(groupid == null || groupid == ""){
-            alert("请选择用户组！");
+        if(service == null || service == ""){
+            alert("请选择服务！");
             return;
-        }else if(identity == null || identity == ""){
-            alert("用户名不能为空！");
+        }else if(env == null || env == ""){
+            alert("请选择环境！");
             return;
-        }else if(password == null || password == ""){
-            alert("密码不能为空！");
-            return;
-        }else if(realname == null || realname == ""){
-            alert("姓名不能为空！");
+        }else if(hostInfo == null || hostInfo == ""){
+            alert("host不能为空！");
             return;
         }else{
             $.ajax({
                 type: "post",
-                url: "/user/insertOne.do",
+                url: "/tenvdetail/insertOne.do",
                 data: {
-                    groupid:groupid,
-                    identity:identity,
-                    password:password,
-                    realname:realname,
-                    status:1,
-                    remark:remark
+                    serviceid:service,
+                    envid:env,
+                    hostinfo:hostInfo,
+                    dbinfo:dbInfo,
+                    swaggerurl:swaggerUrl,
+                    status:1
                 },
                 dataType: "json",
                 success: function (data) {
@@ -176,14 +227,17 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        alert(JSON.stringify(data));
+                        layer.close(layerIndex);
+                        alert(msg);
                     }
 
                 },
                 fail:function (data) {
+                    layer.close(layerIndex);
                     alert(JSON.stringify(data));
                 },
                 error: function(xhr) {
+                    layer.close(layerIndex);
                     alert('error:' + JSON.stringify(xhr));
                 }
             });

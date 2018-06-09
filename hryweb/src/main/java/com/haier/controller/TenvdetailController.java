@@ -36,6 +36,18 @@ public class TenvdetailController {
         return ResultUtil.success(tenvdetailService.deleteOne(id));
     }
 
+    //改
+    @PostMapping("/updateOne.do")
+    public Result updateOne(Tenvdetail tenvdetail){
+        return ResultUtil.success(tenvdetailService.updateOne(tenvdetail));
+    }
+
+    //根据id查一条
+    @PostMapping("/selectOne.do")
+    public Result selectOne(Integer id){
+        return ResultUtil.success(tenvdetailService.selectOne(id));
+    }
+
     //查-仅查询tenvdetail表数据,返回list
     @PostMapping("/selectByConditionSimple.do")
     public Result selectByConditionSimple(Tenvdetail tenvdetail){
