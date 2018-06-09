@@ -4928,7 +4928,7 @@ S2.define('select2/defaults',[
       return text.replace(/[^\u0000-\u007E]/g, match);
     }
 
-    function matcher (params, data) {
+    /*function matcher (params, data) {
       // Always return the object if there is nothing to compare
       if ($.trim(params.term) === '') {
         return data;
@@ -4971,7 +4971,56 @@ S2.define('select2/defaults',[
 
       // If it doesn't contain the term, don't return anything
       return null;
-    }
+    }*/
+      function matcher (params, data) {
+          // Always return the object if there is nothing to compare
+          if ($.trim(params.term) === '') {
+              return data;
+          }
+
+          // Do a recursive check for options with children
+          if (data.children && data.children.length > 0) {
+              // Clone the data object if there are children
+              // This is required as we modify the object to remove any non-matches
+              var match = $.extend(true, {}, data);
+
+              // Check each child of the option
+              for (var c = data.children.length - 1; c >= 0; c--) {
+                  var child = data.children[c];
+
+                  var matches = matcher(params, child);
+
+                  // If there wasn't a match, remove the object in the array
+                  if (matches == null) {
+                      match.children.splice(c, 1);
+                  }
+              }
+
+              // If any children matched, return the new object
+              if (match.children.length > 0) {
+                  return match;
+              }
+
+              // If there were no matching children, check just the plain object
+              return matcher(params, match);
+          }
+
+          var original = '';
+          var term = stripDiacritics(params.term).toUpperCase()
+          if (stripDiacritics(data.text).toPinYin != undefined)
+              original = stripDiacritics(data.text).toPinYin().indexOf(stripDiacritics(params.term).toUpperCase());//从pinyin.js中返回的拼音与输入的拼音比较，只从第一个开始有不间断的匹配就能展示，如果中间有断开例如："FAN"与"FAAN"则认为是不匹配
+          if(original==-1){//此处是在中文没有匹配时，匹配对应的拼音
+              original = stripDiacritics(data.text).toUpperCase().indexOf(term);
+          }
+
+          // Check if the text contains the term
+          if (original > -1) {//如果匹配则original为0
+              return data;
+          }
+          // If it doesn't contain the term, don't return anything
+          return null;
+
+      }
 
     this.defaults = {
       amdBase: './',
