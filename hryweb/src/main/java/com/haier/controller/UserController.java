@@ -109,8 +109,10 @@ public class UserController {
     //登出
     @PostMapping("/logout.do")
     public Result logout(HttpSession session){
+        log.debug("用户session为:"+session.getAttribute("userSession").toString());
         //清除session即可
         session.invalidate();
+        log.debug("用户session清除成功");
         return ResultUtil.success();
     }
 
