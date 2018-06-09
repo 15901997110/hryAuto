@@ -19,48 +19,55 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>接口管理</title>
+    <title>服务与环境映射管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span class="c-gray en">&gt;</span> 接口列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-    <div>
-        <label style="margin-left:30px">服务：</label><input type="text" name="serviceid" id="serviceid" placeholder=" servicekey或servicename" style="width:12%" class="input-text">
-        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:10%" class="input-text">
-        <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址" style="width:15%" class="input-text">
-        <label style="margin-left:30px">开发人员：</label><input type="text" name="idev" id="idev" placeholder=" 开发人员" style="width:10%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务与环境映射 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<!--<div class="page-container">
+    <div class="row cl">
+        <label>服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">
+        <label>环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">
+        <label>hostInfo：</label><input type="text" name="hostInfo" id="hostInfo" placeholder=" Host" style="width:12%" class="input-text">
+    </div>
+    <div class="row cl" style="margin-top:20px;">
+        <label>dbInfo：</label><input type="text" name="dbInfo" id="dbInfo" placeholder=" dbInfo" style="width:12%" class="input-text">
+        <label>swaggerUrl：</label><input type="text" name="swaggerUrl" id="swaggerUrl" placeholder=" swaggerUrl" style="width:12%" class="input-text">
+        <button name="find" id="find" style="margin-left:50px;width:100px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    </div>-->
+
+    <div >
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">
+            <label style="margin-left:80px;">环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">
+            <label style="margin-left:50px;">Host：</label><input type="text" name="hostInfo" id="Host" placeholder=" Host" style="width:12%" class="input-text">
+        </div>
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:50px;">数据库：</label><input type="text" name="dbInfo" id="dbInfo" placeholder=" 数据库信息" style="width:12%" class="input-text">
+            <label style="margin-left:50px;">Swagger：</label><input type="text" name="swaggerUrl" id="swaggerUrl" placeholder=" Swagger" style="width:12%" class="input-text">
+            <button name="find" id="find" style="margin-left:50px;width:100px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+        </div>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
-        <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
-                <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
-            </a>
-            <a href="javascript:;" onclick="interface_add('添加接口','ti-add.html','800','650')" class="btn btn-primary radius">
-                <i class="Hui-iconfont">&#xe600;</i> 添加接口
-            </a>
+        <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a class="btn btn-primary radius" onclick="tenvdetail_add('添加环境服务绑定关系','tenvdetail-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加绑定关系</a>
         </span>
-        <span class="r">共有数据：<strong id="total"></strong> 条</span> </div>
+        <span class="r">共有数据：<strong id="total">0</strong> 条</span>
+    </div>
     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
-        <table class="table table-border table-bordered table-hover table-bg table-sort">
+        <table class="table table-border table-bordered table-bg table-hover table-sort" id="table">
             <thead>
             <tr class="text-c">
-                <th width="3%"><input type="checkbox" name="" value=""></th>
+                <th width="5%"><input name="" type="checkbox" value=""></th>
                 <th width="5%">ID</th>
-                <th width="5%">服务</th>
-                <th width="23%" style="text-align:left;">接口地址</th>
-                <th width="13%">接口描述</th>
-                <th width="7%">请求方式</th>
-                <th width="7%">iContentType</th>
-                <th width="8%">请求参数类型</th>
-                <th width="5%">返回类型</th>
-                <th width="5%">开发人员</th>
-                <!--<th width="25%">请求参数</th>-->
-                <th width="9%">更新时间</th>
-                <th width="10%">操作</th>
+                <th width="10%">服务</th>
+                <th width="10%">环境</th>
+                <th width="10%">Host</th>
+                <th width="30%">数据库信息</th>
+                <th width="15%">swaggerUrl</th>
+                <th width="15%">操作</th>
             </tr>
             </thead>
-            <tbody id="interfaceList">
+            <tbody id="tuserList">
             </tbody>
         </table>
         <!--分页-->
@@ -72,13 +79,12 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<!--<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
-<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     var layerIndex;
     //loading
@@ -99,7 +105,8 @@
     });
 
 
-    //查询接口列表
+
+    //查询用户列表
     $(document).ready(function () {
         pageSkip(1);
     });
@@ -109,31 +116,28 @@
         if(index==0){
             return;
         }
-        var serviceid = $("#serviceid").val();
-        var remark = $("#remark").val();
-        var iuri = $("#iuri").val();
-        var idev = $("#idev").val();
-
-        var allEnum=getAllEnum();
-        var ContentTypeEnum=allEnum.ContentTypeEnum;
-        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
-        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
+        var servicekey = $("#servicekey").val();
+        var envKey = $("#envKey").val();
+        var hostInfo = $("#hostInfo").val();
+        var dbInfo = $("#dbInfo").val();
+        var swaggerUrl = $("#swaggerUrl").val();
 
 
         $.ajax({
             type: "post",
-            url: "/ti/selectByCondition.do",
+            url: "/tenvdetail/selectByCondition.do",
             data: {
-                iuri:iuri,
-                idev:idev,
-                servicekey:serviceid,
-                remark:remark,
+                servicekey:servicekey,
+                envKey:envKey,
+                hostinfo:hostInfo,
+                dbinfo:dbInfo,
+                swaggerurl:swaggerUrl,
                 pageNum:index,
                 pageSize:10
             },
             dataType: "json",
-            success: function (data) {
 
+            success: function (data) {
                 var status=data.status;
                 var msg=data.msg;
                 var list=data.data.list;
@@ -152,58 +156,29 @@
 
                 if(status == 0){
                     $("#total").html("");
-                    $("#interfaceList").html("");
+                    $("#tuserList").html("");
                     $("#totalPages").html("");
                     $("#now").html("");
                     $("#pager").html("");
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var irequestmethod="";
-                        if(row.irequestmethod == 1){
-                            irequestmethod="post";
-                        }else if(row.irequestmethod == 2){
-                            irequestmethod="get";
-                        }
 
-                        var iContentType="";
-                        for(var m=0;m<ContentTypeEnum.length;m++){
-                            var row1=ContentTypeEnum[m];
-                            if(row.icontenttype == row1.id){
-                                iContentType=row1.value;
-                            }
-                        }
-
-                        var iParamType="";
-                        for(var n=0;n<ResponseTypeEnum.length;n++){
-                            var row2=ResponseTypeEnum[n];
-                            if(row.iparamtype == row2.id){
-                                iParamType=row2.value;
-                            }
-                        }
-
-                        var iResponseType="";
-                        for(var k=0;k<ResponseTypeEnum.length;k++){
-                            var row3=ResponseTypeEnum[k];
-                            if(row.iresponsetype == row3.id){
-                                iResponseType=row3.value;
-                            }
-                        }
+                       /* var remark=row.remark;
+                        if(row.remark == null){
+                            remark="";
+                        }*/
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
-                            "<td >"+row.remark+"</td>\n" +
-                            "<td >"+irequestmethod+"</td>\n" +
-                            "<td>"+iContentType+"</td>\n" +
-                            "<td>"+iParamType+"</td>\n" +
-                            "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.idev+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td>"+row.servicename+"</td>\n" +
+                            "<td>"+row.envremark+"</td>\n" +
+                            "<td>"+row.hostinfo+"</td>\n" +
+                            "<td >"+row.dbinfo+"</td>\n" +
+                            "<td>"+row.swaggerurl+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('绑定关系编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenvdetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -266,40 +241,42 @@
                     }
 
                     $("#total").append(total);
-                    $("#interfaceList").append(html);
+                    $("#tuserList").append(html);
                     $("#totalPages").append(pages);
                     $("#now").append(now);
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+
                     layer.close(layerIndex);
 
                 }else{
                     alert(JSON.stringify(data));
                 }
-            }
+            },
+
+
         });
+
+
     }
 
     //筛选
     function find(){
-        var serviceid = $("#serviceid").val();
-        var remark = $("#remark").val();
-        var iuri = $("#iuri").val();
-        var idev = $("#idev").val();
-
-        var allEnum=getAllEnum();
-        var ContentTypeEnum=allEnum.ContentTypeEnum;
-        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
-        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
+        var servicekey = $("#servicekey").val();
+        var envKey = $("#envKey").val();
+        var hostInfo = $("#hostInfo").val();
+        var dbInfo = $("#dbInfo").val();
+        var swaggerUrl = $("#swaggerUrl").val();
         $.ajax({
             type: "post",
-            url: "/ti/selectByCondition.do",
+            url: "/tenvdetail/selectByCondition.do",
             data: {
-                servicekey:serviceid,
-                iuri:iuri,
-                idev:idev,
-                remark:remark,
+                servicekey:servicekey,
+                envKey:envKey,
+                hostinfo:hostInfo,
+                dbinfo:dbInfo,
+                swaggerurl:swaggerUrl,
                 pageNum:1,
                 pageSize:10
             },
@@ -307,14 +284,14 @@
             success: function (data) {
 
                 $("#total").html("");
-                $("#interfaceList").html("");
+                $("#tuserList").html("");
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
                 if(data.data.list.length==0){
-                    layer.close(layerIndex);
                     $("#dataTables_info").hide();
-                    $("#interfaceList").append("<span style='color:red;'>没有数据！</span>");
+                    $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    layer.close(layerIndex);
                     return;
                 }
 
@@ -337,50 +314,20 @@
                 if(status == 0){
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var irequestmethod="";
-                        if(row.irequestmethod == 1){
-                            irequestmethod="post";
-                        }else if(row.irequestmethod == 2){
-                            irequestmethod="get";
-                        }
-                        var iContentType="";
-                        for(var m=0;m<ContentTypeEnum.length;m++){
-                            var row1=ContentTypeEnum[m];
-                            if(row.icontenttype == row1.id){
-                                iContentType=row1.value;
-                            }
-                        }
-
-                        var iParamType="";
-                        for(var n=0;n<ResponseTypeEnum.length;n++){
-                            var row2=ResponseTypeEnum[n];
-                            if(row.iparamtype == row2.id){
-                                iParamType=row2.value;
-                            }
-                        }
-
-                        var iResponseType="";
-                        for(var k=0;k<ResponseTypeEnum.length;k++){
-                            var row3=ResponseTypeEnum[k];
-                            if(row.iresponsetype == row3.id){
-                                iResponseType=row3.value;
-                            }
-                        }
-
+                       /* var remark=row.remark;
+                        if(row.remark == null){
+                            remark="";
+                        }*/
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
-                            "<td >"+row.remark+"</td>\n" +
-                            "<td >"+irequestmethod+"</td>\n" +
-                            "<td>"+iContentType+"</td>\n" +
-                            "<td>"+iParamType+"</td>\n" +
-                            "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.idev+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td>"+row.servicename+"</td>\n" +
+                            "<td>"+row.envremark+"</td>\n" +
+                            "<td>"+row.hostinfo+"</td>\n" +
+                            "<td >"+row.dbinfo+"</td>\n" +
+                            "<td>"+row.swaggerurl+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('用户编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenvdetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -408,7 +355,7 @@
                     }
 
                     $("#total").append(total);
-                    $("#interfaceList").append(html);
+                    $("#tuserList").append(html);
                     $("#totalPages").append(pages);
                     $("#now").append(now);
                     $("#pager").append(pageStart);
@@ -423,24 +370,47 @@
         });
     }
 
-    //添加接口
-    function interface_add(title,url,w,h){
-        layer_show(title,url,w,h);
+    function userGroup(){
+        var usergroup=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/groupEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                usergroup=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return usergroup;
     }
 
-    //编辑接口
-    function ti_edit(title,url,id,w,h){
+    /*绑定关系-添加*/
+    function tenvdetail_add(title,url,w,h){
+        layer_show(title,url,w,h);
+
+    }
+
+    /*绑定关系-编辑*/
+    function tenvdetail_edit(title,url,id,w,h){
         url= url + "?id="+id;
         layer_show(title,url,w,h);
     }
 
-    //删除接口
-    function ti_del(obj,id){
-        layer.confirm('接口删除需谨慎，请确认是否删除...！',function(index){
+    /*删除*/
+    function tenvdetail_del(obj,id){
+        layer.confirm('绑定关系删除需谨慎，请确认是否删除！',function(index){
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/ti/deleteOne.do',
+                url: '/tenvdetail/deleteOne.do',
                 data:{
                     id:id
                 },
@@ -463,30 +433,6 @@
             });
         });
     }
-
-    //获取枚举值数组
-    function getAllEnum(){
-        var allEnum=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "get",
-            url: "/enum/allEnum",
-            data: {
-            },
-            dataType: "json",
-            success: function (data) {
-                allEnum=data;
-            },
-            fail:function (data) {
-                alert(JSON.stringify(data));
-            },
-            error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
-            }
-        });
-        return allEnum;
-    }
-
 
 </script>
 </body>

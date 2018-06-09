@@ -30,31 +30,41 @@
 <article class="page-container">
     <form method="post" class="form form-horizontal" id="form">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户组：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="groupid" id="groupid">
-                        <option value="" selected>请选择用户组</option>
+                    <select class="select" size="1" name="service" id="service">
+                        <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="邮箱地址" id="identity" name="identity">
+                <span class="select-box">
+                    <select class="select" size="1" name="env" id="env">
+                        <option value="" selected>请选择环境</option>
+                    </select>
+				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>Host：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="realname" name="realname">
+                <input type="text" class="input-text" value="" placeholder="对应host信息" id="hostInfo" name="hostInfo">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">备注：</label>
+            <label class="form-label col-xs-4 col-sm-3">数据库信息：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
+                <input type="text" class="input-text" value="" placeholder="" id="dbInfo" name="dbInfo">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">swagger地址：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl" name="swaggerUrl">
             </div>
         </div>
         <div class="row cl">
@@ -101,17 +111,25 @@
         return null;
     }
 
-    function userGroup(){
-        var usergroup=null;
+    function getServiceList(){
+        var service=null;
         $.ajaxSetup({async : false});
         $.ajax({
-            type: "get",
-            url: "/enum/groupEnum",
+            type: "post",
+            url: "/tservice/selectByConditionSimple.do",
             data: {
+
             },
             dataType: "json",
             success: function (data) {
-                usergroup=data;
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    service=data.data;
+                }else{
+                    alert(msg);
+                }
+
             },
             fail:function (data) {
                 alert(JSON.stringify(data));
@@ -120,55 +138,100 @@
                 alert('error:' + JSON.stringify(xhr));
             }
         });
-        return usergroup;
+        return service;
+    }
+
+    function getTenvList(){
+        var env=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tenv/selectAll.do",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    env=data.data;
+                }else{
+                    alert(msg);
+                }
+
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return env;
     }
 
     //页面加载处理
     $(document).ready(function () {
         var id = getParameter('id');
         $("#id").val(id);
-        //alert("要编辑的用户id="+id);
+
         $.ajax({
             type: "post",
-            url: "/user/selectOne.do",
+            url: "/tenvdetail/selectOne.do",
             data: {
                 id: id
             },
             dataType: "json",
             success: function (data) {
-                layer.close(layerIndex);
                 var status=data.status;
                 var msg=data.msg;
                 var list=data.data;
                 console.log(data);
 
                 if(status == 0){
-                    var groupid = list.groupid;
-                    var identity = list.identity;
-                    var realname=list.realname;
-                    var remark=list.remark;
-                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTuser("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+                    var serviceid = list.serviceid;
+                    var envid = list.envid;
+                    var hostinfo=list.hostinfo;
+                    var dbinfo=list.dbinfo;
+                    var swaggerurl=list.swaggerurl;
+                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTenvDetail("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
                     $("#submit").append(submit);
                     var html = "";
-                    var groups=userGroup();
-                    for(var i=0;i<groups.length;i++){
-                        var row=groups[i];
-                        if( row.groupId == groupid){
-                            var rowHtml="<option value=\""+row.groupId+"\" selected>"+row.desc+"</option>";
+                    var services=getServiceList();
+                    for(var i=0;i<services.length;i++){
+                        var row=services[i];
+                        if( row.id == serviceid){
+                            var rowHtml="<option value=\""+row.id+"\" selected>"+row.servicename+"</option>";
                         }else{
-                            var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
+                            var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
                         }
-
                         html=html+rowHtml;
                     }
-                    $("#groupid").append(html);
-                    $("#identity").val(identity);
-                    $("#realname").val(realname);
-                    $("#remark").val(remark);
 
+                    var envs="";
+                    var env=getTenvList();
+                    for(var k=0;k<env.length;k++){
+                        var rowEnv=env[k];
+                        if( rowEnv.id == envid){
+                            var envHtml="<option value=\""+rowEnv.id+"\" selected>"+rowEnv.remark+"</option>";
+                        }else{
+                            var envHtml="<option value=\""+rowEnv.id+"\">"+rowEnv.remark+"</option>";
+                        }
+                        envs=envs+envHtml;
+                    }
+
+
+                    $("#service").append(html);
+                    $("#env").append(envs);
+                    $("#hostInfo").val(hostinfo);
+                    $("#dbInfo").val(dbinfo);
+                    $("#swaggerUrl").val(swaggerurl);
+                    layer.close(layerIndex);
 
                 }else{
-                    alert(JSON.stringify(data));
+                    layer.close(layerIndex);
+                    alert(msg);
                 }
 
             }
@@ -177,33 +240,35 @@
 
     });
 
-    //编辑用户
-    function editTuser(userid){
-        var id=userid;
-        var groupid = $("#groupid").val();
-        var identity = $("#identity").val();
-        var realname = $("#realname").val();
-        var remark = $("#remark").val();
+    //编辑服务与环境绑定关系
+    function editTenvDetail(id){
+        var service = $("#service").val();
+        var env = $("#env").val();
+        var hostInfo = $("#hostInfo").val();
+        var dbInfo = $("#dbInfo").val();
+        var swaggerUrl = $("#swaggerUrl").val();
 
-        if(groupid == null || groupid == ""){
-            alert("请选择用户组！");
+        if(service == null || service == ""){
+            alert("请选择服务！");
             return;
-        }else if(identity == null || identity == ""){
-            alert("用户名不能为空！");
+        }else if(env == null || env == ""){
+            alert("请选择环境！");
             return;
-        }else if(realname == null || realname == ""){
-            alert("姓名不能为空！");
+        }else if(hostInfo == null || hostInfo == ""){
+            alert("host不能为空！");
             return;
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/user/updateOne.do',
+                url: '/tenvdetail/updateOne.do',
                 data:{
                     id:id,
-                    groupid:groupid,
-                    identity:identity,
-                    realname:realname,
-                    remark:remark
+                    serviceid:service,
+                    envid:env,
+                    hostinfo:hostInfo,
+                    dbinfo:dbInfo,
+                    swaggerurl:swaggerUrl,
+                    status:1
                 },
                 dataType: 'json',
                 success: function(data){
@@ -222,6 +287,7 @@
 
                 },
                 error:function(xhr) {
+                    layer.close(layerIndex);
                     alert('error:' + JSON.stringify(xhr));
                 },
             });

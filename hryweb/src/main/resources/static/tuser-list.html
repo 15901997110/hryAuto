@@ -83,9 +83,6 @@
             beforeSend: function () { //插件加载前
                 layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
-            /*complete: function () { //完成加载后执行
-                layer.close(this.layerIndex);
-            },*/
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
                     skin: 'layui-layer-molv'
@@ -253,10 +250,10 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
-
                     layer.close(layerIndex);
 
                 }else{
+                    layer.close(layerIndex);
                     alert(JSON.stringify(data));
                 }
             },
@@ -371,7 +368,7 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
-                    layer.close(layerIndex);
+
 
                 }else{
                     alert(JSON.stringify(data));
