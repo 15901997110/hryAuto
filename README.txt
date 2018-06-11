@@ -25,13 +25,20 @@
 
 快速启动项目:
     1.jdk1.8或以上
-    2.安装idea,必要的设置
-    3.安装git  推荐版本Git-2.16.2-64-bit.exe
-      下载项目到本地:git clone https://github.com/hryOrgan/hryAuto.git
+    2.安装idea,必要的设置(设置encoding=utf8,安装lombok插件)
+    3.安装git,推荐新版本
+      克隆项目到本地:git clone https://github.com/hryOrgan/hryAuto.git
     4.安装maven(非必需,idea自带maven插件)
-    5.pom import 依赖包下载
-    6.module-hryrun:testng框架,直接在cases类中右键run,或者run testng.xml
-    7.module-hryweb:springboot+mybatis框架,Application文件上右键run即可
+    5.idea打开本地项目,将hryrun和hryweb设置为module,按maven包导入,hryweb项目需要在Facets标记Spring和Web属性
+    6.maven依赖下载,可配置aliyun镜像
+        	 <mirror>
+                <id>nexus-aliyun</id>
+                <mirrorOf>*</mirrorOf>
+                <name>Nexus aliyun</name>
+                <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            </mirror>
+    7.module-hryrun:testng框架,直接在cases类中右键run,或者run testng.xml
+    8.module-hryweb:springboot+mybatis框架,在Application文件上右键run即可
 
 
 ##模块:hryrun项目结构图
