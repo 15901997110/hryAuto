@@ -20,8 +20,11 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return true;//暂时关闭拦截器功能便于调试
-        /*HttpSession session = request.getSession();
+        //return true;//暂时关闭拦截器功能便于调试
+        if(request.getParameter("debug")!=null){
+            return true;
+        }
+        HttpSession session = request.getSession();
         if(session.getAttribute("userSession")!=null){//服务端session信息存在
             log.debug("userSession:"+session.getAttribute("userSession").toString());
             Cookie[] cookies = request.getCookies();
@@ -48,7 +51,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         //跳转登录页面
         response.sendRedirect("/login.html");
-        return false;*/
+        return false;
     }
 
 }
