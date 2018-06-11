@@ -1,3 +1,11 @@
 spring:
   profiles:
     active: dev
+
+endpoint:
+  autoconfig: true
+  beans: true
+  configprops: true
+  env: true
+  info: true
+  health: true

@@ -38,7 +38,7 @@ public class ImportController {
             @RequestParam("serviceId") Integer serviceId,//服务id,必填
             @RequestParam("envId") Integer envId,//环境id,必填
             Boolean overwrite,//是否覆盖已经存在的记录
-            String sEditor,//服务维护者,传测试人员realName或者当前登录人realName
+            //String sEditor,//服务维护者,传测试人员realName或者当前登录人realName
             String iDev//此服务下接口开发人员的realName
     ){
         if(serviceId==null||envId==null||serviceId==0||envId==0){
@@ -47,11 +47,14 @@ public class ImportController {
         if(overwrite==null){
             overwrite=false;
         }
-        if(sEditor==null||"".equals(sEditor.trim())){
+        /**
+         * 现在选择服务 ,已经不需要服务维护者参数
+         */
+/*        if(sEditor==null||"".equals(sEditor.trim())){
             sEditor="自动导入";
         }else{
             sEditor=sEditor.trim();
-        }
+        }*/
         if(iDev==null||"".equals(iDev)){
             iDev="自动导入";
         }else{
