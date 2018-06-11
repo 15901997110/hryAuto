@@ -108,8 +108,9 @@ public class UserController {
     //登出
     @PostMapping("/logout.do")
     public Result logout(HttpSession session) {
+        Object userSession=null;
         if (session != null) {
-            Object userSession;
+
             userSession = session.getAttribute("userSession");
             if(userSession!=null){
                 log.debug("用户session为:" + userSession.toString());
@@ -118,7 +119,7 @@ public class UserController {
             session.invalidate();
             log.debug("用户session清除成功");
         }
-        return ResultUtil.success();
+        return ResultUtil.success("用户session为:"+userSession.toString()+",登出成功!");
     }
 
 }
