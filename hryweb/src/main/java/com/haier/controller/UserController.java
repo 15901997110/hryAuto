@@ -125,5 +125,4 @@ public class UserController {
             return ResultUtil.success("无用户登录信息,登出成功!");
         }
     }
-
 }
