@@ -108,18 +108,22 @@ public class UserController {
     //登出
     @PostMapping("/logout.do")
     public Result logout(HttpSession session) {
-        Object userSession=null;
+        Object userSession = null;
         if (session != null) {
 
             userSession = session.getAttribute("userSession");
-            if(userSession!=null){
+            if (userSession != null) {
                 log.debug("用户session为:" + userSession.toString());
             }
             //清除session即可
             session.invalidate();
             log.debug("用户session清除成功");
         }
-        return ResultUtil.success("用户session为:"+userSession.toString()+",登出成功!");
+        if (userSession != null) {
+            return ResultUtil.success("用户session为:" + userSession.toString() + ",登出成功!");
+        } else {
+            return ResultUtil.success("无用户登录信息,登出成功!");
+        }
     }
 
 }
