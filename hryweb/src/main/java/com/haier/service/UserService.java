@@ -25,6 +25,8 @@ public interface UserService {
     Integer deleteOne(Integer id);
     //修改用户密码
     Integer modifyPwd(String identity,String oldPwd,String newPwd);
-    //按groupId查询开发人员,接口新增,编辑页面专用
+    //按groupId查询相应user List
     List<User> selectByGroupId(Integer groupid);
+    //按groupId查询开发人员,上海组(11-19)返回上海开发组(12),杭州返回杭州开发组
+    List<User> selectDever(Integer groupid);
 }

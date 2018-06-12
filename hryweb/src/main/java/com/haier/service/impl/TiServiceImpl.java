@@ -24,6 +24,7 @@ import java.util.Objects;
  * @Author: luqiwei
  * @Date: 2018/5/9 16:21
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Service
 public class TiServiceImpl implements TiService {
@@ -38,6 +39,7 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public Integer insertOne(Ti ti) {
+        ReflectUtil.setInvalidFieldToNull(ti,false);
         //简单参数校验
         if(ti==null||ti.getServiceid()==null||
                 ti.getServiceid()==0||ti.getIuri()==null
