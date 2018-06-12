@@ -19,21 +19,38 @@
     <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>服务列表</title>
+    <title>用例列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的用例 <span class="c-gray en">&gt;</span>用例列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div >
-        <label style="margin-left:50px">服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
-        <label style="margin-left:50px">服务简称：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:12%" class="input-text">
-        <label style="margin-left:50px">服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;width:100px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
-        <button name="empty" id="empty" style="margin-left:10px;width:100px;" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" serviceKey或serviceName" style="width:12%" class="input-text">
+            <label style="margin-left:50px;">环境：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="envKey" id="envKey">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
+            <label style="margin-left:50px;">接口：</label><input type="text" name="tiUrl" id="tiUrl" placeholder=" 接口地址或接口描述" style="width:12%" class="input-text">
+        </div>
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:37px;">用例名称：</label><input type="text" name="caseName" id="caseName" placeholder=" 用例名称" style="width:12%" class="input-text">
+            <label style="margin-left:23px;">断言类型：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="assertType" id="assertType">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
+            <label style="margin-left:37px;">设计人：</label><input type="text" name="author" id="author" placeholder=" 用例设计人" style="width:12%" class="input-text">
+            <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
+        </div>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tservice_add('添加服务','tservice-add.html','800','300')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务</a>
+            <a class="btn btn-primary radius" onclick="tuser_add('添加用例','tcase-add.html','800','700')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -41,17 +58,22 @@
         <table class="table table-border table-bordered table-bg table-hover table-sort" id="table">
             <thead>
             <tr class="text-c">
-                <th width="5%"><input name="" type="checkbox" value=""></th>
-                <th width="10%">ID</th>
-                <th width="10%">服务简称</th>
-                <th width="10%">服务名称</th>
-                <th width="10%">协议类型</th>
-                <th width="15%">更新时间</th>
-                <th width="15%">最后维护人</th>
-                <th width="15%">操作</th>
+                <th width="3%"><input name="" type="checkbox" value=""></th>
+                <th width="3%">ID</th>
+                <th width="5%">用例名称</th>
+                <th width="5%">用例描述</th>
+                <th width="15%">服务</th>
+                <th width="5%">环境</th>
+                <th width="10">接口名称</th>
+                <th width="17%">接口地址</th>
+                <th width="8%">断言类型</th>
+                <th width="10%">期望结果</th>
+                <th width="5%">设计人</th>
+                <th width="5%">更新时间</th>
+                <th width="9%">操作</th>
             </tr>
             </thead>
-            <tbody id="teserviceList">
+            <tbody id="tcaseList">
             </tbody>
         </table>
         <!--分页-->
@@ -69,59 +91,89 @@
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+    var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
-                //$('#submit').val("正在加载请稍等...")
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
                 });
             }
         });
     });
 
-    //查询环境列表
-    $(document).ready(function () {
-       pageSkip(1);
-    });
-
     function empty(){
-        $("#id").val("");
         $("#servicekey").val("");
-        $("#servicename").val("");
+        $("#tiUrl").val("");
+        $("#caseName").val("");
+        $("#author").val("");
+        $("#envKey option:first").prop("selected", 'selected');
+        $("#assertType option:first").prop("selected", 'selected');
     }
+
+    //初始加载
+    $(document).ready(function () {
+        var realName=$.cookie('realnameCookie');
+        $("#author").val(realName);
+        var list=getEnvList();
+        var html="";
+        for(i=0;i<list.length;i++){
+            var row=list[i];
+            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
+            html=html+rowHtml;
+        }
+        $("#envKey").append(html);
+
+        var assertList=getAssertType();
+        var asserts="";
+        for(k=0;k<assertList.length;k++){
+            var one=assertList[k];
+            var rowHtml="<option value=\""+one.id+"\">"+one.value+"</option>";
+            asserts=asserts+rowHtml;
+        }
+        $("#assertType").append(asserts);
+
+        pageSkip(1);
+
+    });
 
     //分页查询
     function pageSkip(index){
         if(index==0){
             return;
         }
-        var id = $("#id").val();
         var servicekey = $("#servicekey").val();
-        var servicename = $("#servicename").val();
+        var envKey = $("#envKey").val();
+        var tiUrl = $("#tiUrl").val();
+        var caseName = $("#caseName").val();
+        var author = $("#author").val();
+        var assertType = $("#assertType").val();
+
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tcase/selectByCondition.do",
             data: {
-                id:id,
                 servicekey:servicekey,
-                servicename:servicename,
+                envid:envKey,
+                iuri:tiUrl,
+                casename:caseName,
+                author:author,
+                asserttype:assertType,
+                status:1,
                 pageNum:index,
                 pageSize:10
             },
             dataType: "json",
+
             success: function (data) {
 
                 var status=data.status;
@@ -142,29 +194,54 @@
 
                 if(status == 0){
                     $("#total").html("");
-                    $("#teserviceList").html("");
+                    $("#tuserList").html("");
                     $("#totalPages").html("");
                     $("#now").html("");
                     $("#pager").html("");
 
+                    var assertList=getAssertType();
+                    var assertName="";
+                    var envList=getEnvList();
+                    var envKey="";
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
-                        if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
+
+                        for(var k=0;k<assertList.length;k++){
+                            var one=assertList[k];
+                            if(one.id == row.asserttype){
+                                assertName=one.value;
+                            }
                         }
+
+
+                        for(var j=0;j<envList.length;j++){
+                            var two=envList[j];
+                            if(two.id == row.envid){
+                                envKey=two.envkey;
+                            }
+                        }
+
+                        /*var remark=row.remark;
+                        if(row.remark == null){
+                            remark="";
+                        }*/
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
+                            "<td>"+row.casename+"</td>\n" +
+                            "<td>"+row.remark+"</td>\n" +
+                            "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
+                            "<td>"+envKey+"</td>\n" +
+                            "<td>"+row.iremark+"</td>\n" +
+                            "<td>"+row.iuri+"</td>\n" +
+                            "<td>"+assertName+"</td>\n" +
+                            "<td>"+row.expected+"</td>\n" +
+                            "<td>"+row.author+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -208,8 +285,6 @@
                                 pagesHtml = pagesHtml+pageHtml;
 
                             }
-                            //pagesHtml= pagesHtml + "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
 
                         }else if(now>0 && now<=4){
 
@@ -229,36 +304,46 @@
                     }
 
                     $("#total").append(total);
-                    $("#teserviceList").append(html);
+                    $("#tcaseList").append(html);
                     $("#totalPages").append(pages);
                     $("#now").append(now);
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
                 }else{
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.close(layerIndex);
+                    alert(JSON.stringify(data));
                 }
-            }
+            },
+
+
         });
+
+
     }
 
     //筛选
     function find(){
-        var id = $("#id").val();
         var servicekey = $("#servicekey").val();
-        var servicename = $("#servicename").val();
+        var envKey = $("#envKey").val();
+        var tiUrl = $("#tiUrl").val();
+        var caseName = $("#caseName").val();
+        var author = $("#author").val();
+        var assertType = $("#assertType").val();
+
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tcase/selectByCondition.do",
             data: {
-
-                id:id,
                 servicekey:servicekey,
-                servicename:servicename,
+                envid:envKey,
+                iuri:tiUrl,
+                casename:caseName,
+                author:author,
+                asserttype:assertType,
+                status:1,
                 pageNum:1,
                 pageSize:10
             },
@@ -266,13 +351,14 @@
             success: function (data) {
 
                 $("#total").html("");
-                $("#teserviceList").html("");
+                $("#tcaseList").html("");
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
-                    $("#teserviceList").append("<span style='color:red;'>没有数据！</span>");
+                    $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    layer.close(layerIndex);
                     return;
                 }
 
@@ -293,24 +379,43 @@
                     "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
+                    var assertList=getAssertType();
+                    var assertName="";
+                    var envList=getEnvList();
+                    var envKey="";
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                        var type="";
-                        if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
+
+                        for(var k=0;k<assertList.length;k++){
+                            var one=assertList[k];
+                            if(one.id == row.asserttype){
+                                assertName=one.value;
+                            }
                         }
+
+                        for(var j=0;j<envList.length;j++){
+                            var two=envList[j];
+                            if(two.id == row.envid){
+                                envKey=two.envkey;
+                            }
+                        }
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
+                            "<td>"+row.casename+"</td>\n" +
+                            "<td>"+row.remark+"</td>\n" +
+                            "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
+                            "<td>"+envKey+"</td>\n" +
+                            "<td>"+row.iremark+"</td>\n" +
+                            "<td>"+row.iuri+"</td>\n" +
+                            "<td>"+assertName+"</td>\n" +
+                            "<td>"+row.expected+"</td>\n" +
+                            "<td>"+row.author+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -338,42 +443,131 @@
                     }
 
                     $("#total").append(total);
-                    $("#teserviceList").append(html);
+                    $("#tcaseList").append(html);
                     $("#totalPages").append(pages);
                     $("#now").append(now);
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
+
 
                 }else{
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    layer.close(layerIndex);
+                    alert(msg);
                 }
             }
         });
     }
 
-    /*服务-添加*/
-    function tservice_add(title,url,w,h){
+    function userGroup(){
+        var usergroup=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/groupEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                usergroup=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return usergroup;
+    }
+
+    function selectByGroupId(){
+        var users=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectByGroupId.do",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                users=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return users;
+    }
+
+
+    function getEnvList(){
+        var envList=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tenv/selectAll.do",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                envList=data.data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return envList;
+    }
+
+    function getAssertType(){
+        var assertType=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "get",
+            url: "/enum/assertTypeEnum",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                assertType=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return assertType;
+    }
+
+    /*用户-添加*/
+    function tuser_add(title,url,w,h){
         layer_show(title,url,w,h);
 
     }
 
-    /*服务-编辑*/
-    function tservice_edit(title,url,id,w,h){
+    /*用户-编辑*/
+    function tuser_edit(title,url,id,w,h){
         url= url + "?id="+id;
         layer_show(title,url,w,h);
     }
 
-    /*服务-删除*/
-    function tservice_del(obj,id){
-        layer.confirm('服务删除将会删除接口表记录，确定要这样做吗？\n注意：我们会记录你的操作！',function(index){
+    /*用户-删除*/
+    function tuser_del(obj,id){
+        layer.confirm('用户删除需谨慎，请确认是否删除！',function(index){
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tservice/deleteOne.do',
+                url: '/user/deleteOne.do',
                 data:{
                     id:id
                 },
@@ -386,10 +580,7 @@
                         window.location.reload();
                         layer.msg('已删除!',{icon:1,time:1000});
                     }else{
-                        layer.alert(JSON.stringify(data), {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
+                        alert(JSON.stringify(data));
                     }
 
                 },

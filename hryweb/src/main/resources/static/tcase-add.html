@@ -24,11 +24,33 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增服务与环境绑定关系</title>
+    <title>新增用例</title>
 </head>
 <body>
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">用例名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">用例描述：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="用例描述" id="remark" name="remark">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">环境：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="env" id="env">
+                        <option value="" selected>请选择环境</option>
+                    </select>
+				</span>
+            </div>
+        </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -40,36 +62,46 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="env" id="env">
-                        <option value="" selected>请选择环境</option>
+                    <select class="select" size="1" name="ti" id="ti">
+                        <option value="" selected>请选择接口</option>
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>Host：</label>
+            <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="对应host信息" id="hostInfo" name="hostInfo">
+                <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid" placeholder="请输入请求参数..."></textarea>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">数据库信息：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>断言类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="dbInfo" name="dbInfo">
+                <span class="select-box">
+                    <select class="select" size="1" name="assertType" id="assertType">
+                        <option value="" selected>请选择断言类型</option>
+                    </select>
+				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">swagger地址：</label>
+            <label class="form-label col-xs-4 col-sm-3">期望结果：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl" name="swaggerUrl">
+                <textarea id="expected" name="expected" cols="" rows="" class="textarea valid" placeholder="期望结果，json格式"></textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">设计人：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" id="author" name="author">
             </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTenvDetail()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTcase()"><i class="icon-ok"></i> 确定</button>
             </div>
         </div>
     </form>
@@ -99,8 +131,9 @@
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
                 });
             }
         });
@@ -122,24 +155,15 @@
                 if(status == 0){
                     service=data.data;
                 }else{
-                    layer.alert(data.msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
+                    alert(msg);
                 }
 
             },
             fail:function (data) {
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
+                alert(JSON.stringify(data));
             },
             error: function(xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
+                alert('error:' + JSON.stringify(xhr));
             }
         });
         return service;
@@ -161,30 +185,22 @@
                 if(status == 0){
                     env=data.data;
                 }else{
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
+                    alert(msg);
                 }
 
             },
             fail:function (data) {
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
+                alert(JSON.stringify(data));
             },
             error: function(xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
+                alert('error:' + JSON.stringify(xhr));
             }
         });
         return env;
     }
 
     $(document).ready(function () {
+        var realName=$.cookie('realnameCookie');
         var serviceList=getServiceList();
         var env=getTenvList();
         var services="";
@@ -215,13 +231,13 @@
         var swaggerUrl = $("#swaggerUrl").val();
 
         if(service == null || service == ""){
-            layer.msg("请选择服务！");
+            alert("请选择服务！");
             return;
         }else if(env == null || env == ""){
-            layer.msg("请选择环境！");
+            alert("请选择环境！");
             return;
         }else if(hostInfo == null || hostInfo == ""){
-            layer.msg("host不能为空！");
+            alert("host不能为空！");
             return;
         }else{
             $.ajax({
@@ -245,26 +261,17 @@
                         parent.layer.close(index);
                     }else{
                         layer.close(layerIndex);
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        })
+                        alert(msg);
                     }
 
                 },
                 fail:function (data) {
                     layer.close(layerIndex);
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
+                    alert(JSON.stringify(data));
                 },
                 error: function(xhr) {
                     layer.close(layerIndex);
-                    layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
+                    alert('error:' + JSON.stringify(xhr));
                 }
             });
         }
