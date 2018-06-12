@@ -3,8 +3,6 @@
 <mapper namespace="com.haier.mapper.TcaseCustomMapper">
     <resultMap id="BaseResultMapTcaseCustom" type="com.haier.po.TcaseCustom">
         <id column="id" jdbcType="INTEGER" property="id"/>
-
-        <!--这部分是扩展字段-->
         <result column="serviceKey" jdbcType="VARCHAR" property="servicekey"/>
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <result column="iUri" jdbcType="VARCHAR" property="iuri"/>
