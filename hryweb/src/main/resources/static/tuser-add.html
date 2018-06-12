@@ -198,7 +198,10 @@
                         });
                 },
                 error: function(xhr) {
-                    alert('error:' + JSON.stringify(xhr));
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             });
         }
