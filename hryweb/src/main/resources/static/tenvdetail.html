@@ -96,9 +96,8 @@
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
-                    skin: 'layui-layer-molv'
-                    , closeBtn: 0
-                    , shift: 4 //动画类型
+                    icon: 0,
+                    skin: 'layer-ext-moon'
                 });
             }
         });
@@ -251,7 +250,10 @@
                     layer.close(layerIndex);
 
                 }else{
-                    alert(JSON.stringify(data));
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             },
 
@@ -364,7 +366,10 @@
                     layer.close(layerIndex);
 
                 }else{
-                    alert(JSON.stringify(data));
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             }
         });
@@ -383,10 +388,16 @@
                 usergroup=data;
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         return usergroup;
@@ -423,7 +434,10 @@
                         window.location.reload();
                         layer.msg('已删除!',{icon:1,time:1000});
                     }else{
-                        alert(JSON.stringify(data));
+                        layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                     }
 
                 },

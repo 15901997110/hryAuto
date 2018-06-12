@@ -99,9 +99,8 @@
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
-                    skin: 'layui-layer-molv'
-                    , closeBtn: 0
-                    , shift: 4 //动画类型
+                    icon: 0,
+                    skin: 'layer-ext-moon'
                 });
             }
         });
@@ -123,15 +122,24 @@
                 if(status == 0){
                     service=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(data.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         return service;
@@ -153,15 +161,24 @@
                 if(status == 0){
                     env=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         return env;
@@ -198,13 +215,13 @@
         var swaggerUrl = $("#swaggerUrl").val();
 
         if(service == null || service == ""){
-            alert("请选择服务！");
+            layer.msg("请选择服务！");
             return;
         }else if(env == null || env == ""){
-            alert("请选择环境！");
+            layer.msg("请选择环境！");
             return;
         }else if(hostInfo == null || hostInfo == ""){
-            alert("host不能为空！");
+            layer.msg("host不能为空！");
             return;
         }else{
             $.ajax({
@@ -228,17 +245,26 @@
                         parent.layer.close(index);
                     }else{
                         layer.close(layerIndex);
-                        alert(msg);
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        })
                     }
 
                 },
                 fail:function (data) {
                     layer.close(layerIndex);
-                    alert(JSON.stringify(data));
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
                 },
                 error: function(xhr) {
                     layer.close(layerIndex);
-                    alert('error:' + JSON.stringify(xhr));
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
                 }
             });
         }

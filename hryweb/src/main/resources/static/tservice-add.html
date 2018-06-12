@@ -85,9 +85,8 @@
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
-                    skin: 'layui-layer-molv'
-                    , closeBtn: 0
-                    , shift: 4 //动画类型
+                    icon: 0,
+                    skin: 'layer-ext-moon'
                 });
             }
         });
@@ -112,11 +111,17 @@
                 $("#httptype").append(html);
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
             },
             error: function(xhr) {
                 // report error
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
             }
         });
     });
@@ -130,13 +135,13 @@
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
         if(servicekey == null || servicekey == ""){
-            alert("服务简称不能为空！");
+            layer.msg("服务简称不能为空！");
             return;
         }else if(servicename == null || servicename == ""){
-            alert("服务名称不能为空！");
+            layer.msg("服务名称不能为空！");
             return;
         }else if(httptype == null || httptype == ""){
-            alert("请选择协议类型！");
+            layer.msg("请选择协议类型！");
             return;
         }else{
             $.ajax({
@@ -158,16 +163,25 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        alert(JSON.stringify(data));
+                        layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                     }
 
                 },
                 fail:function (data) {
-                    alert(JSON.stringify(data));
+                    layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                 },
                 error: function(xhr) {
                     // report error
-                    alert('error:' + JSON.stringify(xhr));
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             });
         }
