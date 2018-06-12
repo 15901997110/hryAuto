@@ -22,29 +22,20 @@
     <title>服务与环境映射管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务与环境映射 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<!--<div class="page-container">
-    <div class="row cl">
-        <label>服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">
-        <label>环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">
-        <label>hostInfo：</label><input type="text" name="hostInfo" id="hostInfo" placeholder=" Host" style="width:12%" class="input-text">
-    </div>
-    <div class="row cl" style="margin-top:20px;">
-        <label>dbInfo：</label><input type="text" name="dbInfo" id="dbInfo" placeholder=" dbInfo" style="width:12%" class="input-text">
-        <label>swaggerUrl：</label><input type="text" name="swaggerUrl" id="swaggerUrl" placeholder=" swaggerUrl" style="width:12%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;width:100px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-    </div>-->
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 服务管理 <span class="c-gray en">&gt;</span>服务与环境映射<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 
     <div >
         <div style="margin-left:30px;margin-top:20px;">
             <label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">
             <label style="margin-left:80px;">环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">
-            <label style="margin-left:50px;">Host：</label><input type="text" name="hostInfo" id="Host" placeholder=" Host" style="width:12%" class="input-text">
+            <label style="margin-left:50px;">Host：</label><input type="text" name="hostInfo" id="hostInfo" placeholder=" Host" style="width:12%" class="input-text">
         </div>
         <div style="margin-left:30px;margin-top:20px;">
             <label style="margin-left:50px;">数据库：</label><input type="text" name="dbInfo" id="dbInfo" placeholder=" 数据库信息" style="width:12%" class="input-text">
             <label style="margin-left:50px;">Swagger：</label><input type="text" name="swaggerUrl" id="swaggerUrl" placeholder=" Swagger" style="width:12%" class="input-text">
-            <button name="find" id="find" style="margin-left:50px;width:100px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button name="find" id="find" style="margin-left:98px;width:80px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
         </div>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -103,7 +94,13 @@
         });
     });
 
-
+    function empty(){
+        $("#servicekey").val("");
+        $("#envKey").val("");
+        $("#hostInfo").val("");
+        $("#dbInfo").val("");
+        $("#swaggerUrl").val("");
+    }
 
     //查询用户列表
     $(document).ready(function () {

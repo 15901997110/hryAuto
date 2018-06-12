@@ -186,18 +186,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectByGroupId(Integer groupId) {
+        if(groupId==null||groupId==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"groupId必填");
+        }
         UserExample userExample=new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
         criteria.andStatusGreaterThan((short)0);
-        if(groupId!=null){
-            if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){
-                criteria.andGroupidEqualTo((short)12);//上海组对应的GroupID为11-19
-            }
-            if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){
-                criteria.andGroupidEqualTo((short)22);//杭州组对应的GroupID为21-29
-            }
-        }
-
+        criteria.andGroupidEqualTo(groupId.shortValue());
         return userMapper.selectByExample(userExample);
     }
+
+    @Override
+    public List<User> selectDever(Integer groupId){
+        if(groupId==null||groupId==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"groupId必填");
+        }
+        if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){//如果当前登录用户为上海组,则返回上海开发组
+            return this.selectByGroupId(12);
+        }
+        if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){//如果当前登录用户为杭州组,则返回杭州开发组
+            return this.selectByGroupId(22);
+        }
+        return userMapper.selectByExample(null);//否则返回全部用户
+    }
+
 }

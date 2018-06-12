@@ -1,7 +1,9 @@
 package com.haier.controller;
 
 import com.haier.po.RealtimeStatistic;
+import com.haier.response.Result;
 import com.haier.service.StatisticService;
+import com.haier.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ public class StatisticController {
      * @return
      */
     @GetMapping("/realtime")
-    public List<RealtimeStatistic> realtimeStatistics(){
-        return statisticService.statisticCurrent();
+    public Result<List<RealtimeStatistic>> realtimeStatistics(){
+        return ResultUtil.success(statisticService.statisticCurrent());
     }
 }

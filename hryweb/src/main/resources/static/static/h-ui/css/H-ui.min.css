@@ -3181,7 +3181,7 @@ table.dataTable thead .sorting_desc {
 }
 
 .textarea {
-    height: 100px;
+    height: 150px;
    /* resize: none;*/
     font-size: 14px;
     padding: 4px

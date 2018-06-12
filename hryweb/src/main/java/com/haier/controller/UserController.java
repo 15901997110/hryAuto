@@ -67,6 +67,11 @@ public class UserController {
         return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 
+    @PostMapping("/selectDever.do")
+    public Result selectDever(Integer groupId){
+        return ResultUtil.success(userService.selectDever(groupId));
+    }
+
     //修改用户密码
     @PostMapping("/modifyPwd.do")
     public Result modifyPwd(String identity, String oldPwd, String newPwd) {

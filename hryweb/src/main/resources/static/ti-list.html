@@ -29,7 +29,8 @@
         <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:10%" class="input-text">
         <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址" style="width:15%" class="input-text">
         <label style="margin-left:30px">开发人员：</label><input type="text" name="idev" id="idev" placeholder=" 开发人员" style="width:10%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
+        <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
+        <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
@@ -97,6 +98,12 @@
         });
     });
 
+    function empty(){
+        $("#serviceid").val("");
+        $("#remark").val("");
+        $("#iuri").val("");
+        $("#idev").val("");
+    }
 
     //查询接口列表
     $(document).ready(function () {
