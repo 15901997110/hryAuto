@@ -22,25 +22,35 @@
     <title>用例列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用例管理 <span class="c-gray en">&gt;</span>用例列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的用例 <span class="c-gray en">&gt;</span>用例列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div >
         <div style="margin-left:30px;margin-top:20px;">
             <label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" serviceKey或serviceName" style="width:12%" class="input-text">
-            <label style="margin-left:50px;">环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境名称或环境描述" style="width:12%" class="input-text">
+            <label style="margin-left:50px;">环境：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="envKey" id="envKey">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
             <label style="margin-left:50px;">接口：</label><input type="text" name="tiUrl" id="tiUrl" placeholder=" 接口地址或接口描述" style="width:12%" class="input-text">
         </div>
         <div style="margin-left:30px;margin-top:20px;">
             <label style="margin-left:37px;">用例名称：</label><input type="text" name="caseName" id="caseName" placeholder=" 用例名称" style="width:12%" class="input-text">
-            <label style="margin-left:21px;">请求参数：</label><input type="text" name="requestParam" id="requestParam" placeholder=" 请求参数" style="width:12%" class="input-text">
-            <label style="margin-left:24px;">断言类型：</label><input type="text" name="assertType" id="assertType" placeholder=" 断言类型" style="width:12%" class="input-text">
+            <label style="margin-left:23px;">断言类型：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="assertType" id="assertType">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
+            <label style="margin-left:37px;">设计人：</label><input type="text" name="author" id="author" placeholder=" 用例设计人" style="width:12%" class="input-text">
             <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
             <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
         </div>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tuser_add('添加用例','tcase-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
+            <a class="btn btn-primary radius" onclick="tuser_add('添加用例','tcase-add.html','800','700')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -49,13 +59,13 @@
             <thead>
             <tr class="text-c">
                 <th width="3%"><input name="" type="checkbox" value=""></th>
-                <th width="5%">ID</th>
+                <th width="3%">ID</th>
                 <th width="5%">用例名称</th>
                 <th width="5%">用例描述</th>
-                <th width="10%">serviceKey|serviceName</th>
-                <th width="10%">evnKey</th>
-                <th width="15">接口名称|接口地址</th>
-                <th width="10%">请求参数</th>
+                <th width="15%">服务</th>
+                <th width="5%">环境</th>
+                <th width="10">接口名称</th>
+                <th width="17%">接口地址</th>
                 <th width="8%">断言类型</th>
                 <th width="10%">期望结果</th>
                 <th width="5%">设计人</th>
@@ -102,23 +112,38 @@
     });
 
     function empty(){
-        $("#identity").val("");
-        $("#realname").val("");
-        //$("#groupid").val("");
-        $("#groupid option:first").prop("selected", 'selected');
+        $("#servicekey").val("");
+        $("#tiUrl").val("");
+        $("#caseName").val("");
+        $("#author").val("");
+        $("#envKey option:first").prop("selected", 'selected');
+        $("#assertType option:first").prop("selected", 'selected');
     }
 
     //初始加载
     $(document).ready(function () {
-        pageSkip(1);
-       /* var list=userGroup();
+        var realName=$.cookie('realnameCookie');
+        $("#author").val(realName);
+        var list=getEnvList();
         var html="";
         for(i=0;i<list.length;i++){
             var row=list[i];
-            var rowHtml="<option value=\""+row.groupId+"\">"+row.desc+"</option>";
+            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
             html=html+rowHtml;
         }
-        $("#groupid").append(html);*/
+        $("#envKey").append(html);
+
+        var assertList=getAssertType();
+        var asserts="";
+        for(k=0;k<assertList.length;k++){
+            var one=assertList[k];
+            var rowHtml="<option value=\""+one.id+"\">"+one.value+"</option>";
+            asserts=asserts+rowHtml;
+        }
+        $("#assertType").append(asserts);
+
+        pageSkip(1);
+
     });
 
     //分页查询
@@ -130,7 +155,7 @@
         var envKey = $("#envKey").val();
         var tiUrl = $("#tiUrl").val();
         var caseName = $("#caseName").val();
-        var requestParam = $("#requestParam").val();
+        var author = $("#author").val();
         var assertType = $("#assertType").val();
 
         $.ajax({
@@ -141,7 +166,7 @@
                 envid:envKey,
                 iuri:tiUrl,
                 casename:caseName,
-                requestparam:requestParam,
+                author:author,
                 asserttype:assertType,
                 status:1,
                 pageNum:index,
@@ -176,22 +201,24 @@
 
                     var assertList=getAssertType();
                     var assertName="";
+                    var envList=getEnvList();
+                    var envKey="";
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
                         for(var k=0;k<assertList.length;k++){
                             var one=assertList[k];
                             if(one.id == row.asserttype){
-                                assertName=one.desc;
+                                assertName=one.value;
                             }
                         }
 
-                        var envList=getEnvList();
-                        var envKey="";
+
                         for(var j=0;j<envList.length;j++){
                             var two=envList[j];
                             if(two.id == row.envid){
-                                envKey=two.remark;
+                                envKey=two.envkey;
                             }
                         }
 
@@ -205,10 +232,10 @@
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.casename+"</td>\n" +
                             "<td>"+row.remark+"</td>\n" +
-                            "<td >"+row.servicekey+"|"+row.servicekey+"</td>\n" +
+                            "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
                             "<td>"+envKey+"</td>\n" +
-                            "<td>"+row.iremark+"|"+row.iuri+"</td>\n" +
-                            "<td>"+row.requestparam+"</td>\n" +
+                            "<td>"+row.iremark+"</td>\n" +
+                            "<td>"+row.iuri+"</td>\n" +
                             "<td>"+assertName+"</td>\n" +
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
@@ -299,16 +326,24 @@
 
     //筛选
     function find(){
-        var identity = $("#identity").val();
-        var realname = $("#realname").val();
-        var groupid = $("#groupid").val();
+        var servicekey = $("#servicekey").val();
+        var envKey = $("#envKey").val();
+        var tiUrl = $("#tiUrl").val();
+        var caseName = $("#caseName").val();
+        var author = $("#author").val();
+        var assertType = $("#assertType").val();
+
         $.ajax({
             type: "post",
-            url: "/user/selectByCondition.do",
+            url: "/tcase/selectByCondition.do",
             data: {
-                identity:identity,
-                realname:realname,
-                groupid:groupid,
+                servicekey:servicekey,
+                envid:envKey,
+                iuri:tiUrl,
+                casename:caseName,
+                author:author,
+                asserttype:assertType,
+                status:1,
                 pageNum:1,
                 pageSize:10
             },
@@ -316,7 +351,7 @@
             success: function (data) {
 
                 $("#total").html("");
-                $("#tuserList").html("");
+                $("#tcaseList").html("");
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
@@ -344,30 +379,43 @@
                     "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
-                    var groups=userGroup();
-                    var groupName="";
+                    var assertList=getAssertType();
+                    var assertName="";
+                    var envList=getEnvList();
+                    var envKey="";
+
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
-                        for(var k=0;k<groups.length;k++){
-                            var one=groups[k];
-                            if(one.groupId == row.groupid){
-                                groupName=one.desc;
+                        for(var k=0;k<assertList.length;k++){
+                            var one=assertList[k];
+                            if(one.id == row.asserttype){
+                                assertName=one.value;
                             }
                         }
-                        var remark=row.remark;
-                        if(row.remark == null){
-                            remark="";
+
+                        for(var j=0;j<envList.length;j++){
+                            var two=envList[j];
+                            if(two.id == row.envid){
+                                envKey=two.envkey;
+                            }
                         }
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+groupName+"</td>\n" +
-                            "<td>"+row.identity+"</td>\n" +
-                            "<td >"+row.realname+"</td>\n" +
-                            "<td>"+remark+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tuser-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td>"+row.casename+"</td>\n" +
+                            "<td>"+row.remark+"</td>\n" +
+                            "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
+                            "<td>"+envKey+"</td>\n" +
+                            "<td>"+row.iremark+"</td>\n" +
+                            "<td>"+row.iuri+"</td>\n" +
+                            "<td>"+assertName+"</td>\n" +
+                            "<td>"+row.expected+"</td>\n" +
+                            "<td>"+row.author+"</td>\n" +
+                            "<td>"+row.updatetime+"</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -401,10 +449,12 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
 
                 }else{
-                    alert(JSON.stringify(data));
+                    layer.close(layerIndex);
+                    alert(msg);
                 }
             }
         });
@@ -431,6 +481,29 @@
         });
         return usergroup;
     }
+
+    function selectByGroupId(){
+        var users=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectByGroupId.do",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                users=data;
+            },
+            fail:function (data) {
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return users;
+    }
+
 
     function getEnvList(){
         var envList=null;
