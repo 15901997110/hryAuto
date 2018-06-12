@@ -117,9 +117,9 @@
       var password = $("#password").val();
 
       if(identity == null || identity == ""){
-          alert("用户名不能为空！")
+          layer.msg("用户名不能为空！");
       }else if(password == null || password == ""){
-          alert("密码不能为空！")
+          layer.msg("密码不能为空！");
       }else{
           layerIndex = layer.msg('登录中，请稍等...', {
               icon: 16,
@@ -141,7 +141,10 @@
                       window.location.href="index.html";
                   }else{
                       layer.close(layerIndex);
-                      alert(msg);
+                      layer.alert(msg, {
+                          icon: 0,
+                          skin: 'layer-ext-moon'
+                      })
                   }
 
               },
@@ -152,9 +155,8 @@
               error:function(data) {
                   console.log(data);
                   layer.alert('显示异常，请刷新后重试', {
-                      skin: 'layui-layer-molv'
-                      , closeBtn: 0
-                      , shift: 4 //动画类型
+                      icon: 0,
+                      skin: 'layer-ext-moon'
                   });
               },
           });
