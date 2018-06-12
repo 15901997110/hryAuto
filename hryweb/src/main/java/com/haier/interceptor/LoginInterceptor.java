@@ -59,7 +59,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<script>");
-        out.println("window.open ('" + request.getContextPath() + "/login.html','_top')");
+        out.println("window.open('" + request.getContextPath() + "/login.html','_top')");
         out.println("</script>");
         out.println("</html>");
         return false;
