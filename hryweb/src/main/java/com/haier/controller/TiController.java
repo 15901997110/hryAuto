@@ -57,6 +57,11 @@ public class TiController {
         return ResultUtil.success(tiService.selectByCondition(tiCustom, pageNum, pageSize));
     }
 
+    @PostMapping("/selectByConditionSimple.do")
+    public Result selectByConditionSimple(Ti ti){
+        return ResultUtil.success(tiService.selectByCondition(ti));
+    }
+
     //改
     @PostMapping("updateOne.do")
     public Result updateOne(Ti ti) {
