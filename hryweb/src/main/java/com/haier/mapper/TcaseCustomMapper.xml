@@ -9,7 +9,6 @@
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <result column="iUri" jdbcType="VARCHAR" property="iuri"/>
         <result column="iremark" jdbcType="VARCHAR" property="iremark"/>
-
         <result column="caseName" jdbcType="VARCHAR" property="casename"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="iId" jdbcType="INTEGER" property="iid"/>
@@ -33,7 +32,7 @@
                 AND (tservice.`serviceKey` LIKE #{servicekey} OR tservice.`serviceName` LIKE #{servicekey})
             </if>
             <if test="iuri != null and iuri !=''">
-                AND ti.`iUri` LIKE #{iuri}
+                AND (ti.`iUri` LIKE #{iuri} or ti.`remark` LIKE #{iuri})
             </if>
             <if test="iremark != null and iremark !=''">
                 AND ti.`remark` LIKE #{iremark}
