@@ -28,7 +28,8 @@
         <label style="margin-left:50px">服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
         <label style="margin-left:50px">服务简称：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务简称" style="width:12%" class="input-text">
         <label style="margin-left:50px">服务名称：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务名称" style="width:12%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
+        <button name="find" id="find" style="margin-left:50px;width:100px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
+        <button name="empty" id="empty" style="margin-left:10px;width:100px;" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -96,6 +97,12 @@
     $(document).ready(function () {
        pageSkip(1);
     });
+
+    function empty(){
+        $("#id").val("");
+        $("#servicekey").val("");
+        $("#servicename").val("");
+    }
 
     //分页查询
     function pageSkip(index){
