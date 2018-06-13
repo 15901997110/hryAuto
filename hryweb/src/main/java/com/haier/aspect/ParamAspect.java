@@ -17,13 +17,13 @@ import org.springframework.stereotype.Component;
 public class ParamAspect {
     @Around("execution(* com.haier.util.HryHttpClientUtil.send(..))")
     public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        //前置增强
+        //前置增强,处理入参中有特定意义的字符串比如<!rd>
         Object[] args = proceedingJoinPoint.getArgs();
         Object param=args[2];
-        log.debug(param.toString());
+        log.debug("aspect-debug:"+param.toString());
         //执行切入点的方法
-        proceedingJoinPoint.proceed();
+        proceedingJoinPoint.proceed(args);
 
-        //兵团增强
+        //后置增强,可以有些用例需要数据更新操作
     }
 }
