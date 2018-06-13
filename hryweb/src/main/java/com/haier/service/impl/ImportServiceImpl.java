@@ -13,6 +13,7 @@ import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -104,7 +105,7 @@ public class ImportServiceImpl implements ImportService {
 
         JSONObject paths = jsonObject.getJSONObject("paths");//获取path:
         //definitions主要用于获取示例参数,这里暂时忽略,获取示例参数将改由Selenium从页面抓取
-        //JSONObject definitions=jsonObject.getJSONObject("definitions");//获取definitions
+        JSONObject definitions=jsonObject.getJSONObject("definitions");//获取definitions
 
         //解析paths,
         for (Map.Entry<String, Object> entry : paths.entrySet()) {
@@ -112,14 +113,42 @@ public class ImportServiceImpl implements ImportService {
             JSONObject iUriJsonObject = (JSONObject) entry.getValue();
             JSONObject postJsonObject = iUriJsonObject.getJSONObject("post");
             String summary = postJsonObject.getString("summary");//接口描述信息,作为i.remark插入
-
-            //构造ti对象
             Ti ti = new Ti();
             ti.setServiceid(serviceId);
             ti.setIuri(iUri);
             ti.setRemark(summary);
             ti.setIdev(iDev);
-
+            ti.setUpdatetime(new Date());
+            //解析Json，设置Iparamsample
+            List parameJsonObject = postJsonObject.getJSONArray("parameters");
+            Map<String, Object> parametersMap = (Map<String, Object>)parameJsonObject.get(0);
+            Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
+            if(Objects.isNull(schema)){
+                StringBuilder paramsample = new StringBuilder();
+                paramsample.append("{");
+                for(int i=0;i<parameJsonObject.size();i++){
+                    Map<String, Object> Mapparameters = (Map<String, Object>) parameJsonObject.get(i);
+                    for(String listkey:Mapparameters.keySet()){
+                        Object listvalue = Mapparameters.get(listkey);
+                        if (Objects.nonNull(listkey)){
+                            if("name".equals(listkey)){
+                                paramsample.append(listvalue.toString()).append("=");
+                            }else if("type".equals(listkey)){
+                                paramsample.append(listvalue.toString()).append("&");
+                            }
+                        }
+                    }
+                }
+                paramsample.append("}");
+                if(paramsample.lastIndexOf("&") >= 0){
+                    paramsample.replace(paramsample.lastIndexOf("&"), paramsample.lastIndexOf("&") + 1, "");
+                }
+                ti.setIparamsample(paramsample.toString());
+                }else {
+                String ref = schema.get("$ref").toString();
+                StringBuilder paramsamples = new StringBuilder();
+                parseRef(ref, ti, definitions, paramsamples);
+            }
 
             if (Objects.isNull(existIuri) || !existIuri.contains(iUri)) {//如果existIurl==null,说明此serviceId没有对应
                 // 的接口记录,以下则可放心插入,
@@ -158,5 +187,62 @@ public class ImportServiceImpl implements ImportService {
 
 
         return result;
+    }
+    private static void parseRef(String ref, Ti ti, Map<String, Object> definitions, StringBuilder paramsamples){
+        if (org.apache.commons.lang.StringUtils.isNotBlank(ref) && ref.contains("/")) {
+            //ref值的/之后的最后一段字英文字符
+            String defKey = ref.substring(ref.lastIndexOf("/") + 1, ref.length());
+            Map<String, Object> definitionsMap = (Map<String, Object>) definitions.get(defKey);
+            Map<String, Object> properties = (Map<String, Object>) definitionsMap.get("properties");
+            if(Objects.nonNull(properties)){
+                paramsamples.append("{");
+                for (String propertieKey : properties.keySet()) {
+                    paramsamples.append("\"").append(propertieKey).append("\":");
+                    Map<String, Object> propertiesValue = (Map<String, Object>) properties.get(propertieKey);
+                    for (String k : propertiesValue.keySet()) {
+                        Object v = propertiesValue.get(k);
+                        if ("array".equals(v)){
+                            Map<String, Object> items = (Map<String, Object>) propertiesValue.get("items");
+                            if(Objects.nonNull(items.get("$ref"))){
+                            ref = items.get("$ref").toString();
+                            paramsamples.append("[");
+                            parseRef(ref, ti, definitions, paramsamples);
+                            paramsamples.append("]");
+                            paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
+                        }else {
+                                paramsamples.append("\"").append(v.toString().replace("array","L")).append("\",");
+                            }
+                        } else if("integer".equals(v)){
+                            paramsamples.append("\"").append(v.toString().replace("integer","0")).append("\",");
+                        }else if ("string".equals(v)){
+                            paramsamples.append("\"").append(v.toString().replace("string","")).append("\",");
+                        }else if(Objects.nonNull(v)) {
+                            if("type".equals(k)&&(!"string".equals(v))&&(!"integer".equals(v))&&(!"array".equals(v))){
+                                paramsamples.append("\"").append(v.toString()).append("\",");
+                            }else if("$ref".equals(k)){
+                                parseRef(v.toString().replace("#", ""), ti, definitions, paramsamples);
+                                paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                            }
+                        }else{
+                            ti.setIparamsample(null);
+                        }
+                    }
+                }
+                if (paramsamples.lastIndexOf(",") >= 0) {
+                    paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                    paramsamples.append("}");
+                }
+                log.info("解析结果为：======" + paramsamples);
+                //字符长度超过5000时，截取5000个字符
+                if(paramsamples.length()>5000){
+                 String params=paramsamples.substring(0,5000);
+                 ti.setIparamsample(params.replaceAll("\"0\"", "0"));
+                 log.info("长度超过限制了，请注意！数据为：======" + paramsamples);
+                }else {
+                ti.setIparamsample(paramsamples.toString().replaceAll("\"0\"", "0"));}
+            }
+        }else {
+            ti.setIparamsample(null);
+        }
     }
 }
