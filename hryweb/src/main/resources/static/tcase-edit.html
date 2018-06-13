@@ -5,30 +5,30 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="Bookmark" href="/favicon.ico" >
-    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico"/>
     <!--[if lt IE 9]-->
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="lib/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]-->
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增用例</title>
+    <title>用例编辑</title>
 </head>
 <body>
 <article class="page-container">
-    <form  method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form method="post" class="form form-horizontal" id="form">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -51,22 +51,22 @@
 				</span>
             </div>
         </div>
-        <div class="row cl">
+       <!-- <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
-                        <!--<option value="" selected>请选择服务</option>-->
+                    <select class="select" size="1" name="service" id="service">
+                        <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="ti" id="ti">
-                        <!--<option value="" selected>请选择接口</option>-->
+                        <option value="" selected>请选择接口</option>
                     </select>
 				</span>
             </div>
@@ -96,12 +96,12 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">设计人：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="author" name="author" disabled="disabled">
+                <input type="text" class="input-text" value="" placeholder="" id="author" name="author">
             </div>
         </div>
         <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTcase()"><i class="icon-ok"></i> 确定</button>
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" id="submit">
+
             </div>
         </div>
     </form>
@@ -114,21 +114,18 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/select2/select2.full.js"></script>
-<script type="text/javascript" src="lib/select2/pinyin.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-
-
 <script type="text/javascript">
-    //loading
     var layerIndex;
+    //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
                 layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在提交请稍等...")
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -139,6 +136,13 @@
             }
         });
     });
+
+    function getParameter(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
 
     function getServiceList(){
         var service=null;
@@ -200,14 +204,13 @@
         return env;
     }
 
-    function getTiList(serviceid){
+    function getTiList(){
         var tiList=null;
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
             url: "/ti/selectByConditionSimple.do",
             data: {
-                serviceid:serviceid
             },
             dataType: "json",
             success: function (data) {
@@ -252,99 +255,118 @@
         return assertType;
     }
 
+    //页面加载处理
     $(document).ready(function () {
-        var realName=$.cookie('realnameCookie');
-        $("#author").val(realName);
+        var id = getParameter('id');
+        $("#id").val(id);
         var serviceList=getServiceList();
-        var env=getTenvList();
+        var envList=getTenvList();
+        var tiList=getTiList();
         var assertTypeList=getAssertType();
 
-        var tenv="";
-        for(k=0;k<env.length;k++){
-            var row=env[k];
-            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
-            tenv=tenv+rowHtml;
-        }
-        $("#env").append(tenv);
+        $.ajax({
+            type: "post",
+            url: "/tcase/selectOne.do",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+                console.log(data);
 
-        var services="";
-        for(i=0;i<serviceList.length;i++){
-            var row=serviceList[i];
-            var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
-            services=services+rowHtml;
-        }
-        $("#service").append(services);
+                if(status == 0){
+                    var casename = list.casename;
+                    var remark = list.remark;
+                    var iid=list.iid;
+                    var envid=list.envid;
+                    var requestparam=list.requestparam;
+                    var asserttype=list.asserttype;
+                    var expected=list.expected;
+                    var author=list.author;
+                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+                    $("#submit").append(submit);
 
-        var serviceId=$("#service").val();
-        var tiList=getTiList(serviceId);
-        var tis="";
-        if(tiList.length == 0){
-            tis="<option value=\"\" style='color:red'>该服务下无接口</option>";
-            $("#ti").append(tis);
-        }else{
-            for(var j=0;j<tiList.length;j++){
-                var row=tiList[j];
-                var rowHtml="<option value=\""+row.id+"\">"+row.iuri+"</option>";
-                tis=tis+rowHtml;
+                    var envs="";
+                    for(var k=0;k<envList.length;k++){
+                        var rowEnv=envList[k];
+                        if( rowEnv.id == envid){
+                            var envHtml="<option value=\""+rowEnv.id+"\" selected>"+rowEnv.envkey+"</option>";
+                        }else{
+                            var envHtml="<option value=\""+rowEnv.id+"\">"+rowEnv.envkey+"</option>";
+                        }
+                        envs=envs+envHtml;
+                    }
+                    $("#env").append(envs);
+
+                    var services="";
+                    for(i=0;i<serviceList.length;i++){
+                        var row=serviceList[i];
+                        var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
+                        services=services+rowHtml;
+                    }
+                    $("#service").append(services);
+
+                    var tis="";
+                    for(var k=0;k<tiList.length;k++){
+                        var rowTi=tiList[k];
+                        if( rowTi.id == iid){
+                            var tiHtml="<option value=\""+rowTi.id+"\" selected>"+rowTi.iuri+"</option>";
+                        }else{
+                            var tiHtml="<option value=\""+rowTi.id+"\">"+rowTi.iuri+"</option>";
+                        }
+                        tis=tis+tiHtml;
+                    }
+                    $("#ti").append(tis);
+                    $('#ti').attr("disabled","desabled");
+
+                    var assertTypes="";
+                    for(var k=0;k<assertTypeList.length;k++){
+                        var rowAssertType=assertTypeList[k];
+                        if( rowAssertType.id == asserttype){
+                            var assertHtml="<option value=\""+rowAssertType.id+"\" selected>"+rowAssertType.value+"</option>";
+                        }else{
+                            var assertHtml="<option value=\""+rowAssertType.id+"\">"+rowAssertType.value+"</option>";
+                        }
+                        assertTypes=assertTypes+assertHtml;
+                    }
+                    $("#assertType").append(assertTypes);
+
+
+                    $("#caseName").val(casename);
+                    $("#remark").val(remark);
+                    $("#service").val();
+                    $("#requestParam").val(requestparam);
+                    $("#expected").val(expected);
+                    $("#author").val(author);
+                    layer.close(layerIndex);
+
+                }else{
+                    layer.close(layerIndex);
+                    alert(msg);
+                }
+
             }
-            $("#ti").append(tis);
-            $("#ti").select2();
+        });
 
-        }
-
-
-        var assertTypes="";
-        for(var m=0;m<assertTypeList.length;m++){
-            var row=assertTypeList[m];
-            var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
-            assertTypes=assertTypes+rowHtml;
-        }
-        $("#assertType").append(assertTypes);
-        layer.close(layerIndex);
 
     });
 
-    //环境改变处理
-    function serviceChange(){
-        var serviceId=$("#service").val();
-        var tiList=getTiList(serviceId);
-        var tis="";
-        if(tiList.length == 0){
-            tis="<option value=\"\" style='color:red'>该服务下无接口</option>";
-            $("#ti").append(tis);
-        }else{
-            for(var j=0;j<tiList.length;j++){
-                var row=tiList[j];
-                var rowHtml="<option value=\""+row.id+"\">"+row.iuri+"</option>";
-                tis=tis+rowHtml;
-            }
-            //$("#ti").find("option:selected").text("");
-            $("#ti").empty();
-            $("#ti").append(tis);
-            $("#ti").select2();
-
-        }
-
-        layer.close(layerIndex);
-
-    }
-
-    //添加用例
-    function addTcase(){
+    //编辑用例
+    function editTcase(id){
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
-        var service = $("#service").val();
+        //var service = $("#service").val();
         var ti = $("#ti").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var author = $("#author").val();
 
-        if(service == null || service == ""){
-            alert("请选择服务！");
-            return;
-        }else if(ti == null || ti == ""){
+        if(ti == null || ti == ""){
             alert("请选择接口！");
             return;
         }else if(assertType == null || assertType == ""){
@@ -352,9 +374,10 @@
             return;
         }else{
             $.ajax({
-                type: "post",
-                url: "/tcase/insertOne.do",
-                data: {
+                type: 'POST',
+                url: '/tcase/updateOne.do',
+                data:{
+                    id:id,
                     casename:caseName,
                     remark:remark,
                     iid:ti,
@@ -365,32 +388,31 @@
                     author:author,
                     status:1
                 },
-                dataType: "json",
-                success: function (data) {
+                dataType: 'json',
+                success: function(data){
                     var status=data.status;
                     var msg=data.msg;
+                    var list=data.data;
+
                     if(status == 0){
+                        //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.close(layerIndex);
-                        alert(msg);
+                        alert(JSON.stringify(data));
                     }
 
                 },
-                fail:function (data) {
-                    layer.close(layerIndex);
-                    alert(JSON.stringify(data));
-                },
-                error: function(xhr) {
+                error:function(xhr) {
                     layer.close(layerIndex);
                     alert('error:' + JSON.stringify(xhr));
-                }
+                },
             });
         }
 
     }
+
 </script>
 
 </body>
