@@ -118,7 +118,7 @@ public class ImportServiceImpl implements ImportService {
             ti.setIuri(iUri);
             ti.setRemark(summary);
             ti.setIdev(iDev);
-            ti.setUpdatetime(new Date());
+            //ti.setUpdatetime(new Date());
             //解析Json，设置Iparamsample
             List parameJsonObject = postJsonObject.getJSONArray("parameters");
             Map<String, Object> parametersMap = (Map<String, Object>)parameJsonObject.get(0);
@@ -188,6 +188,8 @@ public class ImportServiceImpl implements ImportService {
 
         return result;
     }
+
+    //ref内层嵌套json解析
     private static void parseRef(String ref, Ti ti, Map<String, Object> definitions, StringBuilder paramsamples){
         if (org.apache.commons.lang.StringUtils.isNotBlank(ref) && ref.contains("/")) {
             //ref值的/之后的最后一段字英文字符
@@ -213,9 +215,13 @@ public class ImportServiceImpl implements ImportService {
                                 paramsamples.append("\"").append(v.toString().replace("array","L")).append("\",");
                             }
                         } else if("integer".equals(v)){
-                            paramsamples.append("\"").append(v.toString().replace("integer","0")).append("\",");
+                            //paramsamples.append("\"").append(v.toString().replace("integer","0")).append("\",");
+                            paramsamples.append(v.toString().replace("integer","0")).append(",");
                         }else if ("string".equals(v)){
                             paramsamples.append("\"").append(v.toString().replace("string","")).append("\",");
+                        } else if ("number".equals(v)){
+                            //paramsamples.append("\"").append(v.toString().replace("number","0")).append("\",");
+                            paramsamples.append(v.toString().replace("number","0")).append(",");
                         }else if(Objects.nonNull(v)) {
                             if("type".equals(k)&&(!"string".equals(v))&&(!"integer".equals(v))&&(!"array".equals(v))){
                                 paramsamples.append("\"").append(v.toString()).append("\",");
@@ -232,14 +238,16 @@ public class ImportServiceImpl implements ImportService {
                     paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
                     paramsamples.append("}");
                 }
-                log.info("解析结果为：======" + paramsamples);
+                //log.info("解析结果为：======" + paramsamples);
                 //字符长度超过5000时，截取5000个字符
                 if(paramsamples.length()>5000){
                  String params=paramsamples.substring(0,5000);
                  ti.setIparamsample(params.replaceAll("\"0\"", "0"));
-                 log.info("长度超过限制了，请注意！数据为：======" + paramsamples);
+                    log.error("长度超过限制了，请注意！数据为：======" + paramsamples);
                 }else {
-                ti.setIparamsample(paramsamples.toString().replaceAll("\"0\"", "0"));}
+                //ti.setIparamsample(paramsamples.toString().replaceAll("\"0\"", "0"));
+                    ti.setIparamsample(paramsamples.toString());
+                }
             }
         }else {
             ti.setIparamsample(null);
