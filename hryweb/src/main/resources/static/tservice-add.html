@@ -13,6 +13,7 @@
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
@@ -26,7 +27,7 @@
     <title>新增服务</title>
 </head>
 <body>
-<article class="page-container">
+<article class="page-container" style="margin-top:20px;">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务简称：</label>
@@ -45,9 +46,16 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="httptype" id="httptype">
-                        <!--<option value="" selected>请选择协议</option>
-                        <option value="1">Http</option>
-                        <option value="2">Https</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">负责人：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="editor" id="editor">
+                        <option>请选择负责人</option>
                     </select>
 				</span>
             </div>
@@ -67,6 +75,8 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
@@ -124,13 +134,64 @@
                     });
             }
         });
+
+        var authorHtml="";
+        var authorList=devGroup();
+        for(var k=0;k<authorList.length;k++){
+            var row=authorList[k];
+            var rowHtml="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+            authorHtml=authorHtml+rowHtml;
+        }
+        $("#editor").append(authorHtml);
+        $("#editor").select2();
+
     });
+
+    function devGroup(){
+        var dev=null;
+        var groupId=$.cookie('groupidCookie');
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectDever.do",
+            data: {
+                groupId:groupId
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    dev=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            },
+            fail:function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return dev;
+    }
 
     //添加服务
     function addTservice(){
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
+        var author = $("#editor").val();
         var loginName=$.cookie('identityCookie'); // 读取 cookie
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
@@ -151,7 +212,7 @@
                     servicekey:servicekey,
                     servicename:servicename,
                     httptype:httptype,
-                    editor:realName,
+                    editor:author,
                     isdel:0
                 },
                 dataType: "json",
