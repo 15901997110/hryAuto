@@ -1,0 +1,252 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="Bookmark" href="/favicon.ico" >
+    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <!--[if lt IE 9]-->
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css" />
+
+    <!--[if IE 6]-->
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <!--/meta 作为公共模版分离出去-->
+    <title>一键导入</title>
+
+</head>
+<body>
+<div class="page-container">
+    <form  method="post" class="form form-horizontal" id="form-admin-role-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="serviceid" id="serviceid" onchange="setMatchValue()">
+                        <option value="" selected>请选择服务</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">swaggerUrl：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" readonly id="swaggerUrl" name="swaggerUrl">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">覆盖：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="radio" value="true" name="cover">
+                <input type="radio" checked value="false" name="cover">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">开发人员：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="idev" id="idev">
+                        <option value="" selected>请选择</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="importInterfaces()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel" onclick=""><i class="icon-ok"></i> 取消</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+<script type="text/javascript">
+
+    var seditorSet = null;
+
+    function setMatchValue(){
+        var ele = $("#serviceid").select2('data')[0].element;
+        var url = $(ele).data('url');
+        if (url != null && url != "")
+            $("#swaggerUrl").val(url);
+        var editor = $(ele).data('editor');
+        set_select_checked("idev",editor);
+    }
+
+    function set_select_checked(selectId, checkValue){
+        var select = $("#"+ selectId).select2();    //获取selectid
+        select.val(checkValue).trigger("change");    //设置 value 为four的 option 为选中状态
+        select.change();//告诉select2代码已经更新，需要重载  默认选择有值得第一个
+    }
+
+    function importInterfaces(){
+        var serviceId = $("#serviceid").val().split("&")[0];
+        var envId = $("#serviceid").val().split("&")[1];
+        var overwrite = $('input[name="cover"]:checked').val();
+        var idev = $("#idev").val();
+
+        if(serviceid == null || serviceid == ""){
+            layer.msg("请选择服务！");
+            return;
+        }else{
+            $.ajax({
+                type: "post",
+                url: "/import/interfaceImport",
+                data: {
+                    serviceId:serviceId,
+                    envId:envId,
+                    overwrite:overwrite,
+                    idev:idev
+                },
+                dataType: "json",
+                success: function (data) {
+                    var status=data.status;
+                    if(status == 0){
+                        layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }else{
+                        layer.alert(JSON.stringify(data), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+
+                },
+                fail:function (data) {
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+                error: function(xhr) {
+                    // report error
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            });
+        }
+
+    }
+
+    $(document).ready(function () {
+        //获取服务环境列表
+        $.ajax({
+            type: "post",
+            url: "/tenvdetail/selectTenvdetailCustomListByCondition.do",
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var arrayList=data.data;
+                if(status == 0){
+                    var html="";
+                    seditorSet=new Set();
+                    for (var i in arrayList) {
+                        var row = arrayList[i];
+                        seditorSet.add(row.seditor);
+                        var rowHtml="<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " >" +row.servicekey+ "(" + row.envkey + ")</option>";
+                        html=html+rowHtml;
+                    }
+                    $("#serviceid").append(html);
+                    $("#serviceid").select2();
+                }else{
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+            },
+            fail:function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        //获取开发人员列表
+        $.ajax({
+            type: "post",
+            url: "/user/selectDever.do ",
+            data: {
+                groupId: $.cookie('groupidCookie')
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    var dev=data.data;
+                    var htmldev = "";
+                    seditorSet.forEach(function (element, sameElement, set) {
+                        var rowHtml = "<option value=\"" + element + "\">" + element + "</option>";
+                        htmldev = htmldev + rowHtml;
+                    });
+                    for (var i = 0; i < dev.length; i++) {
+                        var row = dev[i];
+                        var rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
+                        htmldev = htmldev + rowHtml;
+                    }
+                    $("#idev").append(htmldev);
+                    $("#idev").select2();
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            },
+            fail:function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>
