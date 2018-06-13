@@ -3,11 +3,13 @@ server:
 logging:
   file: hryweb.log
   level:
+    com.haier.aspect: debug
     com.haier.config: debug
     com.haier.controller: debug
     com.haier.interceptor: debug
     com.haier.service: debug
     com.haier.service.impl: debug
+    com.haier.util: debug
 spring:
   application:
     name: hryweb

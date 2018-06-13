@@ -20,6 +20,9 @@ public class ParamAspect {
         //前置增强,处理入参中有特定意义的字符串比如<!rd>
         Object[] args = proceedingJoinPoint.getArgs();
         Object param=args[2];
+        if(param==null){
+            param="null";
+        }
         log.debug("aspect-debug:"+param.toString());
         //执行切入点的方法
         proceedingJoinPoint.proceed(args);
