@@ -24,5 +24,7 @@ public interface TenvdetailService {
 
     List<Tenvdetail> selectByCondition(Tenvdetail tenvdetail);
 
+    List<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom);
+
     PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom, Integer pageNum, Integer pageSize);
 }

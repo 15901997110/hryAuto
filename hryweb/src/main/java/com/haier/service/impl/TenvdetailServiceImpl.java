@@ -132,11 +132,15 @@ public class TenvdetailServiceImpl implements TenvdetailService {
     }
 
     @Override
-    public PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom, Integer pageNum, Integer pageSize) {
-        if (tenvdetailCustom != null) {
-            ReflectUtil.setFieldAddPercentAndCleanZero(tenvdetailCustom, true);
-        }
+    public List<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(tenvdetailCustom,true);
+        List<TenvdetailCustom> tenvdetailCustomList = tenvdetailCustomMapper.selectByCondition(tenvdetailCustom);
+        return tenvdetailCustomList;
+    }
 
+    @Override
+    public PageInfo<TenvdetailCustom> selectByCondition(TenvdetailCustom tenvdetailCustom, Integer pageNum, Integer pageSize) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(tenvdetailCustom, true);
         if (pageNum == null || pageSize == null) {
             pageNum = 1;
             pageSize = 10;

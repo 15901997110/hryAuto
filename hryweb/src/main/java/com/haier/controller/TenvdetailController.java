@@ -48,11 +48,20 @@ public class TenvdetailController {
         return ResultUtil.success(tenvdetailService.selectOne(id));
     }
 
+
+    //返回List<TenvdetailCustom>
+    @PostMapping("/selectTenvdetailCustomListByCondition.do")
+    public Result selectTenvdetailCustomListByCondition(TenvdetailCustom tenvdetailCustom){
+        return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom));
+    }
+
+
     //查-仅查询tenvdetail表数据,返回list
-    @PostMapping("/selectByConditionSimple.do")
-    public Result selectByConditionSimple(Tenvdetail tenvdetail){
+    @PostMapping("/selectTenvdetailListByCondition.do")
+    public Result selectTenvdetailListByCondition(Tenvdetail tenvdetail){
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetail));
     }
+
 
     //查-关联表查询,返回包装类,并且携带pageinfo
     @PostMapping("/selectByCondition.do")
