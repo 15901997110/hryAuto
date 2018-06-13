@@ -49,14 +49,16 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">覆盖：</label>
+            <label class="form-label col-xs-4 col-sm-3">是否覆盖：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="radio" value="true" name="cover">
-                <input type="radio" checked value="false" name="cover">
+                <input id="overwrite_true" type="radio" value="true" name="cover">
+                <label for="overwrite_true">是</label>&emsp;
+                <input id="overwrite_false" type="radio" checked value="false" name="cover"  >
+                <label for="overwrite_false">否</label>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">开发人员：</label>
+            <label class="form-label col-xs-4 col-sm-3">接口开发者：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="idev" id="idev">
@@ -67,7 +69,7 @@
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="importInterfaces()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="importInterfaces()"><i class="icon-ok"></i> 导入</button>
                 <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel" onclick=""><i class="icon-ok"></i> 取消</button>
             </div>
         </div>
