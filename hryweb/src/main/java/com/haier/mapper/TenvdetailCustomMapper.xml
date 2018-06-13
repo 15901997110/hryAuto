@@ -6,6 +6,7 @@
         <result column="serviceid" property="serviceid"></result>
         <result column="servicekey" property="servicekey"/>
         <result column="servicename" property="servicename"/>
+        <result column="editor" property="seditor"/>
         <result column="envid" property="envid"></result>
         <result column="envkey" property="envkey"/>
         <result column="remark" property="envremark"/>
@@ -21,6 +22,7 @@
         tenvdetail.`serviceId`,
         tservice.`serviceKey`,
         tservice.`serviceName`,
+        tservice.`editor`,
         tenvdetail.`envId`,
         tenv.`envKey`,
         tenv.`remark`,
@@ -44,6 +46,9 @@
             </if>
             <if test="servicekey!=null">
                 AND (tservice.serviceKey like #{servicekey} or tservice.serviceName like #{servicekey})
+            </if>
+            <if test="seditor!=null">
+                AND tservice.editor LIKE #{seditor}
             </if>
             <if test="envkey!=null">
                 AND (tenv.envKey like #{envkey} or tenv.remark like #{envkey})
