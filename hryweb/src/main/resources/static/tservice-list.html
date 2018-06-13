@@ -72,16 +72,14 @@
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
+
+    var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
-                //$('#submit').val("正在加载请稍等...")
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -235,9 +233,10 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
-
+                    layer.close(layerIndex);
                 }else{
-                    layer.alert(JSON.stringify(data), {
+                    layer.close(layerIndex);
+                    layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
@@ -270,21 +269,9 @@
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
-                if(data.data.list.length==0){
-                    $("#dataTables_info").hide();
-                    $("#teserviceList").append("<span style='color:red;'>没有数据！</span>");
-                    return;
-                }
 
                 var status=data.status;
                 var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var before=data.data.prePage;
-                var next=data.data.nextPage;
-                console.log(data);
                 var html = "";
                 var pagesHtml="";
                 var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
@@ -293,6 +280,20 @@
                     "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
+                    var list=data.data.list;
+                    var total=data.data.total;
+                    var pages=data.data.pages;
+                    var now=data.data.pageNum;
+                    var before=data.data.prePage;
+                    var next=data.data.nextPage;
+                    console.log(data);
+                    if(data.data.list.length==0){
+                        $("#dataTables_info").hide();
+                        var h="<tr><td colspan='8' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                        $("#teserviceList").append(h);
+                        layer.close(layerIndex);
+                        return;
+                    }
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
                         var type="";
@@ -344,9 +345,11 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
 
                 }else{
-                    layer.alert(JSON.stringify(data), {
+                    layer.close(layerIndex);
+                    layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
@@ -379,6 +382,7 @@
                 },
                 dataType: 'json',
                 success: function(data){
+                    layer.close(layerIndex);
                     var status=data.status;
                     var msg=data.msg;
                     if(status == 0){
@@ -394,6 +398,7 @@
 
                 },
                 error:function(data) {
+                    layer.close(layerIndex);
                     console.log(data);
                 },
             });
