@@ -70,9 +70,11 @@ public class ImportController {
         List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(tenvdetail);
         if(tenvdetailList!=null&&tenvdetailList.size()>0){
             //查询到记录,应该有且只有一条记录,否则就是脏数据
-            swaggerUrl=tenvdetailList.get(0).getSwaggerurl().trim();
-            if(swaggerUrl==null||"".equals(swaggerUrl)){
+            swaggerUrl=tenvdetailList.get(0).getSwaggerurl();
+            if(swaggerUrl==null||"".equals(swaggerUrl.trim())){
                 throw new HryException(38,"serviceId="+serviceId+",envId="+envId+"对应的swagger地址为空,请先维护tenvdetail信息");
+            }else{
+                swaggerUrl=swaggerUrl.trim();
             }
         }else{
             //未查询到记录
