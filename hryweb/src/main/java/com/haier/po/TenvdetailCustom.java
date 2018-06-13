@@ -6,6 +6,7 @@ import lombok.Data;
 public class TenvdetailCustom extends Tenvdetail {
     private String servicekey;
     private String servicename;
+    private String seditor;
     private String envkey;
     private String envremark;
 }
