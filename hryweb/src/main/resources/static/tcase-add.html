@@ -102,7 +102,7 @@
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTcase()"><i class="icon-ok"></i> 确定</button>
-                <button type="button" class="btn btn-success radius" id="test" name="admin-role-save" onclick="addTcase()"><i class="icon-ok"></i> 测试</button>
+                <button type="button" class="btn btn-success radius" id="test" name="admin-role-save" onclick="runTcase()"><i class="icon-ok"></i> 测试</button>
             </div>
         </div>
     </form>
@@ -217,15 +217,24 @@
                 if(status == 0){
                     tiList=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return tiList;
@@ -244,10 +253,16 @@
                 assertType=data;
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return assertType;
@@ -342,14 +357,11 @@
         var expected = $("#expected").val();
         var author = $("#author").val();
 
-        if(service == null || service == ""){
-            alert("请选择服务！");
-            return;
-        }else if(ti == null || ti == ""){
-            alert("请选择接口！");
+       if(ti == null || ti == ""){
+            layer.alert("请选择接口！");
             return;
         }else if(assertType == null || assertType == ""){
-            alert("请选择断言类型！");
+            layer.alert("请选择断言类型！");
             return;
         }else{
             $.ajax({
@@ -376,22 +388,104 @@
                         parent.layer.close(index);
                     }else{
                         layer.close(layerIndex);
-                        alert(msg);
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                     }
 
                 },
                 fail:function (data) {
                     layer.close(layerIndex);
-                    alert(JSON.stringify(data));
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 },
                 error: function(xhr) {
                     layer.close(layerIndex);
-                    alert('error:' + JSON.stringify(xhr));
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             });
         }
 
     }
+
+    //运行用例
+    function runTcase(){
+        var caseName = $("#caseName").val();
+        var remark = $("#remark").val();
+        var env = $("#env").val();
+        var service = $("#service").val();
+        var ti = $("#ti").val();
+        var requestParam = $("#requestParam").val();
+        var assertType = $("#assertType").val();
+        var expected = $("#expected").val();
+        var author = $("#author").val();
+
+        if(ti == null || ti == ""){
+            layer.alert("请选择接口！");
+            return;
+        }else if(assertType == null || assertType == ""){
+            layer.alert("请选择断言类型！");
+            return;
+        }else{
+            $.ajax({
+                type: "post",
+                url: "/tcase/runCaseOne.do",
+                data: {
+                    casename:caseName,
+                    remark:remark,
+                    iid:ti,
+                    envid:env,
+                    requestparam:requestParam,
+                    asserttype:assertType,
+                    expected:expected,
+                    author:author,
+                    status:1
+                },
+                dataType: "json",
+                success: function (data) {
+                    var status=data.status;
+                    var msg=data.msg;
+                    if(status == 0){
+                        parent.window.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }else{
+                        layer.close(layerIndex);
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+
+                },
+                fail:function (data) {
+                    layer.close(layerIndex);
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+                error: function(xhr) {
+                    layer.close(layerIndex);
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+            });
+        }
+
+
+    }
+
+
+
 </script>
 
 </body>

@@ -113,14 +113,17 @@ public class ImportServiceImpl implements ImportService {
             JSONObject iUriJsonObject = (JSONObject) entry.getValue();
             JSONObject postJsonObject = iUriJsonObject.getJSONObject("post");
             String summary = postJsonObject.getString("summary");//接口描述信息,作为i.remark插入
+
             Ti ti = new Ti();
             ti.setServiceid(serviceId);
             ti.setIuri(iUri);
             ti.setRemark(summary);
             ti.setIdev(iDev);
-            //ti.setUpdatetime(new Date());
+
+//            ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
+
             //解析Json，设置Iparamsample
-            List parameJsonObject = postJsonObject.getJSONArray("parameters");
+            List parameJsonObject = postJsonObject.getJSONArray("parametegrs");
             Map<String, Object> parametersMap = (Map<String, Object>)parameJsonObject.get(0);
             Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
             if(Objects.isNull(schema)){

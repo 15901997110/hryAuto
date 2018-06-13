@@ -160,15 +160,24 @@
                 if(status == 0){
                     service=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return service;
@@ -190,15 +199,24 @@
                 if(status == 0){
                     env=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return env;
@@ -219,15 +237,24 @@
                 if(status == 0){
                     tiList=data.data;
                 }else{
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
 
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return tiList;
@@ -246,10 +273,16 @@
                 assertType=data;
             },
             fail:function (data) {
-                alert(JSON.stringify(data));
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
             error: function(xhr) {
-                alert('error:' + JSON.stringify(xhr));
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
             }
         });
         return assertType;
@@ -286,7 +319,8 @@
                     var asserttype=list.asserttype;
                     var expected=list.expected;
                     var author=list.author;
-                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase("+id+")\"><i class=\"icon-ok\"></i> 确定</button>" +
+                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"test\" name=\"admin-role-save\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>";
                     $("#submit").append(submit);
 
                     var envs="";
@@ -345,7 +379,10 @@
 
                 }else{
                     layer.close(layerIndex);
-                    alert(msg);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
 
             }
@@ -367,10 +404,10 @@
         var author = $("#author").val();
 
         if(ti == null || ti == ""){
-            alert("请选择接口！");
+            layer.alert("请选择接口！");
             return;
         }else if(assertType == null || assertType == ""){
-            alert("请选择断言类型！");
+            layer.alert("请选择断言类型！");
             return;
         }else{
             $.ajax({
@@ -395,21 +432,98 @@
                     var list=data.data;
 
                     if(status == 0){
-                        //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        alert(JSON.stringify(data));
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                     }
 
                 },
                 error:function(xhr) {
                     layer.close(layerIndex);
-                    alert('error:' + JSON.stringify(xhr));
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
                 },
             });
         }
+
+    }
+
+    //运行用例
+    function runTcase(){
+        var caseName = $("#caseName").val();
+        var remark = $("#remark").val();
+        var env = $("#env").val();
+        var service = $("#service").val();
+        var ti = $("#ti").val();
+        var requestParam = $("#requestParam").val();
+        var assertType = $("#assertType").val();
+        var expected = $("#expected").val();
+        var author = $("#author").val();
+
+        if(ti == null || ti == ""){
+            layer.alert("请选择接口！");
+            return;
+        }else if(assertType == null || assertType == ""){
+            layer.alert("请选择断言类型！");
+            return;
+        }else{
+            $.ajax({
+                type: "post",
+                url: "/tcase/runCaseOne.do",
+                data: {
+                    casename:caseName,
+                    remark:remark,
+                    iid:ti,
+                    envid:env,
+                    requestparam:requestParam,
+                    asserttype:assertType,
+                    expected:expected,
+                    author:author,
+                    status:1
+                },
+                dataType: "json",
+                success: function (data) {
+                    var status=data.status;
+                    var msg=data.msg;
+                    if(status == 0){
+                        layer.close(layerIndex);
+                        layer.alert(msg);
+                        parent.window.location.reload();
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    }else{
+                        layer.close(layerIndex);
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+
+                },
+                fail:function (data) {
+                    layer.close(layerIndex);
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+                error: function(xhr) {
+                    layer.close(layerIndex);
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+            });
+        }
+
 
     }
 
