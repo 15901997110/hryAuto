@@ -14,6 +14,7 @@
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
@@ -27,7 +28,7 @@
     <title>服务编辑</title>
 </head>
 <body>
-<article class="page-container">
+<article class="page-container" style="margin-top:20px;">
     <form method="post" class="form form-horizontal" id="form">
     </form>
 </article>
@@ -39,6 +40,8 @@
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
@@ -71,6 +74,45 @@
         return null;
     }
 
+    function devGroup(){
+        var dev=null;
+        var groupId=$.cookie('groupidCookie');
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectDever.do",
+            data: {
+                groupId:groupId
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    dev=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            },
+            fail:function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return dev;
+    }
+
     //页面加载处理
     $(document).ready(function () {
         var id = getParameter('id');
@@ -92,6 +134,7 @@
                     var servicekey = list.servicekey;
                     var servicename = list.servicename;
                     var httptype=list.httptype;
+                    var editor=list.editor;
                     var option="";
                     if(httptype == 1){
                         option="<option value=\"1\" selected>Http</option>\n" +
@@ -100,6 +143,21 @@
                         option="<option value=\"1\">Http</option>\n" +
                         "   <option value=\"2\" selected>Https</option>\n";
                     }
+
+                    var authorHtml="";
+                    var authorList=devGroup();
+                    for(var k=0;k<authorList.length;k++){
+                        var row=authorList[k];
+                        if(row.realname == editor){
+                            var rowHtml="<option value=\""+row.realname+"\" selected>"+row.realname+"</option>";
+                        }else{
+                            var rowHtml="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+                        }
+
+                        authorHtml=authorHtml+rowHtml;
+                    }
+                    //$("#editor").append(authorHtml);
+
                     var html = "<div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务简称：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
@@ -123,12 +181,23 @@
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">负责人：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <span class=\"select-box\">\n" +
+                        "                    <select class=\"select\" size=\"1\" name=\"editor\" id=\"editor\">\n" +
+                        "                        "+authorHtml+" "+
+                        "                    </select>\n" +
+                        "                </span>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
                         "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTservice("+id+")\"><i class=\"icon-ok\"></i> 确定</button>\n" +
                         "            </div>\n" +
                         "        </div>";
 
                     $("#form").append(html);
+                    $("#editor").select2();
                 }else{
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
@@ -148,6 +217,7 @@
         var servicekey = $("#servicekey").val();
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
+        var author = $("#editor").val();
         var loginName=$.cookie('identityCookie'); // 读取 cookie
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
@@ -170,7 +240,7 @@
                     servicekey:servicekey,
                     servicename:servicename,
                     httptype:httptype,
-                    editor:realName,
+                    editor:author,
                     isdel:0
                 },
                 dataType: 'json',

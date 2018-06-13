@@ -33,7 +33,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tservice_add('添加服务','tservice-add.html','800','300')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务</a>
+            <a class="btn btn-primary radius" onclick="tservice_add('添加服务','tservice-add.html','800','400')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加服务</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -47,7 +47,7 @@
                 <th width="10%">服务名称</th>
                 <th width="10%">协议类型</th>
                 <th width="15%">更新时间</th>
-                <th width="15%">最后维护人</th>
+                <th width="15%">负责人</th>
                 <th width="15%">操作</th>
             </tr>
             </thead>
@@ -161,7 +161,7 @@
                             "<td >"+type+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -310,7 +310,7 @@
                             "<td >"+type+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td>"+row.editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
