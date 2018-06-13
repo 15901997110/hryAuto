@@ -50,7 +50,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tuser_add('添加用例','tcase-add.html','800','700')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
+            <a class="btn btn-primary radius" onclick="tCase_add('添加用例','tcase-add.html','800','700')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -240,7 +240,7 @@
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -314,7 +314,7 @@
 
                 }else{
                     layer.close(layerIndex);
-                    alert(JSON.stringify(data));
+                    alert(msg);
                 }
             },
 
@@ -357,7 +357,8 @@
                 $("#pager").html("");
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
-                    $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    var h="<tr><td colspan='13' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                    $("#tcaseList").append(h);
                     layer.close(layerIndex);
                     return;
                 }
@@ -414,7 +415,7 @@
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -504,7 +505,6 @@
         return users;
     }
 
-
     function getEnvList(){
         var envList=null;
         $.ajaxSetup({async : false});
@@ -549,25 +549,25 @@
         return assertType;
     }
 
-    /*用户-添加*/
-    function tuser_add(title,url,w,h){
+    /*用例-添加*/
+    function tCase_add(title,url,w,h){
         layer_show(title,url,w,h);
 
     }
 
-    /*用户-编辑*/
-    function tuser_edit(title,url,id,w,h){
+    /*用例-编辑*/
+    function tcase_edit(title,url,id,w,h){
         url= url + "?id="+id;
         layer_show(title,url,w,h);
     }
 
-    /*用户-删除*/
-    function tuser_del(obj,id){
-        layer.confirm('用户删除需谨慎，请确认是否删除！',function(index){
+    /*用例-删除*/
+    function tcase_del(obj,id){
+        layer.confirm('用例删除需谨慎，请确认是否删除！',function(index){
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/user/deleteOne.do',
+                url: '/tcase/deleteOne.do',
                 data:{
                     id:id
                 },

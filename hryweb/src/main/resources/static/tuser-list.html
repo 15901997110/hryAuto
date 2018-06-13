@@ -111,6 +111,7 @@
             html=html+rowHtml;
         }
         $("#groupid").append(html);
+        layer.close(layerIndex);
 
     });
 
@@ -297,7 +298,8 @@
                 $("#pager").html("");
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
-                    $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    var h="<tr><td colspan='7' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                    $("#tuserList").append(h);
                     layer.close(layerIndex);
                     return;
                 }
@@ -376,7 +378,7 @@
                     $("#pager").append(pageStart);
                     $("#pages").append(pagesHtml);
                     $("#pager").append(pageEnd);
-
+                    layer.close(layerIndex);
 
                 }else{
                     layer.close(layerIndex);

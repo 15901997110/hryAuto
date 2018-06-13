@@ -40,7 +40,7 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tenvdetail_add('添加环境服务绑定关系','tenvdetail-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加绑定关系</a>
+            <a class="btn btn-primary radius" onclick="tenvdetail_add('新增映射','tenvdetail-add.html','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加映射关系</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -173,7 +173,7 @@
                             "<td>"+row.hostinfo+"</td>\n" +
                             "<td >"+row.dbinfo+"</td>\n" +
                             "<td>"+row.swaggerurl+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('绑定关系编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('映射关系编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenvdetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -289,7 +289,8 @@
                 $("#pager").html("");
                 if(data.data.list.length==0){
                     $("#dataTables_info").hide();
-                    $("#tuserList").append("<span style='color:red;'>没有数据！</span>");
+                    var h="<tr><td colspan='8' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                    $("#tuserList").append(h);
                     layer.close(layerIndex);
                     return;
                 }
@@ -400,13 +401,13 @@
         return usergroup;
     }
 
-    /*绑定关系-添加*/
+    /*映射关系-添加*/
     function tenvdetail_add(title,url,w,h){
         layer_show(title,url,w,h);
 
     }
 
-    /*绑定关系-编辑*/
+    /*映射关系-编辑*/
     function tenvdetail_edit(title,url,id,w,h){
         url= url + "?id="+id;
         layer_show(title,url,w,h);
@@ -414,7 +415,7 @@
 
     /*删除*/
     function tenvdetail_del(obj,id){
-        layer.confirm('绑定关系删除需谨慎，请确认是否删除！',function(index){
+        layer.confirm('映射关系删除需谨慎，请确认是否删除！',function(index){
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',

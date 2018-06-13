@@ -42,6 +42,10 @@ public class EnumController {
         return EnumUtil.getEnumList(ContentTypeEnum.values());
     }
 
+    @GetMapping("/dbTypeEnum")
+    public DBTypeEnum[] getDbTypeEnum(){
+        return DBTypeEnum.values();
+    }
     @GetMapping("/envEnum")
     public List<Map<String, Object>> getEnvEnum() {
         return EnumUtil.getEnumList(EnvEnum.values());
