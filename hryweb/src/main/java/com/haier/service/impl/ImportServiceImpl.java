@@ -119,11 +119,9 @@ public class ImportServiceImpl implements ImportService {
             ti.setIuri(iUri);
             ti.setRemark(summary);
             ti.setIdev(iDev);
-
-//            ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
-
+            //ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
             //解析Json，设置Iparamsample
-            List parameJsonObject = postJsonObject.getJSONArray("parametegrs");
+            List parameJsonObject = postJsonObject.getJSONArray("parameters");
             Map<String, Object> parametersMap = (Map<String, Object>)parameJsonObject.get(0);
             Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
             if(Objects.isNull(schema)){
@@ -187,7 +185,6 @@ public class ImportServiceImpl implements ImportService {
         result.setUpdateList(updateList);
         result.setFailCount(failList.size());
         result.setFailList(failList);
-
 
         return result;
     }
