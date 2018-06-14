@@ -236,14 +236,12 @@
             success: function (data) {
                 var status=data.status;
                 var arrayList=data.data;
-                console.log("data:"+data);
                 if(status == 0){
                     var html="";
                     seditorSet=new Set();
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
-                        console.log("seditor:"+row.seditor);
                         var rowHtml="<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " >" +row.servicekey+ "(" + row.envkey + ")</option>";
                         html=html+rowHtml;
                     }
