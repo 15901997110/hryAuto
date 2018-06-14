@@ -231,7 +231,8 @@ public class ImportServiceImpl implements ImportService {
                                 paramsamples.append("\"").append(v.toString()).append("\",");
                             } else if ("$ref".equals(k)) {
                                 parseRef(v.toString().replace("#", ""), ti, definitions, paramsamples);
-                                paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                                paramsamples.append(",");
+                                //paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
                             }
                         } else {
                             ti.setIparamsample(null);
