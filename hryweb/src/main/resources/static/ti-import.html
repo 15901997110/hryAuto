@@ -30,6 +30,7 @@
 
 </head>
 <body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span class="c-gray en">&gt;</span> 一键导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
@@ -76,6 +77,39 @@
     </form>
 </div>
 
+<div class="page-container"  id="importResult" style="display: none">
+    <form  method="" class="form form-horizontal">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><a  href="javascript:;" class="btn btn-primary radius ">导入成功！</a></label>
+        </div>
+        <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">服务ID：</label><p id="serviceIdResult"></p>
+        </div>
+        <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">服务名：</label><p id="serviceNameResult"></p>
+        </div>
+        <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">总接口数：</label><p id="iCountResult"></p>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">导入明细：</label>
+            <div style="width: 75%;margin-left: 15%;" id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+                <table class="table table-border table-bordered table-hover table-bg table-sort">
+                    <thead>
+                    <tr class="text-c">
+                        <th width="30%">新增接口</th>
+                        <th width="30%">更新接口</th>
+                        <th width="30%">失败接口</th>
+                    </tr>
+                    </thead>
+                    <tbody id="importList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -96,8 +130,7 @@
     function setMatchValue(){
         var ele = $("#serviceid").select2('data')[0].element;
         var url = $(ele).data('url');
-        if (url != null && url != "")
-            $("#swaggerUrl").val(url);
+        $("#swaggerUrl").val(url);
         var editor = $(ele).data('editor');
         set_select_checked("idev",editor);
     }
@@ -109,12 +142,13 @@
     }
 
     function importInterfaces(){
+        clearResult();
         var serviceId = $("#serviceid").val().split("&")[0];
         var envId = $("#serviceid").val().split("&")[1];
         var overwrite = $('input[name="cover"]:checked').val();
         var idev = $("#idev").val();
 
-        if(serviceid == null || serviceid == ""){
+        if(serviceId == null || serviceId == ""){
             layer.msg("请选择服务！");
             return;
         }else{
@@ -131,10 +165,7 @@
                 success: function (data) {
                     var status=data.status;
                     if(status == 0){
-                        layer.alert(JSON.stringify(data), {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
+                        displayResult(data.data);
                     }else{
                         layer.alert(JSON.stringify(data), {
                             icon: 0,
@@ -161,6 +192,36 @@
 
     }
 
+    function clearResult() {
+        $("#importResult").hide();
+        $("#serviceIdResult").text("");
+        $("#serviceNameResult").text("");
+        $("#iCountResult").text("");
+        $("#importList").html("");
+    }
+    function displayResult(data) {
+        $("#importResult").show();
+        $("#serviceIdResult").text(data.serviceId);
+        $("#serviceNameResult").text(data.serviceName);
+        $("#iCountResult").text(data.totalCount);
+        var maxRow = 0;
+        var html = "";
+        maxRow = data.insertCount > data.updateCount ? data.insertCount : data.updateCount;
+        maxRow = maxRow > data.failCount ? maxRow : data.failCount;
+         for (var i = 0; i < maxRow; i++) {
+             var insertItem = data.insertList[i] == undefined ? "" : data.insertList[i];
+             var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
+             var failItem = data.failList[i] == undefined ? "" : data.failList[i];
+             var rowHtml = "<tr class=\"text-c\">\n" +
+                 "<td>"+ insertItem +"</td>\n" +
+                 "<td>"+updateItem +"</td>\n" +
+                 "<td>"+failItem+"</td>\n" +
+                 "</tr>";
+             console.log(rowHtml);
+             html = html + rowHtml;
+         }
+         $("#importList").append(html);
+    }
     $(document).ready(function () {
         //获取服务环境列表
         $.ajax({
@@ -170,12 +231,14 @@
             success: function (data) {
                 var status=data.status;
                 var arrayList=data.data;
+                console.log("data:"+data);
                 if(status == 0){
                     var html="";
                     seditorSet=new Set();
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
+                        console.log("seditor:"+row.seditor);
                         var rowHtml="<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " >" +row.servicekey+ "(" + row.envkey + ")</option>";
                         html=html+rowHtml;
                     }
