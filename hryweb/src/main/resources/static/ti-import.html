@@ -215,14 +215,23 @@
                 if(status == 0){
                     var dev=data.data;
                     var htmldev = "";
-                    seditorSet.forEach(function (element, sameElement, set) {
+                    seditorSet.forEach(function (element) {
                         var rowHtml = "<option value=\"" + element + "\">" + element + "</option>";
                         htmldev = htmldev + rowHtml;
                     });
                     for (var i = 0; i < dev.length; i++) {
                         var row = dev[i];
-                        var rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
-                        htmldev = htmldev + rowHtml;
+                        var isExist = false;
+                        seditorSet.forEach(function (element) {
+                            if (row.realname == element) {
+                                isExist = true;
+                                return;
+                            }
+                        });
+                        if (!isExist) {
+                            var rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
+                            htmldev = htmldev + rowHtml;
+                        }
                     }
                     $("#idev").append(htmldev);
                     $("#idev").select2();
