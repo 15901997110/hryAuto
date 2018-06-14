@@ -147,9 +147,25 @@ public class ImportServiceImpl implements ImportService {
                     }
                     ti.setIparamsample(paramsample.toString());
                 } else {
-                    String ref = schema.get("$ref").toString();
-                    StringBuilder paramsamples = new StringBuilder();
-                    parseRef(ref, ti, definitions, paramsamples);
+                    //判断schema下的ref是否存在，存在
+                    if (Objects.nonNull(schema.get("$ref"))) {
+                        String ref = schema.get("$ref").toString();
+                        StringBuilder paramsamples = new StringBuilder();
+                        parseRef(ref, ti, definitions, paramsamples);
+                    }else {//不存在
+                        StringBuilder params= new StringBuilder();
+                        params.append("{");
+                        String mps = schema.get("type").toString();
+                        if("string".equals(mps)){
+                        params.append("\"").append(schema.get("type").toString().replace("string","")).append("\"");
+                        }else if("integer".equals(mps)){
+                            params.append(schema.get("type").toString().replace("integer","0"));
+                        }else {
+                            params.append("\"").append(schema.get("type").toString()).append("\"");
+                        }
+                        params.append("}");
+                        ti.setIparamsample(params.toString());
+                    }
                 }
 
                 if (Objects.isNull(existIuri) || !existIuri.contains(iUri)) {//如果existIurl==null,说明此serviceId没有对应

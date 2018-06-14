@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">swaggerUrl：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>swaggerUrl：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" readonly id="swaggerUrl" name="swaggerUrl">
             </div>
@@ -97,9 +97,9 @@
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
                     <tr class="text-c">
-                        <th width="30%">新增接口</th>
-                        <th width="30%">更新接口</th>
-                        <th width="30%">失败接口</th>
+                        <th width="30%" id="insertCount">新增接口</th>
+                        <th width="30%" id="updateCount">更新接口</th>
+                        <th width="30%" id="failCount">失败接口</th>
                     </tr>
                     </thead>
                     <tbody id="importList">
@@ -146,12 +146,13 @@
         var serviceId = $("#serviceid").val().split("&")[0];
         var envId = $("#serviceid").val().split("&")[1];
         var overwrite = $('input[name="cover"]:checked').val();
-        var idev = $("#idev").val();
+        var iDev = $("#idev").val();
 
         if(serviceId == null || serviceId == ""){
             layer.msg("请选择服务！");
             return;
         }else{
+            var layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
             $.ajax({
                 type: "post",
                 url: "/import/interfaceImport",
@@ -159,15 +160,16 @@
                     serviceId:serviceId,
                     envId:envId,
                     overwrite:overwrite,
-                    idev:idev
+                    iDev:iDev
                 },
                 dataType: "json",
                 success: function (data) {
+                    layer.close(layerIndex); //完成加载后关闭loading
                     var status=data.status;
                     if(status == 0){
                         displayResult(data.data);
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(JSON.stringify(data.msg), {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });
@@ -175,6 +177,7 @@
 
                 },
                 fail:function (data) {
+                    layer.close(layerIndex); //完成加载后关闭loading
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -204,6 +207,9 @@
         $("#serviceIdResult").text(data.serviceId);
         $("#serviceNameResult").text(data.serviceName);
         $("#iCountResult").text(data.totalCount);
+        $("#insertCount").text("新增接口("+ data.insertCount +")");
+        $("#updateCount").text("更新接口("+ data.updateCount +")");
+        $("#failCount").text("失败接口("+ data.failCount +")");
         var maxRow = 0;
         var html = "";
         maxRow = data.insertCount > data.updateCount ? data.insertCount : data.updateCount;
@@ -213,11 +219,10 @@
              var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
              var failItem = data.failList[i] == undefined ? "" : data.failList[i];
              var rowHtml = "<tr class=\"text-c\">\n" +
-                 "<td>"+ insertItem +"</td>\n" +
-                 "<td>"+updateItem +"</td>\n" +
-                 "<td>"+failItem+"</td>\n" +
+                 "<td style=\"text-align:left;\">"+ insertItem +"</td>\n" +
+                 "<td style=\"text-align:left;\">"+updateItem +"</td>\n" +
+                 "<td style=\"text-align:left;\">"+failItem+"</td>\n" +
                  "</tr>";
-             console.log(rowHtml);
              html = html + rowHtml;
          }
          $("#importList").append(html);
