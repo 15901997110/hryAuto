@@ -22,11 +22,14 @@
     <title>柱状图统计</title>
 </head>
 <body>
-<div class="page-container1">
+<div class="page-container">
     <div id="container1" style="min-width:700px;height:400px;margin-top: 3%"></div>
 </div>
-<div class="page-container2">
+<div class="page-container">
     <div id="container2" style="min-width:700px;height:400px;margin-top: 3%"></div>
+</div>
+<div class="page-container">
+    <div id="container3" style="min-width:700px;height:400px;margin-top: 3%"></div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
@@ -58,13 +61,14 @@
                         //save categories
                         options1.xAxis.categories.push(arrayList[i].serviceKey);
                         options2.xAxis.categories.push(arrayList[i].serviceKey);
+                        options3.xAxis.categories.push(arrayList[i].serviceKey);
                         //build series
                         itotalArr.push(parseInt(arrayList[i].itotal));
                         ctotalArr.push(parseInt(arrayList[i].ctotal));
                         itotalByCaseArr.push(parseInt(arrayList[i].itotalByCase));
                         itotalNoCaseArr.push(parseInt(arrayList[i].itotalNoCase));
                         irateArr.push(parseInt(arrayList[i].irate));
-                        cfinenessArr.push(parseInt(arrayList[i].cfineness) * 100);
+                        cfinenessArr.push(parseInt(arrayList[i].cfineness));
                     }
                     //save series
                     options1.series[0].data = itotalArr;
@@ -73,9 +77,10 @@
                     options1.series[3].data = itotalNoCaseArr;
 
                     options2.series[0].data = irateArr;
-                    options2.series[1].data = cfinenessArr;
+                    options3.series[0].data = cfinenessArr;
                     $('#container1').highcharts(options1);
                     $('#container2').highcharts(options2);
+                    $('#container3').highcharts(options3);
 
                 }else{
                     layer.alert(JSON.stringify(data.msg), {
@@ -142,7 +147,7 @@
                 type: 'column'
             },
             title: {
-                text: '接口-用例覆盖率与用例粒度'
+                text: '接口-用例覆盖率'
             },
             xAxis: {
                 categories: []
@@ -172,7 +177,41 @@
             },
             series: [{
                 name: '用例覆盖率'
-            },{
+            }
+            ]
+        }
+
+        var options3 = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '接口-用例粒度'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '个数'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
                 name: '用例粒度'
             }]
         }
