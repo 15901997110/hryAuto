@@ -13,6 +13,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import java.util.Map;
 import java.util.Objects;
@@ -30,8 +31,14 @@ public class HryHttpClientUtil {
         if (Objects.isNull(param)) {//参数为null,则不带参发送请求
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8");
         }else if (param instanceof JSONObject) {//参数为json类型,发起json请求
+
+            Header header=new BasicHeader("Content-Type","application/json;charset=utf-8");
+            Header[] headers={header};
             JSONObject jsonObject = (JSONObject) param;
+
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8").json(JSONObject.toJSONString(jsonObject));
+            httpConfig.headers(headers);
+
         } else if (param instanceof Map) {//参数为map类型
             Map map = (Map) param;
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8").map(map);
