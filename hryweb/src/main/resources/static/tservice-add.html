@@ -30,19 +30,19 @@
 <article class="page-container" style="margin-top:20px;">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务简称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务标识：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="servicekey" name="servicekey">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->服务描述：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="servicename" name="servicename">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>协议类型：</label>
+            <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->协议类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="httptype" id="httptype">
@@ -51,11 +51,11 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">负责人：</label>
+            <label class="form-label col-xs-4 col-sm-3">服务开发负责人：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="editor" id="editor">
-                        <option>请选择负责人</option>
+                        <option>--请选择负责人--</option>
                     </select>
 				</span>
             </div>
@@ -111,7 +111,7 @@
             },
             dataType: "json",
             success: function (data) {
-               var html="<option value=\"\" selected>请选择协议</option>";
+               var html="<option value=\"\" selected>--请选择协议--</option>";
                for(i=0;i<data.length;i++){
                    var row=data[i];
                    var rowHtml="<option value=\""+row.id+"\">"+row.value+"</option>";
@@ -192,19 +192,25 @@
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
         var author = $("#editor").val();
+        if(author=="--请选择负责人--"){
+            author=null;
+        }
         var loginName=$.cookie('identityCookie'); // 读取 cookie
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
         if(servicekey == null || servicekey == ""){
-            layer.alert("服务简称不能为空！");
+            layer.alert("服务标识不能为空！");
             return;
-        }else if(servicename == null || servicename == ""){
-            layer.msg("服务名称不能为空！");
+        }
+        /**
+         *modify by luqiwei 2018/6/15:servicename和httytype非必填,这里去掉校验逻辑
+        else if(servicename == null || servicename == ""){
+            layer.msg("服务描述不能为空！");
             return;
         }else if(httptype == null || httptype == ""){
             layer.msg("请选择协议类型！");
             return;
-        }else{
+        }*/else{
             $.ajax({
                 type: "post",
                 url: "/tservice/insertOne.do",
@@ -213,7 +219,7 @@
                     servicename:servicename,
                     httptype:httptype,
                     editor:author,
-                    isdel:0
+                    /*isdel:0*/
                 },
                 dataType: "json",
                 success: function (data) {

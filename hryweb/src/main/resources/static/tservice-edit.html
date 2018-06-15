@@ -159,19 +159,19 @@
                     //$("#editor").append(authorHtml);
 
                     var html = "<div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务简称：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务标识：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <input type=\"text\" class=\"input-text\" value=\""+servicekey+"\" placeholder=\"\" id=\"servicekey\" name=\"servicekey\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>服务名称：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">服务描述：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <input type=\"text\" class=\"input-text\" value=\""+servicename+"\" placeholder=\"\" id=\"servicename\" name=\"servicename\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
-                        "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>协议类型：</label>\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">协议类型：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"httptype\" id=\"httptype\">\n" +
@@ -223,15 +223,15 @@
         var groupId=$.cookie('groupidCookie');
 
         if(servicekey == null || servicekey == ""){
-            layer.msg("服务简称不能为空！");
+            layer.msg("服务标识不能为空！");
             return;
-        }else if(servicename == null || servicename == ""){
-            layer.msg("服务名称不能为空！");
+        }/*else if(servicename == null || servicename == ""){
+            layer.msg("服务描述不能为空！");
             return;
         }else if(httptype == null || httptype == ""){
             layer.msg("请选择协议类型！");
             return;
-        }else{
+        }*/else{
             $.ajax({
                 type: 'POST',
                 url: '/tservice/updateOne.do',
@@ -241,7 +241,7 @@
                     servicename:servicename,
                     httptype:httptype,
                     editor:author,
-                    isdel:0
+                    /*isdel:0*/
                 },
                 dataType: 'json',
                 success: function(data){

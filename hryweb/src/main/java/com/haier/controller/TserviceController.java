@@ -58,7 +58,7 @@ public class TserviceController {
      * */
     @PostMapping(value="/insertOne.do")
     public Result insertOne(Tservice tservice){
-        log.info("新增的服务简称="+tservice.getServicekey()+",服务名称="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
+        log.info("新增的服务标识="+tservice.getServicekey()+",服务描述="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
         return ResultUtil.success(tserviceService.insertOne(tservice));
     }
 
