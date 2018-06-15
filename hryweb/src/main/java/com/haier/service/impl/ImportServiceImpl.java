@@ -22,6 +22,7 @@ import java.util.*;
  * @Author: luqiwei
  * @Date: 2018/5/19 13:21
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Service
 public class ImportServiceImpl implements ImportService {
