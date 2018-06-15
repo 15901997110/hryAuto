@@ -22,6 +22,7 @@ import java.util.*;
  * @Author: luqiwei
  * @Date: 2018/5/19 13:21
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Slf4j
 @Service
 public class ImportServiceImpl implements ImportService {
@@ -123,48 +124,53 @@ public class ImportServiceImpl implements ImportService {
                 //ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
                 //解析Json，设置Iparamsample
                 List parameJsonObject = postJsonObject.getJSONArray("parameters");
-                Map<String, Object> parametersMap = (Map<String, Object>) parameJsonObject.get(0);
-                Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
-                if (Objects.isNull(schema)) {
-                    StringBuilder paramsample = new StringBuilder();
-                    paramsample.append("{");
-                    for (int i = 0; i < parameJsonObject.size(); i++) {
-                        Map<String, Object> Mapparameters = (Map<String, Object>) parameJsonObject.get(i);
-                        for (String listkey : Mapparameters.keySet()) {
-                            Object listvalue = Mapparameters.get(listkey);
-                            if (Objects.nonNull(listkey)) {
-                                if ("name".equals(listkey)) {
-                                    paramsample.append(listvalue.toString()).append("=");
-                                } else if ("type".equals(listkey)) {
-                                    paramsample.append(listvalue.toString()).append("&");
+                //如果parameJsonObject为空，则直接赋值为空
+                if(parameJsonObject.size()==0){
+                    ti.setIparamsample("");
+                }else {
+                    Map<String, Object> parametersMap = (Map<String, Object>) parameJsonObject.get(0);
+                    Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
+                    if (Objects.isNull(schema)) {
+                        StringBuilder paramsample = new StringBuilder();
+                        paramsample.append("{");
+                        for (int i = 0; i < parameJsonObject.size(); i++) {
+                            Map<String, Object> Mapparameters = (Map<String, Object>) parameJsonObject.get(i);
+                            for (String listkey : Mapparameters.keySet()) {
+                                Object listvalue = Mapparameters.get(listkey);
+                                if (Objects.nonNull(listkey)) {
+                                    if ("name".equals(listkey)) {
+                                        paramsample.append(listvalue.toString()).append("=");
+                                    } else if ("type".equals(listkey)) {
+                                        paramsample.append(listvalue.toString()).append("&");
+                                    }
                                 }
                             }
                         }
-                    }
-                    paramsample.append("}");
-                    if (paramsample.lastIndexOf("&") >= 0) {
-                        paramsample.replace(paramsample.lastIndexOf("&"), paramsample.lastIndexOf("&") + 1, "");
-                    }
-                    ti.setIparamsample(paramsample.toString());
-                } else {
-                    //判断schema下的ref是否存在，存在
-                    if (Objects.nonNull(schema.get("$ref"))) {
-                        String ref = schema.get("$ref").toString();
-                        StringBuilder paramsamples = new StringBuilder();
-                        parseRef(ref, ti, definitions, paramsamples);
-                    }else {//不存在
-                        StringBuilder params= new StringBuilder();
-                        params.append("{");
-                        String mps = schema.get("type").toString();
-                        if("string".equals(mps)){
-                        params.append("\"").append(schema.get("type").toString().replace("string","")).append("\"");
-                        }else if("integer".equals(mps)){
-                            params.append(schema.get("type").toString().replace("integer","0"));
-                        }else {
-                            params.append("\"").append(schema.get("type").toString()).append("\"");
+                        paramsample.append("}");
+                        if (paramsample.lastIndexOf("&") >= 0) {
+                            paramsample.replace(paramsample.lastIndexOf("&"), paramsample.lastIndexOf("&") + 1, "");
                         }
-                        params.append("}");
-                        ti.setIparamsample(params.toString());
+                        ti.setIparamsample(paramsample.toString());
+                    } else {
+                        //判断schema下的ref是否存在，存在
+                        if (Objects.nonNull(schema.get("$ref"))) {
+                            String ref = schema.get("$ref").toString();
+                            StringBuilder paramsamples = new StringBuilder();
+                            parseRef(ref, ti, definitions, paramsamples);
+                        } else {//不存在
+                            StringBuilder params = new StringBuilder();
+                            params.append("{");
+                            String mps = schema.get("type").toString();
+                            if ("string".equals(mps)) {
+                                params.append("\"").append(schema.get("type").toString().replace("string", "")).append("\"");
+                            } else if ("integer".equals(mps)) {
+                                params.append(schema.get("type").toString().replace("integer", "0"));
+                            } else {
+                                params.append("\"").append(schema.get("type").toString()).append("\"");
+                            }
+                            params.append("}");
+                            ti.setIparamsample(params.toString());
+                        }
                     }
                 }
 
@@ -232,7 +238,17 @@ public class ImportServiceImpl implements ImportService {
                                 paramsamples.append("]");
                                 paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
                             } else {
-                                paramsamples.append("\"").append(v.toString().replace("array", "L")).append("\",");
+                                String samples = items.get("type").toString();
+                                if ("integer".equals(samples)){
+                                    paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
+                                }else if ("string".equals(samples)){
+                                    paramsamples.append("[\"").append(samples.replace("string", "")).append("],");
+                                }else if ("number".equals(samples)){
+                                    paramsamples.append("[").append(samples.replace("number", "0")).append("],");
+                                } else {
+                                    paramsamples.append("[").append(samples).append("],");
+                                }
+                                //paramsamples.append("[").append(items.get("type").toString().replace("array", "L")).append("],");
                             }
                         } else if ("integer".equals(v)) {
                             //paramsamples.append("\"").append(v.toString().replace("integer","0")).append("\",");

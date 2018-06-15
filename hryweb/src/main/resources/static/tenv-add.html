@@ -35,7 +35,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境描述：</label>
+			<label class="form-label col-xs-4 col-sm-3">环境描述：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="" id="remark" name="remark">
 			</div>
@@ -83,14 +83,14 @@
 	//添加环境
 	function addTenv(){
         var envkey = $("#envkey").val();
-        var remark = $("#remark").val();
+        /*var remark = $("#remark").val();*/
         if(envkey == null || envkey == ""){
             layer.msg("环境标识不能为空！");
             return;
-		}else if(remark == null || remark == ""){
+		}/*else if(remark == null || remark == ""){
             layer.msg("环境描述不能为空！");
             return;
-		}else{
+		}*/else{
             $.ajax({
                 type: "post",
                 url: "/tenv/insertOne.do",

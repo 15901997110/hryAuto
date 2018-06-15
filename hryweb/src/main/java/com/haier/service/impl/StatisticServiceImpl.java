@@ -50,13 +50,18 @@ public class StatisticServiceImpl implements StatisticService {
             Integer cTotal = statisticMapper.statisticTcaseByServiceId(tservice.getId());
 
             //统计接口用例覆盖数
-            Integer iTotalByCase=statisticMapper.statisticTcaseDistinctIidByServiceId(tservice.getId());
+            Integer iTotalByCase = statisticMapper.statisticTcaseDistinctIidByServiceId(tservice.getId());
 
-            Integer iTotalNoCase=iTotal-iTotalByCase;
+            Integer iTotalNoCase = iTotal - iTotalByCase;
 
-            String iRate=String.format("%.2f", (float) iTotalByCase / iTotal * 100) + "%";
+            String iRate = String.format("%.2f", (float) iTotalByCase / iTotal * 100) + "%";
 
-            String cFineness=String.format("%.2f", (float) cTotal / iTotalByCase);
+            String cFineness;
+            if (cTotal == 0 || iTotalByCase == 0) {
+                cFineness = "0.00";
+            } else {
+                cFineness = String.format("%.2f", (float) cTotal / iTotalByCase);
+            }
 
             realtimeStatistic.setITotal(iTotal);
             realtimeStatistic.setCTotal(cTotal);
