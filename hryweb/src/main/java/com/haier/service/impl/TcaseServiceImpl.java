@@ -149,7 +149,7 @@ public class TcaseServiceImpl implements TcaseService {
         }
         Object param;
         if (ti.getIparamtype() != null) {
-            if (tcase.getRequestparam() != null && "".equals(tcase.getRequestparam().trim())) {
+            if (tcase.getRequestparam() != null && !"".equals(tcase.getRequestparam().trim())) {
                 //参数类型为Json,且参数内容不为空
                 if (RequestParamTypeEnum.REQUEST_PARAM_TYPE_JSON.getId() == ti.getIparamtype() + 0) {
                     param = JSON.parseObject(tcase.getRequestparam());
