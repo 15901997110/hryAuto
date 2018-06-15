@@ -77,4 +77,9 @@ public class TcaseController {
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
+    @PostMapping("/runCaseOneById.do")
+    public Result runCaseOneById(Integer id){
+        return null;
+    }
+
 }
