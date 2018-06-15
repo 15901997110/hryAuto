@@ -295,6 +295,7 @@
         var tiList=getTiList(serviceId);
         var tis="";
         if(tiList.length == 0){
+            $("#ti").empty();
             tis="<option value=\"\" style='color:red'>该服务下无接口</option>";
             $("#ti").append(tis);
         }else{
@@ -326,6 +327,7 @@
         var tiList=getTiList(serviceId);
         var tis="";
         if(tiList.length == 0){
+            $("#ti").empty();
             tis="<option value=\"\" style='color:red'>该服务下无接口</option>";
             $("#ti").append(tis);
         }else{
@@ -443,18 +445,26 @@
                     envid:env,
                     requestparam:requestParam,
                     asserttype:assertType,
-                    expected:expected,
-                    author:author,
-                    status:1
+                    expected:expected
+                    /*author:author,
+                    status:1*/
                 },
                 dataType: "json",
                 success: function (data) {
+                    var list=data;
                     var status=data.status;
                     var msg=data.msg;
                     if(status == 0){
-                        parent.window.location.reload();
+                        layer.close(layerIndex);
+                        var domain = "http://"+window.location.host;
+                        var myPopup = window.open("test-result.html");//.postMessage(list,domain);
+                        //周期性的发送消息
+                        setTimeout(function(){
+                            myPopup.postMessage(list,domain);
+                        },1000);
+                       /* parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);
+                        parent.layer.close(index);*/
                     }else{
                         layer.close(layerIndex);
                         layer.alert(msg, {
