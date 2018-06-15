@@ -242,7 +242,7 @@ public class ImportServiceImpl implements ImportService {
                                 if ("integer".equals(samples)){
                                     paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
                                 }else if ("string".equals(samples)){
-                                    paramsamples.append("[\"").append(samples.replace("string", "")).append("],");
+                                    paramsamples.append("[\"").append(samples.replace("string", "")).append("\"],");
                                 }else if ("number".equals(samples)){
                                     paramsamples.append("[").append(samples.replace("number", "0")).append("],");
                                 } else {
