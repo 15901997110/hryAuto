@@ -65,12 +65,18 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="ti" id="ti">
+                    <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
                         <!--<option value="" selected>请选择接口</option>-->
                     </select>
 				</span>
             </div>
         </div>
+       <!-- <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">示例参数：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入示例参数..."></textarea>
+            </div>
+        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -268,7 +274,41 @@
         return assertType;
     }
 
+    function getOneTi(tId){
+        var ti;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne.do",
+            data: {
+                id:tId
+            },
+            dataType: "json",
+            success: function (data) {
+                ti=data.data.iparamsample;
+                layer.close(layerIndex);
+            },
+            fail:function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+        return ti;
+
+
+
+    }
+
     $(document).ready(function () {
+        $("#iparamsample").hide();
         var realName=$.cookie('realnameCookie');
         $("#author").val(realName);
         var serviceList=getServiceList();
@@ -282,6 +322,7 @@
             tenv=tenv+rowHtml;
         }
         $("#env").append(tenv);
+
 
         var services="";
         for(i=0;i<serviceList.length;i++){
@@ -307,6 +348,10 @@
             $("#ti").append(tis);
             $("#ti").select2();
 
+            var tId=$("#ti").val();
+            var iparamsample=getOneTi(tId);
+            $("#requestParam").val(iparamsample);
+
         }
 
 
@@ -320,6 +365,14 @@
         layer.close(layerIndex);
 
     });
+
+    //接口改变处理
+    function tiChange(){
+        var tId=$("#ti").val();
+        var iparamsample=getOneTi(tId);
+        $("#requestParam").empty();
+        $("#requestParam").val(iparamsample);
+    }
 
     //环境改变处理
     function serviceChange(){
