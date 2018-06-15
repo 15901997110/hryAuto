@@ -190,7 +190,7 @@
         var services="";
         for(i=0;i<serviceList.length;i++){
             var row=serviceList[i];
-            var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
+            var rowHtml="<option value=\""+row.id+"\">"+row.servicekey+"</option>";
             services=services+rowHtml;
         }
         $("#service").append(services);
@@ -198,7 +198,7 @@
         var tenv="";
         for(k=0;k<env.length;k++){
             var row=env[k];
-            var rowHtml="<option value=\""+row.id+"\">"+row.remark+"</option>";
+            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
             tenv=tenv+rowHtml;
         }
         $("#env").append(tenv);
