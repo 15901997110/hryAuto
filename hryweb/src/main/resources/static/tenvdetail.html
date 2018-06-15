@@ -160,10 +160,10 @@
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
-                       /* var remark=row.remark;
-                        if(row.remark == null){
-                            remark="";
-                        }*/
+                        var dbInfo=row.dbinfo;
+                        if(row.dbinfo == null){
+                            dbInfo="";
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
@@ -171,7 +171,7 @@
                             "<td>"+row.servicename+"</td>\n" +
                             "<td>"+row.envremark+"</td>\n" +
                             "<td>"+row.hostinfo+"</td>\n" +
-                            "<td >"+row.dbinfo+"</td>\n" +
+                            "<td >"+dbInfo+"</td>\n" +
                             "<td>"+row.swaggerurl+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('映射关系编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenvdetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
@@ -314,17 +314,19 @@
                 if(status == 0){
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
-                       /* var remark=row.remark;
-                        if(row.remark == null){
-                            remark="";
-                        }*/
+
+                        var dbInfo=row.dbinfo;
+                        if(row.dbinfo == null){
+                            dbInfo="";
+                        }
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.servicename+"</td>\n" +
                             "<td>"+row.envremark+"</td>\n" +
                             "<td>"+row.hostinfo+"</td>\n" +
-                            "<td >"+row.dbinfo+"</td>\n" +
+                            "<td >"+dbInfo+"</td>\n" +
                             "<td>"+row.swaggerurl+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenvdetail_edit('用户编辑','tenvdetail-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenvdetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
