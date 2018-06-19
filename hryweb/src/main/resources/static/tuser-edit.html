@@ -110,15 +110,18 @@
             },
             dataType: "json",
             success: function (data) {
+                layer.close(layerIndex);
                 usergroup=data;
             },
             fail:function (data) {
+                layer.close(layerIndex);
                 layer.alert(JSON.stringify(data), {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });
             },
             error: function(xhr) {
+                layer.close(layerIndex);
                 layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
                         skin: 'layer-ext-moon'
@@ -170,7 +173,6 @@
                     $("#identity").val(identity);
                     $("#realname").val(realname);
                     $("#remark").val(remark);
-
 
                 }else{
                     layer.alert(JSON.stringify(data), {
