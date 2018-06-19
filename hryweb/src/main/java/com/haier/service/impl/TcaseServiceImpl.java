@@ -10,6 +10,7 @@ import com.haier.mapper.*;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
 import com.haier.util.AssertUtil;
+import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -69,23 +70,23 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
     @Override
-    public Integer deleteByCondition(Tcase tcase){
+    public Integer deleteByCondition(Tcase tcase) {
         //暂时只实现根据iId,envId删除的功能
-        ReflectUtil.setInvalidFieldToNull(tcase,false);
-        if(tcase==null||(tcase.getIid()==null&&tcase.getEnvid()==null)){
-            throw new HryException(StatusCodeEnum.DANGER_OPERATION,"只支持根据iid和envid删除case");
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || (tcase.getIid() == null && tcase.getEnvid() == null)) {
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "只支持根据iid和envid删除case");
         }
-        TcaseExample tcaseExample=new TcaseExample();
+        TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
-        criteria.andStatusGreaterThan((short)0);
-        if(tcase.getIid()!=null){
+        criteria.andStatusGreaterThan((short) 0);
+        if (tcase.getIid() != null) {
             criteria.andIidEqualTo(tcase.getIid());
         }
-        if(tcase.getEnvid()!=null){
+        if (tcase.getEnvid() != null) {
             criteria.andEnvidEqualTo(tcase.getEnvid());
         }
-        Tcase t=new Tcase();
-        t.setStatus((short)-1);
+        Tcase t = new Tcase();
+        t.setStatus((short) -1);
         return tcaseMapper.updateByExampleSelective(t, tcaseExample);
     }
 
@@ -148,12 +149,24 @@ public class TcaseServiceImpl implements TcaseService {
             throw new HryException(StatusCodeEnum.NOT_FOUND, "服务环境映射表中未找到serviceId=" + tservice.getId() + ",envId=" + envId + "的数据");
         }
         Object param;
-        if (ti.getIparamtype() != null) {
-            if (tcase.getRequestparam() != null && !"".equals(tcase.getRequestparam().trim())) {
+        String requestparam = tcase.getRequestparam();
+        if (ti.getIparamtype() != null) {//参数类型有填写
+
+            //处理参数-前置统一处理,匹配各种<<<xxx>>>关键字
+            if (requestparam != null && !"".equals(requestparam.trim())) {
+                requestparam=requestparam.replaceAll("\\s","");
+                if (BeforeUtil.needReplace(requestparam)) {
+                    requestparam = BeforeUtil.replace(requestparam.trim());
+                }
+            }
+            log.debug(requestparam);
+
+            if (requestparam != null && !"".equals(requestparam.trim())) {
                 //参数类型为Json,且参数内容不为空
                 if (RequestParamTypeEnum.REQUEST_PARAM_TYPE_JSON.getId() == ti.getIparamtype() + 0) {
-                    param = JSON.parseObject(tcase.getRequestparam());
+                    param = JSON.parseObject(requestparam);
                 }
+
                 //参数类型为Map,且参数内容不为空
                 else if (RequestParamTypeEnum.REQUEST_PARAM_TYPE_MAP.getId() == ti.getIparamtype() + 0) {
                     //暂未实现,具体遇到此种情况,再来实现
@@ -170,35 +183,35 @@ public class TcaseServiceImpl implements TcaseService {
             param = null;
         }
 
-        RunOneResult runOneResult=new RunOneResult();
+        RunOneResult runOneResult = new RunOneResult();
         runOneResult.setAssertType(AssertTypeEnum.getValue(tcase.getAsserttype()));
         runOneResult.setContentType(ContentTypeEnum.getValue(ti.getIcontenttype()));
         runOneResult.setExpected(tcase.getExpected());
         runOneResult.setIUri(ti.getIuri());
-        runOneResult.setParam(tcase.getRequestparam());
+        runOneResult.setParam(requestparam);
         runOneResult.setPrarmType(RequestParamTypeEnum.getValue(ti.getIparamtype()));
-        runOneResult.setRequestMethod(RequestMethodTypeEnum.getValue(ti.getIrequestmethod()+0));
+        runOneResult.setRequestMethod(RequestMethodTypeEnum.getValue(ti.getIrequestmethod() + 0));
         runOneResult.setResponseType(ResponseTypeEnum.getValue(ti.getIresponsetype()));
         runOneResult.setServiceKey(tservice.getServicekey());
 
 
-        List<RunOneResultSub> list=new ArrayList<>();
+        List<RunOneResultSub> list = new ArrayList<>();
 
         for (Tenvdetail tenvdetail : tenvdetailList) {
-            RunOneResultSub runOneResultSub =new RunOneResultSub();
+            RunOneResultSub runOneResultSub = new RunOneResultSub();
             //发送http请求
             String url = HttpTypeEnum.getValue(httpType) + "://" + tenvdetail.getHostinfo() + ti.getIuri();
-            String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod()+0, param);
+            String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, param);
 
             //断言结果
-            Boolean result=AssertUtil.supperAssert(tcase.getAsserttype()+0,tcase.getExpected(),actual,ti.getIresponsetype()+0);
+            Boolean result = AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
 
             runOneResultSub.setActual(actual);
             runOneResultSub.setEnv(EnvEnum.getValue(tenvdetail.getEnvid()));
             runOneResultSub.setHostInfo(tenvdetail.getHostinfo());
-            if(result){
+            if (result) {
                 runOneResultSub.setResult(AssertResultEnum.PASS);
-            }else{
+            } else {
                 runOneResultSub.setResult(AssertResultEnum.FAIL);
             }
             list.add(runOneResultSub);
