@@ -154,12 +154,12 @@ public class TcaseServiceImpl implements TcaseService {
 
             //处理参数-前置统一处理,匹配各种<<<xxx>>>关键字
             if (requestparam != null && !"".equals(requestparam.trim())) {
-                requestparam=requestparam.replaceAll("\\s","");
+                requestparam = requestparam.replaceAll("\\s", "");
                 if (BeforeUtil.needReplace(requestparam)) {
                     requestparam = BeforeUtil.replace(requestparam.trim());
                 }
             }
-            log.debug(requestparam);
+            log.debug("请求参数:" + requestparam);
 
             if (requestparam != null && !"".equals(requestparam.trim())) {
                 //参数类型为Json,且参数内容不为空
