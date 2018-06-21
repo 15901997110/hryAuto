@@ -21,11 +21,13 @@ import java.io.PrintWriter;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //return true;//暂时关闭拦截器功能便于调试
+        //为接口的调试开一个特例,如果请求中带参数debug,则放行
         if (request.getParameter("debug") != null) {
             return true;
         }
+
         HttpSession session = request.getSession();
+        //校验session和cookie信息
         if (session.getAttribute("userSession") != null) {//服务端session信息存在
             log.debug("userSession:" + session.getAttribute("userSession").toString());
             Cookie[] cookies = request.getCookies();
@@ -55,7 +57,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //return false;
 
 
-        //尼玛,专门针对登录嵌套在iframe里面的情况
+        //专门针对登录嵌套在iframe里面的情况
         PrintWriter out = response.getWriter();
         out.println("<html>");
         out.println("<script>");

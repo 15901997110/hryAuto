@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class ParamAspect {
     @Around("execution(* com.haier.util.HryHttpClientUtil.send(..))")
     public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        //前置增强,处理入参中有特定意义的字符串比如<!rd>
+        //前置增强,处理入参中有特定意义的字符串比如<<<uuid>>>
         Object[] args = proceedingJoinPoint.getArgs();
         Object param=args[2];
         if(param==null){
