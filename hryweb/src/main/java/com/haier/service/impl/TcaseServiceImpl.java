@@ -238,4 +238,10 @@ public class TcaseServiceImpl implements TcaseService {
 
         return runOneResult;
     }
+
+    @Override
+    public RunOneResult runOne(Integer id) throws HttpProcessException {
+        Tcase tcase = tcaseMapper.selectByPrimaryKey(id);
+        return this.runOne(tcase);
+    }
 }

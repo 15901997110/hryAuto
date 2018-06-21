@@ -72,14 +72,21 @@ public class TcaseController {
         return ResultUtil.success(tcaseService.selectOne(id));
     }
 
-    //运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
+    /**
+     * 运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
+     * 适用于新建case页面和编辑case页面调用此接口测试case
+     */
     @PostMapping("/runCaseOne.do")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
+
+    /**
+     * 运行单条case,传入caseid,适用于case列表页运行时调用此接口
+     */
     @PostMapping("/runCaseOneById.do")
-    public Result runCaseOneById(Integer id){
-        return null;
+    public Result runCaseOneById(Integer id) throws HttpProcessException {
+        return ResultUtil.success(tcaseService.runOne(id));
     }
 
 }

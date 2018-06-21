@@ -36,4 +36,5 @@ public interface TcaseService {
      */
     RunOneResult runOne(Tcase tcase) throws HttpProcessException;
 
+    RunOneResult runOne(Integer id) throws HttpProcessException;
 }
