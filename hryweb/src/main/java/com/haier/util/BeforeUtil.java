@@ -1,7 +1,11 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.BeforeRegexEnum;
+import com.haier.enums.DBInfoKeyEnum;
+import com.haier.enums.DBTypeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -25,7 +29,7 @@ public class BeforeUtil {
         return ret;
     }
 
-    public static String replace(String base) {
+    public static String replace(String base, JSONObject dbinfo) {
         /**
          * 匹配到<<<uuid>>>,替换成随机唯一字符串
          */
@@ -33,8 +37,8 @@ public class BeforeUtil {
             Pattern pattern = Pattern.compile(BeforeRegexEnum.UUID.getPattern());
             Matcher matcher = pattern.matcher(base);
             while (matcher.find()) {
-                log.debug("匹配到:"+matcher.group());
-                log.debug("开始索引:"+matcher.start()+" 结束索引:"+matcher.end());
+                log.debug("匹配到:" + matcher.group());
+                log.debug("开始索引:" + matcher.start() + " 结束索引:" + matcher.end());
                 String uuid = UUID.randomUUID().toString().replaceAll("-", "");
                 base = base.replaceFirst(BeforeRegexEnum.UUID.getPattern(), uuid);
             }
@@ -47,7 +51,35 @@ public class BeforeUtil {
             Matcher matcher = pattern.matcher(base);
             while (matcher.find()) {
                 String sql = matcher.group(2);//((?i)<<<sql:)((?!.*?<<<).*?)(>>>)中第二个(),即(?!.*?<<<).*?匹配到的内容就是Sql语句
-                base = base.replaceFirst(BeforeRegexEnum.SQL.getPattern(), matcher.start() + "被替换的" + matcher.end());
+                String query = "";
+                if (dbinfo != null) {
+                    log.info("dbinfo:" + dbinfo);
+                    try {
+                        //解析dbinfo
+                        String driver = dbinfo.getString(DBInfoKeyEnum.DRIVER.name().toLowerCase());
+                        String url = dbinfo.getString(DBInfoKeyEnum.URL.name().toLowerCase());
+                        String username = dbinfo.getString(DBInfoKeyEnum.USERNAME.name().toLowerCase());
+                        String password = dbinfo.getString(DBInfoKeyEnum.PASSWORD.name().toLowerCase());
+                        if (driver != null && url != null && username != null && password != null) {
+                            try {
+                                JdbcTemplate jdbcTemplate = DBUtil.getJdbcTemplate(DBTypeEnum.MYSQL, url, username, password);
+                                query = DBUtil.queryForObject(jdbcTemplate, sql);
+                                if (query == null) {
+                                    query = "查询Sql为null";
+                                }
+                            } catch (Exception e) {
+                                log.error("执行sql异常,查询结果自动转换为字符串'执行sql异常'", e);
+                                query = "执行sql异常";
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.error("解析dbinfo异常,查询结果自动转换为字符串'解析dbinfo异常'", e);
+                        query = "解析dbinfo异常";
+                    }
+                }else{
+                    query="dbinfo为空,无法执行Sql";
+                }
+                base = base.substring(0, matcher.start()) + query + base.substring(matcher.end());
             }
         }
 

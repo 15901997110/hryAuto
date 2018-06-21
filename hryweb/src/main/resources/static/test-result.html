@@ -41,7 +41,7 @@
             </div>
         </div>-->
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:37px;float: left;font-weight: bold;">请求参数：</label>
+            <label style="margin-left:37px;float: left;font-weight: bold;">用例设计参数：</label>
             <div>
                 <textarea id="param" name="param" cols="" rows="" style="width: 53%;height: 200px;margin-top:5px;border: solid 1px #ddd;padding:10px;"  disabled=true></textarea>
             </div>
@@ -53,10 +53,11 @@
             <thead>
             <tr class="text-c">
                 <th width="5%">环境</th>
-                <th width="10%">服务IP</th>
+                <th width="10%">请求host</th>
                 <th width="5%">断言类型</th>
-                <th width="30%">预期结果</th>
-                <th width="40%">实际结果</th>
+                <th width="20%">实际参数</th>
+                <th width="20%">预期结果</th>
+                <th width="30%">实际结果</th>
                 <th width="10%">测试结果</th>
             </tr>
             </thead>
@@ -107,15 +108,16 @@
                 t=t+i;
                 row=list[i];
                 if(row.result == "FAIL"){
-                    css="#F76C58";
+                    css="#b21919";
                 }else if(row.result == "PASS"){
-                    css="#59AD59";
+                    css="#08ad16";
                 }
 
                 var rowHtml = "<tr class=\"text-c\" id="+t+">\n" +
                     "<td>"+row.env+"</td>\n" +
                     "<td>"+row.hostInfo+"</td>\n" +
                     "<td>"+assertType+"</td>\n" +
+                    "<td>"+row.actualParam+"</td>"+
                     "<td>"+expected+"</td>\n" +
                     "<td >"+row.actual+"</td>\n" +
                     "<td>"+row.result+"</td>\n" +
