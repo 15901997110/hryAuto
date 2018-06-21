@@ -75,6 +75,7 @@
             <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid" placeholder="请输入请求参数..."></textarea>
+                <!--<pre id="requestParam"></pre>-->
             </div>
         </div>
         <div class="row cl">
@@ -372,7 +373,8 @@
                     $("#caseName").val(casename);
                     $("#remark").val(remark);
                     $("#service").val();
-                    $("#requestParam").val(requestparam);
+                    var requestJson = JSON.stringify(JSON.parse(requestparam), null, 2);
+                    $("#requestParam").val(requestJson);
                     $("#expected").val(expected);
                     $("#author").val(author);
                     layer.close(layerIndex);
