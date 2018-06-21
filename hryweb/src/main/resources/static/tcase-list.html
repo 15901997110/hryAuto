@@ -60,17 +60,17 @@
             <tr class="text-c">
                 <th width="3%"><input name="" type="checkbox" value=""></th>
                 <th width="3%">ID</th>
-                <th width="5%">用例名称</th>
-                <th width="5%">用例描述</th>
-                <th width="15%">服务</th>
-                <th width="5%">环境</th>
+                <th width="10%">用例名称</th>
+                <th width="10%">用例描述</th>
+                <th width="10%">服务</th>
+                <th width="3%">环境</th>
                 <th width="10">接口名称</th>
-                <th width="17%">接口地址</th>
-                <th width="8%">断言类型</th>
+                <th width="15%">接口地址</th>
+                <th width="5%">断言类型</th>
                 <th width="10%">期望结果</th>
-                <th width="5%">设计人</th>
-                <th width="5%">更新时间</th>
-                <th width="9%">操作</th>
+                <th width="4%">设计人</th>
+                <th width="9%">更新时间</th>
+                <th width="8%">操作</th>
             </tr>
             </thead>
             <tbody id="tcaseList">
@@ -232,10 +232,10 @@
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.casename+"</td>\n" +
                             "<td>"+row.remark+"</td>\n" +
-                            "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
+                            "<td>"+row.servicekey+"</td>\n" +
                             "<td>"+envKey+"</td>\n" +
                             "<td>"+row.iremark+"</td>\n" +
-                            "<td>"+row.iuri+"</td>\n" +
+                            "<td style=\"text-align:left\">"+row.iuri+"</td>\n" +
                             "<td>"+assertName+"</td>\n" +
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
