@@ -337,7 +337,6 @@
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
         var tis = "";
-        debugger;
         if (tiList.length == 0) {
             $("#ti").empty();
             tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
@@ -377,7 +376,6 @@
         var tId = $("#ti").val();
         var iparamsample = getOneTi(tId);
         var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-        debugger
         //$("#requestParam").empty();
         $("#requestParam").val(requestJson);
     }
