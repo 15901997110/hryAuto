@@ -1,6 +1,9 @@
 package com.haier.cases;
 
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
 
 import java.lang.reflect.Method;
 
@@ -11,11 +14,22 @@ import java.lang.reflect.Method;
  */
 public class PgwTest {
 
+    private Integer serviceId;
     private Integer envId;
+
 
     @DataProvider(name="CaseDataProvider")
     public Object[][] getCase(Method method){
         return null;
     }
+
+    @BeforeClass
+    @Parameters({"envId","serviceId"})
+    public void beforeClass(Integer envId,Integer serviceId){
+        this.envId=envId;
+        this.serviceId=serviceId;
+    }
+
+
 
 }
