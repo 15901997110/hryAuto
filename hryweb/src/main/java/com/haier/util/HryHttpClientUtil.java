@@ -25,15 +25,16 @@ import java.util.Objects;
  */
 @Slf4j
 public class HryHttpClientUtil {
+
     public static <T> String send(String url, Integer requestMethod, T param) throws HttpProcessException {
 
-        HttpConfig httpConfig ;
+        HttpConfig httpConfig;
         if (Objects.isNull(param)) {//参数为null,则不带参发送请求
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8");
-        }else if (param instanceof JSONObject) {//参数为json类型,发起json请求
+        } else if (param instanceof JSONObject) {//参数为json类型,发起json请求
 
-            Header header=new BasicHeader("Content-Type","application/json;charset=utf-8");
-            Header[] headers={header};
+            Header header = new BasicHeader("Content-Type", "application/json;charset=utf-8");
+            Header[] headers = {header};
             JSONObject jsonObject = (JSONObject) param;
 
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8").json(JSONObject.toJSONString(jsonObject));
@@ -42,8 +43,8 @@ public class HryHttpClientUtil {
         } else if (param instanceof Map) {//参数为map类型
             Map map = (Map) param;
             httpConfig = HttpConfig.custom().url(url).encoding("utf-8").map(map);
-        } else{
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"http请求无法发送,暂时只支持Json格式的参数") ;
+        } else {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "http请求无法发送,暂时只支持Json格式的参数");
         }
         if (requestMethod == RequestMethodTypeEnum.REQUEST_METHOD_GET.getId()) {
             return HttpClientUtil.get(httpConfig);
@@ -51,4 +52,54 @@ public class HryHttpClientUtil {
             return HttpClientUtil.post(httpConfig);
         }
     }
+
+    public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param) {
+        if (url == null) {
+            return "警告:请求url为null";
+        }
+        if (requestMethodType == null) {
+            requestMethodType = 1;//post
+        }
+        if (contentType == null) {
+            contentType = 1;//application/json
+        }
+        if (requestParamType == null) {
+            requestParamType = 1;//json类型(参数类型)
+        }
+
+        //设置请求Headers
+        Header header;
+        if (contentType == ContentTypeEnum.JSON.getId()) {
+            header = new BasicHeader("Content-Type", ContentTypeEnum.JSON.getValue());
+        } else {
+            return "警告:Content-Type暂时只支持:application/json";
+        }
+
+        //设置请求参数
+        HttpConfig httpConfig = HttpConfig.custom().url(url).encoding("utf-8").headers(new Header[]{header});
+        if (requestParamType == RequestParamTypeEnum.REQUEST_PARAM_TYPE_JSON.getId()) {
+            if (param != null) {
+                httpConfig.json(param);
+            }
+        }
+
+
+        //发送请求,返回响应内容
+        if (requestMethodType == RequestMethodTypeEnum.REQUEST_METHOD_GET.getId()) {
+            try {
+                return HttpClientUtil.get(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("发送http请求异常了:",e);
+                return "错误:发送http请求异常了-"+e.toString();
+            }
+        } else {
+            try {
+                return HttpClientUtil.post(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("发送http请求异常了:",e);
+                return "错误:发送http请求异常了-"+e.toString();
+            }
+        }
+    }
+
 }

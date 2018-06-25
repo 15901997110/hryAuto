@@ -82,9 +82,12 @@ public class UserTest {
     @Iuri("/loginFacade/generateCode")
     @Test(groups = "loginFacade", dataProvider = "getCaseWithObject", description = "验证码生成接口测试")
     public void loginFacade_generateCode_test(Integer requestMethod,
-
-
-                                              String uri, Integer paramType, String param, Integer responseType, String expected, Integer assertType) {
+                                              String uri,
+                                              Integer paramType,
+                                              String param,
+                                              Integer responseType,
+                                              String expected,
+                                              Integer assertType) {
         //模拟请求
         String actual = HryHttpClientUtil.send(requestMethod, httpType + "://" + host + uri, paramType, param);
         //断言结果
