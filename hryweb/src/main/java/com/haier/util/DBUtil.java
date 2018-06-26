@@ -16,6 +16,7 @@ import java.sql.SQLException;
 @Slf4j
 public class DBUtil {
 
+
     //数据库连接
     public static JdbcTemplate getJdbcTemplate(DBTypeEnum dbTypeEnum,String url,String username,String password){
         DriverManagerDataSource dataSource=new DriverManagerDataSource();
@@ -23,13 +24,6 @@ public class DBUtil {
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-
-        try {
-            Connection connection = dataSource.getConnection();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
         return jdbcTemplate;
