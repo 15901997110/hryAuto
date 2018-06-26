@@ -117,6 +117,7 @@
                 <button type="button" class="btn btn-success radius" id="test" name="admin-role-save"
                         onclick="runTcase()"><i class="icon-ok"></i> 测试
                 </button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="layer_close()">关闭</button>
             </div>
         </div>
     </form>
@@ -316,11 +317,33 @@
         var serviceList = getServiceList();
         var env = getTenvList();
         var assertTypeList = getAssertType();
+        var selectedEnv = "";
+        var selectedService = "";
+        var selectedTi = "";
+        var selectedAssertType="";
+        var selectedRequestparam="";
+        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
+            var cells = getParameter('cellArr').split(",");
+            selectedRequestparam = getParameter('requestparam');
+            $("#caseName").val(cells[0]);
+            $("#remark").val(cells[1]);
+            $("#requestParam").val(selectedRequestparam);
+            $("#expected").val(cells[7]);
 
+            selectedEnv = cells[3];
+            selectedService = cells[2];
+            selectedTi = cells[5];
+            selectedAssertType = cells[6];
+        }
         var tenv = "";
         for (k = 0; k < env.length; k++) {
             var row = env[k];
-            var rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
+            var rowHtml;
+            if (row.envkey == selectedEnv) {
+                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.envkey + "</option>";
+            } else {
+                rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
+            }
             tenv = tenv + rowHtml;
         }
         $("#env").append(tenv);
@@ -329,7 +352,12 @@
         var services = "";
         for (i = 0; i < serviceList.length; i++) {
             var row = serviceList[i];
-            var rowHtml = "<option value=\"" + row.id + "\">" + row.servicename + "</option>";
+            var rowHtml;
+            if (row.servicename == selectedService.split("|")[0]) {
+                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.servicename + "</option>"
+            } else {
+                rowHtml = "<option value=\"" + row.id + "\">" + row.servicename + "</option>"
+            }
             services = services + rowHtml;
         }
         $("#service").append(services);
@@ -337,6 +365,7 @@
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
         var tis = "";
+        debugger;
         if (tiList.length == 0) {
             $("#ti").empty();
             tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
@@ -344,18 +373,26 @@
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
-                var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "</option>";
+                var rowHtml;
+                if (row.iuri == selectedTi) {
+                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "</option>";
+                } else {
+                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "</option>";
+                }
                 tis = tis + rowHtml;
             }
             $("#ti").append(tis);
             $("#ti").select2();
 
-            var tId = $("#ti").val();
-            var iparamsample = getOneTi(tId);
-            console.log(iparamsample);
-            var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-            console.log(requestJson);
-            $("#requestParam").val(requestJson);
+            if (selectedRequestparam == "") {
+                var tId = $("#ti").val();
+                var iparamsample = getOneTi(tId);
+                console.log(iparamsample);
+                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                console.log(requestJson);
+                $("#requestParam").val(requestJson);
+            }
+
 
         }
 
@@ -363,7 +400,12 @@
         var assertTypes = "";
         for (var m = 0; m < assertTypeList.length; m++) {
             var row = assertTypeList[m];
-            var rowHtml = "<option value=\"" + row.id + "\">" + row.value + "</option>";
+            var rowHtml;
+            if (row.value == selectedAssertType) {
+                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.value + "</option>";
+            } else {
+                rowHtml = "<option value=\"" + row.id + "\">" + row.value + "</option>";
+            }
             assertTypes = assertTypes + rowHtml;
         }
         $("#assertType").append(assertTypes);
@@ -371,6 +413,12 @@
 
     });
 
+    function getParameter(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return decodeURI(r[2]);
+        return null;
+    }
     //接口改变处理
     function tiChange() {
         var tId = $("#ti").val();

@@ -69,6 +69,7 @@
                 <th width="5%">断言类型</th>
                 <th width="10%">期望结果</th>
                 <th width="4%">设计人</th>
+                <th width="5%" style="display:none">用例参数</th>
                 <th width="9%">更新时间</th>
                 <th width="8%">操作</th>
             </tr>
@@ -239,9 +240,11 @@
                             "<td>"+assertName+"</td>\n" +
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
+                            "<td style=\"display:none\">"+row.requestparam+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy('用例复制','tcase-add.html','800','700'," + i + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
                             "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
@@ -417,9 +420,11 @@
                             "<td>"+assertName+"</td>\n" +
                             "<td>"+row.expected+"</td>\n" +
                             "<td>"+row.author+"</td>\n" +
+                            "<td style=\"display:none\">"+row.requestparam+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy('用例复制','tcase-add.html','800','700'," + i + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
                             "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
@@ -614,6 +619,18 @@
     /*用例-编辑*/
     function tcase_edit(title,url,id,w,h){
         url= url + "?id="+id;
+        layer_show(title,url,w,h);
+    }
+
+    /*用例-复制*/
+    function tcase_copy(title,url,w,h,num){
+        var cells = $("#table")[0].rows[num+1].cells;
+        var cellArr = [];
+        var requestparam = cells[11].innerText;
+        for (var i=2; i < cells.length-3; i++) {
+            cellArr.push(cells[i].innerText)
+        }
+        url= encodeURI(url + "?cellArr="+cellArr+"&requestparam="+requestparam);
         layer_show(title,url,w,h);
     }
 
