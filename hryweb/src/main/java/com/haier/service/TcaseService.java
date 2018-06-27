@@ -6,6 +6,8 @@ import com.haier.po.RunOneResult;
 import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: luqiwei
@@ -27,6 +29,9 @@ public interface TcaseService {
 
     //查-根据主键查询
     Tcase selectOne(Integer tcaseId);
+
+    //查-根据条件查询Tcase
+    List<Tcase> selectByCondition(Tcase tcase);
 
     //查-综合查询
     PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize);

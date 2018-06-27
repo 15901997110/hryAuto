@@ -3,17 +3,14 @@ package com.haier.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.RequestMethodTypeEnum;
-import com.haier.enums.StatusCodeEnum;
 import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.ImportService;
 import com.haier.util.HryHttpClientUtil;
-import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -40,7 +37,7 @@ public class ImportServiceImpl implements ImportService {
     public String sendGet(String url) {
         String jsonResponse;
         try {
-            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.REQUEST_METHOD_GET.getId(), null);
+            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.GET.getId(), null);
         } catch (HttpProcessException e) {
             log.info("请求地址为:" + url);
             log.error("请求swaggerUrl时发生异常", e);

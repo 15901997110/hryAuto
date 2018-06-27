@@ -19,14 +19,10 @@ public class ParamAspect {
     public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //前置增强,处理入参中有特定意义的字符串比如<<<uuid>>>
         Object[] args = proceedingJoinPoint.getArgs();
-        Object param=args[2];
-        if(param==null){
-            param="null";
-        }
-        log.debug("aspect-debug:"+param.toString());
+
         //执行切入点的方法
         proceedingJoinPoint.proceed(args);
 
-        //后置增强,可以有些用例需要数据更新操作
+        //后置增强,可能有些用例需要数据更新操作
     }
 }

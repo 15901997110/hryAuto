@@ -1,10 +1,8 @@
 package com.haier.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpHeader;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
@@ -46,7 +44,7 @@ public class HryHttpClientUtil {
         } else {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "http请求无法发送,暂时只支持Json格式的参数");
         }
-        if (requestMethod == RequestMethodTypeEnum.REQUEST_METHOD_GET.getId()) {
+        if (requestMethod == RequestMethodTypeEnum.GET.getId()) {
             return HttpClientUtil.get(httpConfig);
         } else {
             return HttpClientUtil.post(httpConfig);
@@ -77,7 +75,7 @@ public class HryHttpClientUtil {
 
         //设置请求参数
         HttpConfig httpConfig = HttpConfig.custom().url(url).encoding("utf-8").headers(new Header[]{header});
-        if (requestParamType == RequestParamTypeEnum.REQUEST_PARAM_TYPE_JSON.getId()) {
+        if (requestParamType == RequestParamTypeEnum.JSON.getId()) {
             if (param != null) {
                 httpConfig.json(param);
             }
@@ -85,7 +83,7 @@ public class HryHttpClientUtil {
 
 
         //发送请求,返回响应内容
-        if (requestMethodType == RequestMethodTypeEnum.REQUEST_METHOD_GET.getId()) {
+        if (requestMethodType == RequestMethodTypeEnum.GET.getId()) {
             try {
                 return HttpClientUtil.get(httpConfig);
             } catch (HttpProcessException e) {

@@ -1,9 +1,9 @@
 package com.haier.enums;
 
 public enum ResponseTypeEnum {
-    RESPONSE_TYPE_JSON(1,"json","json类型"),
-    RESPONSE_TYPE_MAP(2,"map","map类型"),
-    RESPONSE_TYPE_TEXT(3,"text","文本类型")
+    JSON(1,"json","json类型"),
+    MAP(2,"map","map类型"),
+    TEXT(3,"text","文本类型")
     ;
     private Integer id;
     private String value;

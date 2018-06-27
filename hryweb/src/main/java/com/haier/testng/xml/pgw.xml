@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="pgw">
+    <test name="pgw">
+        <classes>
+            <class name="com.haier.testng.factory.PgwTestFactory"/>
+        </classes>
+    </test>
+</suite>

@@ -23,11 +23,8 @@ public class LoginConfig implements WebMvcConfigurer {
         //拦截配置
         interceptorRegistration.addPathPatterns("/**");
         //排除配置
-        interceptorRegistration.excludePathPatterns("/**.do");
-        interceptorRegistration.excludePathPatterns("/login**");
+        interceptorRegistration.excludePathPatterns("/login.html");
         interceptorRegistration.excludePathPatterns("/user/login.do");
-        interceptorRegistration.excludePathPatterns("/user/login2.do");
-        interceptorRegistration.excludePathPatterns("/error**");
         interceptorRegistration.excludePathPatterns("/static/**");
         interceptorRegistration.excludePathPatterns("/lib/**");
         interceptorRegistration.excludePathPatterns("/temp/**");

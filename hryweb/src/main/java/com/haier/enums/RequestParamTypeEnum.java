@@ -1,9 +1,9 @@
 package com.haier.enums;
 
 public enum RequestParamTypeEnum {
-    REQUEST_PARAM_TYPE_JSON(1,"json","json类型"),
-    REQUEST_PARAM_TYPE_MAP(2,"map","map类型"),
-    REQUEST_PARAM_TYPE_TEXT(3,"text","文本类型")
+    JSON(1,"json","json类型"),
+    MAP(2,"map","map类型"),
+    TEXT(3,"text","文本类型")
     ;
     private Integer id;
     private String value;

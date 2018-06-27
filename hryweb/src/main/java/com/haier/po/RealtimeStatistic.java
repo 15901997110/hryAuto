@@ -1,6 +1,5 @@
 package com.haier.po;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
 
 /**

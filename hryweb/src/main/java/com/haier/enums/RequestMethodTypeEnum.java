@@ -1,8 +1,8 @@
 package com.haier.enums;
 
 public enum RequestMethodTypeEnum {
-    REQUEST_METHOD_POST(1,"post"),
-    REQUEST_METHOD_GET(2,"get");
+    POST(1,"post"),
+    GET(2,"get");
     private Integer id;
     private String value;
     RequestMethodTypeEnum(Integer id, String value){

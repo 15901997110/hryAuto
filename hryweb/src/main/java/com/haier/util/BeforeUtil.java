@@ -1,9 +1,11 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.BeforeRegexEnum;
 import com.haier.enums.DBInfoKeyEnum;
 import com.haier.enums.DBTypeEnum;
+import com.haier.enums.RequestParamTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -18,6 +20,32 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class BeforeUtil {
+    /**
+     * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
+     *
+     * @param param
+     * @param dbinfo
+     * @return
+     */
+    public static String replace(String param, String dbinfo) {
+        JSONObject dbinfoJsonObject = null;
+        try {
+            dbinfoJsonObject = JSON.parseObject(dbinfo);
+        } catch (Exception e) {
+            log.warn("dbinfo转换异常,系统将当成dbinfo=null来处理");
+        }
+
+        if (param != null && !"".equals(param.trim())) {
+            param = param.replaceAll("\\n", "");
+            while (needReplace(param)) {
+                param = replace(param, dbinfoJsonObject);
+            }
+            return param;
+        } else {
+            return null;
+        }
+    }
+
     public static Boolean needReplace(String base) {
         Boolean ret = false;
         BeforeRegexEnum[] values = BeforeRegexEnum.values();
@@ -76,8 +104,8 @@ public class BeforeUtil {
                         log.error("解析dbinfo异常,查询结果自动转换为字符串'解析dbinfo异常'", e);
                         query = "解析dbinfo异常";
                     }
-                }else{
-                    query="dbinfo为空,无法执行Sql";
+                } else {
+                    query = "dbinfo为空,无法执行Sql";
                 }
                 base = base.substring(0, matcher.start()) + query + base.substring(matcher.end());
             }

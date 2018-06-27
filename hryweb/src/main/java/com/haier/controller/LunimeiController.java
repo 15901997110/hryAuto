@@ -2,12 +2,7 @@ package com.haier.controller;
 
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.RequestMethodTypeEnum;
-import com.haier.po.Tservice;
-import com.haier.response.Result;
-import com.haier.service.TenvService;
-import com.haier.service.TserviceService;
 import com.haier.util.HryHttpClientUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +25,7 @@ public class LunimeiController {
    public String test2(){
       String result=null;
       try {
-         result=HryHttpClientUtil.send("http://www.baidu.com", RequestMethodTypeEnum.REQUEST_METHOD_GET.getId(),null);
+         result=HryHttpClientUtil.send("http://www.baidu.com", RequestMethodTypeEnum.GET.getId(),null);
       } catch (HttpProcessException e) {
          e.printStackTrace();
       }

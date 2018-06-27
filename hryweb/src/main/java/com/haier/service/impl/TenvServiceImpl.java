@@ -43,9 +43,6 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Tenv selectOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
-        }
         return tenvMapper.selectByPrimaryKey(id);
     }
 

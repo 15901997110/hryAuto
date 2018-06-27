@@ -109,6 +109,44 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
     @Override
+    public List<Tcase> selectByCondition(Tcase tcase) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(tcase,false);
+        TcaseExample tcaseExample =new TcaseExample();
+        TcaseExample.Criteria criteria = tcaseExample.createCriteria();
+        criteria.andStatusGreaterThan((short)0);
+        if(tcase !=null){
+            if(tcase.getEnvid()!=null){
+                criteria.andEnvidEqualTo(tcase.getEnvid());
+            }
+            if(tcase.getIid()!=null){
+                criteria.andIidEqualTo(tcase.getIid());
+            }
+            if(tcase.getRequestparam()!=null){
+                criteria.andRequestparamLike(tcase.getRequestparam());
+            }
+            if(tcase.getId()!=null){
+                criteria.andIdEqualTo(tcase.getId());
+            }
+            if(tcase.getCasename()!=null){
+                criteria.andCasenameLike(tcase.getCasename());
+            }
+            if(tcase.getAuthor()!=null){
+                criteria.andAuthorLike(tcase.getAuthor());
+            }
+            if(tcase.getExpected()!=null){
+                criteria.andExpectedLike(tcase.getExpected());
+            }
+            if(tcase.getRemark()!=null){
+                criteria.andRemarkLike(tcase.getRemark());
+            }
+            if(tcase.getAsserttype()!=null){
+                criteria.andAsserttypeEqualTo(tcase.getAsserttype());
+            }
+        }
+        return tcaseMapper.selectByExample(tcaseExample);
+    }
+
+    @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
         if (tcaseCustom != null) {
@@ -191,7 +229,7 @@ public class TcaseServiceImpl implements TcaseService {
 
                 if (actualParam != null && !"".equals(actualParam.trim())) {
                     //参数类型为Json,且参数内容不为空
-                    if (RequestParamTypeEnum.REQUEST_PARAM_TYPE_JSON.getId() == ti.getIparamtype() + 0) {
+                    if (RequestParamTypeEnum.JSON.getId() == ti.getIparamtype() + 0) {
                         try {
                             param = JSON.parseObject(actualParam);
                         } catch (RuntimeException e) {
@@ -201,7 +239,7 @@ public class TcaseServiceImpl implements TcaseService {
                     }
 
                     //参数类型为Map,且参数内容不为空
-                    else if (RequestParamTypeEnum.REQUEST_PARAM_TYPE_MAP.getId() == ti.getIparamtype() + 0) {
+                    else if (RequestParamTypeEnum.MAP.getId() == ti.getIparamtype() + 0) {
                         //暂未实现,具体遇到此种情况,再来实现
                         throw new HryException(StatusCodeEnum.PARAMS_FORMAT_ERROR, "现在仅支持Json格式参数!不支持Map");
                     } else {

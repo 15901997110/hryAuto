@@ -35,7 +35,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             for (Cookie cookie : cookies) {
 
                 if ("identityCookie".equals(cookie.getName())) {//客户端有Cookie信息
-                    log.debug("identityCookie:" + cookie.getValue());
                     i++;
                 }
                 if ("realnameCookie".equals(cookie.getName())) {
@@ -43,7 +42,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     i++;
                 }
                 if ("groupidCookie".equals(cookie.getName())) {
-                    log.debug("groupidCookie:" + cookie.getValue());
                     i++;
                 }
             }

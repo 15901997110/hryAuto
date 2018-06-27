@@ -2,11 +2,11 @@ package com.haier.controller;
 
 import com.haier.enums.*;
 import com.haier.util.EnumUtil;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.acl.Group;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,7 @@ import java.util.Map;
  * @Author: luqiwei
  * @Date: 2018/5/25 14:15
  */
+
 @RestController
 @RequestMapping("/enum")
 public class EnumController {

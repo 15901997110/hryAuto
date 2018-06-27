@@ -39,22 +39,22 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public Integer insertOne(Ti ti) {
-        ReflectUtil.setInvalidFieldToNull(ti,false);
+        ReflectUtil.setInvalidFieldToNull(ti, false);
         //简单参数校验
-        if(ti==null||ti.getServiceid()==null||
-                ti.getServiceid()==0||ti.getIuri()==null
-                ||"".equals(ti.getIuri())){
-            throw new HryException(10086,"入参错误:"+ti.toString());
+        if (ti == null || ti.getServiceid() == null ||
+                ti.getServiceid() == 0 || ti.getIuri() == null
+                || "".equals(ti.getIuri())) {
+            throw new HryException(10086, "入参错误:" + ti.toString());
         }
 
         //插入数据之前判断记录是否存在
-        TiExample tiExample=new TiExample();
+        TiExample tiExample = new TiExample();
         tiExample.createCriteria()
                 .andServiceidEqualTo(ti.getServiceid())
                 .andIuriEqualTo(ti.getIuri())
-                .andIstatusNotEqualTo((short)-1);
+                .andIstatusNotEqualTo((short) -1);
         List<Ti> tis = tiMapper.selectByExample(tiExample);
-        if(tis!=null&&tis.size()>0){
+        if (tis != null && tis.size() > 0) {
             throw new HryException(StatusCodeEnum.EXIST_RECORD);
         }
         //插入数据
@@ -64,7 +64,7 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public Integer updateOne(Integer id, Ti ti) {
-        if(id==0||id==null|| Objects.isNull(ti)){
+        if (id == 0 || id == null || Objects.isNull(ti)) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         ti.setId(id);
@@ -72,65 +72,65 @@ public class TiServiceImpl implements TiService {
     }
 
     /**
-     *@description: 删除tservice表记录时,会同时删除ti表的记录,所以一定要谨慎
-     *@params: [id]
-     *@return: java.lang.Integer
-     *@author: luqiwei
-     *@date: 2018-05-24
+     * @description: 删除tservice表记录时, 会同时删除ti表的记录, 所以一定要谨慎
+     * @params: [id]
+     * @return: java.lang.Integer
+     * @author: luqiwei
+     * @date: 2018-05-24
      */
     @Override
     public Integer deleteOne(Integer id) {
         //0.简单的参数校验
-        if(Objects.isNull(id)||id==0) {
+        if (Objects.isNull(id) || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
 
         //1.先删除tcase表中的记录
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setIid(id);
         tcaseService.deleteByCondition(tcase);
 
         //2.再删除ti表中的记录
-        Ti ti=new Ti();
+        Ti ti = new Ti();
         ti.setId(id);
-        ti.setIstatus((short)-1);
+        ti.setIstatus((short) -1);
         return tiMapper.updateByPrimaryKeySelective(ti);
     }
 
     @Override
     public Integer deleteByCondition(Ti ti) {
-        ReflectUtil.setInvalidFieldToNull(ti,false);
-        if(ti==null||ti.getServiceid()==null){
-            throw new HryException(StatusCodeEnum.DANGER_OPERATION,"暂时只支持根据serviceid删除接口");
+        ReflectUtil.setInvalidFieldToNull(ti, false);
+        if (ti == null || ti.getServiceid() == null) {
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "暂时只支持根据serviceid删除接口");
         }
         //先删除tcase表中的记录
-        int countDeleteTcase=0;
-        Ti t=new Ti();
+        int countDeleteTcase = 0;
+        Ti t = new Ti();
         t.setServiceid(ti.getServiceid());
         List<Ti> tis = this.selectByCondition(t);
-        if(tis!=null&&tis.size()>0){
-            for(Ti tt:tis){
-                Tcase tcase=new Tcase();
+        if (tis != null && tis.size() > 0) {
+            for (Ti tt : tis) {
+                Tcase tcase = new Tcase();
                 tcase.setIid(tt.getId());
                 Integer integer = tcaseService.deleteByCondition(tcase);
-                countDeleteTcase+=integer;
+                countDeleteTcase += integer;
             }
         }
 
         //再删除ti中的记录
-        TiExample tiExample=new TiExample();
+        TiExample tiExample = new TiExample();
         tiExample.createCriteria()
-                .andIstatusGreaterThan((short)0)
+                .andIstatusGreaterThan((short) 0)
                 .andServiceidEqualTo(ti.getServiceid());
-        Ti i=new Ti();
-        i.setIstatus((short)-1);
-        return tiMapper.updateByExampleSelective(i,tiExample);
+        Ti i = new Ti();
+        i.setIstatus((short) -1);
+        return tiMapper.updateByExampleSelective(i, tiExample);
     }
 
     @Override
     public Ti selectOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         return tiMapper.selectByPrimaryKey(id);
     }
@@ -138,40 +138,42 @@ public class TiServiceImpl implements TiService {
     @Override
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
-        if(tiCustom!=null) {
+        if (tiCustom != null) {
             ReflectUtil.setFieldAddPercentAndCleanZero(tiCustom, true);
         }
         //如果未传入分页信息,默认查询第一页总共10条数据
-        if(pageNum==null||pageSize==null){
-            pageNum=1;
-            pageSize=10;
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
         }
-        PageHelper.startPage(pageNum,pageSize, SortEnum.UPDATETIME.getValue()+","+SortEnum.ID.getValue());
+        PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
-        PageInfo<TiCustom> pageInfo=new PageInfo<>(tiCustomList);
+        PageInfo<TiCustom> pageInfo = new PageInfo<>(tiCustomList);
         return pageInfo;
     }
 
     @Override
     public List<Ti> selectByCondition(Ti ti) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(ti,false);
-        TiExample tiExample=new TiExample();
+        ReflectUtil.setFieldAddPercentAndCleanZero(ti, false);
+        TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
-        criteria.andIstatusGreaterThan((short)0);
-        if(ti.getServiceid()!=null){
-            criteria.andServiceidEqualTo(ti.getServiceid());
-        }
-        if(ti.getIuri()!=null){
-            criteria.andIuriLike(ti.getIuri());
-        }
-        if(ti.getRemark()!=null){
-            criteria.andRemarkLike(ti.getRemark());
-        }
-        if(ti.getIdev()!=null){
-            criteria.andIdevLike(ti.getIdev());
-        }
-        if(ti.getIparamsample()!=null){
-            criteria.andIparamsampleLike(ti.getIparamsample());
+        criteria.andIstatusGreaterThan((short) 0);
+        if (ti != null) {
+            if (ti.getServiceid() != null) {
+                criteria.andServiceidEqualTo(ti.getServiceid());
+            }
+            if (ti.getIuri() != null) {
+                criteria.andIuriLike(ti.getIuri());
+            }
+            if (ti.getRemark() != null) {
+                criteria.andRemarkLike(ti.getRemark());
+            }
+            if (ti.getIdev() != null) {
+                criteria.andIdevLike(ti.getIdev());
+            }
+            if (ti.getIparamsample() != null) {
+                criteria.andIparamsampleLike(ti.getIparamsample());
+            }
         }
         return tiMapper.selectByExample(tiExample);
     }

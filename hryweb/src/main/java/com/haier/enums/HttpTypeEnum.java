@@ -1,8 +1,8 @@
 package com.haier.enums;
 
 public enum HttpTypeEnum {
-    TYPE_HTTP(1,"Http"),
-    TYPE_HTTPS(2,"Https");
+    HTTP(1,"Http"),
+    HTTPS(2,"Https");
     private int id;
     private String value;
     HttpTypeEnum(int id, String value){
