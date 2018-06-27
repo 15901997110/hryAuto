@@ -51,24 +51,15 @@
 				</span>
             </div>
         </div>
-       <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
-                    <select class="select" size="1" name="service" id="service">
-                        <option value="" selected>请选择服务</option>
-                    </select>
-				</span>
-            </div>
-        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
+                <input type="text" class="input-text" value="" placeholder="" id="ti" name="ti" disabled="disabled">
+                <!--<span class="select-box">
                     <select class="select" size="1" name="ti" id="ti">
                         <option value="" selected>请选择接口</option>
                     </select>
-				</span>
+				</span>-->
             </div>
         </div>
         <div class="row cl">
@@ -82,7 +73,7 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>断言类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="assertType" id="assertType">
+                    <select class="select" size="1" name="assertType" id="assertType" onchange="assertTypeChage()">
                         <option value="" selected>请选择断言类型</option>
                     </select>
 				</span>
@@ -91,7 +82,7 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">期望结果：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="expected" name="expected" cols="" rows="" class="textarea valid" placeholder="期望结果，json格式"></textarea>
+                <textarea id="expected" name="expected" cols="" rows="" class="textarea valid" placeholder=""></textarea>
             </div>
         </div>
         <div class="row cl">
@@ -261,25 +252,27 @@
         return tiList;
     }
 
-    function getAssertType(){
-        var assertType=null;
-        $.ajaxSetup({async : false});
+    function getAssertType() {
+        var assertType = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "get",
             url: "/enum/assertTypeEnum",
-            data: {
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                assertType=data;
+                layer.close(layerIndex);
+                assertType = data;
             },
-            fail:function (data) {
+            fail: function (data) {
+                layer.close(layerIndex);
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
+                layer.close(layerIndex);
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -344,7 +337,17 @@
                     }
                     $("#service").append(services);
 
-                    var tis="";
+
+                    for(var k=0;k<tiList.length;k++){
+                        var rowTi=tiList[k];
+                        if( rowTi.id == iid){
+                            $("#ti").val(rowTi.iuri+"("+rowTi.remark+")");
+                            break;
+                        }
+
+                    }
+
+                    /*var tis="";
                     for(var k=0;k<tiList.length;k++){
                         var rowTi=tiList[k];
                         if( rowTi.id == iid){
@@ -355,7 +358,7 @@
                         tis=tis+tiHtml;
                     }
                     $("#ti").append(tis);
-                    $('#ti').attr("disabled","desabled");
+                    $('#ti').attr("disabled","desabled");*/
 
                     var assertTypes="";
                     for(var k=0;k<assertTypeList.length;k++){
@@ -373,8 +376,8 @@
                     $("#caseName").val(casename);
                     $("#remark").val(remark);
                     $("#service").val();
-                    var requestJson = JSON.stringify(JSON.parse(requestparam), null, 2);
-                    $("#requestParam").val(requestJson);
+                    //var requestJson = JSON.stringify(JSON.parse(requestparam), null, 2);
+                    $("#requestParam").val(requestparam);
                     $("#expected").val(expected);
                     $("#author").val(author);
                     layer.close(layerIndex);
@@ -392,6 +395,25 @@
 
 
     });
+
+    //断言类型改变处理
+    function assertTypeChage(){
+        var assertType=$("#assertType").val();
+        var assertTypeList=getAssertType();
+        var placeholder="";
+        for(var i=0;i<assertTypeList.length;i++){
+            var row=assertTypeList[i];
+            if(row.id == assertType){
+                placeholder=row.desc;
+                $("#expected").prop("placeholder",placeholder);
+                break;
+            }else{
+                $("#expected").prop("placeholder","");
+            }
+        }
+
+
+    }
 
     //编辑用例
     function editTcase(id){
