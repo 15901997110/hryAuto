@@ -31,21 +31,21 @@
 <article class="page-container">
     <form method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">用例名称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">用例名称：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName" style="width:100%;">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">用例描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="用例描述" id="remark" name="remark">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">用例描述：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <input type="text" class="input-text" value="" placeholder="用例描述" id="remark" name="remark" style="width:100%;">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">环境：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">环境：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="env" id="env">
                         <option value="" selected>请选择环境</option>
                     </select>
@@ -53,9 +53,9 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;"><span class="c-red">*</span>服务：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
                         <!--<option value="" selected>请选择服务</option>-->
                     </select>
@@ -63,9 +63,9 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;"><span class="c-red">*</span>接口：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
                         <!--<option value="" selected>请选择接口</option>-->
                     </select>
@@ -79,33 +79,33 @@
              </div>
          </div>-->
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
-            <div class="formControls col-xs-8 col-sm-9">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">请求参数：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
                 <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid"
-                          placeholder="请输入请求参数..."></textarea>
+                          placeholder="请输入请求参数..." style="width:100%;"></textarea>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>断言类型：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
-                    <select class="select" size="1" name="assertType" id="assertType">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;"><span class="c-red">*</span>断言类型：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <span class="select-box" style="width:100%;">
+                    <select class="select" size="1" name="assertType" id="assertType" onchange="assertTypeChage()">
                         <option value="" selected>请选择断言类型</option>
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">期望结果：</label>
-            <div class="formControls col-xs-8 col-sm-9">
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">期望结果：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
                 <textarea id="expected" name="expected" cols="" rows="" class="textarea valid"
-                          placeholder="期望结果，json格式"></textarea>
+                          placeholder="" style="width:100%;"></textarea>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">设计人：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="author" name="author"
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">设计人：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
+                <input type="text" class="input-text" value="" placeholder="" id="author" name="author" style="width:100%;"
                        disabled="disabled">
             </div>
         </div>
@@ -168,16 +168,20 @@
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
+                    layer.close(layerIndex);
                     service = data.data;
                 } else {
+                    layer.close(layerIndex);
                     alert(msg);
                 }
 
             },
             fail: function (data) {
+                layer.close(layerIndex);
                 alert(JSON.stringify(data));
             },
             error: function (xhr) {
+                layer.close(layerIndex);
                 alert('error:' + JSON.stringify(xhr));
             }
         });
@@ -196,16 +200,20 @@
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
+                    layer.close(layerIndex);
                     env = data.data;
                 } else {
+                    layer.close(layerIndex);
                     alert(msg);
                 }
 
             },
             fail: function (data) {
+                layer.close(layerIndex);
                 alert(JSON.stringify(data));
             },
             error: function (xhr) {
+                layer.close(layerIndex);
                 alert('error:' + JSON.stringify(xhr));
             }
         });
@@ -226,8 +234,10 @@
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
+                    layer.close(layerIndex);
                     tiList = data.data;
                 } else {
+                    layer.close(layerIndex);
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -236,12 +246,14 @@
 
             },
             fail: function (data) {
+                layer.close(layerIndex);
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
             error: function (xhr) {
+                layer.close(layerIndex);
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -260,15 +272,18 @@
             data: {},
             dataType: "json",
             success: function (data) {
+                layer.close(layerIndex);
                 assertType = data;
             },
             fail: function (data) {
+                layer.close(layerIndex);
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
             error: function (xhr) {
+                layer.close(layerIndex);
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -375,9 +390,9 @@
                 var row = tiList[j];
                 var rowHtml;
                 if (row.iuri == selectedTi) {
-                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "</option>";
+                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
                 } else {
-                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "</option>";
+                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
                 }
                 tis = tis + rowHtml;
             }
@@ -428,7 +443,7 @@
         $("#requestParam").val(requestJson);
     }
 
-    //环境改变处理
+    //服务改变处理
     function serviceChange() {
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
@@ -440,7 +455,7 @@
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
-                var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "</option>";
+                var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
                 tis = tis + rowHtml;
             }
             //$("#ti").find("option:selected").text("");
@@ -451,6 +466,25 @@
         }
 
         layer.close(layerIndex);
+
+    }
+
+    //断言类型改变处理
+    function assertTypeChage(){
+        var assertType=$("#assertType").val();
+        var assertTypeList=getAssertType();
+        var placeholder="";
+        for(var i=0;i<assertTypeList.length;i++){
+            var row=assertTypeList[i];
+            if(row.id == assertType){
+                placeholder=row.desc;
+                $("#expected").prop("placeholder",placeholder);
+                break;
+            }else{
+                $("#expected").prop("placeholder","");
+            }
+        }
+
 
     }
 
