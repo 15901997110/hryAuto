@@ -12,9 +12,9 @@ import org.testng.TestNG;
  * @Date: 2018/6/27 19:14
  */
 @RestController
-@RequestMapping("/run")
-public class RunController {
-    @PostMapping("/pgw")
+@RequestMapping("/mytest")
+public class MytestController {
+    @PostMapping("/")
     public void runPgw(){
         TestNG testNG=new TestNG();
         testNG.setTestClasses(new Class[]{Factory_5_1.class});
