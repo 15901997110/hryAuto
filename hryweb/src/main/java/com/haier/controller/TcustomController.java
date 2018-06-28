@@ -39,4 +39,14 @@ public class TcustomController {
     public Result selectByCondition(Tcustom tcustom) {
         return ResultUtil.success(tcustomService.selectByCondition(tcustom));
     }
+
+    @PostMapping("/selectTcustomCustomByCondition.do")
+    public Result selectTcustomCustomByCondition(Tcustom tcustom){
+        return ResultUtil.success(tcustomService.selectTcustomCustomByCondition(tcustom));
+    }
+
+    @PostMapping("/runByTcustomId.do")
+    public Result runByTcustomId(Integer id){
+        return null;
+    }
 }

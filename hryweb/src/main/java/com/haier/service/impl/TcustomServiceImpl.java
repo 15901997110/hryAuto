@@ -3,13 +3,16 @@ package com.haier.service.impl;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
-import com.haier.po.Tcustom;
-import com.haier.po.TcustomExample;
+import com.haier.mapper.TenvMapper;
+import com.haier.mapper.TserviceMapper;
+import com.haier.po.*;
 import com.haier.service.TcustomService;
 import com.haier.util.ReflectUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,9 +22,16 @@ import java.util.List;
  */
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
+@Slf4j
 public class TcustomServiceImpl implements TcustomService {
     @Autowired
     TcustomMapper tcustomMapper;
+
+    @Autowired
+    TenvMapper tenvMapper;
+
+    @Autowired
+    TserviceMapper tserviceMapper;
 
     @Override
     public Integer insertOne(Tcustom tcustom) {
@@ -54,6 +64,14 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
+    public Tcustom selectOne(Integer id) {
+        if(id==null||id==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        }
+        return tcustomMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public List<Tcustom> selectByCondition(Tcustom tcustom) {
         TcustomExample tcustomExample=new TcustomExample();
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
@@ -64,5 +82,49 @@ public class TcustomServiceImpl implements TcustomService {
             }
         }
         return tcustomMapper.selectByExample(tcustomExample);
+    }
+
+
+    @Override
+    public List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom) {
+        List<TcustomCustom> tcustomCustoms=new ArrayList<>();
+        List<Tcustom> tcustoms=this.selectByCondition(tcustom);
+
+        if(tcustoms!=null&&tcustoms.size()>0){
+            for(Tcustom t:tcustoms){
+                TcustomCustom tcustomCustom=new TcustomCustom();
+                ReflectUtil.clone(t,tcustomCustom);
+                if(tcustomCustom.getEnvid()!=null){
+                    Tenv tenv = tenvMapper.selectByPrimaryKey(tcustomCustom.getEnvid());
+                    tcustomCustom.setEnvkey(tenv.getEnvkey());
+                }
+                String serviceid = tcustomCustom.getServiceid();
+                List<Tservice> list=new ArrayList<>();
+                if(serviceid !=null){
+                    String[] ids = serviceid.substring(serviceid.indexOf("[") + 1, serviceid.lastIndexOf("]")).split(",");
+                    for(String id:ids){
+                        try{
+                            int i=Integer.parseInt(id);
+                            Tservice tservice = tserviceMapper.selectByPrimaryKey(i);
+                            list.add(tservice);
+                        }catch(NumberFormatException e){
+                            log.error("serviceId String强转Integer失败");
+                        }
+                    }
+                }
+                tcustomCustom.setTserviceList(list);
+                tcustomCustoms.add(tcustomCustom);
+            }
+            return tcustomCustoms;
+        }
+        return null;
+    }
+
+    @Override
+    public void run(Integer id) {
+        //
+        Tcustom tcustom=new Tcustom();
+
+        //this.selectByCondition()
     }
 }
