@@ -62,12 +62,12 @@
                 <th width="3%">ID</th>
                 <th width="10%">用例名称</th>
                 <th width="10%">用例描述</th>
-                <th width="10%">服务</th>
+                <th width="7%">服务</th>
                 <th width="3%">环境</th>
                 <th width="10">接口名称</th>
-                <th width="15%">接口地址</th>
+                <th width="13%">接口地址</th>
                 <th width="5%">断言类型</th>
-                <th width="10%">期望结果</th>
+                <th width="18%">期望结果</th>
                 <th width="4%">设计人</th>
                 <th width="5%" style="display:none">用例参数</th>
                 <th width="9%">更新时间</th>
@@ -223,10 +223,21 @@
                             }
                         }
 
-                        /*var remark=row.remark;
-                        if(row.remark == null){
-                            remark="";
-                        }*/
+                        var expected=row.expected;
+                        if(row.expected == null){
+                            assertName ="";
+                        }else {
+                            if (assertName == "key-value"){
+                                try {
+                                    var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
+                                    expected = requestJson;
+                                }catch (e) {
+                                    expected =expected;
+                                }
+                            }else {
+                                expected =expected;
+                            }
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
@@ -238,7 +249,7 @@
                             "<td>"+row.iremark+"</td>\n" +
                             "<td style=\"text-align:left\">"+row.iuri+"</td>\n" +
                             "<td>"+assertName+"</td>\n" +
-                            "<td>"+row.expected+"</td>\n" +
+                            "<td><pre style='text-align: left;border: 0px'>"+expected+"</pre></td>\n" +
                             "<td>"+row.author+"</td>\n" +
                             "<td style=\"display:none\">"+
                             "<textarea>"+row.requestparam+"</textarea></td>\n" +
@@ -408,6 +419,21 @@
                                 envKey=two.envkey;
                             }
                         }
+                        var expected=row.expected;
+                        if(row.expected == null){
+                            assertName ="";
+                        }else {
+                            if (assertName == "key-value"){
+                                try {
+                                    var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
+                                    expected = requestJson;
+                                }catch (e) {
+                                    expected =expected;
+                                }
+                            }else {
+                                expected =expected;
+                            }
+                        }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
@@ -419,7 +445,7 @@
                             "<td>"+row.iremark+"</td>\n" +
                             "<td>"+row.iuri+"</td>\n" +
                             "<td>"+assertName+"</td>\n" +
-                            "<td>"+row.expected+"</td>\n" +
+                            "<td><pre style='text-align: left;border: 0px'>"+expected+"</pre></td>\n" +
                             "<td>"+row.author+"</td>\n" +
                             "<td style=\"display:none\">" +
                             "<textarea>"+row.requestparam+"</textarea></td>\n" +
