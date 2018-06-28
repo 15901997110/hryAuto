@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="/favicon.ico">
     <link rel="Shortcut Icon" href="/favicon.ico"/>
@@ -49,9 +50,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                this.layerIndex = layer.load(1, {shade: [1.01, '#fff']});
                 $('#admin-role-save').val("正在提交请稍等...")
             },
             complete: function () { //完成加载后执行
@@ -74,24 +75,24 @@
     }
 
     //获取服务列表数组
-    function getService(){
-        var service=new Array();
-        $.ajaxSetup({async : false});
+    function getService() {
+        var service = new Array();
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
             url: "/tservice/selectByCondition.do",
             data: {
-                pageNum:1,
-                pageSize:1000
+                pageNum: 1,
+                pageSize: 1000
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
-                if(status == 0){
-                    service=list;
-                }else{
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data.list;
+                if (status == 0) {
+                    service = list;
+                } else {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -99,17 +100,17 @@
                 }
 
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         //alert("服务数组长度="+(service.length));
@@ -117,52 +118,51 @@
     }
 
     //获取枚举值数组
-    function getAllEnum(){
-        var allEnum=null;
-        $.ajaxSetup({async : false});
+    function getAllEnum() {
+        var allEnum = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "get",
             url: "/enum/allEnum",
-            data: {
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                allEnum=data;
+                allEnum = data;
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         return allEnum;
     }
 
 
-    function devGroup(){
-        var dev=null;
-        var groupId=$.cookie('groupidCookie');
-        $.ajaxSetup({async : false});
+    function devGroup() {
+        var dev = null;
+        var groupId = $.cookie('groupidCookie');
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
             url: "/user/selectByGroupId.do",
             data: {
-                groupId:groupId
+                groupId: groupId
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    dev=data.data;
-                }else{
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    dev = data.data;
+                } else {
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -170,17 +170,17 @@
                 }
 
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
             }
         });
         return dev;
@@ -200,106 +200,116 @@
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data;
                 console.log(data);
 
-                if(status == 0){
+                if (status == 0) {
                     var id = list.id;
                     var serviceid = list.serviceid;
-                    var iuri=list.iuri;
-                    var remark=list.remark;
-                    var irequestmethod=list.irequestmethod;
-                    var icontenttype=list.icontenttype;
-                    var iparamtype=list.iparamtype;
-                    var iparamsample=list.iparamsample;
-                    var iresponsetype=list.iresponsetype;
-                    var idev=list.idev;
-                    var services=getService();
-                    var allEnum=getAllEnum();
-
-                    var service="";
-                    for(var i=0;i<services.length;i++){
-                        var option="";
-                        var row=services[i];
-                        if(serviceid == row.id){
-                            option="<option value=\""+row.id+"\" selected>"+row.servicekey+"</option>";
-                        }else{
-                            option="<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+                    var iuri = list.iuri;
+                    var remark = list.remark;
+                    var irequestmethod = list.irequestmethod;
+                    var icontenttype = list.icontenttype;
+                    var iparamtype = list.iparamtype;
+                    var iparamsample = list.iparamsample;
+                    if(iparamsample!= null && iparamtype ==1){
+                        try {
+                            var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                            iparamsample = requestJson;
+                        }catch (e) {
+                            alert(iparamsample);
+                            iparamsample = iparamsample;
                         }
-                        service=service+option;
+                    }else {
+                        iparamsample =iparamsample;
                     }
+                    var iresponsetype = list.iresponsetype;
+                    var idev = list.idev;
+                    var services = getService();
+                    var allEnum = getAllEnum();
 
-                    var requestMethod="";
-                    var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
-                    for(var i=0;i<RequestMethodTypeEnum.length;i++){
-                        var option="";
-                        var row1=RequestMethodTypeEnum[i];
-                        if(irequestmethod == row1.id){
-                            option="<option value=\""+row1.id+"\" selected>"+row1.value+"</option>";
-                        }else{
-                            option="<option value=\""+row1.id+"\">"+row1.value+"</option>";
+                    var service = "";
+                    for (var i = 0; i < services.length; i++) {
+                        var option = "";
+                        var row = services[i];
+                        if (serviceid == row.id) {
+                            option = "<option value=\"" + row.id + "\" selected>" + row.servicekey + "</option>";
+                        } else {
+                            option = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>";
                         }
-                        requestMethod=requestMethod+option;
+                        service = service + option;
                     }
 
-                    var contentType="";
-                    var ContentTypeEnum=allEnum.ContentTypeEnum;
-                    for(var i=0;i<ContentTypeEnum.length;i++){
-                        var option="";
-                        var row2=ContentTypeEnum[i];
-                        if(icontenttype == row2.id){
-                            option="<option value=\""+row2.id+"\" selected>"+row2.value+"</option>";
-                        }else{
-                            option="<option value=\""+row2.id+"\">"+row2.value+"</option>";
+                    var requestMethod = "";
+                    var RequestMethodTypeEnum = allEnum.RequestMethodTypeEnum;
+                    for (var i = 0; i < RequestMethodTypeEnum.length; i++) {
+                        var option = "";
+                        var row1 = RequestMethodTypeEnum[i];
+                        if (irequestmethod == row1.id) {
+                            option = "<option value=\"" + row1.id + "\" selected>" + row1.value + "</option>";
+                        } else {
+                            option = "<option value=\"" + row1.id + "\">" + row1.value + "</option>";
                         }
-                        contentType=contentType+option;
+                        requestMethod = requestMethod + option;
                     }
 
-                    var paramType="";
-                    var ResponseTypeEnum=allEnum.ResponseTypeEnum;
-                    for(var i=0;i<ResponseTypeEnum.length;i++){
-                        var option="";
-                        var row3=ResponseTypeEnum[i];
-                        if(iparamtype == row3.id){
-                            option="<option value=\""+row3.id+"\" selected>"+row3.value+"</option>";
-                        }else{
-                            option="<option value=\""+row3.id+"\">"+row3.value+"</option>";
+                    var contentType = "";
+                    var ContentTypeEnum = allEnum.ContentTypeEnum;
+                    for (var i = 0; i < ContentTypeEnum.length; i++) {
+                        var option = "";
+                        var row2 = ContentTypeEnum[i];
+                        if (icontenttype == row2.id) {
+                            option = "<option value=\"" + row2.id + "\" selected>" + row2.value + "</option>";
+                        } else {
+                            option = "<option value=\"" + row2.id + "\">" + row2.value + "</option>";
                         }
-                        paramType=paramType+option;
+                        contentType = contentType + option;
                     }
 
-                    var responseType="";
-                    for(var i=0;i<ResponseTypeEnum.length;i++){
-                        var option="";
-                        var row4=ResponseTypeEnum[i];
-                        if(iresponsetype == row4.id){
-                            option="<option value=\""+row4.id+"\" selected>"+row4.value+"</option>";
-                        }else{
-                            option="<option value=\""+row4.id+"\">"+row4.value+"</option>";
+                    var paramType = "";
+                    var ResponseTypeEnum = allEnum.ResponseTypeEnum;
+                    for (var i = 0; i < ResponseTypeEnum.length; i++) {
+                        var option = "";
+                        var row3 = ResponseTypeEnum[i];
+                        if (iparamtype == row3.id) {
+                            option = "<option value=\"" + row3.id + "\" selected>" + row3.value + "</option>";
+                        } else {
+                            option = "<option value=\"" + row3.id + "\">" + row3.value + "</option>";
                         }
-                        responseType=responseType+option;
+                        paramType = paramType + option;
                     }
 
-                    var existIdev=false;
-                    var devhtml="";
-                    var dev=devGroup();
-                    for(var i=0;i<dev.length;i++){
-                        var option="";
-                        var row5=dev[i];
-                        if(idev == row5.realname){
-                            existIdev=true;
-                            option="<option value=\""+row5.realname+"\" selected>"+row5.realname+"</option>";
-                        }else{
-                            option="<option value=\""+row5.realname+"\">"+row5.realname+"</option>";
+                    var responseType = "";
+                    for (var i = 0; i < ResponseTypeEnum.length; i++) {
+                        var option = "";
+                        var row4 = ResponseTypeEnum[i];
+                        if (iresponsetype == row4.id) {
+                            option = "<option value=\"" + row4.id + "\" selected>" + row4.value + "</option>";
+                        } else {
+                            option = "<option value=\"" + row4.id + "\">" + row4.value + "</option>";
                         }
-                        devhtml=devhtml+option;
-                    }
-                    if(!existIdev){
-                        devhtml+="<option value=\""+idev+"\" selected>"+idev+"</option>";
+                        responseType = responseType + option;
                     }
 
+                    var existIdev = false;
+                    var devhtml = "";
+                    var dev = devGroup();
+                    for (var i = 0; i < dev.length; i++) {
+                        var option = "";
+                        var row5 = dev[i];
+                        if (idev == row5.realname) {
+                            existIdev = true;
+                            option = "<option value=\"" + row5.realname + "\" selected>" + row5.realname + "</option>";
+                        } else {
+                            option = "<option value=\"" + row5.realname + "\">" + row5.realname + "</option>";
+                        }
+                        devhtml = devhtml + option;
+                    }
+                    if (!existIdev) {
+                        devhtml += "<option value=\"" + idev + "\" selected>" + idev + "</option>";
+                    }
 
 
                     var html = "<div class=\"row cl\">\n" +
@@ -307,7 +317,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"serviceid\" id=\"serviceid\">\n" +
-                        "                        "+service+"" +
+                        "                        " + service + "" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -315,13 +325,13 @@
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口地址：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+iuri+"\" placeholder=\"\" id=\"iuri\" name=\"iuri\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\"" + iuri + "\" placeholder=\"\" id=\"iuri\" name=\"iuri\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>接口描述：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\"" + remark + "\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
@@ -329,7 +339,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"irequestmethod\" id=\"irequestmethod\">\n" +
-                        "                        "+requestMethod+"" +
+                        "                        " + requestMethod + "" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -339,7 +349,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"icontenttype\" id=\"icontenttype\">\n" +
-                        "                        "+contentType+"" +
+                        "                        " + contentType + "" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -349,7 +359,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"iparamtype\" id=\"iparamtype\">\n" +
-                        "                        "+paramType+"" +
+                        "                        " + paramType + "" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -357,7 +367,7 @@
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\">示例参数：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">"+iparamsample+"</textarea>\n" +
+                        "                <textarea id=\"iparamsample\" name=\"iparamsample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例参数...\">" + iparamsample + "</textarea>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
@@ -365,7 +375,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"iresponsetype\" id=\"iresponsetype\">\n" +
-                        "                        "+responseType+"" +
+                        "                        " + responseType + "" +
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -375,14 +385,14 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
-                        "                        "+devhtml+"\n" +
+                        "                        " + devhtml + "\n" +
                         "                    </select>\n" +
                         "               </span>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
-                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTi("+id+")\"><i class=\"icon-ok\"></i> 确定</button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTi(" + id + ")\"><i class=\"icon-ok\"></i> 确定</button>\n" +
                         "            </div>\n" +
                         "        </div>";
 
@@ -391,7 +401,7 @@
                     // if(idev == "自动导入"){
                     //     document.getElementById("autoReport").style.display = "block";
                     // }
-                }else{
+                } else {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -405,7 +415,7 @@
     });
 
     //编辑接口
-    function editTi(tiId){
+    function editTi(tiId) {
         var id = tiId;
         var serviceid = $("#serviceid").val();
         var iuri = $("#iuri").val();
@@ -417,52 +427,52 @@
         var iresponsetype = $("#iresponsetype").val();
         var idev = $("#idev").val();
 
-        if(serviceid == null || serviceid == ""){
+        if (serviceid == null || serviceid == "") {
             layer.msg("请选择服务！");
             return;
-        }else if(iuri == null || iuri == ""){
+        } else if (iuri == null || iuri == "") {
             layer.msg("接口地址不能为空！");
             return;
-        }else if(remark == null || remark == ""){
+        } else if (remark == null || remark == "") {
             layer.msg("接口描述不能为空！");
             return;
-        }else{
+        } else {
             $.ajax({
                 type: 'POST',
                 url: '/ti/updateOne.do',
-                data:{
-                    id:id,
-                    serviceid:serviceid,
-                    iuri:iuri,
-                    remark:remark,
-                    irequestmethod:irequestmethod,
-                    icontenttype:icontenttype,
-                    iparamtype:iparamtype,
-                    iparamsample:iparamsample,
-                    iresponsetype:iresponsetype,
-                    idev:idev,
-                    istatus:1
+                data: {
+                    id: id,
+                    serviceid: serviceid,
+                    iuri: iuri,
+                    remark: remark,
+                    irequestmethod: irequestmethod,
+                    icontenttype: icontenttype,
+                    iparamtype: iparamtype,
+                    iparamsample: iparamsample,
+                    iresponsetype: iresponsetype,
+                    idev: idev,
+                    istatus: 1
                 },
                 dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    var list=data.data;
+                success: function (data) {
+                    var status = data.status;
+                    var msg = data.msg;
+                    var list = data.data;
 
-                    if(status == 0){
+                    if (status == 0) {
                         //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                    }else{
+                    } else {
                         layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
                     }
 
                 },
-                error:function(xhr) {
+                error: function (xhr) {
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
                         skin: 'layer-ext-moon'
