@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
  * @Author: luqiwei
  * @Date: 2018/6/27 15:51
  */
-public class PgwTestFactory {
+public class Factory_5_1 {
     @Factory
     public Object[] getPgwTestFactory() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         /*Class<?> clazz = Class.forName("com.haier.testng.cases.PgwTest");

@@ -8,6 +8,7 @@
     <result column="hostInfo" jdbcType="VARCHAR" property="hostinfo" />
     <result column="dbInfo" jdbcType="VARCHAR" property="dbinfo" />
     <result column="swaggerUrl" jdbcType="VARCHAR" property="swaggerurl" />
+    <result column="clazz" jdbcType="VARCHAR" property="clazz" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, serviceId, envId, hostInfo, dbInfo, swaggerUrl, status
+    id, serviceId, envId, hostInfo, dbInfo, swaggerUrl, clazz, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TenvdetailExample" resultMap="BaseResultMap">
     select
@@ -104,10 +105,10 @@
   <insert id="insert" parameterType="com.haier.po.Tenvdetail" useGeneratedKeys="true" keyProperty="id">
     insert into tenvdetail (id, serviceId, envId, 
       hostInfo, dbInfo, swaggerUrl, 
-      status)
+      clazz, status)
     values (#{id,jdbcType=INTEGER}, #{serviceid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, 
       #{hostinfo,jdbcType=VARCHAR}, #{dbinfo,jdbcType=VARCHAR}, #{swaggerurl,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER})
+      #{clazz,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tenvdetail" useGeneratedKeys="true" keyProperty="id">
     insert into tenvdetail
@@ -129,6 +130,9 @@
       </if>
       <if test="swaggerurl != null">
         swaggerUrl,
+      </if>
+      <if test="clazz != null">
+        clazz,
       </if>
       <if test="status != null">
         status,
@@ -152,6 +156,9 @@
       </if>
       <if test="swaggerurl != null">
         #{swaggerurl,jdbcType=VARCHAR},
+      </if>
+      <if test="clazz != null">
+        #{clazz,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -185,6 +192,9 @@
       <if test="record.swaggerurl != null">
         swaggerUrl = #{record.swaggerurl,jdbcType=VARCHAR},
       </if>
+      <if test="record.clazz != null">
+        clazz = #{record.clazz,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -201,6 +211,7 @@
       hostInfo = #{record.hostinfo,jdbcType=VARCHAR},
       dbInfo = #{record.dbinfo,jdbcType=VARCHAR},
       swaggerUrl = #{record.swaggerurl,jdbcType=VARCHAR},
+      clazz = #{record.clazz,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -224,6 +235,9 @@
       <if test="swaggerurl != null">
         swaggerUrl = #{swaggerurl,jdbcType=VARCHAR},
       </if>
+      <if test="clazz != null">
+        clazz = #{clazz,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -237,6 +251,7 @@
       hostInfo = #{hostinfo,jdbcType=VARCHAR},
       dbInfo = #{dbinfo,jdbcType=VARCHAR},
       swaggerUrl = #{swaggerurl,jdbcType=VARCHAR},
+      clazz = #{clazz,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

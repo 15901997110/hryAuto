@@ -13,6 +13,8 @@ public class Tenvdetail {
 
     private String swaggerurl;
 
+    private String clazz;
+
     private Integer status;
 
     public Integer getId() {
@@ -61,6 +63,14 @@ public class Tenvdetail {
 
     public void setSwaggerurl(String swaggerurl) {
         this.swaggerurl = swaggerurl == null ? null : swaggerurl.trim();
+    }
+
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz == null ? null : clazz.trim();
     }
 
     public Integer getStatus() {

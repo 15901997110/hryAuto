@@ -2,7 +2,7 @@
 <suite name="pgw">
     <test name="pgw">
         <classes>
-            <class name="com.haier.testng.factory.PgwTestFactory"/>
+            <class name="com.haier.testng.factory.Factory_5_1"/>
         </classes>
     </test>
 </suite>

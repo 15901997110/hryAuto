@@ -1,9 +1,10 @@
 package com.haier.controller;
 
-import org.springframework.stereotype.Controller;
+import com.haier.testng.factory.Factory_5_1;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.testng.TestNG;
 
 /**
  * @Description:
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RunController {
     @PostMapping("/pgw")
     public void runPgw(){
-
+        TestNG testNG=new TestNG();
+        testNG.setTestClasses(new Class[]{Factory_5_1.class});
+        testNG.run();
     }
 }

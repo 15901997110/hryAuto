@@ -13,6 +13,7 @@
         <result column="hostinfo" property="hostinfo"></result>
         <result column="dbinfo" property="dbinfo"></result>
         <result column="swaggerurl" property="swaggerurl"/>
+        <result column="clazz" property="clazz"/>
         <result column="status" property="status"/>
     </resultMap>
     <select id="selectByCondition" parameterType="com.haier.po.TenvdetailCustom"
@@ -29,6 +30,7 @@
         tenvdetail.`hostInfo`,
         tenvdetail.`dbInfo`,
         tenvdetail.`swaggerUrl`,
+        tenvdetail.`clazz`,
         tenvdetail.`status`
         FROM tenvdetail
         INNER JOIN tservice ON tenvdetail.`serviceId` = tservice.`id` AND tservice.`isDel` = 0
