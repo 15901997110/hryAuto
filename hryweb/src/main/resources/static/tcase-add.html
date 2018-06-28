@@ -325,6 +325,37 @@
 
     }
 
+    function getTitype(tId) {
+        var titype;
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne.do",
+            data: {
+                id: tId
+            },
+            dataType: "json",
+            success: function (data) {
+                titype = data.data.iparamtype;
+                layer.close(layerIndex);
+            },
+            fail: function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+        return titype;
+
+    }
+
     $(document).ready(function () {
         $("#iparamsample").hide();
         var realName = $.cookie('realnameCookie');
@@ -402,13 +433,14 @@
             if (selectedRequestparam == "") {
                 var tId = $("#ti").val();
                 var iparamsample = getOneTi(tId);
-                console.log(iparamsample);
-                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-                console.log(requestJson);
-                $("#requestParam").val(requestJson);
+                var iparamtype = getTitype(tId);
+                if(iparamsample.length >0 && iparamtype ==1){
+                    var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                    $("#requestParam").val(requestJson);
+                }else {
+                    $("#requestParam").val(iparamsample);
+                }
             }
-
-
         }
 
 
@@ -438,9 +470,14 @@
     function tiChange() {
         var tId = $("#ti").val();
         var iparamsample = getOneTi(tId);
-        var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+        var iparamtype = getTitype(tId);
+        if(iparamsample.length >0 && iparamtype ==1){
+            var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+            $("#requestParam").val(requestJson);
+        }else {
+            $("#requestParam").val(iparamsample);
+        }
         //$("#requestParam").empty();
-        $("#requestParam").val(requestJson);
     }
 
     //服务改变处理
