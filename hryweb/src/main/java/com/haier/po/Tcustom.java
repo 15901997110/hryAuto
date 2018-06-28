@@ -1,6 +1,6 @@
 package com.haier.po;
 
-public class Tcustom {
+public class Tcustom implements Cloneable {
     private Integer id;
 
     private String customname;
@@ -69,5 +69,10 @@ public class Tcustom {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

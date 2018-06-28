@@ -91,68 +91,40 @@ public class ReflectUtil {
         }
     }
 
-
-
-
-    /*  private static <T> void setFieldToNull(T t, Field[] declaredFields) {
-        for (Field field : declaredFields) {
-            field.setAccessible(true);
-            if (field.getType() == String.class) {//如果默认值为"",设置为null
-                String str;
-                try {
-                    str = (String) field.get(t);
-                } catch (IllegalAccessException e) {
-                    continue;
-                }
-                if (str != null) {
-                    if ("".equals(str.trim())) {
-                        try {
-                            field.set(t, null);
-                        } catch (IllegalAccessException e) {
-                            continue;
-                        }
-                    } else {
-                        try {
-                            field.set(t, str.trim());
-                        } catch (IllegalAccessException e) {
-                            continue;
-                        }
-                    }
-
-                }
-
+    /**
+     * 将父类的属性值复制到子类中
+     *
+     * @param father 父类对象
+     * @param child  子类对象
+     * @param <T>
+     * @param <K>    K extends T
+     */
+    public static <T, K extends T> void clone(T father, K child) {
+        Field[] childFields = child.getClass().getSuperclass().getDeclaredFields();
+        for (Field f : childFields) {
+            f.setAccessible(true);
+            String fname = f.getName();
+            Object value = getFiledValue(father, fname);
+            try {
+                f.set(child, value);
+            } catch (IllegalAccessException e) {
+                log.warn(e.toString());
             }
+        }
+    }
 
-            if (field.getType() == Integer.class) {//如果值为0,设置为null
-                Integer value;
+    private static <T> Object getFiledValue(T t, String fieldName) {
+        Field[] fields = t.getClass().getDeclaredFields();
+        for (Field f : fields) {
+            f.setAccessible(true);
+            if (f.getName().equals(fieldName)) {
                 try {
-                    value = (Integer) field.get(t);
+                    return f.get(t);
                 } catch (IllegalAccessException e) {
-                    continue;
-                }
-                if (value != null && value == 0) {
-                    try {
-                        field.set(t, null);
-                    } catch (IllegalAccessException e) {
-                        continue;
-                    }
-                }
-            }
-            if (field.getType() == Short.class) {//如果值为0,设置为null
-                Short value;
-                try {
-                    value = (Short) field.get(t);
-                } catch (IllegalAccessException e) {
-                    continue;
-                }
-                if (value != null && value == 0) {
-                    try {
-                        field.set(t, null);
-                    } catch (IllegalAccessException e) {
-                        continue;
-                    }
+                    return null;
                 }
             }
         }
-    }*/
+        return null;
+    }
 }
