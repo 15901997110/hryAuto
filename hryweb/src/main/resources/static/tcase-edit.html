@@ -282,6 +282,7 @@
         return assertType;
     }
 
+    var tiId;
     //页面加载处理
     $(document).ready(function () {
         var id = getParameter('id');
@@ -341,6 +342,7 @@
                     for(var k=0;k<tiList.length;k++){
                         var rowTi=tiList[k];
                         if( rowTi.id == iid){
+                            tiId=iid;
                             $("#ti").val(rowTi.iuri+"("+rowTi.remark+")");
                             break;
                         }
@@ -421,7 +423,8 @@
         var remark = $("#remark").val();
         var env = $("#env").val();
         //var service = $("#service").val();
-        var ti = $("#ti").val();
+        //var ti = $("#ti").val();
+        var ti=tiId;
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
