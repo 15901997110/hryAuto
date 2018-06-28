@@ -94,6 +94,10 @@ public class UserController {
             identityCookie.setPath("/");
             identityCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
 
+            Cookie uidCookie = new Cookie("uidCookie", user.getId()+"");
+            uidCookie.setPath("/");
+            uidCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
+
             Cookie realnameCookie = new Cookie("realnameCookie", user.getRealname());
             realnameCookie.setPath("/");
             realnameCookie.setMaxAge(Integer.MAX_VALUE);
@@ -105,6 +109,7 @@ public class UserController {
             response.addCookie(identityCookie);
             response.addCookie(realnameCookie);
             response.addCookie(groupidCookie);
+            response.addCookie(uidCookie);
 
             return ResultUtil.success();
         }
