@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haier.mapper.TreportMapper">
+  <resultMap id="BaseResultMap" type="com.haier.po.Treport">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="reportPath" jdbcType="VARCHAR" property="reportpath" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="customId" jdbcType="INTEGER" property="customid" />
+    <result column="envId" jdbcType="INTEGER" property="envid" />
+    <result column="serviceId" jdbcType="VARCHAR" property="serviceid" />
+    <result column="testTime" jdbcType="TIMESTAMP" property="testtime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, reportPath, userId, customId, envId, serviceId, testTime
+  </sql>
+  <select id="selectByExample" parameterType="com.haier.po.TreportExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from treport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from treport
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from treport
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.haier.po.TreportExample">
+    delete from treport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.haier.po.Treport">
+    insert into treport (id, reportPath, userId, 
+      customId, envId, serviceId, 
+      testTime)
+    values (#{id,jdbcType=INTEGER}, #{reportpath,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{customid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{serviceid,jdbcType=VARCHAR}, 
+      #{testtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.haier.po.Treport">
+    insert into treport
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="reportpath != null">
+        reportPath,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="customid != null">
+        customId,
+      </if>
+      <if test="envid != null">
+        envId,
+      </if>
+      <if test="serviceid != null">
+        serviceId,
+      </if>
+      <if test="testtime != null">
+        testTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reportpath != null">
+        #{reportpath,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="customid != null">
+        #{customid,jdbcType=INTEGER},
+      </if>
+      <if test="envid != null">
+        #{envid,jdbcType=INTEGER},
+      </if>
+      <if test="serviceid != null">
+        #{serviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="testtime != null">
+        #{testtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.haier.po.TreportExample" resultType="java.lang.Long">
+    select count(*) from treport
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update treport
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.reportpath != null">
+        reportPath = #{record.reportpath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null">
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.customid != null">
+        customId = #{record.customid,jdbcType=INTEGER},
+      </if>
+      <if test="record.envid != null">
+        envId = #{record.envid,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceid != null">
+        serviceId = #{record.serviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.testtime != null">
+        testTime = #{record.testtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update treport
+    set id = #{record.id,jdbcType=INTEGER},
+      reportPath = #{record.reportpath,jdbcType=VARCHAR},
+      userId = #{record.userid,jdbcType=INTEGER},
+      customId = #{record.customid,jdbcType=INTEGER},
+      envId = #{record.envid,jdbcType=INTEGER},
+      serviceId = #{record.serviceid,jdbcType=VARCHAR},
+      testTime = #{record.testtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.haier.po.Treport">
+    update treport
+    <set>
+      <if test="reportpath != null">
+        reportPath = #{reportpath,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="customid != null">
+        customId = #{customid,jdbcType=INTEGER},
+      </if>
+      <if test="envid != null">
+        envId = #{envid,jdbcType=INTEGER},
+      </if>
+      <if test="serviceid != null">
+        serviceId = #{serviceid,jdbcType=VARCHAR},
+      </if>
+      <if test="testtime != null">
+        testTime = #{testtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.haier.po.Treport">
+    update treport
+    set reportPath = #{reportpath,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      customId = #{customid,jdbcType=INTEGER},
+      envId = #{envid,jdbcType=INTEGER},
+      serviceId = #{serviceid,jdbcType=VARCHAR},
+      testTime = #{testtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
