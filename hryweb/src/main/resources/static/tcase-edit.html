@@ -282,6 +282,37 @@
         return assertType;
     }
 
+    function getTitype(iid) {
+        var titype;
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne.do",
+            data: {
+                id: iid
+            },
+            dataType: "json",
+            success: function (data) {
+                titype = data.data.iparamtype;
+                layer.close(layerIndex);
+            },
+            fail: function (data) {
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+        return titype;
+
+    }
+
     var tiId;
     //页面加载处理
     $(document).ready(function () {
@@ -373,14 +404,31 @@
                         assertTypes=assertTypes+assertHtml;
                     }
                     $("#assertType").append(assertTypes);
-
-
                     $("#caseName").val(casename);
                     $("#remark").val(remark);
                     $("#service").val();
-                    //var requestJson = JSON.stringify(JSON.parse(requestparam), null, 2);
-                    $("#requestParam").val(requestparam);
-                    $("#expected").val(expected);
+                    var iparamtype = getTitype(iid);
+                    if(requestparam.length >0 && iparamtype ==1){
+                        try {
+                            var requestparamJson = JSON.stringify(JSON.parse(requestparam), null, 2);
+                            $("#requestParam").val(requestparamJson);
+                        }catch (e) {
+                            $("#requestParam").val(requestparam);
+                        }
+                    }else {
+                        $("#requestParam").val(requestparam);
+                    }
+
+                    if(asserttype == 3){
+                        try {
+                            var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
+                            $("#expected").val(requestJson);
+                        }catch (e) {
+                            $("#expected").val(expected);
+                        }
+                    }else {
+                        $("#expected").val(expected);
+                    }
                     $("#author").val(author);
                     layer.close(layerIndex);
 
