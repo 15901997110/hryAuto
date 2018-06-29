@@ -3,11 +3,13 @@ package com.haier.testng.cases;
 import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
+import com.haier.service.impl.RunServiceImpl;
 import com.haier.util.AssertUtil;
 import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -37,9 +39,45 @@ public class PgwTest {
     private String url;
     private Tservice tservice;
     private Tenvdetail tenvdetail;
+    private RunService runService=new RunServiceImpl();
 
-    @Autowired
-    RunService runService;
+    @BeforeClass
+    public void beforeClass() {
+        tservice = runService.getTservice(this.serviceId);
+        tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
+        init();
+    }
+
+    public void init() {
+        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tenvdetail.getHostinfo();
+    }
+
+    public Boolean getBoolResult(Params params) {
+        if (params == null || params.getTcase() == null || params.getTcase() == null) {
+            return false;
+        }
+        Ti ti = params.getTi();
+        Tcase tcase = params.getTcase();
+        url = baseUrl + ti.getIuri();
+        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, BeforeUtil.replace(tcase.getRequestparam(), tenvdetail.getDbinfo()));
+        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
+    }
+
+    @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "CaseDataProvider", description = "交易查询")
+    public void tradeQueryFacade_tradeQuery(Params params) {
+        Assert.assertTrue(this.getBoolResult(params));
+    }
+
+    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "CaseDataProvider", description = "付款到卡")
+    public void payToCardFacade_payToCard(Params params) {
+        Assert.assertTrue(this.getBoolResult(params));
+    }
+
+    @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "CaseDataProvider", description = "转账到账户")
+    public void payToAccountFacade_payToAccount(Params params) {
+        Assert.assertTrue(this.getBoolResult(params));
+    }
+
 
     @DataProvider(name = "CaseDataProvider")
     public Object[] getCase(Method method) {
@@ -77,43 +115,4 @@ public class PgwTest {
         }
         return objects;
     }
-
-    @BeforeClass
-    //@Parameters({"envId", "serviceId", "caseDesigner"})
-    public void beforeClass() {
-        tservice = runService.getTservice(this.serviceId);
-        tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
-        init();
-    }
-
-    public void init() {
-        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tenvdetail.getHostinfo();
-    }
-
-    public Boolean getBoolResult(Params params) {
-        if (params == null || params.getTcase() == null || params.getTcase() == null) {
-            return false;
-        }
-        Ti ti = params.getTi();
-        Tcase tcase = params.getTcase();
-        url = baseUrl + ti.getIuri();
-        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, BeforeUtil.replace(tcase.getRequestparam(), tenvdetail.getDbinfo()));
-        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
-    }
-
-    @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "CaseDataProvider", description = "交易查询")
-    public void tradeQueryFacade_tradeQuery(Params params) {
-        Assert.assertTrue(this.getBoolResult(params));
-    }
-
-    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "CaseDataProvider", description = "付款到卡")
-    public void payToCardFacade_payToCard(Params params) {
-        Assert.assertTrue(this.getBoolResult(params));
-    }
-
-    @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "CaseDataProvider", description = "转账到账户")
-    public void payToAccountFacade_payToAccount(Params params) {
-        Assert.assertTrue(this.getBoolResult(params));
-    }
-
 }

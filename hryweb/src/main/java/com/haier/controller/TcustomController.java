@@ -46,7 +46,8 @@ public class TcustomController {
     }
 
     @PostMapping("/runByTcustomId.do")
-    public Result runByTcustomId(Integer id){
-        return null;
+    public Result runByTcustomId(Integer customId,Integer executeUserId){
+        tcustomService.run(customId,executeUserId);
+        return ResultUtil.success();
     }
 }

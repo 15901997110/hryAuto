@@ -17,6 +17,7 @@ import java.util.List;
 @Slf4j
 public class RunUtil {
     public static void run(Integer userId,List<String> clazzs){
+        log.info("运行的测试集合:"+clazzs.toString());
         List<String> distinctClazzs = HryUtil.distinct(clazzs);
         if(distinctClazzs==null){
             return;
@@ -31,10 +32,12 @@ public class RunUtil {
             }
         }
 
+        Class[] ccc=new Class[classList.size()];
+
         ITestNGListener listener=new HryReporter(userId);
         TestNG testNG=new TestNG();
         testNG.addListener(listener);
-        testNG.setTestClasses((Class[]) classList.toArray());
+        testNG.setTestClasses(classList.toArray(ccc));
         testNG.run();
     }
 }
