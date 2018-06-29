@@ -204,14 +204,14 @@
         var customname = $("#customname").val();
         var env = $("#env").val();
         var strategy = $("#strategy").val();
-        var userid=$.cookie('udiCookie');
+        var userid=$.cookie('uidCookie');
 
-        var service = new Array();
+        var arr = new Array();
         $("#services :checkbox:checked").each(function(i){
-            service[i] = $(this).val();
+            arr[i] = $(this).val();
         });
+        var service=arr.join(",");
 
-        alert(service.toString());
 
 
         if(customname == null || customname == ""){
@@ -220,10 +220,10 @@
         }else if(env == null || env == ""){
             layer.msg("请选择环境！");
             return;
-        }/*else if(service == null || service.length>0){
+        }else if(service == null || service == ""){
             layer.msg("请选择服务！");
             return;
-        }*/else{
+        }else{
             $.ajax({
                 type: "post",
                 url: "/tcustom/insertOne.do",

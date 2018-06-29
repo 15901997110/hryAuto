@@ -79,10 +79,12 @@
 
     //初始化
     $(document).ready(function () {
+        var userid=$.cookie('uidCookie');
         $.ajax({
             type: "post",
-            url: "/tcustom/selectByCondition.do",
+            url: "/tcustom/selectTcustomCustomByCondition.do",
             data: {
+                userid:userid
             },
             dataType: "json",
             success: function (data) {
@@ -102,7 +104,7 @@
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.customname+"</td>\n" +
                             "<td>"+row.serviceid+"</td>\n" +
-                            "<td>"+row.userid+"</td>\n" +
+                            "<td>"+row.envkey+"</td>\n" +
                             "<td>"+row.strategy+"</td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tenv_edit('定制编辑','tenv-edit.html',"+row.id+",'800','300')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tenv_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
