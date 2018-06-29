@@ -7,13 +7,16 @@ import com.haier.mapper.TenvMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.TcustomService;
+import com.haier.service.TserviceService;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -32,6 +35,9 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Autowired
     TserviceMapper tserviceMapper;
+
+    @Autowired
+    TserviceService tserviceService;
 
     @Override
     public Integer insertOne(Tcustom tcustom) {
@@ -54,10 +60,10 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer deleteOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
-        Tcustom tcustom=new Tcustom();
+        Tcustom tcustom = new Tcustom();
         tcustom.setId(id);
         tcustom.setStatus(-1);
         return this.updateOne(tcustom);
@@ -65,19 +71,19 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Tcustom selectOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         return tcustomMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public List<Tcustom> selectByCondition(Tcustom tcustom) {
-        TcustomExample tcustomExample=new TcustomExample();
+        TcustomExample tcustomExample = new TcustomExample();
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
         criteria.andStatusGreaterThan(0);
-        if(tcustom!=null){
-            if(tcustom.getUserid()!=null){
+        if (tcustom != null) {
+            if (tcustom.getUserid() != null) {
                 criteria.andUseridEqualTo(tcustom.getUserid());
             }
         }
@@ -87,27 +93,37 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom) {
-        List<TcustomCustom> tcustomCustoms=new ArrayList<>();
-        List<Tcustom> tcustoms=this.selectByCondition(tcustom);
+        List<TcustomCustom> tcustomCustoms = new ArrayList<>();
+        List<Tcustom> tcustoms = this.selectByCondition(tcustom);
 
-        if(tcustoms!=null&&tcustoms.size()>0){
-            for(Tcustom t:tcustoms){
-                TcustomCustom tcustomCustom=new TcustomCustom();
-                ReflectUtil.clone(t,tcustomCustom);
-                if(tcustomCustom.getEnvid()!=null){
+        if (tcustoms != null && tcustoms.size() > 0) {
+            List<Tservice> var1=tserviceService.selectByCondition(null);
+            //拿到所有Tservice
+            Map<Integer,Tservice> map=new HashMap<>();
+            if(var1!=null&&var1.size()>0){
+                for(Tservice var2:var1){
+                    map.put(var2.getId(),var2);
+                }
+            }
+
+            for (Tcustom t : tcustoms) {
+                TcustomCustom tcustomCustom = new TcustomCustom();
+                ReflectUtil.clone(t, tcustomCustom);
+                if (tcustomCustom.getEnvid() != null) {
                     Tenv tenv = tenvMapper.selectByPrimaryKey(tcustomCustom.getEnvid());
                     tcustomCustom.setEnvkey(tenv.getEnvkey());
                 }
                 String serviceid = tcustomCustom.getServiceid();
-                List<Tservice> list=new ArrayList<>();
-                if(serviceid !=null){
-                    String[] ids = serviceid.substring(serviceid.indexOf("[") + 1, serviceid.lastIndexOf("]")).split(",");
-                    for(String id:ids){
-                        try{
-                            int i=Integer.parseInt(id);
-                            Tservice tservice = tserviceMapper.selectByPrimaryKey(i);
-                            list.add(tservice);
-                        }catch(NumberFormatException e){
+                List<Tservice> list = new ArrayList<>();
+                if (serviceid != null) {
+                    String[] ids = serviceid.trim().split(",");
+                    for (String id : ids) {
+                        try {
+                            int i = Integer.parseInt(id);
+                            Tservice tservice = map.get(i);
+                            if (tservice != null)
+                                list.add(tservice);
+                        } catch (NumberFormatException e) {
                             log.error("serviceId String强转Integer失败");
                         }
                     }
@@ -123,7 +139,7 @@ public class TcustomServiceImpl implements TcustomService {
     @Override
     public void run(Integer id) {
         //
-        Tcustom tcustom=new Tcustom();
+        Tcustom tcustom = new Tcustom();
 
         //this.selectByCondition()
     }
