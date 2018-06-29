@@ -91,20 +91,22 @@ public class ReflectUtil {
         }
     }
 
+
     /**
-     * 将父类的属性值复制到子类中
      *
-     * @param father 父类对象
-     * @param child  子类对象
-     * @param <T>
-     * @param <K>    K extends T
+     *@description: 将父类的属性值复制到子类中
+     *@params: [parent, child]
+     *@return: void
+     *@author: luqiwei
+     *@date: 2018-06-29
      */
-    public static <T, K extends T> void clone(T father, K child) {
+    public static <T, K extends T> void clone(T parent, K child) {
+
         Field[] childFields = child.getClass().getSuperclass().getDeclaredFields();
         for (Field f : childFields) {
             f.setAccessible(true);
             String fname = f.getName();
-            Object value = getFiledValue(father, fname);
+            Object value = getFiledValue(parent, fname);
             try {
                 f.set(child, value);
             } catch (IllegalAccessException e) {

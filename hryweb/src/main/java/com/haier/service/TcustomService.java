@@ -17,5 +17,5 @@ public interface TcustomService {
     Tcustom selectOne(Integer id);
     List<Tcustom> selectByCondition(Tcustom tcustom);
     List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom);
-    void run(Integer id);
+    void run(Integer customId,Integer executeUserId);
 }
