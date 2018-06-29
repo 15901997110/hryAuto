@@ -7,6 +7,7 @@ import com.haier.mapper.TenvMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.TcustomService;
+import com.haier.service.TenvService;
 import com.haier.service.TserviceService;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,7 @@ public class TcustomServiceImpl implements TcustomService {
     TcustomMapper tcustomMapper;
 
     @Autowired
-    TenvMapper tenvMapper;
-
-    @Autowired
-    TserviceMapper tserviceMapper;
+    TenvService tenvService;
 
     @Autowired
     TserviceService tserviceService;
@@ -97,21 +95,32 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustom> tcustoms = this.selectByCondition(tcustom);
 
         if (tcustoms != null && tcustoms.size() > 0) {
-            List<Tservice> var1=tserviceService.selectByCondition(null);
             //拿到所有Tservice
-            Map<Integer,Tservice> map=new HashMap<>();
-            if(var1!=null&&var1.size()>0){
-                for(Tservice var2:var1){
-                    map.put(var2.getId(),var2);
+            List<Tservice> var1 = tserviceService.selectByCondition(null);
+            Map<Integer, Tservice> tserviceMap = new HashMap<>();
+            if (var1 != null && var1.size() > 0) {
+                for (Tservice var2 : var1) {
+                    tserviceMap.put(var2.getId(), var2);
                 }
             }
+            //拿到所有的Tenv
+            List<Tenv> var3 = tenvService.selectAll();
+            Map<Integer, Tenv> tenvMap = new HashMap<>();
+            if (var3 != null && var3.size() > 0) {
+                for (Tenv var4 : var3) {
+                    tenvMap.put(var4.getId(), var4);
+                }
+            }
+
 
             for (Tcustom t : tcustoms) {
                 TcustomCustom tcustomCustom = new TcustomCustom();
                 ReflectUtil.clone(t, tcustomCustom);
                 if (tcustomCustom.getEnvid() != null) {
-                    Tenv tenv = tenvMapper.selectByPrimaryKey(tcustomCustom.getEnvid());
-                    tcustomCustom.setEnvkey(tenv.getEnvkey());
+                    Tenv tenv = tenvMap.get(tcustomCustom.getEnvid());
+                    if (tenv != null) {
+                        tcustomCustom.setEnvkey(tenv.getEnvkey());
+                    }
                 }
                 String serviceid = tcustomCustom.getServiceid();
                 List<Tservice> list = new ArrayList<>();
@@ -120,7 +129,7 @@ public class TcustomServiceImpl implements TcustomService {
                     for (String id : ids) {
                         try {
                             int i = Integer.parseInt(id);
-                            Tservice tservice = map.get(i);
+                            Tservice tservice = tserviceMap.get(i);
                             if (tservice != null)
                                 list.add(tservice);
                         } catch (NumberFormatException e) {
@@ -138,8 +147,10 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public void run(Integer id) {
-        //
-        Tcustom tcustom = new Tcustom();
+        if(id==null||id==0){
+
+        }
+
 
         //this.selectByCondition()
     }
