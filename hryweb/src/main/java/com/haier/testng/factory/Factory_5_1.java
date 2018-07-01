@@ -1,6 +1,7 @@
 package com.haier.testng.factory;
 
 import com.haier.testng.cases.PgwTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Factory;
 
 import java.lang.reflect.Constructor;
@@ -12,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
  * @Date: 2018/6/27 15:51
  */
 public class Factory_5_1 {
+
+
     @Factory
     public Object[] getPgwTestFactory() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         /*Class<?> clazz = Class.forName("com.haier.testng.cases.PgwTest");

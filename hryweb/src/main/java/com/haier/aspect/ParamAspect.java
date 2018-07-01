@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
  * @Author: luqiwei
  * @Date: 2018/6/12 20:22
  */
-@Component
+/*@Component
 @Slf4j
-@Aspect
+@Aspect*/
 public class ParamAspect {
-    @Around("execution(* com.haier.util.HryHttpClientUtil.send(..))")
+  /*  @Around("execution(* com.haier.util.HryHttpClientUtil.send(..))")
     public void around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //前置增强,处理入参中有特定意义的字符串比如<<<uuid>>>
         Object[] args = proceedingJoinPoint.getArgs();
@@ -24,5 +24,5 @@ public class ParamAspect {
         proceedingJoinPoint.proceed(args);
 
         //后置增强,可能有些用例需要数据更新操作
-    }
+    }*/
 }

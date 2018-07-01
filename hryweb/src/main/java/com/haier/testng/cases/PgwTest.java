@@ -10,12 +10,14 @@ import com.haier.util.HryHttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class PgwTest {
     private String url;
     private Tservice tservice;
     private Tenvdetail tenvdetail;
-    private RunService runService=new RunServiceImpl();
+    @Autowired
+    RunService runService;
 
     @BeforeClass
     public void beforeClass() {
