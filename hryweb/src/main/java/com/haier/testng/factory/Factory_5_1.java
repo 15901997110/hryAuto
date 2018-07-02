@@ -1,5 +1,6 @@
 package com.haier.testng.factory;
 
+import com.haier.service.RunService;
 import com.haier.testng.cases.PgwTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Factory;
@@ -14,9 +15,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Factory_5_1 {
 
-
     @Factory
     public Object[] getPgwTestFactory() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        //RunService runService = applicationContext.getBean(RunService.class);
         /*Class<?> clazz = Class.forName("com.haier.testng.cases.PgwTest");
         Constructor<?> constructor = clazz.getDeclaredConstructor(Integer.class, Integer.class, String.class);
         Object o = constructor.newInstance(5, 1, null);*/
