@@ -35,6 +35,11 @@ public class TcustomController {
         return ResultUtil.success(tcustomService.deleteOne(id));
     }
 
+    @PostMapping("/selectOne.do")
+    public Result selectOne(Integer id) {
+        return ResultUtil.success(tcustomService.selectOne(id));
+    }
+
     @PostMapping("/selectByCondition.do")
     public Result selectByCondition(Tcustom tcustom) {
         return ResultUtil.success(tcustomService.selectByCondition(tcustom));

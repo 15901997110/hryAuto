@@ -29,7 +29,7 @@
     <div class="cl pd-5 bg-1 bk-gray">
 		<span class="l">
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a class="btn btn-primary radius" href="javascript:;" onclick="custom_add('添加定制测试','custom-add.html','800','400')"><i class="Hui-iconfont">&#xe600;</i> 添加定制</a>
+			<a class="btn btn-primary radius" href="javascript:;" onclick="custom_add('添加定制测试','custom-add.html','800','500')"><i class="Hui-iconfont">&#xe600;</i> 添加定制</a>
 		</span>
         <span class="r">共有数据：<strong id="total"></strong> 条</span>
     </div>
@@ -37,11 +37,11 @@
         <thead>
         <tr class="text-c">
             <th width="5%"><input type="checkbox" value="" name=""></th>
-            <th width="10%">id</th>
+            <th width="5%">id</th>
             <th width="15%">定制名称</th>
-            <th width="15%">服务</th>
+            <th width="20%">服务</th>
             <th width="10%">环境</th>
-            <th width="20%">运行策略</th>
+            <th width="25%">运行策略</th>
             <th width="15%">操作</th>
         </tr>
         </thead>
@@ -101,23 +101,25 @@
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
-                        var arr = new Array();
                         var tserviceList=row.tserviceList;
+                        var ul="";
                         for(var k=0;k<tserviceList.length;k++){
                             var serv=tserviceList[k];
                             var servicekey=serv.servicekey;
-                            arr[k]=servicekey;
+                            var li="<li>"+servicekey+"</li>";
+                            ul=ul+li;
                         }
-                        var service=arr.join("|");
+
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.customname+"</td>\n" +
-                            "<td>"+service+"</td>\n" +
+                           /* "<td>"+service+"</td>\n" +*/
+                            "<td style='text-align: left;'><ul id='serv'>"+ul+"</ul></td>\n" +
                             "<td>"+row.envkey+"</td>\n" +
                             "<td>"+row.strategy+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"custom_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;

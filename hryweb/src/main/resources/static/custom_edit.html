@@ -5,25 +5,26 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="Bookmark" href="/favicon.ico" >
-    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
-    <title>新增定制测试</title>
+    <title>测试定制编辑</title>
 </head>
 <body>
 <article class="page-container">
@@ -78,15 +79,15 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-
 <script type="text/javascript">
-    //loading
     var layerIndex;
+    //loading
     $(function () {
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                $('#admin-role-save').val("正在提交请稍等...")
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -96,6 +97,13 @@
             }
         });
     });
+
+    function getParameter(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
 
     function getServiceList(){
         var service=null;
@@ -181,52 +189,40 @@
         return env;
     }
 
+    //页面加载处理
     $(document).ready(function () {
+        var id = getParameter('id');
+        $("#id").val(id);
 
-        var serviceList=getServiceList();
-        var env=getTenvList();
-        var services="";
-        var trHtml="";
-        var tdHtml="";
-        for(var i=0;i<serviceList.length;i++){
-            var j = i+1;
-            var row=serviceList[i];
-            var box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\">&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
-            var td="<td style=\"width:30%;\">"+box+"</td>";
+        $.ajax({
+            type: "post",
+            url: "/tcustom/selectOne.do",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+                console.log(data);
 
-            if(j%2 == 0){
-                tdHtml+= td;
-                trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                services=services+trHtml;
-                tdHtml="";
-                trHtml="";
+                if(status == 0){
+                    var envkey = list.envkey;
+                    var remark = list.remark;
+                    var html = "";
+
+                    $("#form").append(html);
+                }else{
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
             }
-            if(j%2 == 1){
-                tdHtml+= td;
-            }
-            if(j%2 == 1 && j==serviceList.length){
-                trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                services=services+trHtml;
-            }
+        });
 
-
-
-
-
-        }
-
-
-        $("#services").append(services);
-
-
-        var tenv="";
-        for(k=0;k<env.length;k++){
-            var row=env[k];
-            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
-            tenv=tenv+rowHtml;
-        }
-        $("#env").append(tenv);
-        layer.close(layerIndex);
 
     });
 
@@ -240,72 +236,57 @@
         $("#services :checkbox").prop("checked", false);
     });
 
-    //添加定制测试
-    function addCustom(){
-        var customname = $("#customname").val();
-        var env = $("#env").val();
-        var strategy = $("#strategy").val();
-        var userid=$.cookie('uidCookie');
-
-        var arr = new Array();
-        $("#services :checkbox:checked").each(function(i){
-            arr[i] = $(this).val();
-        });
-        var service=arr.join(",");
-
-        if(service == null || service == ""){
-            layer.msg("请选择服务！");
+    //编辑定制测试提交
+    function editTservice(tenvId){
+        var id = tenvId;
+        var envkey = $("#envkey").val();
+        var remark = $("#remark").val();
+        //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
+        if(envkey == null || envkey == ""){
+            layer.msg("环境标识不能为空！");
             return;
-        }else if(env == null || env == ""){
-            layer.msg("请选择环境！");
+        }/*else if(remark == null || remark == ""){
+            layer.msg("环境描述不能为空！");
             return;
-        }else{
+        }*/else{
             $.ajax({
-                type: "post",
-                url: "/tcustom/insertOne.do",
-                data: {
-                    customname:customname,
-                    envid:env,
-                    serviceid:service,
-                    strategy:strategy,
-                    userid:userid,
-                    status:1
+                type: 'POST',
+                url: '/tenv/updateOne.do',
+                data:{
+                    id:id,
+                    envkey:envkey,
+                    remark:remark
                 },
-                dataType: "json",
-                success: function (data) {
+                dataType: 'json',
+                success: function(data){
                     var status=data.status;
                     var msg=data.msg;
+                    var list=data.data;
+
                     if(status == 0){
+                        //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.close(layerIndex);
-                        layer.alert(msg, {
+                        layer.alert(JSON.stringify(data), {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         })
                     }
 
                 },
-                fail:function (data) {
-                    layer.close(layerIndex);
+                error:function(xhr) {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     })
                 },
-                error: function(xhr) {
-                    layer.close(layerIndex);
-                    layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
-                }
             });
         }
 
     }
+
 </script>
 
 </body>
