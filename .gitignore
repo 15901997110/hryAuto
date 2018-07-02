@@ -1,9 +1,8 @@
 # test file
-*/debug/
+debug/
 */target/
 */META-INF/
-*/test-output/
-*/testoutput/
+test-output/
 
 
 # Compiled class file

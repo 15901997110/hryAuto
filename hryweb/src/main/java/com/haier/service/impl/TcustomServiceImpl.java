@@ -8,16 +8,16 @@ import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.TcustomService;
 import com.haier.service.TenvService;
+import com.haier.service.TenvdetailService;
 import com.haier.service.TserviceService;
+import com.haier.util.HryUtil;
 import com.haier.util.ReflectUtil;
+import com.haier.util.RunUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description:
@@ -36,6 +36,9 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Autowired
     TserviceService tserviceService;
+
+    @Autowired
+    TenvdetailService tenvdetailService;
 
     @Override
     public Integer insertOne(Tcustom tcustom) {
@@ -125,7 +128,12 @@ public class TcustomServiceImpl implements TcustomService {
                 String serviceid = tcustomCustom.getServiceid();
                 List<Tservice> list = new ArrayList<>();
                 if (serviceid != null) {
-                    String[] ids = serviceid.trim().split(",");
+                    String[] ids;
+                    if (serviceid.contains(",")) {
+                        ids = serviceid.trim().split(",");
+                    } else {
+                        ids = new String[]{serviceid};
+                    }
                     for (String id : ids) {
                         try {
                             int i = Integer.parseInt(id);
@@ -146,12 +154,44 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public void run(Integer id) {
-        if(id==null||id==0){
+    public void run(Integer customId,Integer executeUserId) {
+        if (customId == null || customId == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制测试id必填!");
+        }
+        Tcustom tcustom = this.selectOne(customId);
+        if (tcustom == null) {
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "tcustom.id=" + customId);
+        }
+        String serviceIdStr = tcustom.getServiceid();
+        Integer[] serviceIds= HryUtil.convert(serviceIdStr);
+        if(serviceIds==null||serviceIds.length==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        Integer envid=tcustom.getEnvid();
 
+        Tenvdetail condition=new Tenvdetail();
+        List<Tenvdetail> tenvdetails=new ArrayList<>();//要运行的测试类
+        for(Integer serviceid:serviceIds){
+            condition.setEnvid(envid);
+            condition.setServiceid(serviceid);
+            List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(condition);
+            if(tenvdetailList!=null&&tenvdetailList.size()>0){
+                for(Tenvdetail var:tenvdetailList){
+                    tenvdetails.add(var);
+                }
+            }
         }
 
+        if(tenvdetails==null||tenvdetails.size()<1){
+            throw new HryException(StatusCodeEnum.NOT_FOUND);
+        }
 
-        //this.selectByCondition()
+        List<String> clazzs=new ArrayList<String>();
+        for(Tenvdetail ttt:tenvdetails){
+            clazzs.add(ttt.getClazz());
+        }
+
+        RunUtil.run(executeUserId,clazzs);
+
     }
 }

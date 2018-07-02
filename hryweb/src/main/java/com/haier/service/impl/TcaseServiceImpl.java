@@ -10,6 +10,7 @@ import com.haier.exception.HryException;
 import com.haier.mapper.*;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
+import com.haier.service.TiService;
 import com.haier.util.AssertUtil;
 import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
@@ -48,6 +49,9 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Autowired
     TenvdetailMapper tenvdetailMapper;
+
+    @Autowired
+    TiService tiService;
 
     @Override
     public Integer insertOne(Tcase tcase) {
