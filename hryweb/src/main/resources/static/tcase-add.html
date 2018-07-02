@@ -472,8 +472,12 @@
         var iparamsample = getOneTi(tId);
         var iparamtype = getTitype(tId);
         if(iparamsample.length >0 && iparamtype ==1){
-            var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-            $("#requestParam").val(requestJson);
+            try {
+                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                $("#requestParam").val(requestJson);
+            }catch (e) {
+                $("#requestParam").val(iparamsample);
+            }
         }else {
             $("#requestParam").val(iparamsample);
         }
