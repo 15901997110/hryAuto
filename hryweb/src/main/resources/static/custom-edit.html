@@ -62,8 +62,7 @@
             </div>
         </div>
         <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addCustom()"><i class="icon-ok"></i> 确定</button>
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" id="submit">
             </div>
         </div>
     </form>
@@ -86,8 +85,7 @@
         $.ajaxSetup({
             layerIndex:-1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
-                $('#admin-role-save').val("正在提交请稍等...")
+                layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -104,6 +102,113 @@
         if (r != null) return unescape(r[2]);
         return null;
     }
+
+
+
+    //页面加载处理
+    $(document).ready(function () {
+        var id = getParameter('id');
+        $("#id").val(id);
+        var serviceList=getServiceList();
+        var env=getTenvList();
+
+        $.ajax({
+            type: "post",
+            url: "/tcustom/selectOne.do",
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data;
+                console.log(data);
+
+                if(status == 0){
+                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+                    $("#submit").append(submit);
+                    var customname=list.customname;
+                    var serviceid=list.serviceid.split(",");
+                    var envid=list.envid;
+                    var strategy=list.strategy;
+
+                    $("#customname").val(customname);
+
+                    var services="";
+                    var trHtml="";
+                    var tdHtml="";
+
+                    for(var i=0;i<serviceList.length;i++){
+                        var j = i+1;
+                        var row=serviceList[i];
+                        var box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\">&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
+                        for(var k=0;k<serviceid.length;k++){
+                            var service=serviceid[k];
+
+                            if(row.id == service){
+                                box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\" checked>&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
+                            }
+                        }
+
+                        var td="<td style=\"width:30%;\">"+box+"</td>";
+
+                        if(j%2 == 0){
+                            tdHtml+= td;
+                            trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
+                            services=services+trHtml;
+                            tdHtml="";
+                            trHtml="";
+                        }
+                        if(j%2 == 1){
+                            tdHtml+= td;
+                        }
+                        if(j%2 == 1 && j==serviceList.length){
+                            trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
+                            services=services+trHtml;
+                        }
+
+                    }
+                    $("#services").append(services);
+
+                    var tenv="";
+                    for(n=0;n<env.length;n++){
+                        var row=env[n];
+                        var rowHtml="";
+                        if(envid == row.id){
+                            rowHtml="<option value=\""+row.id+"\" selected>"+row.envkey+"</option>";
+                        }else{
+                            rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
+                        }
+                        tenv=tenv+rowHtml;
+                    }
+                    $("#env").append(tenv);
+                    $("#strategy").val(strategy);
+                    layer.close(layerIndex);
+                }else{
+                    layer.close(layerIndex);
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            }
+        });
+
+
+    });
+
+    <!--选择全部-->
+    $("#checkAll").click(function(){
+        $("#services :checkbox").prop("checked", true);
+    });
+
+    <!--全不选-->
+    $("#clear").click(function(){
+        $("#services :checkbox").prop("checked", false);
+    });
 
     function getServiceList(){
         var service=null;
@@ -189,76 +294,41 @@
         return env;
     }
 
-    //页面加载处理
-    $(document).ready(function () {
-        var id = getParameter('id');
-        $("#id").val(id);
-
-        $.ajax({
-            type: "post",
-            url: "/tcustom/selectOne.do",
-            data: {
-                id: id
-            },
-            dataType: "json",
-            success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
-                console.log(data);
-
-                if(status == 0){
-                    var envkey = list.envkey;
-                    var remark = list.remark;
-                    var html = "";
-
-                    $("#form").append(html);
-                }else{
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            }
-        });
-
-
-    });
-
-    <!--选择全部-->
-    $("#checkAll").click(function(){
-        $("#services :checkbox").prop("checked", true);
-    });
-
-    <!--全不选-->
-    $("#clear").click(function(){
-        $("#services :checkbox").prop("checked", false);
-    });
-
     //编辑定制测试提交
-    function editTservice(tenvId){
-        var id = tenvId;
-        var envkey = $("#envkey").val();
-        var remark = $("#remark").val();
-        //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
-        if(envkey == null || envkey == ""){
-            layer.msg("环境标识不能为空！");
+    function editCustom(id){
+        var customname = $("#customname").val();
+        var env = $("#env").val();
+        var strategy = $("#strategy").val();
+        var userid=$.cookie('uidCookie');
+
+        var arr = new Array();
+        $("#services :checkbox:checked").each(function(i){
+            arr[i] = $(this).val();
+        });
+        var service=arr.join(",");
+
+        if(service == null || service == ""){
+            layer.msg("请选择服务！");
             return;
-        }/*else if(remark == null || remark == ""){
-            layer.msg("环境描述不能为空！");
+        }else if(env == null || env == ""){
+            layer.msg("请选择环境！");
             return;
-        }*/else{
+        }else{
             $.ajax({
                 type: 'POST',
-                url: '/tenv/updateOne.do',
+                url: '/tcustom/updateOne.do',
                 data:{
                     id:id,
-                    envkey:envkey,
-                    remark:remark
+                    customname:customname,
+                    envid:env,
+                    serviceid:service,
+                    strategy:strategy,
+                    userid:userid,
+                    status:1
                 },
                 dataType: 'json',
                 success: function(data){
+                    layer.close(layerIndex);
                     var status=data.status;
                     var msg=data.msg;
                     var list=data.data;
@@ -277,6 +347,7 @@
 
                 },
                 error:function(xhr) {
+                    layer.close(layerIndex);
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
