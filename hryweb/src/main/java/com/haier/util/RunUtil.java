@@ -2,9 +2,7 @@ package com.haier.util;
 
 import com.haier.testng.listener.HryReporter;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.ITestNGListener;
 import org.testng.TestNG;
-import org.testng.internal.annotations.IListeners;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
@@ -37,35 +35,31 @@ public class RunUtil {
         log.info("运行的测试集合:" + classes.toString());
         String dateStr = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS").format(new Date());
 
-        //构建class
-        List<XmlClass> xmlClasses = new ArrayList<>();
-        for (String clazz : classes) {
-            xmlClasses.add(new XmlClass(clazz));
-        }
+        TestNG testNG=new TestNG();
 
-        //构建suite
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite_" + dateStr);
-        if (params != null) {
-            suite.setParameters(params);
-        }
+        XmlSuite suite=new XmlSuite();
 
-        //构建test
-        XmlTest test = new XmlTest(suite);
-        test.setName("AutuTest_" + dateStr);
-        test.setClasses(xmlClasses);
+        XmlClass clazz=new XmlClass(com.haier.testng.cases.TestTest.class);
+        clazz.setName("FirstClass");
+        List<XmlClass> clazzes=new ArrayList<>();
+        clazzes.add(clazz);
+
+        XmlTest test=new XmlTest(suite);
+        test.setName("FirstTest");
+        test.setClasses(clazzes);
+        List<XmlTest> tests=new ArrayList<>();
+        tests.add(test);
 
 
-        List<XmlSuite> xmlSuites = new ArrayList<>();
-        xmlSuites.add(suite);
+        suite.setName("FirstSuite");
+        suite.setTests(tests);
 
-        List<Class<? extends ITestNGListener>> listeners = new ArrayList<>();
-        listeners.add(com.haier.testng.listener.ExtentTestNGIReporterListener.class);
+        List<XmlSuite> suites=new ArrayList<>();
+        suites.add(suite);
+        testNG.setXmlSuites(suites);
+        testNG.addListener(new HryReporter());
 
-        TestNG ng = new TestNG();
-        ng.setXmlSuites(xmlSuites);
-        ng.setListenerClasses(listeners);
-        ng.run();
+        testNG.run();
 
     }
 }

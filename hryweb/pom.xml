@@ -41,11 +41,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.46</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>-->
-        <!--暂未使用-->
         <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-aop</artifactId>
@@ -112,35 +107,18 @@
             <artifactId>testng</artifactId>
             <version>6.14.3</version>
         </dependency>
-        <!--测试报告扩展-->
+        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>3.1.5</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
-        <!--<dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.8.0</version>
-        </dependency>
-        &lt;!&ndash; https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui &ndash;&gt;
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.8.0</version>
-        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
-        <!--系统监控-->
-<!--        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>-->
     </dependencies>
     <build>
         <resources>
@@ -152,10 +130,6 @@
             </resource>
             <resource>
                 <directory>${basedir}/src/main/resources/</directory>
-                <!--<includes>-->
-                    <!--<include>application-prod.yml</include>-->
-                    <!--&lt;!&ndash;<include>application.yml</include>&ndash;&gt;-->
-                <!--</includes>-->
             </resource>
         </resources>
         <plugins>
