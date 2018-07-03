@@ -23,47 +23,32 @@ import java.util.Map;
 @Slf4j
 public class RunUtil {
     public static void run(Integer userId, List<String> clazzs) {
-        log.info("运行的测试集合:" + clazzs.toString());
         List<String> distinctClazzs = HryUtil.distinct(clazzs);
         if (distinctClazzs == null) {
             return;
         }
-
-        List<Class> classList = new ArrayList<>();
-        for (String clazz : clazzs) {
-            try {
-                classList.add(Class.forName(clazz));
-            } catch (ClassNotFoundException e) {
-                log.error("测试类" + clazz + "未找到", e);
-            }
-        }
-
-        Class[] ccc = new Class[classList.size()];
-
-        ITestNGListener listener = new HryReporter(userId);
-        TestNG testNG = new TestNG();
-        testNG.addListener(listener);
-        testNG.setTestClasses(classList.toArray(ccc));
-        testNG.run();
+        runNG(null,clazzs);
     }
 
     private static void runNG(Map<String, String> params, List<String> classes) {
         if (classes == null || classes.size() == 0) {
             return;
         }
-
+        log.info("运行的测试集合:" + classes.toString());
         String dateStr = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS").format(new Date());
 
         //构建class
         List<XmlClass> xmlClasses = new ArrayList<>();
-        for(String clazz:classes){
+        for (String clazz : classes) {
             xmlClasses.add(new XmlClass(clazz));
         }
 
         //构建suite
         XmlSuite suite = new XmlSuite();
         suite.setName("AutoSuite_" + dateStr);
-        suite.setParameters(params);
+        if (params != null) {
+            suite.setParameters(params);
+        }
 
         //构建test
         XmlTest test = new XmlTest(suite);
@@ -71,16 +56,15 @@ public class RunUtil {
         test.setClasses(xmlClasses);
 
 
-        List<XmlSuite> xmlSuites=new ArrayList<>();
+        List<XmlSuite> xmlSuites = new ArrayList<>();
         xmlSuites.add(suite);
 
-        List<Class<? extends ITestNGListener>> listeners=new ArrayList<>();
+        List<Class<? extends ITestNGListener>> listeners = new ArrayList<>();
         listeners.add(com.haier.testng.listener.ExtentTestNGIReporterListener.class);
 
-        TestNG ng=new TestNG();
+        TestNG ng = new TestNG();
         ng.setXmlSuites(xmlSuites);
         ng.setListenerClasses(listeners);
-
         ng.run();
 
     }
