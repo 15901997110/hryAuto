@@ -304,7 +304,7 @@
             },
             dataType: "json",
             success: function (data) {
-                ti = data.data.iparamsample;
+                ti = data.data;
                 layer.close(layerIndex);
             },
             fail: function (data) {
@@ -400,9 +400,9 @@
             var row = serviceList[i];
             var rowHtml;
             if (row.servicename == selectedService.split("|")[0]) {
-                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.servicename + "</option>"
+                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.servicekey + "</option>"
             } else {
-                rowHtml = "<option value=\"" + row.id + "\">" + row.servicename + "</option>"
+                rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>"
             }
             services = services + rowHtml;
         }
@@ -422,6 +422,7 @@
                 var rowHtml;
                 if (row.iuri == selectedTi) {
                     rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
+                    $("#caseName").val(row.remark);
                 } else {
                     rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
                 }
@@ -429,6 +430,7 @@
             }
             $("#ti").append(tis);
             $("#ti").select2();
+
 
             if (selectedRequestparam == "") {
                 var tId = $("#ti").val();
@@ -469,7 +471,10 @@
     //接口改变处理
     function tiChange() {
         var tId = $("#ti").val();
-        var iparamsample = getOneTi(tId);
+        var t=getOneTi(tId);
+        var remark=t.remark;
+        $("#caseName").val(remark);
+        var iparamsample = t.iparamsample;
         var iparamtype = getTitype(tId);
         if(iparamsample.length >0 && iparamtype ==1){
             try {
@@ -503,6 +508,7 @@
             $("#ti").empty();
             $("#ti").append(tis);
             $("#ti").select2();
+            tiChange();
 
         }
 
