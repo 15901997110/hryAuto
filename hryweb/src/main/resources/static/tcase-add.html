@@ -304,7 +304,7 @@
             },
             dataType: "json",
             success: function (data) {
-                ti = data.data.iparamsample;
+                ti = data.data;
                 layer.close(layerIndex);
             },
             fail: function (data) {
@@ -411,7 +411,6 @@
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
         var tis = "";
-        debugger;
         if (tiList.length == 0) {
             $("#ti").empty();
             tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
@@ -425,6 +424,7 @@
                     $("#caseName").val(row.remark);
                 } else {
                     rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
+                    $("#caseName").val(row.remark);
                 }
                 tis = tis + rowHtml;
             }
@@ -434,7 +434,7 @@
 
             if (selectedRequestparam == "") {
                 var tId = $("#ti").val();
-                var iparamsample = getOneTi(tId);
+                var iparamsample = getOneTi(tId).iparamsample;
                 var iparamtype = getTitype(tId);
                 if(iparamsample.length >0 && iparamtype ==1){
                     var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
@@ -498,6 +498,8 @@
             $("#ti").empty();
             tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
             $("#ti").append(tis);
+            $("#caseName").val("");
+            $("#requestParam").val("");
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
