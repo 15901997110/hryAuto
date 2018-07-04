@@ -206,11 +206,13 @@
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
-                    layer.msg("开发中......"+list+"", {icon: 6});
+                    layer.alert("测试执行中，请稍后到测试报告页面查看！", {
+                        skin: 'layer-ext-moon'
+                    });
 
                 } else {
 
-                    layer.alert(msg, {
+                    layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
