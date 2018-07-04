@@ -20,15 +20,15 @@ import java.util.Map;
  */
 @Slf4j
 public class RunUtil {
-    public static void run(Integer userId, List<String> clazzs) {
+    public static void run(Integer userId, String reportPath, List<String> clazzs) {
         List<String> distinctClazzs = HryUtil.distinct(clazzs);
         if (distinctClazzs == null) {
             return;
         }
-        runNG(null,clazzs);
+        runNG(null,reportPath,clazzs);
     }
 
-    private static void runNG(Map<String, String> params, List<String> classes) {
+    private static void runNG(Map<String, String> params,String reportPath, List<String> classes) {
         if (classes == null || classes.size() == 0) {
             return;
         }
@@ -57,7 +57,7 @@ public class RunUtil {
         List<XmlSuite> suites=new ArrayList<>();
         suites.add(suite);
         testNG.setXmlSuites(suites);
-        testNG.addListener(new HryReporter());
+        testNG.addListener(new HryReporter(reportPath));
 
         testNG.run();
 

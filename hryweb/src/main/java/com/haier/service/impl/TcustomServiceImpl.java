@@ -15,6 +15,7 @@ import com.haier.util.ReflectUtil;
 import com.haier.util.RunUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,6 +29,10 @@ import java.util.*;
 @Service
 @Slf4j
 public class TcustomServiceImpl implements TcustomService {
+
+    @Value("${zdy.reportPath}")
+    private String reportPath;
+
     @Autowired
     TcustomMapper tcustomMapper;
 
@@ -191,7 +196,7 @@ public class TcustomServiceImpl implements TcustomService {
             clazzs.add(ttt.getClazz());
         }
 
-        RunUtil.run(executeUserId,clazzs);
+        RunUtil.run(executeUserId,reportPath,clazzs);
 
     }
 }

@@ -1,3 +1,5 @@
+zdy:
+  reportPath: C:/testngReport/
 server:
   port: 8885
 logging:
@@ -34,11 +36,10 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
-  #thymeleaf:
-   # cache: false
-   # mode: HTML5
-   # prefix: classpath:/static/
-   # suffix: .html
+  #配置自定义资源路径
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${zdy.reportPath}
+
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po
