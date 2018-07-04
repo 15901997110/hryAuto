@@ -18,14 +18,11 @@ import java.util.*;
 
 public class HryReporter implements IReporter {
    private String reportPath;
-    public HryReporter(String reportPath){
+   private String fileName;
+    public HryReporter(String reportPath,String fileName){
         this.reportPath=reportPath;
+        this.fileName=fileName;
     }
-
-
-    //生成的路径以及文件名
-    //private static final String OUTPUT_FOLDER = "test-output/";
-    private static final String FILE_NAME = "myreport.html";
 
     private ExtentReports extent;
 
@@ -114,7 +111,7 @@ public class HryReporter implements IReporter {
             reportDir.mkdir();
         }
         Tcase tcase=new Tcase();
-        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + FILE_NAME);
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + fileName);
         /*ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);*/
         // 设置静态文件的DNS
         //怎么样解决cdn.rawgit.com访问不了的情况

@@ -27,11 +27,6 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
 
-  thymeleaf:
-    cache: false
-    mode: HTML5
-    prefix: classpath:/static/
-    suffix: .html
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po

@@ -196,7 +196,7 @@ public class TcustomServiceImpl implements TcustomService {
             clazzs.add(ttt.getClazz());
         }
 
-        RunUtil.run(executeUserId,reportPath,clazzs);
+        RunUtil.run(executeUserId,customId,reportPath,clazzs);
 
     }
 }
