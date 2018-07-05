@@ -12,10 +12,16 @@ import java.util.List;
  */
 public interface TcustomService {
     Integer insertOne(Tcustom tcustom);
+
     Integer updateOne(Tcustom tcustom);
+
     Integer deleteOne(Integer id);
+
     Tcustom selectOne(Integer id);
+
     List<Tcustom> selectByCondition(Tcustom tcustom);
+
     List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom);
-    void run(Integer customId,Integer executeUserId);
+
+    void run(Integer customId, Integer executeUserId);
 }

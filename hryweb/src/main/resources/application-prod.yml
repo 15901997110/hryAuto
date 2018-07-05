@@ -28,8 +28,6 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
-  resources:
-    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${zdy.reportPath}
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po
