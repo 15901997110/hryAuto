@@ -93,12 +93,11 @@ public class ReflectUtil {
 
 
     /**
-     *
-     *@description: 将父类的属性值复制到子类中
-     *@params: [parent, child]
-     *@return: void
-     *@author: luqiwei
-     *@date: 2018-06-29
+     * @description: 将父类的属性值复制到子类中
+     * @params: [parent, child]
+     * @return: void
+     * @author: luqiwei
+     * @date: 2018-06-29
      */
     public static <T, K extends T> void clone(T parent, K child) {
 
@@ -115,6 +114,13 @@ public class ReflectUtil {
         }
     }
 
+    /**
+     *@description: 根据对象属性名获取属性值,不支持继承对象的父属性值获取,如有异常,返回null
+     *@params: [t, fieldName]
+     *@return: java.lang.Object
+     *@author: luqiwei
+     *@date: 2018-07-05
+     */
     private static <T> Object getFiledValue(T t, String fieldName) {
         Field[] fields = t.getClass().getDeclaredFields();
         for (Field f : fields) {

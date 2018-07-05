@@ -11,6 +11,7 @@ import java.util.Date;
  * @Date: 2018/6/28 15:22
  */
 public interface TreportService {
+
     Integer insertOne(Treport treport);
 
     Integer updateOne(Treport treport);
