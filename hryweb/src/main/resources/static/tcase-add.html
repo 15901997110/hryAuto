@@ -368,13 +368,15 @@
         var selectedTi = "";
         var selectedAssertType="";
         var selectedRequestparam="";
+        var selectedExpected="";
         if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
             var cells = getParameter('cellArr').split(",");
             selectedRequestparam = getParameter('requestparam');
+            selectedExpected = getParameter('expected');
             $("#caseName").val(cells[0]);
             $("#remark").val(cells[1]);
             $("#requestParam").val(selectedRequestparam);
-            $("#expected").val(cells[7]);
+            $("#expected").val(selectedExpected);
 
             selectedEnv = cells[3];
             selectedService = cells[2];
