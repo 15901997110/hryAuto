@@ -655,10 +655,11 @@
         var cells = $("#table")[0].rows[num+1].cells;
         var cellArr = [];
         var requestparam = cells[11].innerText;
+        var expected = cells[9].innerText;
         for (var i=2; i < cells.length-3; i++) {
             cellArr.push(cells[i].innerText)
         }
-        url= encodeURI(url + "?cellArr="+cellArr+"&requestparam="+requestparam);
+        url= encodeURI(url + "?cellArr="+cellArr+"&requestparam="+requestparam+"&expected="+expected);
         layer_show(title,url,w,h);
     }
 
