@@ -32,11 +32,11 @@ import java.util.List;
  */
 @Slf4j
 public class PgwTest {
-    public PgwTest( Integer serviceId,Integer envId, String caseDesigner){
-        this.envId=envId;
-        this.serviceId=serviceId;
-        this.caseDesigner=caseDesigner;
-    }
+    /*    public PgwTest( Integer serviceId,Integer envId, String caseDesigner){
+            this.envId=envId;
+            this.serviceId=serviceId;
+            this.caseDesigner=caseDesigner;
+        }*/
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -44,12 +44,16 @@ public class PgwTest {
     private String url;
     private Tservice tservice;
     private Tenvdetail tenvdetail;
-   /* @Autowired
-    RunService runService;*/
-   // private static  RunService runService = applicationContext.getBean(RunService.class);
-   private RunService runService = SpringContextHolder.getBean(RunService.class);
+
+    private RunService runService = SpringContextHolder.getBean(RunService.class);
+
+    @Parameters({"serviceId", "envId", "caseDesigner"})
     @BeforeClass
-    public void beforeClass() {
+    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner) {
+        this.serviceId = serviceId;
+        this.envId = envId;
+        this.caseDesigner = caseDesigner;
+
         tservice = runService.getTservice(this.serviceId);
         tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
         init();
