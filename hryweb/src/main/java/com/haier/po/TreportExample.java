@@ -235,6 +235,76 @@ public class TreportExample {
             return (Criteria) this;
         }
 
+        public Criteria andReportnameIsNull() {
+            addCriterion("reportName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameIsNotNull() {
+            addCriterion("reportName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameEqualTo(String value) {
+            addCriterion("reportName =", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameNotEqualTo(String value) {
+            addCriterion("reportName <>", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameGreaterThan(String value) {
+            addCriterion("reportName >", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameGreaterThanOrEqualTo(String value) {
+            addCriterion("reportName >=", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameLessThan(String value) {
+            addCriterion("reportName <", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameLessThanOrEqualTo(String value) {
+            addCriterion("reportName <=", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameLike(String value) {
+            addCriterion("reportName like", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameNotLike(String value) {
+            addCriterion("reportName not like", value, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameIn(List<String> values) {
+            addCriterion("reportName in", values, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameNotIn(List<String> values) {
+            addCriterion("reportName not in", values, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameBetween(String value1, String value2) {
+            addCriterion("reportName between", value1, value2, "reportname");
+            return (Criteria) this;
+        }
+
+        public Criteria andReportnameNotBetween(String value1, String value2) {
+            addCriterion("reportName not between", value1, value2, "reportname");
+            return (Criteria) this;
+        }
+
         public Criteria andUseridIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;
@@ -292,6 +362,76 @@ public class TreportExample {
 
         public Criteria andUseridNotBetween(Integer value1, Integer value2) {
             addCriterion("userId not between", value1, value2, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameIsNull() {
+            addCriterion("userName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameIsNotNull() {
+            addCriterion("userName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameEqualTo(String value) {
+            addCriterion("userName =", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameNotEqualTo(String value) {
+            addCriterion("userName <>", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameGreaterThan(String value) {
+            addCriterion("userName >", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameGreaterThanOrEqualTo(String value) {
+            addCriterion("userName >=", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameLessThan(String value) {
+            addCriterion("userName <", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameLessThanOrEqualTo(String value) {
+            addCriterion("userName <=", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameLike(String value) {
+            addCriterion("userName like", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameNotLike(String value) {
+            addCriterion("userName not like", value, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameIn(List<String> values) {
+            addCriterion("userName in", values, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameNotIn(List<String> values) {
+            addCriterion("userName not in", values, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameBetween(String value1, String value2) {
+            addCriterion("userName between", value1, value2, "username");
+            return (Criteria) this;
+        }
+
+        public Criteria andUsernameNotBetween(String value1, String value2) {
+            addCriterion("userName not between", value1, value2, "username");
             return (Criteria) this;
         }
 
@@ -355,6 +495,76 @@ public class TreportExample {
             return (Criteria) this;
         }
 
+        public Criteria andCustomnameIsNull() {
+            addCriterion("customName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameIsNotNull() {
+            addCriterion("customName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameEqualTo(String value) {
+            addCriterion("customName =", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameNotEqualTo(String value) {
+            addCriterion("customName <>", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameGreaterThan(String value) {
+            addCriterion("customName >", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameGreaterThanOrEqualTo(String value) {
+            addCriterion("customName >=", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameLessThan(String value) {
+            addCriterion("customName <", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameLessThanOrEqualTo(String value) {
+            addCriterion("customName <=", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameLike(String value) {
+            addCriterion("customName like", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameNotLike(String value) {
+            addCriterion("customName not like", value, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameIn(List<String> values) {
+            addCriterion("customName in", values, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameNotIn(List<String> values) {
+            addCriterion("customName not in", values, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameBetween(String value1, String value2) {
+            addCriterion("customName between", value1, value2, "customname");
+            return (Criteria) this;
+        }
+
+        public Criteria andCustomnameNotBetween(String value1, String value2) {
+            addCriterion("customName not between", value1, value2, "customname");
+            return (Criteria) this;
+        }
+
         public Criteria andEnvidIsNull() {
             addCriterion("envId is null");
             return (Criteria) this;
@@ -412,6 +622,76 @@ public class TreportExample {
 
         public Criteria andEnvidNotBetween(Integer value1, Integer value2) {
             addCriterion("envId not between", value1, value2, "envid");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyIsNull() {
+            addCriterion("envKey is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyIsNotNull() {
+            addCriterion("envKey is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyEqualTo(String value) {
+            addCriterion("envKey =", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotEqualTo(String value) {
+            addCriterion("envKey <>", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyGreaterThan(String value) {
+            addCriterion("envKey >", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyGreaterThanOrEqualTo(String value) {
+            addCriterion("envKey >=", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLessThan(String value) {
+            addCriterion("envKey <", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLessThanOrEqualTo(String value) {
+            addCriterion("envKey <=", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLike(String value) {
+            addCriterion("envKey like", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotLike(String value) {
+            addCriterion("envKey not like", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyIn(List<String> values) {
+            addCriterion("envKey in", values, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotIn(List<String> values) {
+            addCriterion("envKey not in", values, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyBetween(String value1, String value2) {
+            addCriterion("envKey between", value1, value2, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotBetween(String value1, String value2) {
+            addCriterion("envKey not between", value1, value2, "envkey");
             return (Criteria) this;
         }
 
@@ -542,6 +822,66 @@ public class TreportExample {
 
         public Criteria andTesttimeNotBetween(Date value1, Date value2) {
             addCriterion("testTime not between", value1, value2, "testtime");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Integer value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Integer value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Integer value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Integer value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Integer> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Integer> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
     }
