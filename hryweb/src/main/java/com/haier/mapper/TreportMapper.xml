@@ -4,11 +4,16 @@
   <resultMap id="BaseResultMap" type="com.haier.po.Treport">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="reportPath" jdbcType="VARCHAR" property="reportpath" />
+    <result column="reportName" jdbcType="VARCHAR" property="reportname" />
     <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="customId" jdbcType="INTEGER" property="customid" />
+    <result column="customName" jdbcType="VARCHAR" property="customname" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
+    <result column="envKey" jdbcType="VARCHAR" property="envkey" />
     <result column="serviceId" jdbcType="VARCHAR" property="serviceid" />
     <result column="testTime" jdbcType="TIMESTAMP" property="testtime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, reportPath, userId, customId, envId, serviceId, testTime
+    id, reportPath, reportName, userId, userName, customId, customName, envId, envKey, 
+    serviceId, testTime, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TreportExample" resultMap="BaseResultMap">
     select
@@ -101,15 +107,19 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Treport">
-    insert into treport (id, reportPath, userId, 
-      customId, envId, serviceId, 
-      testTime)
-    values (#{id,jdbcType=INTEGER}, #{reportpath,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
-      #{customid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{serviceid,jdbcType=VARCHAR}, 
-      #{testtime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.haier.po.Treport" keyProperty="id" useGeneratedKeys="true">
+    insert into treport (id, reportPath, reportName, 
+      userId, userName, customId, 
+      customName, envId, envKey, 
+      serviceId, testTime, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{reportpath,jdbcType=VARCHAR}, #{reportname,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{customid,jdbcType=INTEGER}, 
+      #{customname,jdbcType=VARCHAR}, #{envid,jdbcType=INTEGER}, #{envkey,jdbcType=VARCHAR}, 
+      #{serviceid,jdbcType=VARCHAR}, #{testtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Treport">
+  <insert id="insertSelective" parameterType="com.haier.po.Treport" keyProperty="id" useGeneratedKeys="true">
     insert into treport
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -118,20 +128,35 @@
       <if test="reportpath != null">
         reportPath,
       </if>
+      <if test="reportname != null">
+        reportName,
+      </if>
       <if test="userid != null">
         userId,
+      </if>
+      <if test="username != null">
+        userName,
       </if>
       <if test="customid != null">
         customId,
       </if>
+      <if test="customname != null">
+        customName,
+      </if>
       <if test="envid != null">
         envId,
+      </if>
+      <if test="envkey != null">
+        envKey,
       </if>
       <if test="serviceid != null">
         serviceId,
       </if>
       <if test="testtime != null">
         testTime,
+      </if>
+      <if test="status != null">
+        status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -141,20 +166,35 @@
       <if test="reportpath != null">
         #{reportpath,jdbcType=VARCHAR},
       </if>
+      <if test="reportname != null">
+        #{reportname,jdbcType=VARCHAR},
+      </if>
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
       </if>
       <if test="customid != null">
         #{customid,jdbcType=INTEGER},
       </if>
+      <if test="customname != null">
+        #{customname,jdbcType=VARCHAR},
+      </if>
       <if test="envid != null">
         #{envid,jdbcType=INTEGER},
+      </if>
+      <if test="envkey != null">
+        #{envkey,jdbcType=VARCHAR},
       </if>
       <if test="serviceid != null">
         #{serviceid,jdbcType=VARCHAR},
       </if>
       <if test="testtime != null">
         #{testtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -173,20 +213,35 @@
       <if test="record.reportpath != null">
         reportPath = #{record.reportpath,jdbcType=VARCHAR},
       </if>
+      <if test="record.reportname != null">
+        reportName = #{record.reportname,jdbcType=VARCHAR},
+      </if>
       <if test="record.userid != null">
         userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null">
+        userName = #{record.username,jdbcType=VARCHAR},
       </if>
       <if test="record.customid != null">
         customId = #{record.customid,jdbcType=INTEGER},
       </if>
+      <if test="record.customname != null">
+        customName = #{record.customname,jdbcType=VARCHAR},
+      </if>
       <if test="record.envid != null">
         envId = #{record.envid,jdbcType=INTEGER},
+      </if>
+      <if test="record.envkey != null">
+        envKey = #{record.envkey,jdbcType=VARCHAR},
       </if>
       <if test="record.serviceid != null">
         serviceId = #{record.serviceid,jdbcType=VARCHAR},
       </if>
       <if test="record.testtime != null">
         testTime = #{record.testtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -197,11 +252,16 @@
     update treport
     set id = #{record.id,jdbcType=INTEGER},
       reportPath = #{record.reportpath,jdbcType=VARCHAR},
+      reportName = #{record.reportname,jdbcType=VARCHAR},
       userId = #{record.userid,jdbcType=INTEGER},
+      userName = #{record.username,jdbcType=VARCHAR},
       customId = #{record.customid,jdbcType=INTEGER},
+      customName = #{record.customname,jdbcType=VARCHAR},
       envId = #{record.envid,jdbcType=INTEGER},
+      envKey = #{record.envkey,jdbcType=VARCHAR},
       serviceId = #{record.serviceid,jdbcType=VARCHAR},
-      testTime = #{record.testtime,jdbcType=TIMESTAMP}
+      testTime = #{record.testtime,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -212,14 +272,26 @@
       <if test="reportpath != null">
         reportPath = #{reportpath,jdbcType=VARCHAR},
       </if>
+      <if test="reportname != null">
+        reportName = #{reportname,jdbcType=VARCHAR},
+      </if>
       <if test="userid != null">
         userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        userName = #{username,jdbcType=VARCHAR},
       </if>
       <if test="customid != null">
         customId = #{customid,jdbcType=INTEGER},
       </if>
+      <if test="customname != null">
+        customName = #{customname,jdbcType=VARCHAR},
+      </if>
       <if test="envid != null">
         envId = #{envid,jdbcType=INTEGER},
+      </if>
+      <if test="envkey != null">
+        envKey = #{envkey,jdbcType=VARCHAR},
       </if>
       <if test="serviceid != null">
         serviceId = #{serviceid,jdbcType=VARCHAR},
@@ -227,17 +299,25 @@
       <if test="testtime != null">
         testTime = #{testtime,jdbcType=TIMESTAMP},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.haier.po.Treport">
     update treport
     set reportPath = #{reportpath,jdbcType=VARCHAR},
+      reportName = #{reportname,jdbcType=VARCHAR},
       userId = #{userid,jdbcType=INTEGER},
+      userName = #{username,jdbcType=VARCHAR},
       customId = #{customid,jdbcType=INTEGER},
+      customName = #{customname,jdbcType=VARCHAR},
       envId = #{envid,jdbcType=INTEGER},
+      envKey = #{envkey,jdbcType=VARCHAR},
       serviceId = #{serviceid,jdbcType=VARCHAR},
-      testTime = #{testtime,jdbcType=TIMESTAMP}
+      testTime = #{testtime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

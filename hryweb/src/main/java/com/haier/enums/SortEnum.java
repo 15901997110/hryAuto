@@ -8,6 +8,7 @@ package com.haier.enums;
 public enum SortEnum {
     UPDATETIME("updateTime desc"),//根据更新时间倒序
     ID("id desc"),//根据id倒序
+    TESTTIME("testtime desc"),//根据测试时间倒序
     ;
     private String value;
 
