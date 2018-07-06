@@ -325,7 +325,7 @@
 
     }
 
-    function getTitype(tId) {
+    /*function getTitype(tId) {
         var titype;
         $.ajaxSetup({async: false});
         $.ajax({
@@ -354,7 +354,7 @@
         });
         return titype;
 
-    }
+    }*/
 
     $(document).ready(function () {
         $("#iparamsample").hide();
@@ -423,10 +423,10 @@
                 var rowHtml;
                 if (row.iuri == selectedTi) {
                     rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
-                    $("#caseName").val(row.remark);
+
                 } else {
                     rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
-                    $("#caseName").val(row.remark);
+
                 }
                 tis = tis + rowHtml;
             }
@@ -437,7 +437,8 @@
             if (selectedRequestparam == "") {
                 var tId = $("#ti").val();
                 var iparamsample = getOneTi(tId).iparamsample;
-                var iparamtype = getTitype(tId);
+                //var iparamtype = getTitype(tId);
+                var iparamtype = getOneTi(tId).iparamtype;
                 if(iparamsample.length >0 && iparamtype ==1){
                     var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                     $("#requestParam").val(requestJson);
@@ -477,7 +478,8 @@
         var remark=t.remark;
         $("#caseName").val(remark);
         var iparamsample = t.iparamsample;
-        var iparamtype = getTitype(tId);
+        //var iparamtype = getTitype(tId);
+        var iparamtype = t.iparamtype;
         if(iparamsample.length >0 && iparamtype ==1){
             try {
                 var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
