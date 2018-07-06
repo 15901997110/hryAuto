@@ -15,13 +15,13 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Factory_5_1 {
 
-    @Factory
+   /* @Factory
     public Object[] getPgwTestFactory() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         //RunService runService = applicationContext.getBean(RunService.class);
-        /*Class<?> clazz = Class.forName("com.haier.testng.cases.PgwTest");
+        *//*Class<?> clazz = Class.forName("com.haier.testng.cases.PgwTest");
         Constructor<?> constructor = clazz.getDeclaredConstructor(Integer.class, Integer.class, String.class);
-        Object o = constructor.newInstance(5, 1, null);*/
-        Object o=new PgwTest(5,1,null);
+        Object o = constructor.newInstance(5, 1, null);*//*
+        //Object o=new PgwTest(5,1,null);
         return new Object[]{o};
-    }
+    }*/
 }
