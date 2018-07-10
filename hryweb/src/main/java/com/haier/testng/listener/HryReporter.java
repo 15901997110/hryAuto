@@ -1,6 +1,5 @@
 package com.haier.testng.listener;
 
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.ResourceCDN;
@@ -16,6 +15,13 @@ import org.testng.xml.XmlSuite;
 import java.io.File;
 import java.util.*;
 
+/**
+ *@description:
+ *@params:
+ *@return:
+ *@author: luqiwei
+ *@date: 2018-07-10
+ */
 public class HryReporter implements IReporter {
    private String reportPath;
    private String fileName;
