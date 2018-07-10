@@ -1,5 +1,6 @@
 zdy:
   reportPath: C:/testngReport/
+  resourcePathPattern: /test-output/
 server:
   port: 8885
 logging:

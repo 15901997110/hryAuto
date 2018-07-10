@@ -15,9 +15,14 @@ public class HryWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Value("${zdy.reportPath}")
     String reportPath;
 
+    @Value("${zdy.resourcePathPattern}")
+    String resourcePathPattern;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/test-output/**").addResourceLocations("file:" + reportPath);
+        /**
+         * /test-output/**
+         */
+        registry.addResourceHandler(resourcePathPattern+"**").addResourceLocations("file:" + reportPath);
         super.addResourceHandlers(registry);
     }
 

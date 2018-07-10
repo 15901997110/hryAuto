@@ -1,23 +1,28 @@
 package com.haier.service.impl;
 
 import com.haier.enums.StatusCodeEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.mapper.TenvMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
-import com.haier.service.TcustomService;
-import com.haier.service.TenvService;
-import com.haier.service.TenvdetailService;
-import com.haier.service.TserviceService;
+import com.haier.service.*;
+import com.haier.testng.listener.HryReporter;
 import com.haier.util.HryUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.RunUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.testng.TestNG;
+import org.testng.xml.XmlClass;
+import org.testng.xml.XmlSuite;
+import org.testng.xml.XmlTest;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -31,7 +36,10 @@ import java.util.*;
 public class TcustomServiceImpl implements TcustomService {
 
     @Value("${zdy.reportPath}")
-    private String reportPath;
+    String reportPath;
+
+    @Value("${zdy.resourcePathPattern}")
+    String resourcePathPattern;
 
     @Autowired
     TcustomMapper tcustomMapper;
@@ -40,7 +48,13 @@ public class TcustomServiceImpl implements TcustomService {
     TenvService tenvService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     TserviceService tserviceService;
+
+    @Autowired
+    TreportService treportService;
 
     @Autowired
     TenvdetailService tenvdetailService;
@@ -173,6 +187,9 @@ public class TcustomServiceImpl implements TcustomService {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         Integer envid=tcustom.getEnvid();
+        Tenv tenv=tenvService.selectOne(envid);
+
+        User user=userService.selectOne(executeUserId);
 
         Tenvdetail condition=new Tenvdetail();
         List<Tenvdetail> tenvdetails=new ArrayList<>();//要运行的测试类
@@ -180,7 +197,7 @@ public class TcustomServiceImpl implements TcustomService {
             condition.setEnvid(envid);
             condition.setServiceid(serviceid);
             List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(condition);
-            if(tenvdetailList!=null&&tenvdetailList.size()>0){
+            if(tenvdetailList!=null&& tenvdetailList.size()>0){
                 for(Tenvdetail var:tenvdetailList){
                     tenvdetails.add(var);
                 }
@@ -191,12 +208,69 @@ public class TcustomServiceImpl implements TcustomService {
             throw new HryException(StatusCodeEnum.NOT_FOUND);
         }
 
-        List<String> clazzs=new ArrayList<String>();
+        List<XmlClass> xmlClasses=new ArrayList<XmlClass>();
         for(Tenvdetail ttt:tenvdetails){
-            clazzs.add(ttt.getClazz());
+
+            XmlClass xmlClass=new XmlClass();
+            xmlClass.setName(ttt.getClazz());
+            //设置参数,测试类运行时需要根据serviceId和envId来初始化并获取case信息
+            Map<String,String> params=new HashMap<>();
+            params.put("serviceId",ttt.getServiceid()+"");
+            params.put("envId",ttt.getEnvid()+"");
+            xmlClass.setParameters(params);
+            xmlClasses.add(xmlClass);
         }
 
-        RunUtil.run(executeUserId,customId,reportPath,clazzs);
+        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";
+        //构造入库记录
+        Treport treport=new Treport();
+        treport.setCustomid(tcustom.getId());
+        treport.setCustomname(tcustom.getCustomname());
+        treport.setEnvid(tenv.getId());
+        treport.setEnvkey(tenv.getEnvkey());
+        treport.setServiceid(serviceIdStr);
+        treport.setUserid(user.getId());
+        treport.setUsername(user.getRealname());
+        treport.setReportpath(reportPath);
+        treport.setReportname(resourcePathPattern+reportName);
+        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
 
+        treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
+        Integer treportId=treport.getId();
+
+        this.run(null,treportId,reportName,HryUtil.distinct(xmlClasses));
+    }
+
+    @Async("asyncServiceExecutor")
+    public void run(Map<String, String> params,Integer reportId,String reportName,List<XmlClass> xmlClasses) {
+
+        /**
+         * 运行测试用例
+         */
+        TestNG testNG = new TestNG();
+        XmlSuite suite = new XmlSuite();
+        List<XmlTest> xmlTests = new ArrayList<>();
+        for(XmlClass c:xmlClasses){
+            XmlTest test=new XmlTest(suite);
+            test.setName(c.getName().substring(c.getName().lastIndexOf(".")+1));
+            test.setClasses(Arrays.asList(c));
+            xmlTests.add(test);
+        }
+        suite.setName("AutoSuite");
+        suite.setTests(xmlTests);
+
+        testNG.setXmlSuites(Arrays.asList(suite));
+        testNG.addListener(new HryReporter(reportPath, reportName));
+        testNG.run();
+
+
+        /**
+         * 运行完成之后,更新treport状态
+         */
+        Treport treport=new Treport();
+        treport.setId(reportId);
+        treport.setStatus(StatusEnum.TEN.getId());
+        treportService.updateOne(treport);
     }
 }
