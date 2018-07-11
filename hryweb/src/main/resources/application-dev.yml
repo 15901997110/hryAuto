@@ -13,6 +13,7 @@ logging:
     com.haier.service: debug
     com.haier.service.impl: debug
     com.haier.util: debug
+    com.haier.testng.*: debug
 spring:
   application:
     name: hryweb

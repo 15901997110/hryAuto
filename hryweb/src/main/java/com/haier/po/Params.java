@@ -11,4 +11,9 @@ import lombok.Data;
 public class Params {
     private Tcase tcase;
     private Ti ti;
+    //重写toString(),测试报告中将展示CaseID
+    @Override
+    public String toString(){
+        return "CaseId:"+tcase.getId();
+    }
 }

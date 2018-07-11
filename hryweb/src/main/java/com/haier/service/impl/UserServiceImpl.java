@@ -33,28 +33,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer insertOne(User user) {
         //参数校验
-        if(user==null||user.getIdentity()==null||user.getPassword()==null||user.getRealname()==null
-                ||"".equals(user.getIdentity().trim())||"".equals(user.getPassword().trim())
-                ||"".equals(user.getRealname().trim())){
-            throw new HryException(10086,"identity,password,realname必填");
+        if (user == null || user.getIdentity() == null || user.getPassword() == null || user.getRealname() == null
+                || "".equals(user.getIdentity().trim()) || "".equals(user.getPassword().trim())
+                || "".equals(user.getRealname().trim())) {
+            throw new HryException(10086, "identity,password,realname必填");
         }
         //用户名校验,只支持邮箱
-        if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
+        if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL);
         }
         //密码校验,密码只能是数字,字母,英文符号,不包括空格
-        if(!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
+        if (!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
         }
         //查询是否存在重复用户,将删除的用户激活
         User existUser = userMapper.selectAllByUsername(user.getIdentity().trim());
-        if(existUser!=null){
-            if(existUser.getStatus()>0){
+        if (existUser != null) {
+            if (existUser.getStatus() > 0) {
                 throw new HryException(StatusCodeEnum.EXIST_RECORD);
             }
-            ReflectUtil.setInvalidFieldToNull(user,false);
+            ReflectUtil.setInvalidFieldToNull(user, false);
             user.setId(existUser.getId());
-            user.setStatus((short)1);
+            user.setStatus((short) 1);
             user.setPassword(DigestUtils.md5Hex(user.getPassword().trim()));
             return userMapper.updateByPrimaryKeySelective(user);
         }
@@ -65,15 +65,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUser(String username,String password) {
-        if(username==null||password==null||"".equals(username.trim())||"".equals(password.trim())){
+    public User findUser(String username, String password) {
+        if (username == null || password == null || "".equals(username.trim()) || "".equals(password.trim())) {
             return null;
-        }else {
-            username=username.trim();
+        } else {
+            username = username.trim();
         }
 
-        if(!username.contains("@")){
-            username+="@kjtpay.com.cn";//支持只输入邮箱前辍登录
+        if (!username.contains("@")) {
+            username += "@kjtpay.com.cn";//支持只输入邮箱前辍登录
         }
         User finded = userMapper.selectByUsername(username);
         if (finded != null) {
@@ -86,64 +86,66 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectOne(Integer id) {
-        if(id==null||id==0){
+        if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         return userMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public PageInfo<User> selectByCondition(User user,Integer pageNum,Integer pageSize) {
-        if(user!=null){
-            ReflectUtil.setInvalidFieldToNull(user,false);
-            ReflectUtil.setFieldAddPercentAndCleanZero(user,false);
-        }
+    public PageInfo<User> selectByCondition(User user, Integer pageNum, Integer pageSize) {
 
-        if(pageNum==null||pageSize==null){
-            pageNum=1;
-            pageSize=10;
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
         }
-
-        UserExample userExample=new UserExample();
-        UserExample.Criteria criteria = userExample.createCriteria();
-
-        if(user.getGroupid()!=null){
-            criteria.andGroupidEqualTo(user.getGroupid());
-        }
-
-        if(user.getId()!=null){
-            criteria.andIdEqualTo(user.getId());
-        }
-        if(user.getIdentity()!=null){
-            criteria.andIdentityLike(user.getIdentity());
-        }
-        if(user.getRealname()!=null){
-            criteria.andRealnameLike(user.getRealname());
-        }
-        if(user.getRemark()!=null){
-            criteria.andRemarkLike(user.getRemark());
-        }
-        criteria.andStatusGreaterThan((short)0);
-        PageHelper.startPage(pageNum,pageSize);
-        List<User> users = userMapper.selectByExample(userExample);
-        PageInfo<User> pageInfo=new PageInfo<>(users);
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = this.selectByCondition(user);
+        PageInfo<User> pageInfo = new PageInfo<>(users);
         return pageInfo;
     }
 
     @Override
+    public List<User> selectByCondition(User user) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(user, false);
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusGreaterThan((short) 0);//用户状态>0
+        criteria.andGroupidGreaterThan((short) 1);//用户组id>1   (-1-未分组,1-超级管理员)
+        if (user != null) {
+            if (user.getId() != null) {
+                criteria.andIdEqualTo(user.getId());
+            }
+            if (user.getIdentity() != null) {
+                criteria.andIdentityLike(user.getIdentity());
+            }
+            if (user.getGroupid() != null) {
+                criteria.andGroupidEqualTo(user.getGroupid());
+            }
+            if (user.getRealname() != null) {
+                criteria.andRealnameLike(user.getRealname());
+            }
+            if (user.getRemark() != null) {
+                criteria.andRemarkLike(user.getRemark());
+            }
+        }
+        return userMapper.selectByExample(example);
+    }
+
+    @Override
     public Integer updateOne(Integer id, User user) {
-        if(id==null||id==0){
+        if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PRIMARYKEY_NULL);
         }
         user.setId(id);
-        ReflectUtil.setInvalidFieldToNull(user,false);
-        if(user.getIdentity()!=null){
-            if(!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())){
+        ReflectUtil.setInvalidFieldToNull(user, false);
+        if (user.getIdentity() != null) {
+            if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
                 throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL);
             }
         }
-        if(user.getPassword()!=null){
-            if(!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())){
+        if (user.getPassword() != null) {
+            if (!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
                 throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
             }
             user.setPassword(DigestUtils.md5Hex(user.getPassword()));
@@ -153,58 +155,58 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer deleteOne(Integer id) {
-        User user=new User();
-        user.setStatus((short)-1);
-        return updateOne(id,user);
+        User user = new User();
+        user.setStatus((short) -1);
+        return updateOne(id, user);
     }
 
     @Override
     public Integer modifyPwd(String identity, String oldPwd, String newPwd) {
-        if(Objects.isNull(identity)||Objects.isNull(oldPwd)||Objects.isNull(newPwd)
-                ||"".equals(identity.trim())||"".equals(oldPwd.trim())||"".equals(newPwd.trim())){
-            throw new HryException(10086,"identity,oldPwd,newPwd不可为空!");
+        if (Objects.isNull(identity) || Objects.isNull(oldPwd) || Objects.isNull(newPwd)
+                || "".equals(identity.trim()) || "".equals(oldPwd.trim()) || "".equals(newPwd.trim())) {
+            throw new HryException(10086, "identity,oldPwd,newPwd不可为空!");
         }
-        if(!newPwd.matches(RegexEnum.PWD_REGEX.getRegex())){
+        if (!newPwd.matches(RegexEnum.PWD_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
         }
         //根据identity查询status>0的用户名
         User user = userMapper.selectByUsername(identity.trim());
-        if(user==null){
+        if (user == null) {
             throw new HryException(StatusCodeEnum.NOT_FOUND);
         }
 
         //用户存在 ,并且旧密码输入正确,则使用新密码更新
-        if(user.getPassword().equals(DigestUtils.md5Hex(oldPwd.trim()))){
+        if (user.getPassword().equals(DigestUtils.md5Hex(oldPwd.trim()))) {
             user.setPassword(DigestUtils.md5Hex(newPwd.trim()));
 
             return userMapper.updateByPrimaryKeySelective(user);
-        }else{
-            throw new HryException(10087,"旧密码不匹配");
+        } else {
+            throw new HryException(10087, "旧密码不匹配");
         }
 
     }
 
     @Override
     public List<User> selectByGroupId(Integer groupId) {
-        if(groupId==null||groupId==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"groupId必填");
+        if (groupId == null || groupId == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "groupId必填");
         }
-        UserExample userExample=new UserExample();
+        UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andStatusGreaterThan((short)0);
+        criteria.andStatusGreaterThan((short) 0);
         criteria.andGroupidEqualTo(groupId.shortValue());
         return userMapper.selectByExample(userExample);
     }
 
     @Override
-    public List<User> selectDever(Integer groupId){
-        if(groupId==null||groupId==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"groupId必填");
+    public List<User> selectDever(Integer groupId) {
+        if (groupId == null || groupId == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "groupId必填");
         }
-        if(groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())){//如果当前登录用户为上海组,则返回上海开发组
+        if (groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())) {//如果当前登录用户为上海组,则返回上海开发组
             return this.selectByGroupId(12);
         }
-        if(groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())){//如果当前登录用户为杭州组,则返回杭州开发组
+        if (groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())) {//如果当前登录用户为杭州组,则返回杭州开发组
             return this.selectByGroupId(22);
         }
         return userMapper.selectByExample(null);//否则返回全部用户

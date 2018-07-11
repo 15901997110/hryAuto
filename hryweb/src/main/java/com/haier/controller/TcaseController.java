@@ -29,7 +29,7 @@ public class TcaseController {
 
 
     //增
-    @PostMapping("/insertOne.do")
+    @PostMapping("/insertOne")
     public Result insertOne(Tcase tcase){
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
@@ -39,7 +39,7 @@ public class TcaseController {
      * @param id
      * @return
      */
-    @PostMapping("/deleteOne.do")
+    @PostMapping("/deleteOne")
     public Result deleteOne(Integer id){
         return ResultUtil.success(tcaseService.deleteOne(id));
     }
@@ -49,25 +49,25 @@ public class TcaseController {
      * @param tcase
      * @return
      */
-    @PostMapping("/deleteByCondition.do")
+    @PostMapping("/deleteByCondition")
     public Result deleteByCondition(Tcase tcase){
         return ResultUtil.success(tcaseService.deleteByCondition(tcase));
     }
 
     //改
-    @PostMapping("/updateOne.do")
+    @PostMapping("/updateOne")
     public Result updateOne(Tcase tcase){
         return ResultUtil.success(tcaseService.updateOne(tcase.getId(),tcase));
     }
 
     //查-综合查询
-    @PostMapping("/selectByCondition.do")
+    @PostMapping("/selectByCondition")
     public Result selectByCondition(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize){
         return ResultUtil.success(tcaseService.selectByContion(tcaseCustom,pageNum,pageSize));
     }
 
     //查-主键查询
-    @PostMapping("/selectOne.do")
+    @PostMapping("/selectOne")
     public Result selectOne(Integer id){
         return ResultUtil.success(tcaseService.selectOne(id));
     }
@@ -76,7 +76,7 @@ public class TcaseController {
      * 运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
      * 适用于新建case页面和编辑case页面调用此接口测试case
      */
-    @PostMapping("/runCaseOne.do")
+    @PostMapping("/runCaseOne")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
@@ -84,7 +84,7 @@ public class TcaseController {
     /**
      * 运行单条case,传入caseid,适用于case列表页运行时调用此接口
      */
-    @PostMapping("/runCaseOneById.do")
+    @PostMapping("/runCaseOneById")
     public Result runCaseOneById(Integer id) throws HttpProcessException {
         return ResultUtil.success(tcaseService.runOne(id));
     }

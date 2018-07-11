@@ -20,37 +20,37 @@ public class TcustomController {
     @Autowired
     TcustomService tcustomService;
 
-    @PostMapping("/insertOne.do")
+    @PostMapping("/insertOne")
     public Result insertOne(Tcustom tcustom) {
         return ResultUtil.success(tcustomService.insertOne(tcustom));
     }
 
-    @PostMapping("/updateOne.do")
+    @PostMapping("/updateOne")
     public Result updateOne(Tcustom tcustom) {
         return ResultUtil.success(tcustomService.updateOne(tcustom));
     }
 
-    @PostMapping("/deleteOne.do")
+    @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(tcustomService.deleteOne(id));
     }
 
-    @PostMapping("/selectOne.do")
+    @PostMapping("/selectOne")
     public Result selectOne(Integer id) {
         return ResultUtil.success(tcustomService.selectOne(id));
     }
 
-    @PostMapping("/selectByCondition.do")
+    @PostMapping("/selectByCondition")
     public Result selectByCondition(Tcustom tcustom) {
         return ResultUtil.success(tcustomService.selectByCondition(tcustom));
     }
 
-    @PostMapping("/selectTcustomCustomByCondition.do")
+    @PostMapping("/selectTcustomCustomByCondition")
     public Result selectTcustomCustomByCondition(Tcustom tcustom){
         return ResultUtil.success(tcustomService.selectTcustomCustomByCondition(tcustom));
     }
 
-    @PostMapping("/runByTcustomId.do")
+    @PostMapping("/runByTcustomId")
     public Result runByTcustomId(Integer customId,Integer executeUserId){
         tcustomService.run(customId,executeUserId);
         return ResultUtil.success();

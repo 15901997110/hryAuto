@@ -1,5 +1,6 @@
 package com.haier.service.impl;
 
+import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
@@ -205,7 +206,7 @@ public class TcustomServiceImpl implements TcustomService {
         }
 
         if(tenvdetails==null||tenvdetails.size()<1){
-            throw new HryException(StatusCodeEnum.NOT_FOUND);
+            throw new HryException(StatusCodeEnum.NOT_FOUND,"定制id="+customId+",通过相应的serviceId和envId未从服务-环境映射表中找到记录!");
         }
 
         List<XmlClass> xmlClasses=new ArrayList<XmlClass>();
@@ -215,8 +216,9 @@ public class TcustomServiceImpl implements TcustomService {
             xmlClass.setName(ttt.getClazz());
             //设置参数,测试类运行时需要根据serviceId和envId来初始化并获取case信息
             Map<String,String> params=new HashMap<>();
-            params.put("serviceId",ttt.getServiceid()+"");
-            params.put("envId",ttt.getEnvid()+"");
+            params.put(ParamKeyEnum.SERVICEID.getKey(),ttt.getServiceid()+"");
+            params.put(ParamKeyEnum.ENVID.getKey(),ttt.getEnvid()+"");
+            params.put(ParamKeyEnum.DESIGNER.getKey(),"");//此字段为预留后期使用,先传空值
             xmlClass.setParameters(params);
             xmlClasses.add(xmlClass);
         }

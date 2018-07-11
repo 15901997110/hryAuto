@@ -161,7 +161,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/tservice/selectByConditionSimple.do",
+            url: "/tservice/selectByConditionSimple",
             data: {},
             dataType: "json",
             success: function (data) {
@@ -193,7 +193,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {},
             dataType: "json",
             success: function (data) {
@@ -225,7 +225,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/ti/selectByConditionSimple.do",
+            url: "/ti/selectByConditionSimple",
             data: {
                 serviceid: serviceid
             },
@@ -298,7 +298,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/ti/selectOne.do",
+            url: "/ti/selectOne",
             data: {
                 id: tId
             },
@@ -330,7 +330,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/ti/selectOne.do",
+            url: "/ti/selectOne",
             data: {
                 id: tId
             },
@@ -562,7 +562,7 @@
         } else {
             $.ajax({
                 type: "post",
-                url: "/tcase/insertOne.do",
+                url: "/tcase/insertOne",
                 data: {
                     casename: caseName,
                     remark: remark,
@@ -631,7 +631,7 @@
         } else {
             $.ajax({
                 type: "post",
-                url: "/tcase/runCaseOne.do",
+                url: "/tcase/runCaseOne",
                 data: {
                     casename: caseName,
                     remark: remark,

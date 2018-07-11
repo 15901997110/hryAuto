@@ -30,7 +30,7 @@ public class UserController {
     UserService userService;
 
     //按主键查询用户
-    @PostMapping("/selectOne.do")
+    @PostMapping("/selectOne")
     public Result selectOne(Integer id) {
         return ResultUtil.success(userService.selectOne(id));
     }
@@ -38,48 +38,55 @@ public class UserController {
     //
 
     //新增用户
-    @PostMapping("/insertOne.do")
+    @PostMapping("/insertOne")
     public Result insertOne(User user) {
         return ResultUtil.success(userService.insertOne(user));
     }
 
     //更新用户
-    @PostMapping("/updateOne.do")
+    @PostMapping("/updateOne")
     public Result updateOne(User user) {
         return ResultUtil.success(userService.updateOne(user.getId(), user));
     }
 
     //删除用户
-    @PostMapping("/deleteOne.do")
+    @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(userService.deleteOne(id));
     }
 
-    //综合查询
-    @PostMapping("/selectByCondition.do")
+    //综合查询-返回pageInfo
+    @PostMapping("/selectByConditionWithPageInfo")
     public Result selectByCondition(User user, Integer pageNum, Integer pageSize) {
         return ResultUtil.success(userService.selectByCondition(user, pageNum, pageSize));
     }
 
+    //综合查询-不带分页信息-返回List
+    @PostMapping("/selectByCondition")
+    public Result selectByCondition(User user) {
+        return ResultUtil.success(userService.selectByCondition(user));
+    }
+
+
     //根据GroupId查询相应组的用户列表
-    @PostMapping("/selectByGroupId.do")
+    @PostMapping("/selectByGroupId")
     public Result selectByGroupId(Integer groupId) {
         return ResultUtil.success(userService.selectByGroupId(groupId));
     }
 
-    @PostMapping("/selectDever.do")
-    public Result selectDever(Integer groupId){
+    @PostMapping("/selectDever")
+    public Result selectDever(Integer groupId) {
         return ResultUtil.success(userService.selectDever(groupId));
     }
 
     //修改用户密码
-    @PostMapping("/modifyPwd.do")
+    @PostMapping("/modifyPwd")
     public Result modifyPwd(String identity, String oldPwd, String newPwd) {
         return ResultUtil.success(userService.modifyPwd(identity, oldPwd, newPwd));
     }
 
     //登录
-    @PostMapping("/login.do")
+    @PostMapping("/login")
     public Result login(HttpServletRequest request, HttpServletResponse response, String identity, String password) {
         HttpSession session;
         User user = userService.findUser(identity, password);
@@ -94,7 +101,7 @@ public class UserController {
             identityCookie.setPath("/");
             identityCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
 
-            Cookie uidCookie = new Cookie("uidCookie", user.getId()+"");
+            Cookie uidCookie = new Cookie("uidCookie", user.getId() + "");
             uidCookie.setPath("/");
             uidCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
 
@@ -116,7 +123,7 @@ public class UserController {
     }
 
     //登出
-    @PostMapping("/logout.do")
+    @PostMapping("/logout")
     public Result logout(HttpSession session) {
         Object userSession = null;
         if (session != null) {

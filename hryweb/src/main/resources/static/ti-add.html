@@ -164,7 +164,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/user/selectDever.do",
+            url: "/user/selectDever",
             data: {
                 groupId:groupId
             },
@@ -201,7 +201,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tservice/selectByCondition",
             data: {
                 pageNum:1,
                 pageSize:1000
@@ -330,7 +330,7 @@
         }else{
             $.ajax({
                 type: "post",
-                url: "/ti/insertOne.do",
+                url: "/ti/insertOne",
                 data: {
                     serviceid:serviceid,
                     iuri:iuri,

@@ -21,18 +21,19 @@ import java.util.Map;
 @RequestMapping("/enum")
 public class EnumController {
     @GetMapping("/allEnum")
-    public Map<String,List<Map<String, Object>>> getAllEnum(){
-        Map<String,List<Map<String,Object>>> map=new LinkedHashMap<>();
-        map.put(AssertTypeEnum.class.getSimpleName(),this.getAssertTypeEnum());
-        map.put(ContentTypeEnum.class.getSimpleName(),this.getContentTypeEnum());
-        map.put(EnvEnum.class.getSimpleName(),this.getEnvEnum());
-        map.put(GroupEnum.class.getSimpleName(),this.getGroupEnum());
-        map.put(HttpTypeEnum.class.getSimpleName(),this.getHttpTypeEnum());
-        map.put(RequestMethodTypeEnum.class.getSimpleName(),this.getRequestMethodTypeEnum());
-        map.put(ResponseTypeEnum.class.getSimpleName(),this.getResponseTypeEnum());
-        map.put(StatusCodeEnum.class.getSimpleName(),this.getStatusCodeEnum());
+    public Map<String, List<Map<String, Object>>> getAllEnum() {
+        Map<String, List<Map<String, Object>>> map = new LinkedHashMap<>();
+        map.put(AssertTypeEnum.class.getSimpleName(), this.getAssertTypeEnum());
+        map.put(ContentTypeEnum.class.getSimpleName(), this.getContentTypeEnum());
+        map.put(EnvEnum.class.getSimpleName(), this.getEnvEnum());
+        map.put(GroupEnum.class.getSimpleName(), this.getGroupEnum());
+        map.put(HttpTypeEnum.class.getSimpleName(), this.getHttpTypeEnum());
+        map.put(RequestMethodTypeEnum.class.getSimpleName(), this.getRequestMethodTypeEnum());
+        map.put(ResponseTypeEnum.class.getSimpleName(), this.getResponseTypeEnum());
+        map.put(StatusCodeEnum.class.getSimpleName(), this.getStatusCodeEnum());
         return map;
     }
+
     @GetMapping("/assertTypeEnum")
     public List<Map<String, Object>> getAssertTypeEnum() {
         return EnumUtil.getEnumList(AssertTypeEnum.values());
@@ -44,9 +45,10 @@ public class EnumController {
     }
 
     @GetMapping("/dbTypeEnum")
-    public DBTypeEnum[] getDbTypeEnum(){
+    public DBTypeEnum[] getDbTypeEnum() {
         return DBTypeEnum.values();
     }
+
     @GetMapping("/envEnum")
     public List<Map<String, Object>> getEnvEnum() {
         return EnumUtil.getEnumList(EnvEnum.values());
@@ -58,7 +60,7 @@ public class EnumController {
     }
 
     @GetMapping("/groupEnum")
-    public List<Map<String,Object>> getGroupEnum(){
+    public List<Map<String, Object>> getGroupEnum() {
         return EnumUtil.getEnumList(GroupEnum.values());
     }
 

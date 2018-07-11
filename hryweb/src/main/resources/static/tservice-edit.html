@@ -80,7 +80,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/user/selectDever.do",
+            url: "/user/selectDever",
             data: {
                 groupId:groupId
             },
@@ -119,7 +119,7 @@
         $("#id").val(id);
         $.ajax({
             type: "post",
-            url: "/tservice/selectOne.do",
+            url: "/tservice/selectOne",
             data: {
                 tserviceId: id
             },
@@ -234,7 +234,7 @@
         }*/else{
             $.ajax({
                 type: 'POST',
-                url: '/tservice/updateOne.do',
+                url: '/tservice/updateOne',
                 data:{
                     id:id,
                     servicekey:servicekey,

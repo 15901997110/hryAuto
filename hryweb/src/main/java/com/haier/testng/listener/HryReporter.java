@@ -8,26 +8,36 @@ import com.aventstack.extentreports.model.TestAttribute;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.haier.po.Tcase;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.*;
+import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
 
 import java.io.File;
 import java.util.*;
 
 /**
- *@description:
- *@params:
- *@return:
- *@author: luqiwei
- *@date: 2018-07-10
+ * @description:
+ * @params:
+ * @return:
+ * @author: luqiwei
+ * @date: 2018-07-10
  */
+@Slf4j
 public class HryReporter implements IReporter {
-   private String reportPath;
-   private String fileName;
-    public HryReporter(String reportPath,String fileName){
-        this.reportPath=reportPath;
-        this.fileName=fileName;
+    private String reportPath;
+    private String fileName;
+    private String customName;
+
+    public HryReporter(String reportPath, String fileName) {
+        this.reportPath = reportPath;
+        this.fileName = fileName;
+    }
+
+    public HryReporter(String reportPath, String fileName, String customName) {
+        this.reportPath = reportPath;
+        this.fileName = fileName;
+        this.customName = customName;
     }
 
     private ExtentReports extent;
@@ -116,15 +126,18 @@ public class HryReporter implements IReporter {
         if (!reportDir.exists() && !reportDir.isDirectory()) {
             reportDir.mkdir();
         }
-        Tcase tcase=new Tcase();
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath + fileName);
         /*ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);*/
         // 设置静态文件的DNS
         //怎么样解决cdn.rawgit.com访问不了的情况
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
 
-        htmlReporter.config().setDocumentTitle("api自动化测试报告");
-        htmlReporter.config().setReportName("api自动化测试报告");
+        htmlReporter.config().setDocumentTitle("很容易自动化测试报告");
+        if (customName != null) {
+            htmlReporter.config().setReportName(customName);
+        } else {
+            htmlReporter.config().setReportName("未指定定制名称");
+        }
         htmlReporter.config().setChartVisibilityOnOpen(true);
         htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
         htmlReporter.config().setTheme(Theme.STANDARD);
@@ -157,8 +170,50 @@ public class HryReporter implements IReporter {
             treeSet.addAll(tests.getAllResults());
             for (ITestResult result : treeSet) {
                 Object[] parameters = result.getParameters();
-                String name = "";
-                //如果有参数，则使用参数的toString组合代替报告中的name
+                String name;
+
+
+                String desc = "";
+                String testName = "";
+                try {
+                    testName = result.getMethod().getMethod().getAnnotation(Test.class).testName();
+                    desc = result.getMethod().getMethod().getAnnotation(Test.class).description();
+                } catch (RuntimeException e) {
+
+                }
+                log.debug("测试方法上的@Test注解的testName=" + testName);
+                log.debug("测试方法上的@Test注解的description=" + desc);
+                log.debug("result.getMethod().getMethodName()=" + result.getMethod().getMethodName());
+                log.debug("result.getMethod().getDescription()=" + result.getMethod().getDescription());
+
+
+                name = testName + "(" + desc + ")";
+                if ("".equals(desc) && "".equals(testName)) {
+                    name = result.getMethod().getMethodName();
+
+                }
+
+                if (extenttest == null) {
+                    test = extent.createTest(name);
+                } else {
+                    //作为子节点进行创建时，设置同父节点的标签一致，便于报告检索。
+                    test = extenttest.createNode(name).assignCategory(categories);
+                }
+
+                /**
+                 * 如果有参数,测试报告中将参数展示出来
+                 */
+                String p="";
+                if (parameters != null && parameters.length > 0) {
+                    for (Object param : parameters) {
+                        p+=param.toString();
+                    }
+                }
+
+
+
+
+ /*               //如果有参数，则使用参数的toString组合代替报告中的name
                 for (Object param : parameters) {
                     name += param.toString();
                 }
@@ -174,7 +229,7 @@ public class HryReporter implements IReporter {
                 } else {
                     //作为子节点进行创建时，设置同父节点的标签一致，便于报告检索。
                     test = extenttest.createNode(name).assignCategory(categories);
-                }
+                }*/
                 //test.getModel().setDescription(description.toString());
                 //test = extent.createTest(result.getMethod().getMethodName());
                 for (String group : result.getMethod().getGroups())

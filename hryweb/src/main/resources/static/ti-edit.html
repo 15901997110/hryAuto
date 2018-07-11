@@ -80,7 +80,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tservice/selectByCondition",
             data: {
                 pageNum: 1,
                 pageSize: 1000
@@ -152,7 +152,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/user/selectByGroupId.do",
+            url: "/user/selectByGroupId",
             data: {
                 groupId: groupId
             },
@@ -194,7 +194,7 @@
 
         $.ajax({
             type: "post",
-            url: "/ti/selectOne.do",
+            url: "/ti/selectOne",
             data: {
                 id: id
             },
@@ -438,7 +438,7 @@
         } else {
             $.ajax({
                 type: 'POST',
-                url: '/ti/updateOne.do',
+                url: '/ti/updateOne',
                 data: {
                     id: id,
                     serviceid: serviceid,

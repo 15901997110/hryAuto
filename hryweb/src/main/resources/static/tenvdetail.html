@@ -121,7 +121,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tenvdetail/selectByCondition.do",
+            url: "/tenvdetail/selectByCondition",
             data: {
                 servicekey:servicekey,
                 envKey:envKey,
@@ -276,7 +276,7 @@
         var swaggerUrl = $("#swaggerUrl").val();
         $.ajax({
             type: "post",
-            url: "/tenvdetail/selectByCondition.do",
+            url: "/tenvdetail/selectByCondition",
             data: {
                 servicekey:servicekey,
                 envKey:envKey,
@@ -437,7 +437,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tenvdetail/deleteOne.do',
+                url: '/tenvdetail/deleteOne',
                 data:{
                     id:id
                 },
