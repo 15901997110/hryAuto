@@ -13,20 +13,31 @@ import java.util.List;
 public interface UserService {
 
     Integer insertOne(User user);
+
     //如果用户名和密码存在并匹配,返回User,否则返回null
-    User findUser(String username,String password);
+    User findUser(String username, String password);
+
     //根据id查找用户
     User selectOne(Integer id);
-    //综合条件查询用户
-    PageInfo<User> selectByCondition(User user,Integer pageNum,Integer pageSize);
+
+    //综合条件查询用户列表-带分页
+    PageInfo<User> selectByCondition(User user, Integer pageNum, Integer pageSize);
+
+    //综合条件查询用户列表-不带分页
+    List<User> selectByCondition(User user);
+
     //根据主键更新用户
-    Integer updateOne(Integer id,User user);
+    Integer updateOne(Integer id, User user);
+
     //删除用户(逻辑删除)
     Integer deleteOne(Integer id);
+
     //修改用户密码
-    Integer modifyPwd(String identity,String oldPwd,String newPwd);
+    Integer modifyPwd(String identity, String oldPwd, String newPwd);
+
     //按groupId查询相应user List
     List<User> selectByGroupId(Integer groupid);
+
     //按groupId查询开发人员,上海组(11-19)返回上海开发组(12),杭州返回杭州开发组
     List<User> selectDever(Integer groupid);
 }

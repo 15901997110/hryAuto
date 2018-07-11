@@ -28,7 +28,7 @@ public class TserviceController {
     /**
      * 查询服务列表,返回分页信息
      * */
-    @PostMapping(value="/selectByCondition.do")
+    @PostMapping(value="/selectByCondition")
     public Result selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize){
         return ResultUtil.success(tserviceService.selectByCondition(tservice,pageNum,pageSize));
     }
@@ -38,7 +38,7 @@ public class TserviceController {
      * @param tservice
      * @return
      */
-    @PostMapping("/selectByConditionSimple.do")
+    @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Tservice tservice){
         return ResultUtil.success(tserviceService.selectByCondition(tservice));
     }
@@ -46,7 +46,7 @@ public class TserviceController {
     /**
      *查询单个服务信息
      * */
-    @PostMapping(value= "/selectOne.do")
+    @PostMapping(value= "/selectOne")
     public Result selectOne(Integer tserviceId){
         Tservice tservice=tserviceService.selectOne(tserviceId);
         log.info("查询单条服务id="+tserviceId);
@@ -56,7 +56,7 @@ public class TserviceController {
     /**
      *添加服务
      * */
-    @PostMapping(value="/insertOne.do")
+    @PostMapping(value="/insertOne")
     public Result insertOne(Tservice tservice){
         log.info("新增的服务标识="+tservice.getServicekey()+",服务描述="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
         return ResultUtil.success(tserviceService.insertOne(tservice));
@@ -65,7 +65,7 @@ public class TserviceController {
     /**
      * 编辑服务
      * */
-    @PostMapping(value = "/updateOne.do")
+    @PostMapping(value = "/updateOne")
     public Result updateOne(Tservice tservice){
         return ResultUtil.success(tserviceService.updateOne(tservice.getId(),tservice));
     }
@@ -73,7 +73,7 @@ public class TserviceController {
     /**
      * 删除服务
      * */
-    @PostMapping(value = "/deleteOne.do")
+    @PostMapping(value = "/deleteOne")
     public Result deleteOne(Integer id){
         return ResultUtil.success(tserviceService.deleteOne(id));
     }

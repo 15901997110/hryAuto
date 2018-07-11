@@ -118,7 +118,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tservice/selectByConditionSimple.do",
+            url: "/tservice/selectByConditionSimple",
             data: {
 
             },
@@ -157,7 +157,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {
 
             },
@@ -238,7 +238,7 @@
         }else{
             $.ajax({
                 type: "post",
-                url: "/tenvdetail/insertOne.do",
+                url: "/tenvdetail/insertOne",
                 data: {
                     serviceid:service,
                     envid:env,

@@ -27,7 +27,7 @@ public class TiController {
     TiService tiService;
 
     //增
-    @PostMapping("/insertOne.do")
+    @PostMapping("/insertOne")
     public Result insertOne(Ti ti) {
         return ResultUtil.success(tiService.insertOne(ti));
     }
@@ -35,7 +35,7 @@ public class TiController {
     /**
      * 查询单个接口信息
      */
-    @PostMapping("/selectOne.do")
+    @PostMapping("/selectOne")
     public Result selectOne(Integer id) {
         return ResultUtil.success(tiService.selectOne(id));
     }
@@ -52,18 +52,18 @@ public class TiController {
      * @author: luqiwei
      * @date: 2018-05-24
      */
-    @PostMapping("/selectByCondition.do")
+    @PostMapping("/selectByCondition")
     public Result selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         return ResultUtil.success(tiService.selectByCondition(tiCustom, pageNum, pageSize));
     }
 
-    @PostMapping("/selectByConditionSimple.do")
+    @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Ti ti){
         return ResultUtil.success(tiService.selectByCondition(ti));
     }
 
     //改
-    @PostMapping("updateOne.do")
+    @PostMapping("updateOne")
     public Result updateOne(Ti ti) {
         return ResultUtil.success(tiService.updateOne(ti.getId(), ti));
     }
@@ -78,7 +78,7 @@ public class TiController {
      * @author: luqiwei
      * @date: 2018-05-24
      */
-    @PostMapping("/deleteOne.do")
+    @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(tiService.deleteOne(id));
     }
@@ -91,7 +91,7 @@ public class TiController {
      * @param ti
      * @return
      */
-    @PostMapping("/deleteByCondition.do")
+    @PostMapping("/deleteByCondition")
     public Result deleteByCondition(Ti ti) {
 
         return ResultUtil.success(tiService.deleteByCondition(ti));

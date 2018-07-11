@@ -25,7 +25,7 @@ public class TenvController {
     /**
      * 查询全部环境列表处理
      */
-    @PostMapping(value = "/selectAll.do")
+    @PostMapping(value = "/selectAll")
     public Result selectAll() {
         return ResultUtil.success(tenvService.selectAll());
     }
@@ -35,7 +35,7 @@ public class TenvController {
      * update by lish 2018-05-18 17:41
      */
 
-    @PostMapping(value = "/selectOne.do")
+    @PostMapping(value = "/selectOne")
     public Result selectOne(Integer id) {
         return ResultUtil.success(tenvService.selectOne(id));
     }
@@ -44,20 +44,20 @@ public class TenvController {
      * 新增环境处理
      * update by lish 2018-05-18 17:41
      */
-    @PostMapping(value = "/insertOne.do")
+    @PostMapping(value = "/insertOne")
     public Result insertOne(Tenv tenv) {
         return ResultUtil.success(tenvService.insertOne(tenv));
 
     }
 
 
-    @PostMapping(value = "/deleteOne.do")
+    @PostMapping(value = "/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(tenvService.deleteOne(id));
     }
 
 
-    @PostMapping(value = "/updateOne.do")
+    @PostMapping(value = "/updateOne")
     public Result updateOne(Tenv tenv) {
         return ResultUtil.success(tenvService.updateOne(tenv.getId(), tenv));
     }

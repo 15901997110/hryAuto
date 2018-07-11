@@ -234,7 +234,7 @@
         //获取服务环境列表
         $.ajax({
             type: "post",
-            url: "/tenvdetail/selectTenvdetailCustomListByCondition.do",
+            url: "/tenvdetail/selectTenvdetailCustomListByCondition",
             dataType: "json",
             success: function (data) {
                 var status=data.status;
@@ -273,7 +273,7 @@
         //获取开发人员列表
         $.ajax({
             type: "post",
-            url: "/user/selectDever.do ",
+            url: "/user/selectDever ",
             data: {
                 groupId: $.cookie('groupidCookie')
             },

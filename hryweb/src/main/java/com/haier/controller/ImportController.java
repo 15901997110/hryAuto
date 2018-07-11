@@ -91,8 +91,8 @@ public class ImportController {
             //DisableCircularReferenceDetect禁止引用传递,(fastJson在此处对$ref对象处理不好,故这里直接禁用)
             jsonObject = JSON.parseObject(responseJson, Feature.DisableCircularReferenceDetect);
         } catch (Exception e) {
-            log.info("swaggerUrl:"+swaggerUrl);
-            log.info("get swaggerUrl返回的内容:"+responseJson);
+            log.info("swaggerUrl:" + swaggerUrl);
+            log.info("get swaggerUrl返回的内容:" + responseJson);
             log.error("swagger json序列化为JSONObject时出现异常:", e);
             throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR);
         }

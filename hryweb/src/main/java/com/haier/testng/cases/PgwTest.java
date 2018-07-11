@@ -32,11 +32,6 @@ import java.util.List;
  */
 @Slf4j
 public class PgwTest {
-    /*    public PgwTest( Integer serviceId,Integer envId, String caseDesigner){
-            this.envId=envId;
-            this.serviceId=serviceId;
-            this.caseDesigner=caseDesigner;
-        }*/
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -44,7 +39,6 @@ public class PgwTest {
     private String url;
     private Tservice tservice;
     private Tenvdetail tenvdetail;
-
     private RunService runService = SpringContextHolder.getBean(RunService.class);
 
     @Parameters({"serviceId", "envId", "caseDesigner"})
@@ -74,58 +68,60 @@ public class PgwTest {
         return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
     }
 
-    @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "CaseDataProvider", description = "交易查询")
+    @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
+        log.debug(params.toString());
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
 
-    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "CaseDataProvider", description = "付款到卡")
+    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(Params params) {
+        log.info("自己打印的日志:"+params.toString());
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
 
-    @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "CaseDataProvider", description = "转账到账户")
+    @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(Params params) {
+        System.out.println("System.out.println():"+params);
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
 
 
-    @DataProvider(name = "CaseDataProvider")
+    @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         Object[] objects;
         String iUri;
 
-        //testName未填写
+        //testName可能未填写
         try {
             iUri = method.getAnnotation(Test.class).testName();
             if (iUri == null || "".equals(iUri)) {
                 return null;
             }
         } catch (NullPointerException e) {
-            log.error("获取测试方法的@Test注解异常:", e);
+            log.error("获取测试方法的@Test注解异常:" + method.getName(), e);
             return null;
         }
-        Integer paramCount = method.getParameterCount();
 
-        //测试方法参数个数为0,返回null
-        if (paramCount == 0) {
-            return null;
-        }
         Ti ti = runService.getTi(this.serviceId, iUri);
         if (ti == null) {
             return null;
         }
-        objects = new Object[1][paramCount];
-        for (int i = 0; i < paramCount; i++) {
-
-        }
         List<Tcase> tcases = runService.getTcase(ti.getId(), this.envId, this.caseDesigner);
-        objects = new Object[tcases.size()][method.getParameterCount()];
+        if (tcases == null || tcases.size() == 0) {
+            return null;
+        }
+
+        objects = new Object[tcases.size()];
         for (int i = 0; i < tcases.size(); i++) {
-            objects[i] = new Object[]{ti, tcases.get(i)};
+            Params params=new Params();
+            params.setTi(ti);
+            params.setTcase(tcases.get(i));
+
+            objects[i] = params;
         }
         return objects;
     }

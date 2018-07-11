@@ -122,7 +122,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tservice/selectByConditionSimple.do",
+            url: "/tservice/selectByConditionSimple",
             data: {
 
             },
@@ -161,7 +161,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {
 
             },
@@ -202,7 +202,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tenvdetail/selectOne.do",
+            url: "/tenvdetail/selectOne",
             data: {
                 id: id
             },
@@ -295,7 +295,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tenvdetail/updateOne.do',
+                url: '/tenvdetail/updateOne',
                 data:{
                     id:id,
                     serviceid:service,

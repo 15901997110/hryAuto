@@ -25,46 +25,46 @@ public class TenvdetailController {
     TenvdetailService tenvdetailService;
 
     //增
-    @PostMapping("/insertOne.do")
+    @PostMapping("/insertOne")
     public Result insertOne(Tenvdetail tenvdetail){
         return ResultUtil.success(tenvdetailService.insertOne(tenvdetail));
     }
 
     //删
-    @PostMapping("/deleteOne.do")
+    @PostMapping("/deleteOne")
     public Result deleteOne(Integer id){
         return ResultUtil.success(tenvdetailService.deleteOne(id));
     }
 
     //改
-    @PostMapping("/updateOne.do")
+    @PostMapping("/updateOne")
     public Result updateOne(Tenvdetail tenvdetail){
         return ResultUtil.success(tenvdetailService.updateOne(tenvdetail));
     }
 
     //根据id查一条
-    @PostMapping("/selectOne.do")
+    @PostMapping("/selectOne")
     public Result selectOne(Integer id){
         return ResultUtil.success(tenvdetailService.selectOne(id));
     }
 
 
     //返回List<TenvdetailCustom>
-    @PostMapping("/selectTenvdetailCustomListByCondition.do")
+    @PostMapping("/selectTenvdetailCustomListByCondition")
     public Result selectTenvdetailCustomListByCondition(TenvdetailCustom tenvdetailCustom){
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom));
     }
 
 
     //查-仅查询tenvdetail表数据,返回list
-    @PostMapping("/selectTenvdetailListByCondition.do")
+    @PostMapping("/selectTenvdetailListByCondition")
     public Result selectTenvdetailListByCondition(Tenvdetail tenvdetail){
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetail));
     }
 
 
     //查-关联表查询,返回包装类,并且携带pageinfo
-    @PostMapping("/selectByCondition.do")
+    @PostMapping("/selectByCondition")
     public Result selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize){
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom,pageNum,pageSize));
     }

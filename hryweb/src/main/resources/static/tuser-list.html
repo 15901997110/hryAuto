@@ -126,7 +126,7 @@
 
         $.ajax({
             type: "post",
-            url: "/user/selectByCondition.do",
+            url: "/user/selectByConditionWithPageInfo",
             data: {
                 identity:identity,
                 realname:realname,
@@ -280,7 +280,7 @@
         var groupid = $("#groupid").val();
         $.ajax({
             type: "post",
-            url: "/user/selectByCondition.do",
+            url: "/user/selectByConditionWithPageInfo",
             data: {
                 identity:identity,
                 realname:realname,
@@ -437,7 +437,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/user/deleteOne.do',
+                url: '/user/deleteOne',
                 data:{
                     id:id
                 },

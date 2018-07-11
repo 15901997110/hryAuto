@@ -153,7 +153,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/user/selectDever.do",
+            url: "/user/selectDever",
             data: {
                 groupId:groupId
             },
@@ -213,7 +213,7 @@
         }*/else{
             $.ajax({
                 type: "post",
-                url: "/tservice/insertOne.do",
+                url: "/tservice/insertOne",
                 data: {
                     servicekey:servicekey,
                     servicename:servicename,

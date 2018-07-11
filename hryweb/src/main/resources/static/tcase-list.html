@@ -161,7 +161,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tcase/selectByCondition.do",
+            url: "/tcase/selectByCondition",
             data: {
                 servicekey:servicekey,
                 envid:envKey,
@@ -353,7 +353,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tcase/selectByCondition.do",
+            url: "/tcase/selectByCondition",
             data: {
                 servicekey:servicekey,
                 envid:envKey,
@@ -504,7 +504,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tcase/runCaseOneById.do",
+            url: "/tcase/runCaseOneById",
             data: {
                 id:caseId
             },
@@ -577,7 +577,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/user/selectByGroupId.do",
+            url: "/user/selectByGroupId",
             data: {
             },
             dataType: "json",
@@ -599,7 +599,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {
             },
             dataType: "json",
@@ -669,7 +669,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tcase/deleteOne.do',
+                url: '/tcase/deleteOne',
                 data:{
                     id:id
                 },

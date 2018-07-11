@@ -82,7 +82,7 @@
         var userid=$.cookie('uidCookie');
         $.ajax({
             type: "post",
-            url: "/tcustom/selectTcustomCustomByCondition.do",
+            url: "/tcustom/selectTcustomCustomByCondition",
             data: {
                 userid:userid
             },
@@ -163,7 +163,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tcustom/deleteOne.do',
+                url: '/tcustom/deleteOne',
                 data:{
                     id:id
                 },
@@ -195,7 +195,7 @@
         var userid=$.cookie('uidCookie');
         $.ajax({
             type: "post",
-            url: "/tcustom/runByTcustomId.do",
+            url: "/tcustom/runByTcustomId",
             data: {
                 customId:customId,
                 executeUserId:userid

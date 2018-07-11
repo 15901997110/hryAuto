@@ -128,7 +128,7 @@
 
         $.ajax({
             type: "post",
-            url: "/ti/selectByCondition.do",
+            url: "/ti/selectByCondition",
             data: {
                 iuri:iuri,
                 idev:idev,
@@ -304,7 +304,7 @@
         var ResponseTypeEnum=allEnum.ResponseTypeEnum;
         $.ajax({
             type: "post",
-            url: "/ti/selectByCondition.do",
+            url: "/ti/selectByCondition",
             data: {
                 servicekey:serviceid,
                 iuri:iuri,
@@ -454,7 +454,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/ti/deleteOne.do',
+                url: '/ti/deleteOne',
                 data:{
                     id:id
                 },

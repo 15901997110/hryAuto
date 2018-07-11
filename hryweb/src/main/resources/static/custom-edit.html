@@ -114,7 +114,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tcustom/selectOne.do",
+            url: "/tcustom/selectOne",
             data: {
                 id: id
             },
@@ -214,7 +214,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tservice/selectByConditionSimple.do",
+            url: "/tservice/selectByConditionSimple",
             data: {
 
             },
@@ -256,7 +256,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {
 
             },
@@ -315,7 +315,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/tcustom/updateOne.do',
+                url: '/tcustom/updateOne',
                 data:{
                     id:id,
                     customname:customname,

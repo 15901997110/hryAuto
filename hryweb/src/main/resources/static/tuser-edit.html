@@ -138,7 +138,7 @@
         //alert("要编辑的用户id="+id);
         $.ajax({
             type: "post",
-            url: "/user/selectOne.do",
+            url: "/user/selectOne",
             data: {
                 id: id
             },
@@ -207,7 +207,7 @@
         }else{
             $.ajax({
                 type: 'POST',
-                url: '/user/updateOne.do',
+                url: '/user/updateOne',
                 data:{
                     id:id,
                     groupid:groupid,

@@ -111,7 +111,7 @@
         var servicename = $("#servicename").val();
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tservice/selectByCondition",
             data: {
                 id:id,
                 servicekey:servicekey,
@@ -252,7 +252,7 @@
         var servicename = $("#servicename").val();
         $.ajax({
             type: "post",
-            url: "/tservice/selectByCondition.do",
+            url: "/tservice/selectByCondition",
             data: {
 
                 id:id,
@@ -376,7 +376,7 @@
             //alert("要删除的id="+id);
             $.ajax({
                 type: 'POST',
-                url: '/tservice/deleteOne.do',
+                url: '/tservice/deleteOne',
                 data:{
                     id:id
                 },
