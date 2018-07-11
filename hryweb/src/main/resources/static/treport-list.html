@@ -1,0 +1,616 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>测试报告列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的测试 <span class="c-gray en">&gt;</span>测试报告 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div >
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:38px;">报告名称：</label><input type="text" name="reportname" id="reportname" placeholder=" " style="width:12%" class="input-text">
+            <label style="margin-left:23px;">环境：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="envKey" id="envKey">
+                    <option value="">请选择</option>
+                </select>
+            </span>
+            <label style="margin-left:55px;">执行人：</label><!--<input type="text" name="username" id="username" placeholder=" " style="width:12%" class="input-text">-->
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="username" id="username">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
+        </div>
+        <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:37px;">定制名称：</label><input type="text" name="customname" id="customname" placeholder=" " style="width:12%" class="input-text">
+            <label style="margin-left:23px;">状态：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="status" id="status">
+                    <option value="" selected>请选择</option>
+                    <option value="5" >报告中</option>
+                    <option value="10" >报告完成</option>
+                </select>
+            </span>
+            <label style="margin-left:37px;">测试时间：</label>
+            <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d'})" id="datemax" class="input-text Wdate" style="width:120px;">
+            <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+            <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
+        </div>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="l">
+            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+        </span>
+        <span class="r">共有数据：<strong id="total">0</strong> 条</span>
+    </div>
+    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-bg table-hover table-sort" id="table">
+            <thead>
+            <tr class="text-c">
+                <th width="5%"><input name="" type="checkbox" value=""></th>
+                <th width="5%">ID</th>
+                <th width="10%">测试报告名称</th>
+                <th width="10%">执行人</th>
+                <th width="10%">定制测试名称</th>
+                <th width="10%">环境</th>
+                <th width="20">服务</th>
+                <th width="10%">测试时间</th>
+                <th width="10%">状态</th>
+                <th width="10%">操作</th>
+            </tr>
+            </thead>
+            <tbody id="treportList">
+            </tbody>
+        </table>
+        <!--分页-->
+        <div class="dataTables_info" id="dataTables_info">
+            <span>共有 <strong id="totalPages"></strong> 页</span>
+            <span>当前第 <strong id="now"></strong> 页</span>
+        </div>
+        <div class="dataTables_paginate paging_simple_numbers" id="pager">
+        </div>
+    </div>
+</div>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
+<script type="text/javascript">
+    var layerIndex;
+    //loading
+    $(function () {
+        $.ajaxSetup({
+            layerIndex:-1,
+            beforeSend: function () { //插件加载前
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
+            },
+            error: function () { //报错时执行
+                layer.alert('显示异常，请刷新后重试', {
+                    skin: 'layui-layer-molv'
+                    , closeBtn: 0
+                    , shift: 4 //动画类型
+                });
+            }
+        });
+    });
+
+    function empty(){
+        $("#reportname").val("");
+        $("#username option:first").prop("selected", 'selected');
+        $("#customname").val("");
+        $("#status option:first").prop("selected", 'selected');
+        $("#envKey option:first").prop("selected", 'selected');
+        $("#datemin").val("");
+        $("#datemax").val("");
+
+    }
+
+    //初始加载
+    $(document).ready(function () {
+        var realName=$.cookie('realnameCookie');
+        var list=getEnvList();
+        var html="";
+        for(i=0;i<list.length;i++){
+            var row=list[i];
+            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
+            html=html+rowHtml;
+        }
+        $("#envKey").append(html);
+
+        var dev=devGroup();
+        var htmldev="";
+        for(var i=0;i<dev.length;i++){
+            var rowHtml="";
+            var row=dev[i];
+            if(realName == row.realname){
+                rowHtml="<option value=\""+row.realname+"\" selected>"+row.realname+"</option>";
+            }else{
+                rowHtml="<option value=\""+row.realname+"\">"+row.realname+"</option>";
+            }
+            htmldev=htmldev+rowHtml;
+        }
+        $("#username").append(htmldev);
+        $("#username").select2();
+
+        pageSkip(1);
+
+    });
+
+    //分页查询
+    function pageSkip(index){
+        if(index==0){
+            return;
+        }
+        var reportname = $("#reportname").val();
+        var envKey = $("#envKey").val();
+        var username = $("#username").val();
+        var customname = $("#customname").val();
+        var status = $("#status").val();
+        var startTime = $("#datemin").val();
+        var endTime = $("#datemax").val();
+
+        $.ajax({
+            type: "post",
+            url: "/report/selectByCondition",
+            data: {
+                reportname:reportname,
+                envid:envKey,
+                username:username,
+                customname:customname,
+                status:status,
+                startTime:startTime,
+                endTime:endTime,
+                pageNum:index,
+                pageSize:10
+            },
+            dataType: "json",
+
+            success: function (data) {
+
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data.list;
+                var total=data.data.total;
+                var pages=data.data.pages;
+                var now=data.data.pageNum;
+                var beforePage=data.data.prePage;
+                var nextPage=data.data.nextPage;
+                console.log(data);
+                var html = "";
+                var pagesHtml="";
+                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
+                    "            <span id=\"pages\">";
+                var pageEnd="</span>\n" +
+                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
+
+                if(status == 0){
+                    $("#total").html("");
+                    $("#treportList").html("");
+                    $("#totalPages").html("");
+                    $("#now").html("");
+                    $("#pager").html("");
+
+                    for(var i=0;i<list.length;i++){
+                        var row = list[i];
+
+                        var status="";
+                        if(row.status == 5){
+                            status="报告中";
+                        }else{
+                            status="报告完成";
+                        }
+
+
+
+
+
+
+                        var rowHtml = "<tr class=\"text-c\">\n" +
+                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
+                            "<td>"+row.id+"</td>\n" +
+                            "<td>"+row.reportname+"</td>\n" +
+                            "<td>"+row.username+"</td>\n" +
+                            "<td >"+row.customname+/*"|"+row.servicename+*/"</td>\n" +
+                            "<td>"+row.envkey+"</td>\n" +
+                            "<td>"+row.serviceid+"</td>\n" +
+                            "<td>"+row.testtime+"</td>\n" +
+                            "<td>"+status+"</td>\n" +
+                            "<td class=\"f-14\">" +
+                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"treport_details("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"treport_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+                            "</td>\n" +
+                            "</tr>";
+                        html = html + rowHtml;
+                    }
+
+                    if(pages<5){
+                        for(var k=0;k<pages;k++){
+                            if((k+1)==now){
+                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
+                            }else{
+                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
+                            }
+
+                            pagesHtml= pagesHtml + pageHtml;
+                        }
+
+                    }else{
+                        if(now>4 && now<(pages-3)){
+                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+                                "<span> …</span>";
+                            for(i=(now-1);i<now+2;i++){
+                                if(i==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }
+                                pagesHtml = pagesHtml+pageHtml;
+                            }
+                            pagesHtml= pagesHtml + "<span> …</span>\n" +
+                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+
+
+                        }else if(now>(pages-4) && now<=pages){
+                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+                                "<span> …</span>";
+                            for(i=(pages-4);i<=pages;i++){
+                                if(i==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
+                                }
+                                pagesHtml = pagesHtml+pageHtml;
+
+                            }
+
+                        }else if(now>0 && now<=4){
+
+                            for(var i=0;i<=4;i++){
+                                if((i+1)==now){
+                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                                }else{
+                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                                }
+
+                                pagesHtml= pagesHtml + pageHtml;
+                            }
+                            pagesHtml= pagesHtml + "<span> …</span>\n" +
+                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+                        }
+
+                    }
+
+                    $("#total").append(total);
+                    $("#treportList").append(html);
+                    $("#totalPages").append(pages);
+                    $("#now").append(now);
+                    $("#pager").append(pageStart);
+                    $("#pages").append(pagesHtml);
+                    $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
+
+                }else{
+                    layer.close(layerIndex);
+                    alert(msg);
+                }
+            },
+
+
+        });
+
+
+    }
+
+    //筛选
+    function find(){
+        var reportname = $("#reportname").val();
+        var envKey = $("#envKey").val();
+        var username = $("#username").val();
+        var customname = $("#customname").val();
+        var status = $("#status").val();
+        var startTime = $("#datemin").val();
+        var endTime = $("#datemax").val();
+
+        $.ajax({
+            type: "post",
+            url: "/report/selectByCondition",
+            data: {
+                reportname:reportname,
+                envid:envKey,
+                username:username,
+                customname:customname,
+                status:status,
+                startTime:startTime,
+                endTime:endTime,
+                pageNum:1,
+                pageSize:10
+            },
+            dataType: "json",
+            success: function (data) {
+
+                $("#total").html("");
+                $("#treportList").html("");
+                $("#totalPages").html("");
+                $("#now").html("");
+                $("#pager").html("");
+                if(data.data.list.length==0){
+                    $("#dataTables_info").hide();
+                    var h="<tr><td colspan='13' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                    $("#treportList").append(h);
+                    layer.close(layerIndex);
+                    return;
+                }
+
+                var status=data.status;
+                var msg=data.msg;
+                var list=data.data.list;
+                var total=data.data.total;
+                var pages=data.data.pages;
+                var now=data.data.pageNum;
+                var before=data.data.prePage;
+                var next=data.data.nextPage;
+                console.log(data);
+                var html = "";
+                var pagesHtml="";
+                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
+                    "            <span id=\"pages\">";
+                var pageEnd="</span>\n" +
+                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
+
+                if(status == 0){
+
+                    for(var i=0;i<list.length;i++){
+                        var row = list[i];
+
+                        var status="";
+                        if(row.status == 5){
+                            status="报告中";
+                        }else{
+                            status="报告完成";
+                        }
+
+
+
+                        var rowHtml = "<tr class=\"text-c\">\n" +
+                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
+                            "<td>"+row.id+"</td>\n" +
+                            "<td>"+row.reportname+"</td>\n" +
+                            "<td>"+row.username+"</td>\n" +
+                            "<td >"+row.customname+/*"|"+row.servicename+*/"</td>\n" +
+                            "<td>"+row.envkey+"</td>\n" +
+                            "<td>"+row.serviceid+"</td>\n" +
+                            "<td>"+row.testtime+"</td>\n" +
+                            "<td>"+status+"</td>\n" +
+                            "<td class=\"f-14\">" +
+                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"treport_details("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"treport_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+                            "</td>\n" +
+                            "</tr>";
+                        html = html + rowHtml;
+                    }
+
+                    if(pages<6){
+                        for(var k=0;k<pages;k++){
+                            if((k+1)==now){
+                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
+                            }else{
+                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
+                            }
+                            pagesHtml= pagesHtml + pageHtml;
+                        }
+                    }else{
+                        for(var i=0;i<5;i++){
+                            if((i+1)==now){
+                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                            }else{
+                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
+                            }
+                            pagesHtml= pagesHtml + pageHtml;
+                        }
+                        pagesHtml= pagesHtml + "<span> …</span>\n" +
+                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
+                    }
+
+                    $("#total").append(total);
+                    $("#treportList").append(html);
+                    $("#totalPages").append(pages);
+                    $("#now").append(now);
+                    $("#pager").append(pageStart);
+                    $("#pages").append(pagesHtml);
+                    $("#pager").append(pageEnd);
+                    layer.close(layerIndex);
+
+
+                }else{
+                    layer.close(layerIndex);
+                    alert(msg);
+                }
+            }
+        });
+    }
+
+    //查看报告
+    function treport_details(caseId){
+
+        $.ajax({
+            type: "post",
+            url: "/tcase/runCaseOneById.do",
+            data: {
+                id:caseId
+            },
+            dataType: "json",
+            success: function (data) {
+                var list = data;
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    layer.close(layerIndex);
+                    var domain = "http://" + window.location.host;
+                    var myPopup = window.open("test-result.html");//.postMessage(list,domain);
+                    //周期性的发送消息
+                    setTimeout(function () {
+                        myPopup.postMessage(list, domain);
+                    }, 1000);
+
+                } else {
+                    layer.close(layerIndex);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+
+            },
+            fail: function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+
+
+    }
+
+    function devGroup(){
+        var dev=null;
+        var groupId=$.cookie('groupidCookie');
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/user/selectByGroupId.do",
+            data: {
+                groupId:groupId
+            },
+            dataType: "json",
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    layer.close(layerIndex);
+                    dev=data.data;
+                }else{
+                    layer.close(layerIndex);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return dev;
+    }
+
+    function getEnvList(){
+        var envList=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tenv/selectAll.do",
+            data: {
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                envList=data.data;
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                alert(JSON.stringify(data));
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                alert('error:' + JSON.stringify(xhr));
+            }
+        });
+        return envList;
+    }
+
+
+    /*报告-删除*/
+    function treport_del(obj,id){
+        layer.confirm('用例删除需谨慎，请确认是否删除！',function(index){
+            //alert("要删除的id="+id);
+            $.ajax({
+                type: 'POST',
+                url: '/report/deleteOne',
+                data:{
+                    id:id
+                },
+                dataType: 'json',
+                success: function(data){
+                    var status=data.status;
+                    var msg=data.msg;
+                    if(status == 0){
+                        $(obj).parents("tr").remove();
+                        window.location.reload();
+                        layer.msg('已删除!',{icon:1,time:1000});
+                    }else{
+                        alert(JSON.stringify(data));
+                    }
+
+                },
+                error:function(data) {
+                    console.log(data);
+                },
+            });
+        });
+    }
+
+</script>
+</body>
+</html>
