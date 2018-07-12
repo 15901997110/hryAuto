@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -54,28 +55,57 @@ public class TcustomController {
                 || customVO.getTcustomdetails() == null || customVO.getTcustomdetails().size() == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
-        List<Tcustomdetail> list=customVO.getTcustomdetails();
-        for(Tcustomdetail tcustomdetail:list ){
+        List<Tcustomdetail> list = customVO.getTcustomdetails();
+        for (Tcustomdetail tcustomdetail : list) {
             ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
             if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevle,clientId,clientName必填");
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
             }
         }
         return ResultUtil.success(tcustomService.insertOne(customVO));
     }
 
     @PostMapping("/updateOne")
-    public Result updateOne(Tcustom tcustom) {
-        return ResultUtil.success(tcustomService.updateOne(tcustom));
+    public Result updateOne(@RequestBody CustomVO customVO) {
+        ReflectUtil.setInvalidFieldToNull(customVO, true);
+        if (customVO == null || customVO.getId() == null || customVO.getTcustomdetails() == null || customVO.getTcustomdetails().size() == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新定制时,定制id,定制明细不可为空!");
+        }
+        List<Tcustomdetail> list = customVO.getTcustomdetails();
+        for (Tcustomdetail tcustomdetail : list) {
+            ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
+            if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
+            }
+        }
+        return ResultUtil.success(tcustomService.updateOne(customVO));
     }
 
     @PostMapping("/deleteOne")
-    public Result deleteOne(Integer id) {
+    public Result deleteOne(@RequestBody Map<String,String> map) {
+        Integer id;
+        if(map.containsKey("id")){
+            id=Integer.parseInt(map.get("id"));
+            if (id == null) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "删除定制信息时id必填!");
+            }
+        }else{
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        }
         return ResultUtil.success(tcustomService.deleteOne(id));
     }
 
     @PostMapping("/selectOne")
-    public Result selectOne(Integer id) {
+    public Result selectOne(@RequestBody Map<String,String> map) {
+        Integer id;
+        if(map.containsKey("id")){
+            id=Integer.parseInt(map.get("id"));
+            if (id == null) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "查询定制信息时id必填!");
+            }
+        }else{
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        }
         return ResultUtil.success(tcustomService.selectOne(id));
     }
 

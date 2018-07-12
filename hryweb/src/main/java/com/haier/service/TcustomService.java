@@ -26,9 +26,11 @@ public interface TcustomService {
 
     Integer updateOne(Tcustom tcustom);
 
+    Integer updateOne(CustomVO customVO);
+
     Integer deleteOne(Integer id);
 
-    Tcustom selectOne(Integer id);
+    CustomVO selectOne(Integer id);
 
     List<Tcustom> selectByCondition(Tcustom tcustom);
 

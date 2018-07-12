@@ -88,22 +88,58 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public Integer deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
+    public Integer updateOne(CustomVO customVO) {
+        Tcustom tcustom=new Tcustom();
+        ReflectUtil.cloneChildToParent(tcustom,customVO);
+        /**
+         *  更新tcustom信息
+         */
+        this.updateOne(tcustom);
+        /**
+         * 更新tcustomdetail信息
+         */
+        //先删除历史保存的tcustomdetail记录
+        Tcustomdetail condition=new Tcustomdetail();
+        condition.setCustomid(tcustom.getId());
+        tcustomdetailService.deleteByCondition(condition);
+
+        //插入本次编辑的tcustomdetail记录
+        List<Tcustomdetail> tcustomdetails=customVO.getTcustomdetails();
+        for(Tcustomdetail tcustomdetail:tcustomdetails){
+            tcustomdetail.setCustomid(tcustom.getId());
+            tcustomdetailService.insertOne(tcustomdetail);
         }
-        Tcustom tcustom = new Tcustom();
-        tcustom.setId(id);
-        tcustom.setStatus(-1);
-        return this.updateOne(tcustom);
+        return tcustom.getId();
     }
 
     @Override
-    public Tcustom selectOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
-        return tcustomMapper.selectByPrimaryKey(id);
+    public Integer deleteOne(Integer id) {
+        /**
+         * 删除tcustom
+         */
+        Tcustom tcustom = new Tcustom();
+        tcustom.setId(id);
+        tcustom.setStatus(-1);
+        this.updateOne(tcustom);
+        /**
+         * 删除tcustomdetail
+         */
+        Tcustomdetail tcustomdetail=new Tcustomdetail();
+        tcustomdetail.setCustomid(id);
+        tcustomdetailService.deleteByCondition(tcustomdetail);
+        return id;
+    }
+
+    @Override
+    public CustomVO selectOne(Integer id) {
+        CustomVO vo=new CustomVO();
+        Tcustom tcustom = tcustomMapper.selectByPrimaryKey(id);
+        ReflectUtil.cloneParentToChild(tcustom,vo);
+
+        List<Tcustomdetail> tcustomdetails=tcustomdetailService.selectByCondition(id);
+        vo.setTcustomdetails(tcustomdetails);
+
+        return vo;
     }
 
     @Override
