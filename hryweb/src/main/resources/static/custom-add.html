@@ -29,7 +29,7 @@
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">定制名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>定制名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="customname" name="customname">
             </div>
@@ -139,6 +139,55 @@
         return service;
     }
 
+    function getServiceKey(serviceId){
+        var serviceKey=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/selectByConditionSimple",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    var list=data.data;
+                    for(var i=0;i<list.length;i++){
+                        var row=list[i];
+                        if(row.id== serviceId){
+                            serviceKey=row.servicekey;
+                        }
+
+                    }
+                }else{
+                    layer.alert(data.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return serviceKey;
+    }
+
     function getTenvList(){
         var env=null;
         $.ajaxSetup({async : false});
@@ -241,31 +290,43 @@
         var strategy = $("#strategy").val();
         var userid=$.cookie('uidCookie');
 
-        var arr = new Array();
+        var service = new Array();
         $("#services :checkbox:checked").each(function(i){
-            arr[i] = $(this).val();
+            var s=new Object();
+            s.clientlevel=1;
+            s.clientid=$(this).val();
+            var serviceKey=getServiceKey($(this).val());
+            s.clientname=serviceKey;
+            service[i] = s;
         });
-        var service=arr.join(",");
 
-        if(service == null || service == ""){
+        if(customname == null || customname == ""){
+            layer.msg("定制名称不能为空！");
+            return;
+        }else if(service == null || service == ""){
             layer.msg("请选择服务！");
             return;
         }else if(env == null || env == ""){
             layer.msg("请选择环境！");
             return;
         }else{
+
+            var obj=new Object();
+            obj.customname=customname;
+            obj.userid=userid;
+            obj.envid=env;
+            obj.strategy=strategy;
+            obj.tcustomdetails=service;
+            var json=JSON.stringify(obj)
+            alert("给后台传递的数据为："+json);
+            console.log(json)
+
             $.ajax({
                 type: "post",
                 url: "/tcustom/insertOne",
-                data: {
-                    customname:customname,
-                    envid:env,
-                    serviceid:service,
-                    strategy:strategy,
-                    userid:userid,
-                    status:1
-                },
+                data:json,
                 dataType: "json",
+                contentType: 'application/json;charset=utf-8',
                 success: function (data) {
                     var status=data.status;
                     var msg=data.msg;

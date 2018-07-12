@@ -86,8 +86,8 @@
         </table>
         <!--分页-->
         <div class="dataTables_info" id="dataTables_info">
-            <span>共有 <strong id="totalPages"></strong> 页</span>
-            <span>当前第 <strong id="now"></strong> 页</span>
+            <span>共有 <strong id="totalPages">0</strong> 页</span>
+            <span>当前第 <strong id="now">0</strong> 页</span>
         </div>
         <div class="dataTables_paginate paging_simple_numbers" id="pager">
         </div>
@@ -116,7 +116,15 @@
             beforeSend: function () { //插件加载前
                 layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
             error: function () { //报错时执行
+                layer.close(layerIndex);
                 layer.alert('显示异常，请刷新后重试', {
                     skin: 'layui-layer-molv'
                     , closeBtn: 0
@@ -128,7 +136,8 @@
 
     function empty(){
         $("#reportname").val("");
-        $("#username option:first").prop("selected", 'selected');
+        $("#username").val(null).trigger("change");
+        $("#username").val("请选择").trigger("change");
         $("#customname").val("");
         $("#status option:first").prop("selected", 'selected');
         $("#envKey option:first").prop("selected", 'selected');
@@ -201,21 +210,23 @@
 
                 var status=data.status;
                 var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var beforePage=data.data.prePage;
-                var nextPage=data.data.nextPage;
-                console.log(data);
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
+
 
                 if(status == 0){
+                    var list=data.data.list;
+                    var total=data.data.total;
+                    var pages=data.data.pages;
+                    var now=data.data.pageNum;
+                    var beforePage=data.data.prePage;
+                    var nextPage=data.data.nextPage;
+                    console.log(data);
+                    var html = "";
+                    var pagesHtml="";
+                    var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
+                        "            <span id=\"pages\">";
+                    var pageEnd="</span>\n" +
+                        "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
+
                     $("#total").html("");
                     $("#treportList").html("");
                     $("#totalPages").html("");
@@ -323,7 +334,10 @@
 
                 }else{
                     layer.close(layerIndex);
-                    alert(msg);
+                    layer.alert('Error' + msg, {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
                 }
             },
 
@@ -365,31 +379,31 @@
                 $("#totalPages").html("");
                 $("#now").html("");
                 $("#pager").html("");
-                if(data.data.list.length==0){
-                    $("#dataTables_info").hide();
-                    var h="<tr><td colspan='13' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
-                    $("#treportList").append(h);
-                    layer.close(layerIndex);
-                    return;
-                }
 
                 var status=data.status;
                 var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var before=data.data.prePage;
-                var next=data.data.nextPage;
-                console.log(data);
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
+                    if(data.data.list.length==0){
+                        $("#dataTables_info").hide();
+                        var h="<tr><td colspan='13' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
+                        $("#treportList").append(h);
+                        layer.close(layerIndex);
+                        return;
+                    }
+                    var list=data.data.list;
+                    var total=data.data.total;
+                    var pages=data.data.pages;
+                    var now=data.data.pageNum;
+                    var before=data.data.prePage;
+                    var next=data.data.nextPage;
+                    console.log(data);
+                    var html = "";
+                    var pagesHtml="";
+                    var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
+                        "            <span id=\"pages\">";
+                    var pageEnd="</span>\n" +
+                        "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
@@ -455,7 +469,10 @@
 
                 }else{
                     layer.close(layerIndex);
-                    alert(msg);
+                    layer.alert('Error' + msg, {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
                 }
             }
         });
@@ -466,7 +483,7 @@
 
         $.ajax({
             type: "post",
-            url: "/tcase/runCaseOneById.do",
+            url: "/tcase/runCaseOneById",
             data: {
                 id:caseId
             },
@@ -518,9 +535,8 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/user/selectByGroupId.do",
+            url: "/user/selectByCondition",
             data: {
-                groupId:groupId
             },
             dataType: "json",
             success: function (data) {
@@ -560,7 +576,7 @@
         $.ajaxSetup({async : false});
         $.ajax({
             type: "post",
-            url: "/tenv/selectAll.do",
+            url: "/tenv/selectAll",
             data: {
             },
             dataType: "json",

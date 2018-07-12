@@ -31,7 +31,7 @@
 <article class="page-container">
     <form method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3" style="width:15%;">用例名称：</label>
+            <label class="form-label col-xs-4 col-sm-3" style="width:15%;"><span class="c-red">*</span>用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
                 <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName" style="width:100%;">
             </div>
@@ -72,12 +72,6 @@
 				</span>
             </div>
         </div>
-        <!-- <div class="row cl">
-             <label class="form-label col-xs-4 col-sm-3">示例参数：</label>
-             <div class="formControls col-xs-8 col-sm-9">
-                 <textarea id="iparamsample" name="iparamsample" cols="" rows="" class="textarea valid" placeholder="请输入示例参数..."></textarea>
-             </div>
-         </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:15%;">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:85%;">
@@ -553,7 +547,10 @@
         var expected = $("#expected").val();
         var author = $("#author").val();
 
-        if (ti == null || ti == "") {
+        if(caseName == null || caseName == ""){
+            layer.alert("用例名称不能为空！");
+            return;
+        } else if (ti == null || ti == "") {
             layer.alert("请选择接口！");
             return;
         } else if (assertType == null || assertType == "") {

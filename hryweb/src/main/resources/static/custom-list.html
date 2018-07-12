@@ -88,7 +88,7 @@
             },
             dataType: "json",
             success: function (data) {
-                //alert( JSON.stringify(data).);
+
                 var status=data.status;
                 var msg=data.msg;
 
@@ -106,11 +106,11 @@
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
-                        var tserviceList=row.tserviceList;
+                        var tserviceList=row.tcustomdetails;
                         var ul="";
                         for(var k=0;k<tserviceList.length;k++){
                             var serv=tserviceList[k];
-                            var servicekey=serv.servicekey;
+                            var servicekey=serv.clientname;
                             var li="<li>"+servicekey+"</li>";
                             ul=ul+li;
                         }
