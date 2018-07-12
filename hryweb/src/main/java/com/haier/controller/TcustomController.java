@@ -9,6 +9,7 @@ import com.haier.response.Result;
 import com.haier.service.TcustomService;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import java.util.List;
  * @Author: luqiwei
  * @Date: 2018/6/28 16:05
  */
+@Slf4j
 @RestController
 @RequestMapping("/tcustom")
 public class TcustomController {

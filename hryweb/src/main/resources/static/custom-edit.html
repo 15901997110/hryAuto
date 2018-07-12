@@ -30,7 +30,7 @@
 <article class="page-container">
     <form  method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">定制名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>定制名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="customname" name="customname">
             </div>
@@ -306,7 +306,10 @@
         });
         var service=arr.join(",");
 
-        if(service == null || service == ""){
+        if(customname == null || customname == ""){
+            layer.msg("定制名称不能为空！");
+            return;
+        }else if(service == null || service == ""){
             layer.msg("请选择服务！");
             return;
         }else if(env == null || env == ""){
