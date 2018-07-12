@@ -695,73 +695,143 @@ public class TreportExample {
             return (Criteria) this;
         }
 
-        public Criteria andServiceidIsNull() {
-            addCriterion("serviceId is null");
+        public Criteria andServiceidsIsNull() {
+            addCriterion("serviceIds is null");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidIsNotNull() {
-            addCriterion("serviceId is not null");
+        public Criteria andServiceidsIsNotNull() {
+            addCriterion("serviceIds is not null");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidEqualTo(String value) {
-            addCriterion("serviceId =", value, "serviceid");
+        public Criteria andServiceidsEqualTo(String value) {
+            addCriterion("serviceIds =", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidNotEqualTo(String value) {
-            addCriterion("serviceId <>", value, "serviceid");
+        public Criteria andServiceidsNotEqualTo(String value) {
+            addCriterion("serviceIds <>", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidGreaterThan(String value) {
-            addCriterion("serviceId >", value, "serviceid");
+        public Criteria andServiceidsGreaterThan(String value) {
+            addCriterion("serviceIds >", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidGreaterThanOrEqualTo(String value) {
-            addCriterion("serviceId >=", value, "serviceid");
+        public Criteria andServiceidsGreaterThanOrEqualTo(String value) {
+            addCriterion("serviceIds >=", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidLessThan(String value) {
-            addCriterion("serviceId <", value, "serviceid");
+        public Criteria andServiceidsLessThan(String value) {
+            addCriterion("serviceIds <", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidLessThanOrEqualTo(String value) {
-            addCriterion("serviceId <=", value, "serviceid");
+        public Criteria andServiceidsLessThanOrEqualTo(String value) {
+            addCriterion("serviceIds <=", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidLike(String value) {
-            addCriterion("serviceId like", value, "serviceid");
+        public Criteria andServiceidsLike(String value) {
+            addCriterion("serviceIds like", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidNotLike(String value) {
-            addCriterion("serviceId not like", value, "serviceid");
+        public Criteria andServiceidsNotLike(String value) {
+            addCriterion("serviceIds not like", value, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidIn(List<String> values) {
-            addCriterion("serviceId in", values, "serviceid");
+        public Criteria andServiceidsIn(List<String> values) {
+            addCriterion("serviceIds in", values, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidNotIn(List<String> values) {
-            addCriterion("serviceId not in", values, "serviceid");
+        public Criteria andServiceidsNotIn(List<String> values) {
+            addCriterion("serviceIds not in", values, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidBetween(String value1, String value2) {
-            addCriterion("serviceId between", value1, value2, "serviceid");
+        public Criteria andServiceidsBetween(String value1, String value2) {
+            addCriterion("serviceIds between", value1, value2, "serviceids");
             return (Criteria) this;
         }
 
-        public Criteria andServiceidNotBetween(String value1, String value2) {
-            addCriterion("serviceId not between", value1, value2, "serviceid");
+        public Criteria andServiceidsNotBetween(String value1, String value2) {
+            addCriterion("serviceIds not between", value1, value2, "serviceids");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesIsNull() {
+            addCriterion("serviceNames is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesIsNotNull() {
+            addCriterion("serviceNames is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesEqualTo(String value) {
+            addCriterion("serviceNames =", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesNotEqualTo(String value) {
+            addCriterion("serviceNames <>", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesGreaterThan(String value) {
+            addCriterion("serviceNames >", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesGreaterThanOrEqualTo(String value) {
+            addCriterion("serviceNames >=", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesLessThan(String value) {
+            addCriterion("serviceNames <", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesLessThanOrEqualTo(String value) {
+            addCriterion("serviceNames <=", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesLike(String value) {
+            addCriterion("serviceNames like", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesNotLike(String value) {
+            addCriterion("serviceNames not like", value, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesIn(List<String> values) {
+            addCriterion("serviceNames in", values, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesNotIn(List<String> values) {
+            addCriterion("serviceNames not in", values, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesBetween(String value1, String value2) {
+            addCriterion("serviceNames between", value1, value2, "servicenames");
+            return (Criteria) this;
+        }
+
+        public Criteria andServicenamesNotBetween(String value1, String value2) {
+            addCriterion("serviceNames not between", value1, value2, "servicenames");
             return (Criteria) this;
         }
 

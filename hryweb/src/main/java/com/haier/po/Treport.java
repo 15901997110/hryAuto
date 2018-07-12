@@ -23,7 +23,9 @@ public class Treport {
 
     private String envkey;
 
-    private String serviceid;
+    private String serviceids;
+
+    private String servicenames;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date testtime;
@@ -102,12 +104,20 @@ public class Treport {
         this.envkey = envkey == null ? null : envkey.trim();
     }
 
-    public String getServiceid() {
-        return serviceid;
+    public String getServiceids() {
+        return serviceids;
     }
 
-    public void setServiceid(String serviceid) {
-        this.serviceid = serviceid == null ? null : serviceid.trim();
+    public void setServiceids(String serviceids) {
+        this.serviceids = serviceids == null ? null : serviceids.trim();
+    }
+
+    public String getServicenames() {
+        return servicenames;
+    }
+
+    public void setServicenames(String servicenames) {
+        this.servicenames = servicenames == null ? null : servicenames.trim();
     }
 
     public Date getTesttime() {

@@ -1,11 +1,13 @@
 package com.haier.po;
 
-public class Tcustom {
+public class Tcustom_copy implements Cloneable {
     private Integer id;
 
     private String customname;
 
     private Integer userid;
+
+    private String serviceid;
 
     private Integer envid;
 
@@ -37,6 +39,14 @@ public class Tcustom {
         this.userid = userid;
     }
 
+    public String getServiceid() {
+        return serviceid;
+    }
+
+    public void setServiceid(String serviceid) {
+        this.serviceid = serviceid == null ? null : serviceid.trim();
+    }
+
     public Integer getEnvid() {
         return envid;
     }
@@ -59,5 +69,10 @@ public class Tcustom {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

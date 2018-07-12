@@ -11,7 +11,8 @@
     <result column="customName" jdbcType="VARCHAR" property="customname" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
     <result column="envKey" jdbcType="VARCHAR" property="envkey" />
-    <result column="serviceId" jdbcType="VARCHAR" property="serviceid" />
+    <result column="serviceIds" jdbcType="VARCHAR" property="serviceids" />
+    <result column="serviceNames" jdbcType="VARCHAR" property="servicenames" />
     <result column="testTime" jdbcType="TIMESTAMP" property="testtime" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, reportPath, reportName, userId, userName, customId, customName, envId, envKey, 
-    serviceId, testTime, status
+    serviceIds, serviceNames, testTime, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TreportExample" resultMap="BaseResultMap">
     select
@@ -107,19 +108,19 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Treport" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insert" parameterType="com.haier.po.Treport" useGeneratedKeys="true" keyProperty="id">
     insert into treport (id, reportPath, reportName, 
       userId, userName, customId, 
       customName, envId, envKey, 
-      serviceId, testTime, status
-      )
+      serviceIds, serviceNames, testTime, 
+      status)
     values (#{id,jdbcType=INTEGER}, #{reportpath,jdbcType=VARCHAR}, #{reportname,jdbcType=VARCHAR}, 
       #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{customid,jdbcType=INTEGER}, 
       #{customname,jdbcType=VARCHAR}, #{envid,jdbcType=INTEGER}, #{envkey,jdbcType=VARCHAR}, 
-      #{serviceid,jdbcType=VARCHAR}, #{testtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
-      )
+      #{serviceids,jdbcType=VARCHAR}, #{servicenames,jdbcType=VARCHAR}, #{testtime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Treport" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.haier.po.Treport" useGeneratedKeys="true" keyProperty="id">
     insert into treport
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -149,8 +150,11 @@
       <if test="envkey != null">
         envKey,
       </if>
-      <if test="serviceid != null">
-        serviceId,
+      <if test="serviceids != null">
+        serviceIds,
+      </if>
+      <if test="servicenames != null">
+        serviceNames,
       </if>
       <if test="testtime != null">
         testTime,
@@ -187,8 +191,11 @@
       <if test="envkey != null">
         #{envkey,jdbcType=VARCHAR},
       </if>
-      <if test="serviceid != null">
-        #{serviceid,jdbcType=VARCHAR},
+      <if test="serviceids != null">
+        #{serviceids,jdbcType=VARCHAR},
+      </if>
+      <if test="servicenames != null">
+        #{servicenames,jdbcType=VARCHAR},
       </if>
       <if test="testtime != null">
         #{testtime,jdbcType=TIMESTAMP},
@@ -234,8 +241,11 @@
       <if test="record.envkey != null">
         envKey = #{record.envkey,jdbcType=VARCHAR},
       </if>
-      <if test="record.serviceid != null">
-        serviceId = #{record.serviceid,jdbcType=VARCHAR},
+      <if test="record.serviceids != null">
+        serviceIds = #{record.serviceids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.servicenames != null">
+        serviceNames = #{record.servicenames,jdbcType=VARCHAR},
       </if>
       <if test="record.testtime != null">
         testTime = #{record.testtime,jdbcType=TIMESTAMP},
@@ -259,7 +269,8 @@
       customName = #{record.customname,jdbcType=VARCHAR},
       envId = #{record.envid,jdbcType=INTEGER},
       envKey = #{record.envkey,jdbcType=VARCHAR},
-      serviceId = #{record.serviceid,jdbcType=VARCHAR},
+      serviceIds = #{record.serviceids,jdbcType=VARCHAR},
+      serviceNames = #{record.servicenames,jdbcType=VARCHAR},
       testTime = #{record.testtime,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
@@ -293,8 +304,11 @@
       <if test="envkey != null">
         envKey = #{envkey,jdbcType=VARCHAR},
       </if>
-      <if test="serviceid != null">
-        serviceId = #{serviceid,jdbcType=VARCHAR},
+      <if test="serviceids != null">
+        serviceIds = #{serviceids,jdbcType=VARCHAR},
+      </if>
+      <if test="servicenames != null">
+        serviceNames = #{servicenames,jdbcType=VARCHAR},
       </if>
       <if test="testtime != null">
         testTime = #{testtime,jdbcType=TIMESTAMP},
@@ -315,7 +329,8 @@
       customName = #{customname,jdbcType=VARCHAR},
       envId = #{envid,jdbcType=INTEGER},
       envKey = #{envkey,jdbcType=VARCHAR},
-      serviceId = #{serviceid,jdbcType=VARCHAR},
+      serviceIds = #{serviceids,jdbcType=VARCHAR},
+      serviceNames = #{servicenames,jdbcType=VARCHAR},
       testTime = #{testtime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
