@@ -161,13 +161,16 @@
     function custom_del(obj,id){
         layer.confirm('是否删除测试定制，请确认？',function(index){
             //alert("要删除的id="+id);
+            var o=new Object();
+            o.id=id;
+            var json=JSON.stringify(o);
+
             $.ajax({
                 type: 'POST',
                 url: '/tcustom/deleteOne',
-                data:{
-                    id:id
-                },
+                data:json,
                 dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
                 success: function(data){
                     var status=data.status;
                     var msg=data.msg;

@@ -108,17 +108,18 @@
     //页面加载处理
     $(document).ready(function () {
         var id = getParameter('id');
-        //$("#id").val(id);
         var serviceList=getServiceList();
         var env=getTenvList();
+        var obj=new Object();
+        obj.id=id;
+        var json=JSON.stringify(obj);
 
         $.ajax({
             type: "post",
             url: "/tcustom/selectOne",
-            data: {
-                id: id
-            },
+            data: json,
             dataType: "json",
+            contentType: 'application/json;charset=utf-8',
             success: function (data) {
                 var status=data.status;
                 var msg=data.msg;
@@ -129,7 +130,7 @@
                     var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
                     $("#submit").append(submit);
                     var customname=list.customname;
-                    var serviceid=list.serviceid.split(",");
+                    var serviceid=list.tcustomdetails;
                     var envid=list.envid;
                     var strategy=list.strategy;
 
@@ -146,7 +147,7 @@
                         for(var k=0;k<serviceid.length;k++){
                             var service=serviceid[k];
 
-                            if(row.id == service){
+                            if(row.id == service.clientid){
                                 box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\" checked>&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
                             }
                         }
@@ -300,11 +301,15 @@
         var strategy = $("#strategy").val();
         var userid=$.cookie('uidCookie');
 
-        var arr = new Array();
+        var service = new Array();
         $("#services :checkbox:checked").each(function(i){
-            arr[i] = $(this).val();
+            var s=new Object();
+            s.clientlevel=1;
+            s.clientid=$(this).val();
+            var serviceKey=getServiceKey($(this).val());
+            s.clientname=serviceKey;
+            service[i] = s;
         });
-        var service=arr.join(",");
 
         if(customname == null || customname == ""){
             layer.msg("定制名称不能为空！");
@@ -316,24 +321,26 @@
             layer.msg("请选择环境！");
             return;
         }else{
+            var obj=new Object();
+            obj.id=id;
+            obj.customname=customname;
+            obj.userid=userid;
+            obj.envid=env;
+            obj.strategy=strategy;
+            obj.tcustomdetails=service;
+            var json=JSON.stringify(obj)
+            console.log(json)
+
             $.ajax({
                 type: 'POST',
                 url: '/tcustom/updateOne',
-                data:{
-                    id:id,
-                    customname:customname,
-                    envid:env,
-                    serviceid:service,
-                    strategy:strategy,
-                    userid:userid,
-                    status:1
-                },
+                data:json,
                 dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
                 success: function(data){
                     layer.close(layerIndex);
                     var status=data.status;
                     var msg=data.msg;
-                    var list=data.data;
 
                     if(status == 0){
                         //alert("更新成功！");
@@ -358,6 +365,55 @@
             });
         }
 
+    }
+
+    function getServiceKey(serviceId){
+        var serviceKey=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/selectByConditionSimple",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    var list=data.data;
+                    for(var i=0;i<list.length;i++){
+                        var row=list[i];
+                        if(row.id== serviceId){
+                            serviceKey=row.servicekey;
+                        }
+
+                    }
+                }else{
+                    layer.alert(data.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return serviceKey;
     }
 
 </script>
