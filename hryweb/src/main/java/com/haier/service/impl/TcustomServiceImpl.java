@@ -73,7 +73,7 @@ public class TcustomServiceImpl implements TcustomService {
     public Integer insertOne(CustomVO customVO) {
         Tcustom tcustom=new Tcustom();
         ReflectUtil.cloneChildToParent(tcustom,customVO);
-        List<Tcustomdetail> list=customVO.getList();
+        List<Tcustomdetail> list=customVO.getTcustomdetails();
         return this.insertOne(tcustom,list);
     }
 

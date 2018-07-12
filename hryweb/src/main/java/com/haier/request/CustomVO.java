@@ -13,5 +13,5 @@ import java.util.List;
  */
 @Data
 public class CustomVO  extends Tcustom{
-    private List<Tcustomdetail> list;
+    private List<Tcustomdetail> tcustomdetails;
 }

@@ -51,10 +51,10 @@ public class TcustomController {
     public Result insertOne(@RequestBody CustomVO customVO) {
         ReflectUtil.setInvalidFieldToNull(customVO, true);
         if (customVO == null || customVO.getCustomname() == null || customVO.getUserid() == null || customVO.getEnvid() == null
-                || customVO.getList() == null || customVO.getList().size() == 0) {
+                || customVO.getTcustomdetails() == null || customVO.getTcustomdetails().size() == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
-        List<Tcustomdetail> list=customVO.getList();
+        List<Tcustomdetail> list=customVO.getTcustomdetails();
         for(Tcustomdetail tcustomdetail:list ){
             ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
             if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
