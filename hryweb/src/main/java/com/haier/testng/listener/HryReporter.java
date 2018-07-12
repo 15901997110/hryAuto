@@ -209,6 +209,7 @@ public class HryReporter implements IReporter {
                         p+=param.toString();
                     }
                 }
+                Reporter.log("这是Reporter.log打印出来的");
 
 
 

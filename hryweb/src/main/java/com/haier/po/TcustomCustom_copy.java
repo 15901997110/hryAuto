@@ -10,7 +10,7 @@ import java.util.List;
  * @Date: 2018/6/28 19:08
  */
 @Data
-public class TcustomCustom extends Tcustom {
+public class TcustomCustom_copy extends Tcustom {
     private String envkey;
-    private List<Tcustomdetail> tcustomdetails;
+    private List<Tservice> tserviceList;
 }

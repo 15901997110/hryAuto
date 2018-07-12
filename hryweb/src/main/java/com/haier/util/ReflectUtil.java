@@ -3,7 +3,6 @@ package com.haier.util;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
 /**
  * @Description: 反射相关的工具
@@ -99,13 +98,13 @@ public class ReflectUtil {
      * @author: luqiwei
      * @date: 2018-06-29
      */
-    public static <T, K extends T> void clone(T parent, K child) {
+    public static <T, K extends T> void cloneParentToChild(T parent, K child) {
 
         Field[] childFields = child.getClass().getSuperclass().getDeclaredFields();
         for (Field f : childFields) {
             f.setAccessible(true);
             String fname = f.getName();
-            Object value = getFiledValue(parent, fname);
+            Object value = getFieldValue(parent, fname, false);
             try {
                 f.set(child, value);
             } catch (IllegalAccessException e) {
@@ -115,14 +114,19 @@ public class ReflectUtil {
     }
 
     /**
-     *@description: 根据对象属性名获取属性值,不支持继承对象的父属性值获取,如有异常,返回null
-     *@params: [t, fieldName]
-     *@return: java.lang.Object
-     *@author: luqiwei
-     *@date: 2018-07-05
+     * @description: 根据对象属性名获取属性值
+     * @params: [t, fieldName]
+     * @return: java.lang.Object
+     * @author: luqiwei
+     * @date: 2018-07-05
      */
-    private static <T> Object getFiledValue(T t, String fieldName) {
-        Field[] fields = t.getClass().getDeclaredFields();
+    private static <T> Object getFieldValue(T t, String fieldName, Boolean getSupperClass) {
+        Field[] fields;
+        if (getSupperClass) {
+            fields = t.getClass().getSuperclass().getDeclaredFields();
+        } else {
+            fields = t.getClass().getDeclaredFields();
+        }
         for (Field f : fields) {
             f.setAccessible(true);
             if (f.getName().equals(fieldName)) {
@@ -134,5 +138,26 @@ public class ReflectUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * @description: 将子类中继承于父类的属性值复制到父类中
+     * @params: [parent, child]
+     * @return: void
+     * @author: luqiwei
+     * @date: 2018-07-12
+     */
+    public static <T, K extends T> void cloneChildToParent(T parent, K child) {
+        Field[] fields = parent.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            String fname = field.getName();
+            Object value = getFieldValue(child,fname,true);
+            try {
+                field.set(parent, value);
+            } catch (IllegalAccessException e) {
+                log.warn(e.toString());
+            }
+        }
     }
 }
