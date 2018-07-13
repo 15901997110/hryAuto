@@ -7,6 +7,7 @@
     <result column="clientLevel" jdbcType="INTEGER" property="clientlevel" />
     <result column="clientId" jdbcType="INTEGER" property="clientid" />
     <result column="parentClientId" jdbcType="INTEGER" property="parentclientid" />
+    <result column="hasChild" jdbcType="BIT" property="haschild" />
     <result column="clientName" jdbcType="VARCHAR" property="clientname" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, customId, clientLevel, clientId, parentClientId, clientName, status
+    id, customId, clientLevel, clientId, parentClientId, hasChild, clientName, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcustomdetailExample" resultMap="BaseResultMap">
     select
@@ -103,11 +104,11 @@
   </delete>
   <insert id="insert" parameterType="com.haier.po.Tcustomdetail">
     insert into tcustomdetail (id, customId, clientLevel, 
-      clientId, parentClientId, clientName, 
-      status)
+      clientId, parentClientId, hasChild, 
+      clientName, status)
     values (#{id,jdbcType=INTEGER}, #{customid,jdbcType=INTEGER}, #{clientlevel,jdbcType=INTEGER}, 
-      #{clientid,jdbcType=INTEGER}, #{parentclientid,jdbcType=INTEGER}, #{clientname,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER})
+      #{clientid,jdbcType=INTEGER}, #{parentclientid,jdbcType=INTEGER}, #{haschild,jdbcType=BIT}, 
+      #{clientname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcustomdetail">
     insert into tcustomdetail
@@ -126,6 +127,9 @@
       </if>
       <if test="parentclientid != null">
         parentClientId,
+      </if>
+      <if test="haschild != null">
+        hasChild,
       </if>
       <if test="clientname != null">
         clientName,
@@ -149,6 +153,9 @@
       </if>
       <if test="parentclientid != null">
         #{parentclientid,jdbcType=INTEGER},
+      </if>
+      <if test="haschild != null">
+        #{haschild,jdbcType=BIT},
       </if>
       <if test="clientname != null">
         #{clientname,jdbcType=VARCHAR},
@@ -182,6 +189,9 @@
       <if test="record.parentclientid != null">
         parentClientId = #{record.parentclientid,jdbcType=INTEGER},
       </if>
+      <if test="record.haschild != null">
+        hasChild = #{record.haschild,jdbcType=BIT},
+      </if>
       <if test="record.clientname != null">
         clientName = #{record.clientname,jdbcType=VARCHAR},
       </if>
@@ -200,6 +210,7 @@
       clientLevel = #{record.clientlevel,jdbcType=INTEGER},
       clientId = #{record.clientid,jdbcType=INTEGER},
       parentClientId = #{record.parentclientid,jdbcType=INTEGER},
+      hasChild = #{record.haschild,jdbcType=BIT},
       clientName = #{record.clientname,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
@@ -221,6 +232,9 @@
       <if test="parentclientid != null">
         parentClientId = #{parentclientid,jdbcType=INTEGER},
       </if>
+      <if test="haschild != null">
+        hasChild = #{haschild,jdbcType=BIT},
+      </if>
       <if test="clientname != null">
         clientName = #{clientname,jdbcType=VARCHAR},
       </if>
@@ -236,6 +250,7 @@
       clientLevel = #{clientlevel,jdbcType=INTEGER},
       clientId = #{clientid,jdbcType=INTEGER},
       parentClientId = #{parentclientid,jdbcType=INTEGER},
+      hasChild = #{haschild,jdbcType=BIT},
       clientName = #{clientname,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

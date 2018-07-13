@@ -404,6 +404,66 @@ public class TcustomdetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andHaschildIsNull() {
+            addCriterion("hasChild is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildIsNotNull() {
+            addCriterion("hasChild is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildEqualTo(Boolean value) {
+            addCriterion("hasChild =", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildNotEqualTo(Boolean value) {
+            addCriterion("hasChild <>", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildGreaterThan(Boolean value) {
+            addCriterion("hasChild >", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("hasChild >=", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildLessThan(Boolean value) {
+            addCriterion("hasChild <", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildLessThanOrEqualTo(Boolean value) {
+            addCriterion("hasChild <=", value, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildIn(List<Boolean> values) {
+            addCriterion("hasChild in", values, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildNotIn(List<Boolean> values) {
+            addCriterion("hasChild not in", values, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildBetween(Boolean value1, Boolean value2) {
+            addCriterion("hasChild between", value1, value2, "haschild");
+            return (Criteria) this;
+        }
+
+        public Criteria andHaschildNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("hasChild not between", value1, value2, "haschild");
+            return (Criteria) this;
+        }
+
         public Criteria andClientnameIsNull() {
             addCriterion("clientName is null");
             return (Criteria) this;

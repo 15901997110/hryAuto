@@ -11,6 +11,8 @@ public class Tcustomdetail {
 
     private Integer parentclientid;
 
+    private Boolean haschild;
+
     private String clientname;
 
     private Integer status;
@@ -53,6 +55,14 @@ public class Tcustomdetail {
 
     public void setParentclientid(Integer parentclientid) {
         this.parentclientid = parentclientid;
+    }
+
+    public Boolean getHaschild() {
+        return haschild;
+    }
+
+    public void setHaschild(Boolean haschild) {
+        this.haschild = haschild;
     }
 
     public String getClientname() {
