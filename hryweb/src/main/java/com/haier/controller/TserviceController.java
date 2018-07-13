@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.haier.enums.StatusCodeEnum;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,6 +42,11 @@ public class TserviceController {
     @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Tservice tservice){
         return ResultUtil.success(tserviceService.selectByCondition(tservice));
+    }
+
+    @PostMapping("/selectList")
+    public List<Tservice> selectList(Tservice tservice){
+        return tserviceService.selectByCondition(tservice);
     }
 
     /**

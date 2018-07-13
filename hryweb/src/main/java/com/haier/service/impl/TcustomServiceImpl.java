@@ -1,5 +1,6 @@
 package com.haier.service.impl;
 
+import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
@@ -62,7 +63,7 @@ public class TcustomServiceImpl implements TcustomService {
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
         tcustomMapper.insertSelective(tcustom);
         Integer customId = tcustom.getId();//获取插入的自增Id
-        for(Tcustomdetail tcustomdetail:tcustomdetails){
+        for (Tcustomdetail tcustomdetail : tcustomdetails) {
             tcustomdetail.setCustomid(customId);
             tcustomdetailService.insertOne(tcustomdetail);
         }
@@ -71,10 +72,10 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer insertOne(CustomVO customVO) {
-        Tcustom tcustom=new Tcustom();
-        ReflectUtil.cloneChildToParent(tcustom,customVO);
-        List<Tcustomdetail> list=customVO.getTcustomdetails();
-        return this.insertOne(tcustom,list);
+        Tcustom tcustom = new Tcustom();
+        ReflectUtil.cloneChildToParent(tcustom, customVO);
+        List<Tcustomdetail> list = customVO.getTcustomdetails();
+        return this.insertOne(tcustom, list);
     }
 
     @Override
@@ -89,8 +90,8 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer updateOne(CustomVO customVO) {
-        Tcustom tcustom=new Tcustom();
-        ReflectUtil.cloneChildToParent(tcustom,customVO);
+        Tcustom tcustom = new Tcustom();
+        ReflectUtil.cloneChildToParent(tcustom, customVO);
         /**
          *  更新tcustom信息
          */
@@ -99,13 +100,13 @@ public class TcustomServiceImpl implements TcustomService {
          * 更新tcustomdetail信息
          */
         //先删除历史保存的tcustomdetail记录
-        Tcustomdetail condition=new Tcustomdetail();
+        Tcustomdetail condition = new Tcustomdetail();
         condition.setCustomid(tcustom.getId());
         tcustomdetailService.deleteByCondition(condition);
 
         //插入本次编辑的tcustomdetail记录
-        List<Tcustomdetail> tcustomdetails=customVO.getTcustomdetails();
-        for(Tcustomdetail tcustomdetail:tcustomdetails){
+        List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
+        for (Tcustomdetail tcustomdetail : tcustomdetails) {
             tcustomdetail.setCustomid(tcustom.getId());
             tcustomdetailService.insertOne(tcustomdetail);
         }
@@ -124,19 +125,20 @@ public class TcustomServiceImpl implements TcustomService {
         /**
          * 删除tcustomdetail
          */
-        Tcustomdetail tcustomdetail=new Tcustomdetail();
+        Tcustomdetail tcustomdetail = new Tcustomdetail();
         tcustomdetail.setCustomid(id);
         tcustomdetailService.deleteByCondition(tcustomdetail);
         return id;
     }
 
+
     @Override
     public CustomVO selectOne(Integer id) {
-        CustomVO vo=new CustomVO();
+        CustomVO vo = new CustomVO();
         Tcustom tcustom = tcustomMapper.selectByPrimaryKey(id);
-        ReflectUtil.cloneParentToChild(tcustom,vo);
+        ReflectUtil.cloneParentToChild(tcustom, vo);
 
-        List<Tcustomdetail> tcustomdetails=tcustomdetailService.selectByCondition(id);
+        List<Tcustomdetail> tcustomdetails = tcustomdetailService.selectByCondition(id);
         vo.setTcustomdetails(tcustomdetails);
 
         return vo;
@@ -183,35 +185,56 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public void run(Integer customId, Integer executeUserId) {
-     /*   if (customId == null || customId == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制测试id必填!");
+
+/*
+        //VO包含Tcustom 和 Tcustomdetail
+        CustomVO customVO = this.selectOne(customId);
+
+
+        List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
+
+        List<Tcustomdetail> tcustomdetails_service = new ArrayList<>();//定制的服务
+        List<Tcustomdetail> tcustomdetails_interface = new ArrayList<>();//定制的接口
+        List<Tcustomdetail> tcustomdetails_case = new ArrayList<>();//定制的用例
+
+        for (Tcustomdetail tcustomdetail : tcustomdetails) {
+            if (ClientLevelEnum.SERVICE.getLevel() == tcustomdetail.getClientlevel()) {
+                tcustomdetails_service.add(tcustomdetail);
+            }
+            if (ClientLevelEnum.INTERFACE.getLevel() == tcustomdetail.getClientlevel()) {
+                tcustomdetails_interface.add(tcustomdetail);
+            }
+            if (ClientLevelEnum.CASE.getLevel() == tcustomdetail.getClientlevel()) {
+                tcustomdetails_case.add(tcustomdetail);
+            }
         }
-        Tcustom tcustom = this.selectOne(customId);
-        if (tcustom == null) {
-            throw new HryException(StatusCodeEnum.NOT_FOUND, "tcustom.id=" + customId);
-        }
-        String serviceIdStr = tcustom.getServiceid();
-        Integer[] serviceIds = HryUtil.convert(serviceIdStr);
-        if (serviceIds == null || serviceIds.length == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
-        Integer envid = tcustom.getEnvid();
+
+        Integer[] serviceIds = null;
+
+        Integer envid = customVO.getEnvid();
         Tenv tenv = tenvService.selectOne(envid);
 
         User user = userService.selectOne(executeUserId);
 
         Tenvdetail condition = new Tenvdetail();
+        *//**
+         * 要运行的测试类对应的tenvdetail
+         *//*
         List<Tenvdetail> tenvdetails = new ArrayList<>();//要运行的测试类
-        for (Integer serviceid : serviceIds) {
+        for(Tcustomdetail tcustomdetail:tcustomdetails_service){
             condition.setEnvid(envid);
-            condition.setServiceid(serviceid);
-            List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(condition);
-            if (tenvdetailList != null && tenvdetailList.size() > 0) {
-                for (Tenvdetail var : tenvdetailList) {
-                    tenvdetails.add(var);
+            condition.setServiceid(tcustomdetail.getClientid());
+            List<Tenvdetail> tenvdetails_service = tenvdetailService.selectByCondition(condition);
+            if(tenvdetails_service!=null&&tenvdetails_service.size()>0){
+                for(Tenvdetail tenvdetail_service:tenvdetails_service){
+                    tenvdetails.add(tenvdetail_service);
                 }
             }
         }
+        *//**
+         * 要运行的接口
+         *//*
+
 
         if (tenvdetails == null || tenvdetails.size() < 1) {
             throw new HryException(StatusCodeEnum.NOT_FOUND, "定制id=" + customId + ",通过相应的serviceId和envId未从服务-环境映射表中找到记录!");
@@ -249,15 +272,15 @@ public class TcustomServiceImpl implements TcustomService {
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        this.run(null, treportId, reportName, HryUtil.distinct(xmlClasses));*/
+        this.run(null, treportId, reportName, HryUtil.distinct(xmlClasses));
     }
 
     @Async("asyncServiceExecutor")
     public void run(Map<String, String> params, Integer reportId, String reportName, List<XmlClass> xmlClasses) {
 
-        /**
+        *//**
          * 运行测试用例
-         */
+         *//*
         TestNG testNG = new TestNG();
         XmlSuite suite = new XmlSuite();
         List<XmlTest> xmlTests = new ArrayList<>();
@@ -275,12 +298,12 @@ public class TcustomServiceImpl implements TcustomService {
         testNG.run();
 
 
-        /**
+        *//**
          * 运行完成之后,更新treport状态
-         */
+         *//*
         Treport treport = new Treport();
         treport.setId(reportId);
         treport.setStatus(StatusEnum.TEN.getId());
-        treportService.updateOne(treport);
+        treportService.updateOne(treport);*/
     }
 }

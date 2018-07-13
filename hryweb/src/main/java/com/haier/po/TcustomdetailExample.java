@@ -344,6 +344,66 @@ public class TcustomdetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andParentclientidIsNull() {
+            addCriterion("parentClientId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidIsNotNull() {
+            addCriterion("parentClientId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidEqualTo(Integer value) {
+            addCriterion("parentClientId =", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidNotEqualTo(Integer value) {
+            addCriterion("parentClientId <>", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidGreaterThan(Integer value) {
+            addCriterion("parentClientId >", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("parentClientId >=", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidLessThan(Integer value) {
+            addCriterion("parentClientId <", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidLessThanOrEqualTo(Integer value) {
+            addCriterion("parentClientId <=", value, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidIn(List<Integer> values) {
+            addCriterion("parentClientId in", values, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidNotIn(List<Integer> values) {
+            addCriterion("parentClientId not in", values, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidBetween(Integer value1, Integer value2) {
+            addCriterion("parentClientId between", value1, value2, "parentclientid");
+            return (Criteria) this;
+        }
+
+        public Criteria andParentclientidNotBetween(Integer value1, Integer value2) {
+            addCriterion("parentClientId not between", value1, value2, "parentclientid");
+            return (Criteria) this;
+        }
+
         public Criteria andClientnameIsNull() {
             addCriterion("clientName is null");
             return (Criteria) this;

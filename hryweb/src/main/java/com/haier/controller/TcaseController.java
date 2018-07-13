@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: luqiwei
@@ -65,6 +67,19 @@ public class TcaseController {
     public Result selectByCondition(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize){
         return ResultUtil.success(tcaseService.selectByContion(tcaseCustom,pageNum,pageSize));
     }
+
+    //查-返回List-带Result
+    @PostMapping("/selectByConditionSimple")
+    public Result selectListByCondition(Tcase tcase){
+        return ResultUtil.success(tcaseService.selectByCondition(tcase));
+    }
+
+    //查-仅返回List
+    @PostMapping("/selectList")
+    public List<Tcase> selectList(Tcase tcase){
+        return tcaseService.selectByCondition(tcase);
+    }
+
 
     //查-主键查询
     @PostMapping("/selectOne")

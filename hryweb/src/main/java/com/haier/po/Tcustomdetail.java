@@ -9,6 +9,8 @@ public class Tcustomdetail {
 
     private Integer clientid;
 
+    private Integer parentclientid;
+
     private String clientname;
 
     private Integer status;
@@ -43,6 +45,14 @@ public class Tcustomdetail {
 
     public void setClientid(Integer clientid) {
         this.clientid = clientid;
+    }
+
+    public Integer getParentclientid() {
+        return parentclientid;
+    }
+
+    public void setParentclientid(Integer parentclientid) {
+        this.parentclientid = parentclientid;
     }
 
     public String getClientname() {
