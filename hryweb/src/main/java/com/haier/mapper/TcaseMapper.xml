@@ -5,12 +5,13 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="caseName" jdbcType="VARCHAR" property="casename" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="serviceId" jdbcType="INTEGER" property="serviceid" />
     <result column="iId" jdbcType="INTEGER" property="iid" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
     <result column="requestParam" jdbcType="VARCHAR" property="requestparam" />
-    <result column="assertType" jdbcType="SMALLINT" property="asserttype" />
+    <result column="assertType" jdbcType="INTEGER" property="asserttype" />
     <result column="expected" jdbcType="VARCHAR" property="expected" />
-    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, caseName, remark, iId, envId, requestParam, assertType, expected, status, author, 
-    updateTime
+    id, caseName, remark, serviceId, iId, envId, requestParam, assertType, expected, 
+    status, author, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcaseExample" resultMap="BaseResultMap">
     select
@@ -106,15 +107,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tcase" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.haier.po.Tcase" keyProperty="id" useGeneratedKeys="true">
     insert into tcase (id, caseName, remark, 
-      iId, envId, requestParam, 
-      assertType, expected, status, 
-      author, updateTime)
+      serviceId, iId, envId, 
+      requestParam, assertType, expected, 
+      status, author, updateTime
+      )
     values (#{id,jdbcType=INTEGER}, #{casename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{iid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{requestparam,jdbcType=VARCHAR}, 
-      #{asserttype,jdbcType=SMALLINT}, #{expected,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
-      #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
+      #{serviceid,jdbcType=INTEGER}, #{iid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, 
+      #{requestparam,jdbcType=VARCHAR}, #{asserttype,jdbcType=INTEGER}, #{expected,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcase" useGeneratedKeys="true" keyProperty="id">
     insert into tcase
@@ -127,6 +130,9 @@
       </if>
       <if test="remark != null">
         remark,
+      </if>
+      <if test="serviceid != null">
+        serviceId,
       </if>
       <if test="iid != null">
         iId,
@@ -163,6 +169,9 @@
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="serviceid != null">
+        #{serviceid,jdbcType=INTEGER},
+      </if>
       <if test="iid != null">
         #{iid,jdbcType=INTEGER},
       </if>
@@ -173,13 +182,13 @@
         #{requestparam,jdbcType=VARCHAR},
       </if>
       <if test="asserttype != null">
-        #{asserttype,jdbcType=SMALLINT},
+        #{asserttype,jdbcType=INTEGER},
       </if>
       <if test="expected != null">
         #{expected,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=SMALLINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="author != null">
         #{author,jdbcType=VARCHAR},
@@ -207,6 +216,9 @@
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.serviceid != null">
+        serviceId = #{record.serviceid,jdbcType=INTEGER},
+      </if>
       <if test="record.iid != null">
         iId = #{record.iid,jdbcType=INTEGER},
       </if>
@@ -217,13 +229,13 @@
         requestParam = #{record.requestparam,jdbcType=VARCHAR},
       </if>
       <if test="record.asserttype != null">
-        assertType = #{record.asserttype,jdbcType=SMALLINT},
+        assertType = #{record.asserttype,jdbcType=INTEGER},
       </if>
       <if test="record.expected != null">
         expected = #{record.expected,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=SMALLINT},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.author != null">
         author = #{record.author,jdbcType=VARCHAR},
@@ -241,12 +253,13 @@
     set id = #{record.id,jdbcType=INTEGER},
       caseName = #{record.casename,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
+      serviceId = #{record.serviceid,jdbcType=INTEGER},
       iId = #{record.iid,jdbcType=INTEGER},
       envId = #{record.envid,jdbcType=INTEGER},
       requestParam = #{record.requestparam,jdbcType=VARCHAR},
-      assertType = #{record.asserttype,jdbcType=SMALLINT},
+      assertType = #{record.asserttype,jdbcType=INTEGER},
       expected = #{record.expected,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=SMALLINT},
+      status = #{record.status,jdbcType=INTEGER},
       author = #{record.author,jdbcType=VARCHAR},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -262,6 +275,9 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="serviceid != null">
+        serviceId = #{serviceid,jdbcType=INTEGER},
+      </if>
       <if test="iid != null">
         iId = #{iid,jdbcType=INTEGER},
       </if>
@@ -272,13 +288,13 @@
         requestParam = #{requestparam,jdbcType=VARCHAR},
       </if>
       <if test="asserttype != null">
-        assertType = #{asserttype,jdbcType=SMALLINT},
+        assertType = #{asserttype,jdbcType=INTEGER},
       </if>
       <if test="expected != null">
         expected = #{expected,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=SMALLINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="author != null">
         author = #{author,jdbcType=VARCHAR},
@@ -293,12 +309,13 @@
     update tcase
     set caseName = #{casename,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
+      serviceId = #{serviceid,jdbcType=INTEGER},
       iId = #{iid,jdbcType=INTEGER},
       envId = #{envid,jdbcType=INTEGER},
       requestParam = #{requestparam,jdbcType=VARCHAR},
-      assertType = #{asserttype,jdbcType=SMALLINT},
+      assertType = #{asserttype,jdbcType=INTEGER},
       expected = #{expected,jdbcType=VARCHAR},
-      status = #{status,jdbcType=SMALLINT},
+      status = #{status,jdbcType=INTEGER},
       author = #{author,jdbcType=VARCHAR},
       updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

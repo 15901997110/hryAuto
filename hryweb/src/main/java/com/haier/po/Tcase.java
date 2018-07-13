@@ -1,6 +1,5 @@
 package com.haier.po;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
@@ -12,17 +11,19 @@ public class Tcase {
 
     private String remark;
 
+    private Integer serviceid;
+
     private Integer iid;
 
     private Integer envid;
 
     private String requestparam;
 
-    private Short asserttype;
+    private Integer asserttype;
 
     private String expected;
 
-    private Short status;
+    private Integer status;
 
     private String author;
 
@@ -53,6 +54,14 @@ public class Tcase {
         this.remark = remark == null ? null : remark.trim();
     }
 
+    public Integer getServiceid() {
+        return serviceid;
+    }
+
+    public void setServiceid(Integer serviceid) {
+        this.serviceid = serviceid;
+    }
+
     public Integer getIid() {
         return iid;
     }
@@ -77,11 +86,11 @@ public class Tcase {
         this.requestparam = requestparam == null ? null : requestparam.trim();
     }
 
-    public Short getAsserttype() {
+    public Integer getAsserttype() {
         return asserttype;
     }
 
-    public void setAsserttype(Short asserttype) {
+    public void setAsserttype(Integer asserttype) {
         this.asserttype = asserttype;
     }
 
@@ -93,11 +102,11 @@ public class Tcase {
         this.expected = expected == null ? null : expected.trim();
     }
 
-    public Short getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

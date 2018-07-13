@@ -305,6 +305,66 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andServiceidIsNull() {
+            addCriterion("serviceId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidIsNotNull() {
+            addCriterion("serviceId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidEqualTo(Integer value) {
+            addCriterion("serviceId =", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidNotEqualTo(Integer value) {
+            addCriterion("serviceId <>", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidGreaterThan(Integer value) {
+            addCriterion("serviceId >", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("serviceId >=", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidLessThan(Integer value) {
+            addCriterion("serviceId <", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidLessThanOrEqualTo(Integer value) {
+            addCriterion("serviceId <=", value, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidIn(List<Integer> values) {
+            addCriterion("serviceId in", values, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidNotIn(List<Integer> values) {
+            addCriterion("serviceId not in", values, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidBetween(Integer value1, Integer value2) {
+            addCriterion("serviceId between", value1, value2, "serviceid");
+            return (Criteria) this;
+        }
+
+        public Criteria andServiceidNotBetween(Integer value1, Integer value2) {
+            addCriterion("serviceId not between", value1, value2, "serviceid");
+            return (Criteria) this;
+        }
+
         public Criteria andIidIsNull() {
             addCriterion("iId is null");
             return (Criteria) this;
@@ -505,52 +565,52 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeEqualTo(Short value) {
+        public Criteria andAsserttypeEqualTo(Integer value) {
             addCriterion("assertType =", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotEqualTo(Short value) {
+        public Criteria andAsserttypeNotEqualTo(Integer value) {
             addCriterion("assertType <>", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeGreaterThan(Short value) {
+        public Criteria andAsserttypeGreaterThan(Integer value) {
             addCriterion("assertType >", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeGreaterThanOrEqualTo(Short value) {
+        public Criteria andAsserttypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("assertType >=", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeLessThan(Short value) {
+        public Criteria andAsserttypeLessThan(Integer value) {
             addCriterion("assertType <", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeLessThanOrEqualTo(Short value) {
+        public Criteria andAsserttypeLessThanOrEqualTo(Integer value) {
             addCriterion("assertType <=", value, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeIn(List<Short> values) {
+        public Criteria andAsserttypeIn(List<Integer> values) {
             addCriterion("assertType in", values, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotIn(List<Short> values) {
+        public Criteria andAsserttypeNotIn(List<Integer> values) {
             addCriterion("assertType not in", values, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeBetween(Short value1, Short value2) {
+        public Criteria andAsserttypeBetween(Integer value1, Integer value2) {
             addCriterion("assertType between", value1, value2, "asserttype");
             return (Criteria) this;
         }
 
-        public Criteria andAsserttypeNotBetween(Short value1, Short value2) {
+        public Criteria andAsserttypeNotBetween(Integer value1, Integer value2) {
             addCriterion("assertType not between", value1, value2, "asserttype");
             return (Criteria) this;
         }
@@ -635,52 +695,52 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Short value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Short value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Short value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Short value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Short value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Short value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Short> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Short> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Short value1, Short value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Short value1, Short value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

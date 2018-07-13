@@ -9,13 +9,16 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
 import com.haier.po.*;
+import com.haier.request.TiWithCaseVO;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -173,5 +176,23 @@ public class TiServiceImpl implements TiService {
             }
         }
         return tiMapper.selectByExample(tiExample);
+    }
+
+    @Override
+    public List<TiWithCaseVO> selectTiWithCaseVO(Ti ti){
+        List<TiWithCaseVO> list=new ArrayList<>();
+        List<Ti> tis=this.selectByCondition(ti);
+        for(Ti i:tis){
+            TiWithCaseVO vo=new TiWithCaseVO();
+            ReflectUtil.cloneParentToChild(i,vo);
+
+            Tcase tcase=new Tcase();
+            tcase.setIid(i.getId());
+
+            List<Tcase> tcases=tcaseService.selectByCondition(tcase);
+            vo.setTcases(tcases);
+            list.add(vo);
+        }
+        return list;
     }
 }
