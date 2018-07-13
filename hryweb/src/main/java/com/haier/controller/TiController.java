@@ -60,19 +60,44 @@ public class TiController {
     public Result selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         return ResultUtil.success(tiService.selectByCondition(tiCustom, pageNum, pageSize));
     }
-    //返回list-带result信息
+
+    /**
+     * 返回List<ti> 带返回状态
+     * @param ti
+     * @return
+     */
     @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Ti ti){
         return ResultUtil.success(tiService.selectByCondition(ti));
     }
 
+    /**
+     * 返回List<ti> 不带返回状态,返回纯List
+     * @param ti
+     * @return
+     */
     @PostMapping("/selectList")
     public List<Ti> selectList(Ti ti){
         return tiService.selectByCondition(ti);
     }
 
+    /**
+     * ti-tcase vo,带返回状态
+     * @param ti
+     * @return
+     */
     @PostMapping("/selectTiWithCaseVO")
-    public List<TiWithCaseVO> selectTiWithTcaseVO(Ti ti){
+    public Result selectTiWithCaseVO(Ti ti){
+        return ResultUtil.success(this.selectListTiWithTcaseVO(ti));
+    }
+
+    /**
+     * ti-tcase vo,不带返回状态,纯List返回
+     * @param ti
+     * @return
+     */
+    @PostMapping("/selectListTiWithCaseVO")
+    public List<TiWithCaseVO> selectListTiWithTcaseVO(Ti ti){
         ReflectUtil.setFieldAddPercentAndCleanZero(ti,false);
         if(ti==null||ti.getServiceid()==null){
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"至少需要serviceid作为查询条件");

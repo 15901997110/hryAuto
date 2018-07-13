@@ -179,20 +179,20 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
-    public List<TiWithCaseVO> selectTiWithCaseVO(Ti ti){
-        List<TiWithCaseVO> list=new ArrayList<>();
-        List<Ti> tis=this.selectByCondition(ti);
-        Tcase condition=new Tcase();
+    public List<TiWithCaseVO> selectTiWithCaseVO(Ti ti) {
+        List<TiWithCaseVO> list = new ArrayList<>();
+        List<Ti> tis = this.selectByCondition(ti);
+        Tcase condition = new Tcase();
         condition.setServiceid(ti.getServiceid());
         condition.setIid(ti.getId());
         List<Tcase> tcases = tcaseService.selectByCondition(condition);
-        for(Ti i:tis){
-            TiWithCaseVO vo=new TiWithCaseVO();
-            ReflectUtil.cloneParentToChild(i,vo);
-            List<Tcase> retTcase=new ArrayList<>();
-            if(tcases!=null&&tcases.size()>0){
-                for(Tcase tcase:tcases){
-                    if(i.getId()==tcase.getIid()){
+        for (Ti i : tis) {
+            TiWithCaseVO vo = new TiWithCaseVO();
+            ReflectUtil.cloneParentToChild(i, vo);
+            List<Tcase> retTcase = new ArrayList<>();
+            if (tcases != null && tcases.size() > 0) {
+                for (Tcase tcase : tcases) {
+                    if (i.getId() == tcase.getIid()) {
                         retTcase.add(tcase);
                         //tcases.remove(tcase);//已经被接口匹配到,这里移除掉,减少tcases数组的长度,为下一次循环提升效率
                     }
