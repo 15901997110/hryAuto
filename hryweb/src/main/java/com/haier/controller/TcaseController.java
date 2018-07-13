@@ -7,11 +7,13 @@ import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
 import com.haier.response.Result;
 import com.haier.service.TcaseService;
+import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -32,58 +34,69 @@ public class TcaseController {
 
     //增
     @PostMapping("/insertOne")
-    public Result insertOne(Tcase tcase){
+    public Result insertOne(Tcase tcase) {
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
+                || tcase.getServiceid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
+        }
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
 
     /**
      * 删除单个tcase记录
+     *
      * @param id
      * @return
      */
     @PostMapping("/deleteOne")
-    public Result deleteOne(Integer id){
+    public Result deleteOne(@RequestParam("id") Integer id) {
         return ResultUtil.success(tcaseService.deleteOne(id));
     }
 
     /**
      * 根据条件删除tcase记录,现在仅支持根据iId和envId删除tcase记录
+     *
      * @param tcase
      * @return
      */
     @PostMapping("/deleteByCondition")
-    public Result deleteByCondition(Tcase tcase){
+    public Result deleteByCondition(Tcase tcase) {
         return ResultUtil.success(tcaseService.deleteByCondition(tcase));
     }
 
     //改
     @PostMapping("/updateOne")
-    public Result updateOne(Tcase tcase){
-        return ResultUtil.success(tcaseService.updateOne(tcase.getId(),tcase));
+    public Result updateOne(Tcase tcase) {
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getId() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
+        }
+        return ResultUtil.success(tcaseService.updateOne(tcase));
     }
 
     //查-综合查询
     @PostMapping("/selectByCondition")
-    public Result selectByCondition(TcaseCustom tcaseCustom,Integer pageNum,Integer pageSize){
-        return ResultUtil.success(tcaseService.selectByContion(tcaseCustom,pageNum,pageSize));
+    public Result selectByCondition(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
+        return ResultUtil.success(tcaseService.selectByContion(tcaseCustom, pageNum, pageSize));
     }
 
     //查-返回List-带Result
     @PostMapping("/selectByConditionSimple")
-    public Result selectListByCondition(Tcase tcase){
+    public Result selectListByCondition(Tcase tcase) {
         return ResultUtil.success(tcaseService.selectByCondition(tcase));
     }
 
     //查-仅返回List
     @PostMapping("/selectList")
-    public List<Tcase> selectList(Tcase tcase){
+    public List<Tcase> selectList(Tcase tcase) {
         return tcaseService.selectByCondition(tcase);
     }
 
 
     //查-主键查询
     @PostMapping("/selectOne")
-    public Result selectOne(Integer id){
+    public Result selectOne(@RequestParam("id") Integer id) {
         return ResultUtil.success(tcaseService.selectOne(id));
     }
 
@@ -93,6 +106,10 @@ public class TcaseController {
      */
     @PostMapping("/runCaseOne")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
+
+        if (tcase == null || tcase.getIid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口id必填!");
+        }
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
 
@@ -100,7 +117,7 @@ public class TcaseController {
      * 运行单条case,传入caseid,适用于case列表页运行时调用此接口
      */
     @PostMapping("/runCaseOneById")
-    public Result runCaseOneById(Integer id) throws HttpProcessException {
+    public Result runCaseOneById(@RequestParam("id") Integer id) throws HttpProcessException {
         return ResultUtil.success(tcaseService.runOne(id));
     }
 

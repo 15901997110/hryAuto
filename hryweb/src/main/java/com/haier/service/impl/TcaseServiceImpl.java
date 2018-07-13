@@ -55,95 +55,90 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer insertOne(Tcase tcase) {
-        //参数校验,注意,这些参数应该在前端直接js校验效果会更好
-        if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
-                || tcase.getIid() == 0 || "".equals(tcase.getCasename())) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
         return tcaseMapper.insertSelective(tcase);
     }
 
     @Override
     public Integer deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
         Tcase tcase = new Tcase();
         tcase.setId(id);
-        tcase.setStatus((short) -1);
+        tcase.setStatus(StatusEnum._ONE.getId());
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
     public Integer deleteByCondition(Tcase tcase) {
-        //暂时只实现根据iId,envId删除的功能
+       /* //暂时只实现根据iId,envId删除的功能
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || (tcase.getIid() == null && tcase.getEnvid() == null)) {
-            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "只支持根据iid和envid删除case");
-        }
+            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "只支持根据serviceid,iid和envid删除case");
+        }*/
         TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
-        criteria.andStatusGreaterThan((short) 0);
-        if (tcase.getIid() != null) {
-            criteria.andIidEqualTo(tcase.getIid());
-        }
-        if (tcase.getEnvid() != null) {
-            criteria.andEnvidEqualTo(tcase.getEnvid());
+        criteria.andStatusGreaterThan(0);
+        if (tcase != null) {
+            if (tcase.getIid() != null) {
+                criteria.andIidEqualTo(tcase.getIid());
+            }
+            if (tcase.getEnvid() != null) {
+                criteria.andEnvidEqualTo(tcase.getEnvid());
+            }
+            if (tcase.getServiceid() != null) {
+                criteria.andServiceidEqualTo(tcase.getServiceid());
+            }
+        } else {
+            return null;
         }
         Tcase t = new Tcase();
-        t.setStatus((short) -1);
+        t.setStatus(StatusEnum._ONE.getId());
         return tcaseMapper.updateByExampleSelective(t, tcaseExample);
     }
 
     @Override
-    public Integer updateOne(Integer id, Tcase tcase) {
-        if (tcase == null || tcase.getId() == null || tcase.getId() == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
-        tcase.setId(id);
+    public Integer updateOne(Tcase tcase) {
         return tcaseMapper.updateByPrimaryKeySelective(tcase);
     }
 
     @Override
     public Tcase selectOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
         return tcaseMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public List<Tcase> selectByCondition(Tcase tcase) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tcase,false);
-        TcaseExample tcaseExample =new TcaseExample();
+        ReflectUtil.setFieldAddPercentAndCleanZero(tcase, false);
+        TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
-        criteria.andStatusGreaterThan((short)0);
-        if(tcase !=null){
-            if(tcase.getEnvid()!=null){
+        criteria.andStatusGreaterThan(0);
+        if (tcase != null) {
+            if (tcase.getEnvid() != null) {
                 criteria.andEnvidEqualTo(tcase.getEnvid());
             }
-            if(tcase.getIid()!=null){
+            if (tcase.getServiceid() != null) {
+                criteria.andServiceidEqualTo(tcase.getServiceid());
+            }
+            if (tcase.getIid() != null) {
                 criteria.andIidEqualTo(tcase.getIid());
             }
-            if(tcase.getRequestparam()!=null){
+            if (tcase.getRequestparam() != null) {
                 criteria.andRequestparamLike(tcase.getRequestparam());
             }
-            if(tcase.getId()!=null){
+            if (tcase.getId() != null) {
                 criteria.andIdEqualTo(tcase.getId());
             }
-            if(tcase.getCasename()!=null){
+            if (tcase.getCasename() != null) {
                 criteria.andCasenameLike(tcase.getCasename());
             }
-            if(tcase.getAuthor()!=null){
+            if (tcase.getAuthor() != null) {
                 criteria.andAuthorLike(tcase.getAuthor());
             }
-            if(tcase.getExpected()!=null){
+            if (tcase.getExpected() != null) {
                 criteria.andExpectedLike(tcase.getExpected());
             }
-            if(tcase.getRemark()!=null){
+            if (tcase.getRemark() != null) {
                 criteria.andRemarkLike(tcase.getRemark());
             }
-            if(tcase.getAsserttype()!=null){
+            if (tcase.getAsserttype() != null) {
                 criteria.andAsserttypeEqualTo(tcase.getAsserttype());
             }
         }
@@ -153,9 +148,7 @@ public class TcaseServiceImpl implements TcaseService {
     @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
         //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
-        if (tcaseCustom != null) {
-            ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
-        }
+        ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
 
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
@@ -167,10 +160,6 @@ public class TcaseServiceImpl implements TcaseService {
     @Override
     public RunOneResult runOne(Tcase tcase) throws HttpProcessException {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
-
-        if (tcase == null || tcase.getIid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口id必填!");
-        }
         //准备数据
         Integer iId = tcase.getIid();
         Integer envId = tcase.getEnvid();
@@ -238,7 +227,7 @@ public class TcaseServiceImpl implements TcaseService {
                             param = JSON.parseObject(actualParam);
                         } catch (RuntimeException e) {
                             log.error("参数类型指定为JSON,然而实际参数无法转换成JSON", e);
-                            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR,"参数类型指定为JSON,然而实际参数无法转换成JSON");
+                            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "参数类型指定为JSON,然而实际参数无法转换成JSON");
                         }
                     }
 

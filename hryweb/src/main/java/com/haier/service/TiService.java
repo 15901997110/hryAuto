@@ -3,6 +3,7 @@ package com.haier.service;
 import com.github.pagehelper.PageInfo;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
+import com.haier.request.TiWithCaseVO;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface TiService {
     PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize);
 
     List<Ti> selectByCondition(Ti ti);
+
+    List<TiWithCaseVO> selectTiWithCaseVO (Ti ti);
 }

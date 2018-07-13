@@ -1,6 +1,7 @@
 package com.haier.service.impl;
 
 import com.haier.enums.ClientLevelEnum;
+import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
@@ -9,6 +10,7 @@ import com.haier.po.*;
 import com.haier.request.CustomVO;
 import com.haier.service.*;
 import com.haier.testng.listener.HryReporter;
+import com.haier.util.HryUtil;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -186,7 +189,6 @@ public class TcustomServiceImpl implements TcustomService {
     @Override
     public void run(Integer customId, Integer executeUserId) {
 
-/*
         //VO包含Tcustom 和 Tcustomdetail
         CustomVO customVO = this.selectOne(customId);
 
@@ -217,9 +219,9 @@ public class TcustomServiceImpl implements TcustomService {
         User user = userService.selectOne(executeUserId);
 
         Tenvdetail condition = new Tenvdetail();
-        *//**
+        /**
          * 要运行的测试类对应的tenvdetail
-         *//*
+         */
         List<Tenvdetail> tenvdetails = new ArrayList<>();//要运行的测试类
         for(Tcustomdetail tcustomdetail:tcustomdetails_service){
             condition.setEnvid(envid);
@@ -231,10 +233,14 @@ public class TcustomServiceImpl implements TcustomService {
                 }
             }
         }
-        *//**
-         * 要运行的接口
-         *//*
+        /**
+         * 要运行的接口,提取出要运行的方法
+         */
 
+
+        /**
+         * 要运行的用例
+         */
 
         if (tenvdetails == null || tenvdetails.size() < 1) {
             throw new HryException(StatusCodeEnum.NOT_FOUND, "定制id=" + customId + ",通过相应的serviceId和envId未从服务-环境映射表中找到记录!");
@@ -258,7 +264,7 @@ public class TcustomServiceImpl implements TcustomService {
         String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";
         //构造入库记录
         Treport treport = new Treport();
-        treport.setCustomid(tcustom.getId());
+       /* treport.setCustomid(tcustom.getId());
         treport.setCustomname(tcustom.getCustomname());
         treport.setEnvid(tenv.getId());
         treport.setEnvkey(tenv.getEnvkey());
@@ -267,7 +273,7 @@ public class TcustomServiceImpl implements TcustomService {
         treport.setUsername(user.getRealname());
         treport.setReportpath(reportPath);
         treport.setReportname(resourcePathPattern + reportName);
-        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
+        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中*/
 
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
@@ -278,9 +284,9 @@ public class TcustomServiceImpl implements TcustomService {
     @Async("asyncServiceExecutor")
     public void run(Map<String, String> params, Integer reportId, String reportName, List<XmlClass> xmlClasses) {
 
-        *//**
+        /**
          * 运行测试用例
-         *//*
+         */
         TestNG testNG = new TestNG();
         XmlSuite suite = new XmlSuite();
         List<XmlTest> xmlTests = new ArrayList<>();
@@ -298,12 +304,12 @@ public class TcustomServiceImpl implements TcustomService {
         testNG.run();
 
 
-        *//**
+        /**
          * 运行完成之后,更新treport状态
-         *//*
+         */
         Treport treport = new Treport();
         treport.setId(reportId);
         treport.setStatus(StatusEnum.TEN.getId());
-        treportService.updateOne(treport);*/
+        treportService.updateOne(treport);
     }
 }

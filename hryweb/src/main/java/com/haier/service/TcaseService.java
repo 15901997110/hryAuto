@@ -25,7 +25,7 @@ public interface TcaseService {
     Integer deleteByCondition(Tcase tcase);
 
     //改
-    Integer updateOne(Integer tcaseId, Tcase tcase);
+    Integer updateOne(Tcase tcase);
 
     //查-根据主键查询
     Tcase selectOne(Integer tcaseId);

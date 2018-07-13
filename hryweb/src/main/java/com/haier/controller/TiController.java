@@ -5,8 +5,10 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
+import com.haier.request.TiWithCaseVO;
 import com.haier.response.Result;
 import com.haier.service.TiService;
+import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +69,15 @@ public class TiController {
     @PostMapping("/selectList")
     public List<Ti> selectList(Ti ti){
         return tiService.selectByCondition(ti);
+    }
+
+    @PostMapping("/selectTiWithCaseVO")
+    public List<TiWithCaseVO> selectTiWithTcaseVO(Ti ti){
+        ReflectUtil.setFieldAddPercentAndCleanZero(ti,false);
+        if(ti==null||ti.getServiceid()==null){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"至少需要serviceid作为查询条件");
+        }
+        return tiService.selectTiWithCaseVO(ti);
     }
     //改
     @PostMapping("updateOne")
