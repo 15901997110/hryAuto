@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcustom;
@@ -11,10 +12,7 @@ import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -60,8 +58,14 @@ public class TcustomController {
         List<Tcustomdetail> list = customVO.getTcustomdetails();
         for (Tcustomdetail tcustomdetail : list) {
             ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
+            //必填校验
             if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
+            }
+            //当定制明细为接口和用例时,需要校验parentClientId不为0或者null
+            if (tcustomdetail.getClientlevel() != ClientLevelEnum.SERVICE.getLevel() &&
+                    (tcustomdetail.getParentclientid() == null || tcustomdetail.getParentclientid() == 0)) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,定制接口和用例时parentClientId必填");
             }
         }
         return ResultUtil.success(tcustomService.insertOne(customVO));
@@ -84,29 +88,29 @@ public class TcustomController {
     }
 
     @PostMapping("/deleteOne")
-    public Result deleteOne(@RequestBody Map<String,String> map) {
+    public Result deleteOne(@RequestBody Map<String, String> map) {
         Integer id;
-        if(map.containsKey("id")){
-            id=Integer.parseInt(map.get("id"));
+        if (map.containsKey("id")) {
+            id = Integer.parseInt(map.get("id"));
             if (id == null) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "删除定制信息时id必填!");
             }
-        }else{
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        } else {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         return ResultUtil.success(tcustomService.deleteOne(id));
     }
 
     @PostMapping("/selectOne")
-    public Result selectOne(@RequestBody Map<String,String> map) {
+    public Result selectOne(@RequestBody Map<String, String> map) {
         Integer id;
-        if(map.containsKey("id")){
-            id=Integer.parseInt(map.get("id"));
+        if (map.containsKey("id")) {
+            id = Integer.parseInt(map.get("id"));
             if (id == null) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "查询定制信息时id必填!");
             }
-        }else{
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        } else {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         return ResultUtil.success(tcustomService.selectOne(id));
     }
@@ -123,6 +127,9 @@ public class TcustomController {
 
     @PostMapping("/runByTcustomId")
     public Result runByTcustomId(Integer customId, Integer executeUserId) {
+        if (customId == null || customId == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行定制测试时,定制测试id必填!");
+        }
         tcustomService.run(customId, executeUserId);
         return ResultUtil.success();
     }

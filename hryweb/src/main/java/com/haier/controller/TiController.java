@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: luqiwei
@@ -56,12 +58,16 @@ public class TiController {
     public Result selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
         return ResultUtil.success(tiService.selectByCondition(tiCustom, pageNum, pageSize));
     }
-
+    //返回list-带result信息
     @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Ti ti){
         return ResultUtil.success(tiService.selectByCondition(ti));
     }
 
+    @PostMapping("/selectList")
+    public List<Ti> selectList(Ti ti){
+        return tiService.selectByCondition(ti);
+    }
     //改
     @PostMapping("updateOne")
     public Result updateOne(Ti ti) {
