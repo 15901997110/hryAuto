@@ -192,7 +192,7 @@ public class TiServiceImpl implements TiService {
             List<Tcase> retTcase = new ArrayList<>();
             if (tcases != null && tcases.size() > 0) {
                 for (Tcase tcase : tcases) {
-                    if (i.getId() == tcase.getIid()) {
+                    if (i.getId().equals(tcase.getIid())) {
                         retTcase.add(tcase);
                         //tcases.remove(tcase);//已经被接口匹配到,这里移除掉,减少tcases数组的长度,为下一次循环提升效率
                     }
