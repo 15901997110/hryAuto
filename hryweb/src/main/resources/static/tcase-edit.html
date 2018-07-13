@@ -51,6 +51,16 @@
 				</span>
             </div>
         </div>
+        <div class="row cl" style="display:none">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
+                        <!--<option value="" selected>请选择服务</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -470,7 +480,7 @@
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
-        //var service = $("#service").val();
+        var service = $("#service").val();
         //var ti = $("#ti").val();
         var ti=tiId;
         var requestParam = $("#requestParam").val();
@@ -495,6 +505,7 @@
                     id:id,
                     casename:caseName,
                     remark:remark,
+                    serviceid:service,
                     iid:ti,
                     envid:env,
                     requestparam:requestParam,
