@@ -1,5 +1,6 @@
 package com.haier.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.StatusCodeEnum;
@@ -19,6 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
+import org.testng.xml.XmlInclude;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
@@ -192,7 +194,6 @@ public class TcustomServiceImpl implements TcustomService {
         //VO包含Tcustom 和 Tcustomdetail
         CustomVO customVO = this.selectOne(customId);
 
-
         List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
 
         List<Tcustomdetail> tcustomdetails_service = new ArrayList<>();//定制的服务
@@ -200,85 +201,184 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustomdetail> tcustomdetails_case = new ArrayList<>();//定制的用例
 
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
-            if (ClientLevelEnum.SERVICE.getLevel() == tcustomdetail.getClientlevel()) {
+            /**
+             * 服务-对应测试类
+             */
+            if (ClientLevelEnum.SERVICE.getLevel().equals(tcustomdetail.getClientlevel())) {
                 tcustomdetails_service.add(tcustomdetail);
             }
-            if (ClientLevelEnum.INTERFACE.getLevel() == tcustomdetail.getClientlevel()) {
+
+            /**
+             * 接口-对应测试方法,注意,iUri与测试方法需要转换一下 /aaa/bbb   转成 aaa_bbb
+             */
+            if (ClientLevelEnum.INTERFACE.getLevel().equals(tcustomdetail.getClientlevel())) {
                 tcustomdetails_interface.add(tcustomdetail);
             }
-            if (ClientLevelEnum.CASE.getLevel() == tcustomdetail.getClientlevel()) {
+
+            /**
+             * 用例,用例需要传到测试类中,但是测试类现在仅支持传入Map<String,String>,需要将用例ids转成字符串传入并在测试类中解析出来
+             */
+            if (ClientLevelEnum.CASE.getLevel().equals(tcustomdetail.getClientlevel())) {
                 tcustomdetails_case.add(tcustomdetail);
             }
         }
 
-        Integer[] serviceIds = null;
+        Map<Integer, List<String>> iMap = new HashMap<>();
+        Map<Integer, Map<String, List<Integer>>> cMap = new HashMap<>();
 
-        Integer envid = customVO.getEnvid();
-        Tenv tenv = tenvService.selectOne(envid);
+        if (tcustomdetails_interface.size() > 0) {
+            for (Tcustomdetail i : tcustomdetails_interface) {
+                /**
+                 * 将iUri转换成对应的测试方法名称
+                 */
+                String iUri = i.getClientname();//接口Uri
+                String testMethodName;//对应测试类中的测试方法名
+                if (iUri.startsWith("/")) {
+                    testMethodName = iUri.replaceFirst("/", "").replaceAll("/", "_");
+                } else {
+                    testMethodName = iUri.replaceAll("/", "_");
+                }
 
-        User user = userService.selectOne(executeUserId);
+                /**
+                 * 将测试方法归类到测试类中t.getParentclientid()==Service.ID
+                 */
+                if (!iMap.containsKey(i.getParentclientid())) {
+                    List<String> list = new ArrayList<>();
+                    list.add(testMethodName);
+                    iMap.put(i.getParentclientid(), list);
+                } else {
+                    iMap.get(i.getParentclientid()).add(testMethodName);
+                }
 
-        Tenvdetail condition = new Tenvdetail();
-        /**
-         * 要运行的测试类对应的tenvdetail
-         */
-        List<Tenvdetail> tenvdetails = new ArrayList<>();//要运行的测试类
-        for(Tcustomdetail tcustomdetail:tcustomdetails_service){
-            condition.setEnvid(envid);
-            condition.setServiceid(tcustomdetail.getClientid());
-            List<Tenvdetail> tenvdetails_service = tenvdetailService.selectByCondition(condition);
-            if(tenvdetails_service!=null&&tenvdetails_service.size()>0){
-                for(Tenvdetail tenvdetail_service:tenvdetails_service){
-                    tenvdetails.add(tenvdetail_service);
+                /**
+                 * 找此接口是否定制过用例
+                 */
+                Map<String, List<Integer>> i_c_map = new HashMap<>();
+                for (Tcustomdetail c : tcustomdetails_case) {
+                    if (c.getParentclientid().equals(i.getClientid())) {
+                        //此接口定制了用例
+                        if (!i_c_map.containsKey(testMethodName)) {
+                            List<Integer> listC = new ArrayList<>();
+                            listC.add(c.getClientid());
+                            i_c_map.put(testMethodName, listC);
+                        } else {
+                            i_c_map.get(testMethodName).add(c.getClientid());
+                        }
+                    }
+                }
+                if (i_c_map.size() > 0) {
+                    cMap.put(i.getParentclientid(), i_c_map);
                 }
             }
         }
-        /**
-         * 要运行的接口,提取出要运行的方法
-         */
 
 
         /**
-         * 要运行的用例
+         * 将准备好的测试类,测试方法,测试case传递给testNG
          */
+        Map<Tcustomdetail, XmlClass> sMap = new HashMap<>();
 
-        if (tenvdetails == null || tenvdetails.size() < 1) {
-            throw new HryException(StatusCodeEnum.NOT_FOUND, "定制id=" + customId + ",通过相应的serviceId和envId未从服务-环境映射表中找到记录!");
+        Integer envid = customVO.getEnvid();
+        User user = userService.selectOne(executeUserId);
+
+        Tenvdetail condition = new Tenvdetail();
+        for (Tcustomdetail tcustomdetail : tcustomdetails_service) {
+            condition.setEnvid(envid);
+            condition.setServiceid(tcustomdetail.getClientid());
+            List<Tenvdetail> tenvdetails_service = tenvdetailService.selectByCondition(condition);
+            if (tenvdetails_service != null && tenvdetails_service.size() > 0) {
+
+                //取第1条记录,按正常情况 ,有且仅有一条记录才对,否则 就是脏数据
+                Tenvdetail s0 = tenvdetails_service.get(0);
+
+                //测试类必须已经填写
+                if (s0.getClazz() != null && !"".equals(s0.getClazz())) {
+
+                    //构建测试类
+                    XmlClass xmlClass = new XmlClass(s0.getClazz());
+
+                    Map<String, String> params = new HashMap<>();//构建测试类常规参数
+                    params.put(ParamKeyEnum.SERVICEID.getKey(), s0.getServiceid() + "");
+                    params.put(ParamKeyEnum.ENVID.getKey(), s0.getEnvid() + "");
+                    params.put(ParamKeyEnum.DESIGNER.getKey(), "");//此字段为预留后期使用,先传空值
+
+                    //构建此测试类对应的方法选择器(如果有的话)
+                    if (iMap.size() > 0) {
+                        List<String> runInterface = iMap.get(tcustomdetail.getClientid());
+                        if (runInterface != null && runInterface.size() > 0) {
+                            List<XmlInclude> xmlIncludes = new ArrayList<>();
+                            for (String s : runInterface) {
+                                XmlInclude include = new XmlInclude(s);
+                                xmlIncludes.add(include);
+                            }
+                            xmlClass.setIncludedMethods(xmlIncludes);
+                        }
+                    }
+
+                    //构建此测试类对应的case参数(如果有的话)
+                    String i_c_jsonStr = "";
+                    if (cMap.size() > 0) {
+                        Map<String, List<Integer>> stringListMap = cMap.get(tcustomdetail.getClientid());
+                        if (stringListMap != null && stringListMap.size() > 0) {
+                            i_c_jsonStr = JSON.toJSONString(stringListMap);
+
+                        }
+                    }
+                    params.put(ParamKeyEnum.I_C.getKey(), i_c_jsonStr);//参数名:i_c
+                    xmlClass.setParameters(params);
+                    sMap.put(tcustomdetail, xmlClass);//建立映射关系
+                }
+            }
         }
 
-        List<XmlClass> xmlClasses = new ArrayList<XmlClass>();
-        for (Tenvdetail ttt : tenvdetails) {
-
-            XmlClass xmlClass = new XmlClass();
-            xmlClass.setName(ttt.getClazz());
-            //设置参数,测试类运行时需要根据serviceId和envId来初始化并获取case信息
-            Map<String, String> params = new HashMap<>();
-            params.put(ParamKeyEnum.SERVICEID.getKey(), ttt.getServiceid() + "");
-            params.put(ParamKeyEnum.ENVID.getKey(), ttt.getEnvid() + "");
-            params.put(ParamKeyEnum.DESIGNER.getKey(), "");//此字段为预留后期使用,先传空值
-            xmlClass.setParameters(params);
-            xmlClasses.add(xmlClass);
-        }
+        Tenv tenv = tenvService.selectOne(envid);
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";
         //构造入库记录
         Treport treport = new Treport();
-       /* treport.setCustomid(tcustom.getId());
-        treport.setCustomname(tcustom.getCustomname());
-        treport.setEnvid(tenv.getId());
+        treport.setCustomid(customVO.getId());
+        treport.setCustomname(customVO.getCustomname());
+        treport.setEnvid(envid);
         treport.setEnvkey(tenv.getEnvkey());
-        treport.setServiceids(serviceIdStr);
+        //treport.setServiceids(serviceIdStr);
         treport.setUserid(user.getId());
         treport.setUsername(user.getRealname());
         treport.setReportpath(reportPath);
         treport.setReportname(resourcePathPattern + reportName);
-        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中*/
+        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
 
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        this.run(null, treportId, reportName, HryUtil.distinct(xmlClasses));
+        this.run(null, treportId, reportName, sMap);
+        return;
+    }
+
+    @Async("asyncServiceExecutor")
+    public void run(Map<String, String> params, Integer reportId, String reportName, Map<Tcustomdetail, XmlClass> sMap) {
+        TestNG ng = new TestNG();
+        XmlSuite suite = new XmlSuite();
+        suite.setName("AutoSuite");
+        if (params != null) {
+            suite.setParameters(params);//这是全局的参数,预留未来可能的需求(现在并未使用 2018-07-14)
+        }
+        List<XmlTest> tests = new ArrayList<>();
+        for (Map.Entry entry : sMap.entrySet()) {
+            Tcustomdetail key = (Tcustomdetail) entry.getKey();
+            XmlClass clazz = (XmlClass) entry.getValue();
+
+            XmlTest test = new XmlTest(suite);
+            test.setName(key.getClientname());
+            test.setXmlClasses(Arrays.asList(clazz));
+
+            tests.add(test);
+        }
+
+        suite.setTests(tests);
+        ng.setXmlSuites(Arrays.asList(suite));
+        ng.addListener(new HryReporter(reportPath, reportName));
+        ng.run();
     }
 
     @Async("asyncServiceExecutor")
@@ -289,6 +389,10 @@ public class TcustomServiceImpl implements TcustomService {
          */
         TestNG testNG = new TestNG();
         XmlSuite suite = new XmlSuite();
+        suite.setName("AutoSuite");
+        if (params != null) {
+            suite.setParameters(params);
+        }
         List<XmlTest> xmlTests = new ArrayList<>();
         for (XmlClass c : xmlClasses) {
             XmlTest test = new XmlTest(suite);
@@ -296,7 +400,7 @@ public class TcustomServiceImpl implements TcustomService {
             test.setClasses(Arrays.asList(c));
             xmlTests.add(test);
         }
-        suite.setName("AutoSuite");
+
         suite.setTests(xmlTests);
 
         testNG.setXmlSuites(Arrays.asList(suite));

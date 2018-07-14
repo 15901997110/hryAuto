@@ -1,5 +1,7 @@
 package com.haier.testng.cases;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
@@ -35,19 +37,22 @@ public class PgwTest {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
+    private String i_c;
+    private JSONObject i_c_JSONObject;
     private String baseUrl;//http://host:port
     private String url;
     private Tservice tservice;
     private Tenvdetail tenvdetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
 
-    @Parameters({"serviceId", "envId", "caseDesigner"})
+    @Parameters({"serviceId", "envId", "caseDesigner","i_c"})
     @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner) {
+    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner,String i_c) {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
-
+        this.i_c=i_c;
+        this.i_c_JSONObject=JSONObject.parseObject(i_c);
         tservice = runService.getTservice(this.serviceId);
         tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
         init();
@@ -92,6 +97,12 @@ public class PgwTest {
 
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
+        //如果用户有定制测试用例
+        JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
+        if(customCaseArray!=null&&customCaseArray.size()>0){
+
+        }
+
         Object[] objects;
         String iUri;
 
