@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -191,12 +192,29 @@ public class TiServiceImpl implements TiService {
             ReflectUtil.cloneParentToChild(i, vo);
             List<Tcase> retTcase = new ArrayList<>();
             if (tcases != null && tcases.size() > 0) {
+                Iterator<Tcase> iterator = tcases.iterator();
+                /**
+                 * 替换下面的实现,改成iterator迭代
+                 */
+                while (iterator.hasNext()) {
+                    Tcase next = iterator.next();
+                    if (i.getId().equals(next.getIid())) {
+                        retTcase.add(next);
+                        iterator.remove();
+                    }
+                }
+                /**
+                 * 下面注解的部分会引发ConcurrentModificationException异常
+                 * 在List迭代中如果需要移除元素,不可以使用list.remove,
+                 * https://www.cnblogs.com/dolphin0520/p/3933551.html
+                 */
+                /*
                 for (Tcase tcase : tcases) {
                     if (i.getId().equals(tcase.getIid())) {
                         retTcase.add(tcase);
-                        //tcases.remove(tcase);//已经被接口匹配到,这里移除掉,减少tcases数组的长度,为下一次循环提升效率
+                        tcases.remove(tcase);//已经被接口匹配到,这里移除掉,减少tcases数组的长度,为下一次循环提升效率
                     }
-                }
+                }*/
             }
             vo.setTcases(retTcase);
             list.add(vo);
