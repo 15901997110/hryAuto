@@ -2,21 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.haier.mapper.StatisticMapper">
     <select id="statisticTiByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM ti i WHERE i.iStatus>0 AND i.serviceId=#{serviceId}
+        SELECT COUNT(i.id)
+        FROM ti i
+        WHERE i.serviceId = #{serviceId} AND i.iStatus > 0
     </select>
     <select id="statisticTcaseByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM tcase c INNER JOIN ti i
-        ON c.iId=i.id
-        AND c.status>0
-        AND i.iStatus>0
-        AND i.serviceId=#{serviceId}
+        SELECT COUNT(c.id)
+        FROM tcase c
+        WHERE c.serviceId = #{serviceId} and c.status>0;
     </select>
     <select id="statisticTcaseDistinctIidByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(DISTINCT(c.iId)) FROM tcase c INNER JOIN ti i
-        ON c.iId=i.id
-        AND c.status>0
-        AND i.iStatus>0
-        AND i.serviceId=#{serviceId}
+        SELECT COUNT(DISTINCT (c.iId))
+        FROM tcase c
+        WHERE c.serviceId=#{serviceId} and c.status>0;
     </select>
 
 </mapper>
