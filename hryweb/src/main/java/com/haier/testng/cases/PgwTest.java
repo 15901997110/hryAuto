@@ -53,7 +53,10 @@ public class PgwTest {
         this.envId = envId;
         this.caseDesigner = caseDesigner;
         this.i_c = i_c;
-        this.i_c_JSONObject = JSONObject.parseObject(i_c);
+        if (this.i_c != null && !"".equals(this.i_c)) {
+            this.i_c_JSONObject = JSONObject.parseObject(i_c);
+        }
+
         tservice = runService.getTservice(this.serviceId);
         tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
         init();
@@ -125,14 +128,16 @@ public class PgwTest {
 
 
         //如果用户有定制测试用例,则使用用户定制的用例来进行测试
-        JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
-        if (customCaseArray != null && customCaseArray.size() > 0) {
-            Iterator<Tcase> iterator = tcases.iterator();
-            while (iterator.hasNext()) {
-                Tcase tcase = iterator.next();
-                //数据库中查到的caseid不在定制列表中,则移除掉
-                if (!customCaseArray.contains(tcase.getId())) {
-                    iterator.remove();
+        if (this.i_c_JSONObject != null && this.i_c_JSONObject.size() > 0) {
+            JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
+            if (customCaseArray != null && customCaseArray.size() > 0) {
+                Iterator<Tcase> iterator = tcases.iterator();
+                while (iterator.hasNext()) {
+                    Tcase tcase = iterator.next();
+                    //数据库中查到的caseid不在定制列表中,则移除掉
+                    if (!customCaseArray.contains(tcase.getId())) {
+                        iterator.remove();
+                    }
                 }
             }
         }

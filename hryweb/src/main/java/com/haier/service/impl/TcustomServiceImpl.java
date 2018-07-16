@@ -199,12 +199,17 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustomdetail> tcustomdetails_interface = new ArrayList<>();//定制的接口
         List<Tcustomdetail> tcustomdetails_case = new ArrayList<>();//定制的用例
 
+        List<Integer> service_ids=new ArrayList<>();
+        List<String> service_names=new ArrayList<>();
+
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
             /**
              * 服务-对应测试类
              */
             if (ClientLevelEnum.SERVICE.getLevel().equals(tcustomdetail.getClientlevel())) {
                 tcustomdetails_service.add(tcustomdetail);
+                service_ids.add(tcustomdetail.getClientid());
+                service_names.add(tcustomdetail.getClientname());
             }
 
             /**
@@ -340,7 +345,8 @@ public class TcustomServiceImpl implements TcustomService {
         treport.setCustomname(customVO.getCustomname());
         treport.setEnvid(envid);
         treport.setEnvkey(tenv.getEnvkey());
-        //treport.setServiceids(serviceIdStr);
+        treport.setServiceids(JSON.toJSONString(service_ids));//[1,2,3]
+        treport.setServicenames(JSON.toJSONString(service_names));//["aaa","bbb","ccc"],取出后,可直接转换成JSONArray
         treport.setUserid(user.getId());
         treport.setUsername(user.getRealname());
         treport.setReportpath(reportPath);
