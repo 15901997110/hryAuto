@@ -3,7 +3,7 @@ package com.haier.service;
 import com.github.pagehelper.PageInfo;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
-import com.haier.request.TiWithCaseVO;
+import com.haier.vo.TiWithCaseVO;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
 import com.haier.po.*;
-import com.haier.request.TiWithCaseVO;
+import com.haier.vo.TiWithCaseVO;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;

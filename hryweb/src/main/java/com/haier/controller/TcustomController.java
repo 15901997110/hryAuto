@@ -5,7 +5,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcustom;
 import com.haier.po.Tcustomdetail;
-import com.haier.request.CustomVO;
+import com.haier.vo.CustomVO;
 import com.haier.response.Result;
 import com.haier.service.TcustomService;
 import com.haier.util.ReflectUtil;

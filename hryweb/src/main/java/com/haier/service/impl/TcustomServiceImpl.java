@@ -8,10 +8,9 @@ import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
-import com.haier.request.CustomVO;
+import com.haier.vo.CustomVO;
 import com.haier.service.*;
 import com.haier.testng.listener.HryReporter;
-import com.haier.util.HryUtil;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,7 +333,7 @@ public class TcustomServiceImpl implements TcustomService {
         Tenv tenv = tenvService.selectOne(envid);
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";
+        String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
         //构造入库记录
         Treport treport = new Treport();
         treport.setCustomid(customVO.getId());

@@ -3,7 +3,7 @@ package com.haier.service;
 import com.haier.po.Tcustom;
 import com.haier.po.TcustomCustom;
 import com.haier.po.Tcustomdetail;
-import com.haier.request.CustomVO;
+import com.haier.vo.CustomVO;
 
 import java.util.List;
 

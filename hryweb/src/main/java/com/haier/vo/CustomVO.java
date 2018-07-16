@@ -1,4 +1,4 @@
-package com.haier.request;
+package com.haier.vo;
 
 import com.haier.po.Tcustom;
 import com.haier.po.Tcustomdetail;

@@ -5,7 +5,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
-import com.haier.request.TiWithCaseVO;
+import com.haier.vo.TiWithCaseVO;
 import com.haier.response.Result;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;

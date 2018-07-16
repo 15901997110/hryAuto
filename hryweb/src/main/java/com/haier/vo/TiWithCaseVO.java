@@ -1,4 +1,4 @@
-package com.haier.request;
+package com.haier.vo;
 
 import com.haier.po.Tcase;
 import com.haier.po.Ti;

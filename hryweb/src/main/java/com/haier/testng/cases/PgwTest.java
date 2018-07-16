@@ -25,6 +25,7 @@ import org.testng.annotations.Test;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,14 +46,14 @@ public class PgwTest {
     private Tenvdetail tenvdetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
 
-    @Parameters({"serviceId", "envId", "caseDesigner","i_c"})
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner,String i_c) {
+    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c) {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
-        this.i_c=i_c;
-        this.i_c_JSONObject=JSONObject.parseObject(i_c);
+        this.i_c = i_c;
+        this.i_c_JSONObject = JSONObject.parseObject(i_c);
         tservice = runService.getTservice(this.serviceId);
         tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
         init();
@@ -82,14 +83,14 @@ public class PgwTest {
 
     @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(Params params) {
-        log.info("自己打印的日志:"+params.toString());
+        log.info("自己打印的日志:" + params.toString());
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
 
     @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(Params params) {
-        System.out.println("System.out.println():"+params);
+        System.out.println("System.out.println():" + params);
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
@@ -97,11 +98,6 @@ public class PgwTest {
 
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
-        //如果用户有定制测试用例
-        JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
-        if(customCaseArray!=null&&customCaseArray.size()>0){
-
-        }
 
         Object[] objects;
         String iUri;
@@ -121,17 +117,32 @@ public class PgwTest {
         if (ti == null) {
             return null;
         }
+        //此接口对应的全部用例
         List<Tcase> tcases = runService.getTcase(ti.getId(), this.envId, this.caseDesigner);
         if (tcases == null || tcases.size() == 0) {
             return null;
         }
 
+
+        //如果用户有定制测试用例,则使用用户定制的用例来进行测试
+        JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
+        if (customCaseArray != null && customCaseArray.size() > 0) {
+            Iterator<Tcase> iterator = tcases.iterator();
+            while (iterator.hasNext()) {
+                Tcase tcase = iterator.next();
+                //数据库中查到的caseid不在定制列表中,则移除掉
+                if (!customCaseArray.contains(tcase.getId())) {
+                    iterator.remove();
+                }
+            }
+        }
+
+
         objects = new Object[tcases.size()];
         for (int i = 0; i < tcases.size(); i++) {
-            Params params=new Params();
+            Params params = new Params();
             params.setTi(ti);
             params.setTcase(tcases.get(i));
-
             objects[i] = params;
         }
         return objects;
