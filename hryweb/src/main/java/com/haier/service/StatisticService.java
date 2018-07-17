@@ -10,5 +10,6 @@ import java.util.List;
  * @Date: 2018/6/9 13:21
  */
 public interface StatisticService {
+    List<RealtimeStatistic> statisticCurrentOld();
     List<RealtimeStatistic> statisticCurrent();
 }

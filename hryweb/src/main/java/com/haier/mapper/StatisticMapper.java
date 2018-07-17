@@ -1,5 +1,8 @@
 package com.haier.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @Description:
  * @Author: luqiwei
@@ -26,5 +29,11 @@ public interface StatisticMapper {
      * @return
      */
     Integer statisticTcaseDistinctIidByServiceId(Integer serviceId);
+
+    List<Map<String,Integer>> statisticCountTi();
+
+    List<Map<String,Integer>> statisticCountTcase();
+
+    List<Map<String,Integer>> statisticCountTcaseDistinctIid();
 
 }

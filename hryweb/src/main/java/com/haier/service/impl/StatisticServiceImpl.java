@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -34,7 +35,7 @@ public class StatisticServiceImpl implements StatisticService {
      * @return
      */
     @Override
-    public List<RealtimeStatistic> statisticCurrent() {
+    public List<RealtimeStatistic> statisticCurrentOld() {
         List<RealtimeStatistic> list = new ArrayList<>();
 
         List<Tservice> tservices = tserviceService.selectByCondition(null);
@@ -72,5 +73,63 @@ public class StatisticServiceImpl implements StatisticService {
             list.add(realtimeStatistic);
         }
         return list;
+    }
+
+    @Override
+    public List<RealtimeStatistic> statisticCurrent() {
+        List<RealtimeStatistic> ret = new ArrayList<>();
+        List<Tservice> tservices = tserviceService.selectByCondition(null);
+        List<Map<String, Integer>> countTi = statisticMapper.statisticCountTi();
+        List<Map<String, Integer>> countTcase = statisticMapper.statisticCountTcase();
+        List<Map<String, Integer>> countTcaseDistinctIid = statisticMapper.statisticCountTcaseDistinctIid();
+
+        for (Tservice service : tservices) {
+            RealtimeStatistic rs = new RealtimeStatistic();
+            rs.setServiceKey(service.getServicekey());
+            rs.setServiceDesc(service.getServicename());
+
+            Integer iTotal = 0;
+            for (Map m : countTi) {
+                if (m.get("serviceid").equals(service.getId())) {
+                    iTotal = (Integer) m.get("count");
+                }
+            }
+
+            Integer cTotal = 0;
+            for (Map m : countTcase) {
+                if (m.get("serviceid").equals(service.getId())) {
+                    cTotal = (Integer) m.get("count");
+                }
+            }
+
+            Integer iTotalByCase = 0;
+            for (Map m : countTcaseDistinctIid) {
+                if (m.get("serviceid").equals(service.getId())) {
+                    iTotalByCase = (Integer) m.get("count");
+                }
+            }
+
+            Integer iTotalNoCase = iTotal - iTotalByCase;
+
+            String iRate = "0.00%";
+            if (iTotalByCase.intValue() != 0 && iTotal.intValue() != 0) {
+                iRate = String.format("%.2f", (float) iTotalByCase / iTotal * 100) + "%";
+            }
+
+            String cFineness = "0.00";
+            if (cTotal.intValue() != 0 && iTotalByCase.intValue() != 0) {
+                cFineness = String.format("%.2f", (float) cTotal / iTotalByCase);
+            }
+
+            rs.setITotal(iTotal);
+            rs.setITotalByCase(iTotalByCase);
+            rs.setITotalNoCase(iTotalNoCase);
+            rs.setIRate(iRate);
+            rs.setCTotal(cTotal);
+            rs.setCFineness(cFineness);
+
+            ret.add(rs);
+        }
+        return ret;
     }
 }
