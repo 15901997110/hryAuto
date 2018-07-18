@@ -18,6 +18,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.testng.Assert;
+import org.testng.Reporter;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -79,7 +81,8 @@ public class PgwTest {
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
-        log.debug(params.toString());
+        //Reporter.log(params.getTi().toString());
+        Reporter.log(params.getTcase().toString());
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
     }
@@ -104,16 +107,18 @@ public class PgwTest {
 
         Object[] objects;
         String iUri;
+        String testMethodName = method.getName();
 
         //testName可能未填写
         try {
             iUri = method.getAnnotation(Test.class).testName();
             if (iUri == null || "".equals(iUri)) {
-                return null;
+                Reporter.log("测试方法中没有没有@Test(testName=\"\")注解");
+                throw new SkipException("测试方法中没有没有@Test(testName=\"\")注解");
             }
         } catch (NullPointerException e) {
             log.error("获取测试方法的@Test注解异常:" + method.getName(), e);
-            return null;
+            throw new SkipException("获取测试方法的@Test注解异常");
         }
 
         Ti ti = runService.getTi(this.serviceId, iUri);
@@ -125,7 +130,6 @@ public class PgwTest {
         if (tcases == null || tcases.size() == 0) {
             return null;
         }
-
 
         //如果用户有定制测试用例,则使用用户定制的用例来进行测试
         if (this.i_c_JSONObject != null && this.i_c_JSONObject.size() > 0) {

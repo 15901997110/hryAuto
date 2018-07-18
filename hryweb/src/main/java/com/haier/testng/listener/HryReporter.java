@@ -147,6 +147,7 @@ public class HryReporter implements IReporter {
         extent.setReportUsesManualConfiguration(true);
     }
 
+    @SuppressWarnings("Convert2Lambda")
     private void buildTestNodes(ExtentTest extenttest, IResultMap tests, Status status) {
         //存在父节点时，获取父节点的标签
         String[] categories = new String[0];
@@ -162,7 +163,7 @@ public class HryReporter implements IReporter {
 
         if (tests.size() > 0) {
             //调整用例排序，按时间排序
-            Set<ITestResult> treeSet = new TreeSet<ITestResult>(new Comparator<ITestResult>() {
+            Set<ITestResult> treeSet = new TreeSet<>(new Comparator<ITestResult>() {
                 public int compare(ITestResult o1, ITestResult o2) {
                     return o1.getStartMillis() < o2.getStartMillis() ? -1 : 1;
                 }
