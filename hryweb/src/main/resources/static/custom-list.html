@@ -110,7 +110,16 @@
                         var ul="";
                         for(var k=0;k<tserviceList.length;k++){
                             var serv=tserviceList[k];
-                            var servicekey=serv.clientname;
+                            var servicekey="";
+                            if(serv.clientlevel == 1){
+                                if(serv.haschild == true){
+                                    servicekey=serv.clientname+"(有定制)";
+                                }else{
+                                    servicekey=serv.clientname;
+                                }
+
+
+                            }
                             var li="<li>"+servicekey+"</li>";
                             ul=ul+li;
                         }
@@ -126,7 +135,7 @@
                             "<td>"+row.strategy+"</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"custom_run("+row.id+")\" class=\"ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html',"+row.id+",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"custom_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
@@ -154,7 +163,7 @@
     /*定制测试-编辑*/
     function custom_edit(title,url,id,w,h){
         url= url + "?id="+id;
-        layer_show(title,url,w,h);
+        layer_show1(title,url,w,h);
 
     }
     /*定制测试-删除*/
