@@ -1,10 +1,9 @@
 package com.haier.enums;
 
 public enum RequestParamTypeEnum {
-    JSON(1,"json","json类型"),
-    MAP(2,"map","map类型"),
-    TEXT(3,"text","文本类型")
-    ;
+    JSON(1, "json", "json类型"),
+    MAP(2, "map", "map类型"),
+    TEXT(3, "text", "文本类型");
     private Integer id;
     private String value;
     private String desc;
@@ -33,10 +32,10 @@ public enum RequestParamTypeEnum {
         this.desc = desc;
     }
 
-    RequestParamTypeEnum(Integer id, String value, String desc){
-        this.id=id;
-        this.value=value;
-        this.desc=desc;
+    RequestParamTypeEnum(Integer id, String value, String desc) {
+        this.id = id;
+        this.value = value;
+        this.desc = desc;
     }
 
     public static String getValue(int id) {

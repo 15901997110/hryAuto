@@ -1,13 +1,14 @@
 package com.haier.enums;
 
 public enum HttpTypeEnum {
-    HTTP(1,"Http"),
-    HTTPS(2,"Https");
+    HTTP(1, "Http"),
+    HTTPS(2, "Https");
     private int id;
     private String value;
-    HttpTypeEnum(int id, String value){
-        this.id =id;
-        this.value=value;
+
+    HttpTypeEnum(int id, String value) {
+        this.id = id;
+        this.value = value;
     }
 
     public int getId() {
@@ -26,17 +27,18 @@ public enum HttpTypeEnum {
         this.value = value;
     }
 
-    public static String getValue(int id){
-        for(HttpTypeEnum e:HttpTypeEnum.values()){
-            if(e.getId()==id){
+    public static String getValue(int id) {
+        for (HttpTypeEnum e : HttpTypeEnum.values()) {
+            if (e.getId() == id) {
                 return e.getValue();
             }
         }
         return null;
     }
-    public static Integer getId(String value){
-        for(HttpTypeEnum e:HttpTypeEnum.values()){
-            if(e.getValue().equalsIgnoreCase(value)){
+
+    public static Integer getId(String value) {
+        for (HttpTypeEnum e : HttpTypeEnum.values()) {
+            if (e.getValue().equalsIgnoreCase(value)) {
                 return e.getId();
             }
         }

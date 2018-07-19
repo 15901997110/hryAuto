@@ -51,7 +51,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public Ti getTi(Integer serviceId, String iUri) {
-        Ti ti=new Ti();
+        Ti ti = new Ti();
         ti.setServiceid(serviceId);
         ti.setIuri(iUri);
         List<Ti> tis = tiService.selectByCondition(ti);
@@ -63,7 +63,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public List<Tcase> getTcase(Integer iId, Integer envId, String caseDesigner) {
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setIid(iId);
         tcase.setEnvid(envId);
         tcase.setAuthor(caseDesigner);

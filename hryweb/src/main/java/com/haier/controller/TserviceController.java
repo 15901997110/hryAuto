@@ -18,7 +18,7 @@ import java.util.Objects;
  * @Author: lish
  * @Description: 服务信息维护
  * @Data: 2018-05-19 16:16
- * */
+ */
 @Slf4j
 @RestController
 @RequestMapping("/tservice")
@@ -28,62 +28,62 @@ public class TserviceController {
 
     /**
      * 查询服务列表,返回分页信息
-     * */
-    @PostMapping(value="/selectByCondition")
-    public Result selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize){
-        return ResultUtil.success(tserviceService.selectByCondition(tservice,pageNum,pageSize));
+     */
+    @PostMapping(value = "/selectByCondition")
+    public Result selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
+        return ResultUtil.success(tserviceService.selectByCondition(tservice, pageNum, pageSize));
     }
 
     /**
      * 查询服务列表,不带分页信息
+     *
      * @param tservice
      * @return
      */
     @PostMapping("/selectByConditionSimple")
-    public Result selectByConditionSimple(Tservice tservice){
+    public Result selectByConditionSimple(Tservice tservice) {
         return ResultUtil.success(tserviceService.selectByCondition(tservice));
     }
 
     @PostMapping("/selectList")
-    public List<Tservice> selectList(Tservice tservice){
+    public List<Tservice> selectList(Tservice tservice) {
         return tserviceService.selectByCondition(tservice);
     }
 
     /**
-     *查询单个服务信息
-     * */
-    @PostMapping(value= "/selectOne")
-    public Result selectOne(Integer tserviceId){
-        Tservice tservice=tserviceService.selectOne(tserviceId);
-        log.info("查询单条服务id="+tserviceId);
+     * 查询单个服务信息
+     */
+    @PostMapping(value = "/selectOne")
+    public Result selectOne(Integer tserviceId) {
+        Tservice tservice = tserviceService.selectOne(tserviceId);
+        log.info("查询单条服务id=" + tserviceId);
         return ResultUtil.success(tservice);
     }
 
     /**
-     *添加服务
-     * */
-    @PostMapping(value="/insertOne")
-    public Result insertOne(Tservice tservice){
-        log.info("新增的服务标识="+tservice.getServicekey()+",服务描述="+tservice.getServicename()+"协议类型="+tservice.getHttptype());
+     * 添加服务
+     */
+    @PostMapping(value = "/insertOne")
+    public Result insertOne(Tservice tservice) {
+        log.info("新增的服务标识=" + tservice.getServicekey() + ",服务描述=" + tservice.getServicename() + "协议类型=" + tservice.getHttptype());
         return ResultUtil.success(tserviceService.insertOne(tservice));
     }
 
     /**
      * 编辑服务
-     * */
+     */
     @PostMapping(value = "/updateOne")
-    public Result updateOne(Tservice tservice){
-        return ResultUtil.success(tserviceService.updateOne(tservice.getId(),tservice));
+    public Result updateOne(Tservice tservice) {
+        return ResultUtil.success(tserviceService.updateOne(tservice.getId(), tservice));
     }
 
     /**
      * 删除服务
-     * */
+     */
     @PostMapping(value = "/deleteOne")
-    public Result deleteOne(Integer id){
+    public Result deleteOne(Integer id) {
         return ResultUtil.success(tserviceService.deleteOne(id));
     }
-
 
 
 }

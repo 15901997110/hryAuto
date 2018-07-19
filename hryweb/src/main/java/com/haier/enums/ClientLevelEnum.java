@@ -6,10 +6,9 @@ package com.haier.enums;
  * @Date: 2018/7/11 14:37
  */
 public enum ClientLevelEnum {
-    SERVICE(1,"服务"),
-    INTERFACE(2,"接口"),
-    CASE(3,"用例"),
-    ;
+    SERVICE(1, "服务"),
+    INTERFACE(2, "接口"),
+    CASE(3, "用例"),;
 
     private Integer level;
     private String desc;

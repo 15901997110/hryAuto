@@ -12,13 +12,13 @@ public enum StatusCodeEnum {
     SAVE_ERROR(3, "保存失败"),
     NO_IMPLEMENT(4, "方法未实现"),
     EXIST_RECORD(5, "记录已经存在"),
-    LOGIN_ERROR(6,"用户名或密码错误"),
-    REGEX_ERROR_EMAIL(7,"邮箱正则不匹配"),
-    PRIMARYKEY_NULL(8,"主键不可为空"),
-    REGEX_ERROR_PWD(9,"密码不符合规范"),
-    DANGER_OPERATION(10,"危险操作不被允许"),
-    HTTP_ERROR(100,"发送http请求时异常"),
-    PARSE_JSON_ERROR(101,"字符串转换为JSONObject时异常"),
+    LOGIN_ERROR(6, "用户名或密码错误"),
+    REGEX_ERROR_EMAIL(7, "邮箱正则不匹配"),
+    PRIMARYKEY_NULL(8, "主键不可为空"),
+    REGEX_ERROR_PWD(9, "密码不符合规范"),
+    DANGER_OPERATION(10, "危险操作不被允许"),
+    HTTP_ERROR(100, "发送http请求时异常"),
+    PARSE_JSON_ERROR(101, "字符串转换为JSONObject时异常"),
 
     NOT_FOUND(1000, "查询记录不存在！"),
     CHECK_ERROR(1001, "校验不满足条件"),
@@ -34,9 +34,10 @@ public enum StatusCodeEnum {
 
     private Integer code;
     private String msg;
-    StatusCodeEnum(Integer code, String msg){
-        this.code=code;
-        this.msg=msg;
+
+    StatusCodeEnum(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
     }
 
     public Integer getCode() {
@@ -49,22 +50,22 @@ public enum StatusCodeEnum {
 
     @Override
     public String toString() {
-        return "code:"+code+",msg:"+msg;
+        return "code:" + code + ",msg:" + msg;
     }
 
     /**
-     *@description:  通过statusCode获取枚举项
-     *@params:
-     *@return:
-     *@author: luqiwei
-     *@date: 2018-05-16
+     * @description: 通过statusCode获取枚举项
+     * @params:
+     * @return:
+     * @author: luqiwei
+     * @date: 2018-05-16
      */
-    public static StatusCodeEnum getByCode(Integer statusCode){
-        if(statusCode==null){
+    public static StatusCodeEnum getByCode(Integer statusCode) {
+        if (statusCode == null) {
             return UNKNOWN_BIZ_ERROR;
         }
-        for(StatusCodeEnum codeEnum:values()){
-            if(codeEnum.getCode()==statusCode){
+        for (StatusCodeEnum codeEnum : values()) {
+            if (codeEnum.getCode() == statusCode) {
                 return codeEnum;
             }
         }

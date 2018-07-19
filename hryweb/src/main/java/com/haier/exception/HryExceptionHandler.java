@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 @ControllerAdvice
 public class HryExceptionHandler {
-    @ExceptionHandler(value=Exception.class)
+    @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public Result getHryException(Exception e){
-        if(e instanceof HryException){
-            HryException hryException=(HryException) e;
-            return ResultUtil.error(hryException.getCode(),hryException.getMessage());
+    public Result getHryException(Exception e) {
+        if (e instanceof HryException) {
+            HryException hryException = (HryException) e;
+            return ResultUtil.error(hryException.getCode(), hryException.getMessage());
         }
-        log.error("【系统异常】,详细信息如下:",e);
-        return ResultUtil.error(9999,e.toString());
+        log.error("【系统异常】,详细信息如下:", e);
+        return ResultUtil.error(9999, e.toString());
     }
 }

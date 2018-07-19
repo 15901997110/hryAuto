@@ -204,10 +204,10 @@ public class HryReporter implements IReporter {
                 /**
                  * 如果有参数,测试报告中将参数展示出来
                  */
-                String p="";
+                String p = "";
                 if (parameters != null && parameters.length > 0) {
                     for (Object param : parameters) {
-                        p+=param.toString();
+                        p += param.toString();
                     }
                 }
                 Reporter.log("这是Reporter.log打印出来的");

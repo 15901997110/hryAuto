@@ -16,6 +16,7 @@ public interface TcustomService {
 
     /**
      * 插入Tcustom时,要求传入Tcustomdetail信息一起插入,不允许单独插入tcustom
+     *
      * @param tcustom
      * @param tcustomdetails
      * @return

@@ -26,46 +26,46 @@ public class TenvdetailController {
 
     //增
     @PostMapping("/insertOne")
-    public Result insertOne(Tenvdetail tenvdetail){
+    public Result insertOne(Tenvdetail tenvdetail) {
         return ResultUtil.success(tenvdetailService.insertOne(tenvdetail));
     }
 
     //删
     @PostMapping("/deleteOne")
-    public Result deleteOne(Integer id){
+    public Result deleteOne(Integer id) {
         return ResultUtil.success(tenvdetailService.deleteOne(id));
     }
 
     //改
     @PostMapping("/updateOne")
-    public Result updateOne(Tenvdetail tenvdetail){
+    public Result updateOne(Tenvdetail tenvdetail) {
         return ResultUtil.success(tenvdetailService.updateOne(tenvdetail));
     }
 
     //根据id查一条
     @PostMapping("/selectOne")
-    public Result selectOne(Integer id){
+    public Result selectOne(Integer id) {
         return ResultUtil.success(tenvdetailService.selectOne(id));
     }
 
 
     //返回List<TenvdetailCustom>
     @PostMapping("/selectTenvdetailCustomListByCondition")
-    public Result selectTenvdetailCustomListByCondition(TenvdetailCustom tenvdetailCustom){
+    public Result selectTenvdetailCustomListByCondition(TenvdetailCustom tenvdetailCustom) {
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom));
     }
 
 
     //查-仅查询tenvdetail表数据,返回list
     @PostMapping("/selectTenvdetailListByCondition")
-    public Result selectTenvdetailListByCondition(Tenvdetail tenvdetail){
+    public Result selectTenvdetailListByCondition(Tenvdetail tenvdetail) {
         return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetail));
     }
 
 
     //查-关联表查询,返回包装类,并且携带pageinfo
     @PostMapping("/selectByCondition")
-    public Result selectByCondition(TenvdetailCustom tenvdetailCustom,Integer pageNum,Integer pageSize){
-        return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom,pageNum,pageSize));
+    public Result selectByCondition(TenvdetailCustom tenvdetailCustom, Integer pageNum, Integer pageSize) {
+        return ResultUtil.success(tenvdetailService.selectByCondition(tenvdetailCustom, pageNum, pageSize));
     }
 }

@@ -20,9 +20,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 public class AsyncConfiguration {
     @Bean
-    public Executor asyncServiceExecutor(){
+    public Executor asyncServiceExecutor() {
         log.info("start asyncServiceExecutor");
-        ThreadPoolTaskExecutor executor=new ThreadPoolTaskExecutor();
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         //配置核心线程数
         executor.setCorePoolSize(10);
         //配置最大线程数

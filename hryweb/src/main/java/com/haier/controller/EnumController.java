@@ -31,7 +31,7 @@ public class EnumController {
         map.put(RequestMethodTypeEnum.class.getSimpleName(), this.getRequestMethodTypeEnum());
         map.put(ResponseTypeEnum.class.getSimpleName(), this.getResponseTypeEnum());
         map.put(StatusCodeEnum.class.getSimpleName(), this.getStatusCodeEnum());
-        map.put(ClientLevelEnum.class.getSimpleName(),this.getclientLevelEnum());
+        map.put(ClientLevelEnum.class.getSimpleName(), this.getclientLevelEnum());
         return map;
     }
 
@@ -86,7 +86,7 @@ public class EnumController {
     }
 
     @GetMapping("/clientLevelEnum")
-    public List<Map<String,Object>> getclientLevelEnum(){
+    public List<Map<String, Object>> getclientLevelEnum() {
         return EnumUtil.getEnumList(ClientLevelEnum.values());
     }
 }
