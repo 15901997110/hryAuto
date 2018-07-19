@@ -24,58 +24,60 @@ import java.util.Map;
 @Slf4j
 public class ImportUtil {
     /**
-     *@description: 导入接口
-     *@params: [url, serviceKey, overwrite]
-     *@return: void
-     *@author: luqiwei
-     *@date: 2018-05-18
+     * @description: 导入接口
+     * @params: [url, serviceKey, overwrite]
+     * @return: void
+     * @author: luqiwei
+     * @date: 2018-05-18
      */
     @Autowired
     static TserviceMapper tserviceMapper;
     @Autowired
     static TiMapper tiMapper;
 
-    public static void importInterface(String url,String serviceKey,Boolean overwrite){
-        String serviceName=null;
-        HttpConfig httpConfig=HttpConfig.custom().url(url);
-        String result=null;
+    public static void importInterface(String url, String serviceKey, Boolean overwrite) {
+        String serviceName = null;
+        HttpConfig httpConfig = HttpConfig.custom().url(url);
+        String result = null;
         try {
             result = HttpClientUtil.get(httpConfig);
         } catch (HttpProcessException e) {
-            log.error("访问{}时发生异常",url);
-            log.error("",e.getMessage());
+            log.error("访问{}时发生异常", url);
+            log.error("", e.getMessage());
             return;
         }
-        if(result==null){return;}
+        if (result == null) {
+            return;
+        }
         JSONObject jsonObject = JsonUtil.str2JsonObj(result);
-        serviceName=jsonObject.getJSONObject("info").getString("description");
-        log.debug("服务描述:{}",serviceName);
+        serviceName = jsonObject.getJSONObject("info").getString("description");
+        log.debug("服务描述:{}", serviceName);
 
         Tservice tservice = tserviceMapper.selectByPrimaryKey(1);
         log.debug(tservice.toString());
 
     }
 
-    public static Integer getServiceId(String serviceKey,String serviceDesc){
-        TserviceExample tserviceExample=new TserviceExample();
+    public static Integer getServiceId(String serviceKey, String serviceDesc) {
+        TserviceExample tserviceExample = new TserviceExample();
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andServicekeyEqualTo(serviceKey);
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
-        if(tservices!=null){
+        if (tservices != null) {
             //没有此servicekey,插入一条新的servicekey
-            Tservice tservice=new Tservice();
+            Tservice tservice = new Tservice();
             tservice.setServicekey(serviceKey);
             tservice.setEditor("luqiwei@kjtpay.com.cn");
             tservice.setServicename(serviceDesc);
             return tservice.getId();
-        }else{
+        } else {
             return tservices.get(0).getId();
         }
     }
 
     @Test
-    public void testImport(){
-        importInterface("http://10.252.12.212:7032/swagger.json",null,null);
+    public void testImport() {
+        importInterface("http://10.252.12.212:7032/swagger.json", null, null);
 /*        Integer cs2 = getServiceId("p2p", null);
         log.debug(cs2.toString());*/
     }

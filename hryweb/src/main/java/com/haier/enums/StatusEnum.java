@@ -6,11 +6,10 @@ package com.haier.enums;
  * @Date: 2018/7/10 10:56
  */
 public enum StatusEnum {
-    ONE(1,"正常"),
-    _ONE(-1,"删除"),
-    FIVE(5,"流程进行中"),
-    TEN(10,"流程结束")
-    ;
+    ONE(1, "正常"),
+    _ONE(-1, "删除"),
+    FIVE(5, "流程进行中"),
+    TEN(10, "流程结束");
 
     private Integer id;
     private String desc;

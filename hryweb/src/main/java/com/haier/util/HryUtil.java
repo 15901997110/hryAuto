@@ -16,11 +16,11 @@ import java.util.Set;
 public class HryUtil {
 
     /**
-     *@description: 将形如"1,2,3"的字符串转换成Integer[]
-     *@params: [arrayStr]
-     *@return: java.lang.Integer[]
-     *@author: luqiwei
-     *@date: 2018-06-29
+     * @description: 将形如"1,2,3"的字符串转换成Integer[]
+     * @params: [arrayStr]
+     * @return: java.lang.Integer[]
+     * @author: luqiwei
+     * @date: 2018-06-29
      */
     public static Integer[] convert(String arrayStr) {
         if (arrayStr == null || "".equals(arrayStr.trim())) {
@@ -38,25 +38,25 @@ public class HryUtil {
                     log.error("字符串转换为Integer[]失败:", e);
                 }
             }
-        }else{
-            try{
-                ret=new Integer[]{Integer.parseInt(arrayStr)};
-            }catch (NumberFormatException e){
+        } else {
+            try {
+                ret = new Integer[]{Integer.parseInt(arrayStr)};
+            } catch (NumberFormatException e) {
                 log.error("字符串转换为Integer[]失败:", e);
                 return null;
             }
         }
-        return  ret;
+        return ret;
     }
 
-    public static <T>List<T> distinct(List<T> list){
-        if(list==null){
+    public static <T> List<T> distinct(List<T> list) {
+        if (list == null) {
             return null;
         }
-        Set<T> set=new HashSet<>();
-        List<T> newList=new ArrayList<>();
-        for(T t:list){
-            if(set.add(t)){
+        Set<T> set = new HashSet<>();
+        List<T> newList = new ArrayList<>();
+        for (T t : list) {
+            if (set.add(t)) {
                 newList.add(t);
             }
         }

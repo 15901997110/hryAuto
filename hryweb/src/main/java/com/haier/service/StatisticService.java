@@ -11,5 +11,6 @@ import java.util.List;
  */
 public interface StatisticService {
     List<RealtimeStatistic> statisticCurrentOld();
+
     List<RealtimeStatistic> statisticCurrent();
 }

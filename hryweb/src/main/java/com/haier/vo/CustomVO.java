@@ -12,6 +12,6 @@ import java.util.List;
  * @Date: 2018/7/12 9:14
  */
 @Data
-public class CustomVO  extends Tcustom{
+public class CustomVO extends Tcustom {
     private List<Tcustomdetail> tcustomdetails;
 }

@@ -1,20 +1,21 @@
 package com.haier.enums;
 
 public enum ContentTypeEnum {
-    JSON(1,"application/json"),
-    X_WWW_FORM_URLENCODED(2,"application/x-www-form-urlencoded"),
-    JAVASCRIPT(3,"application/javascript"),
-    TEXT_HTML(4,"text/html"),
-    TEXT_XML(5,"text/xml"),
-    TEXT_CSS(6,"text/css"),
-    FORM_DATA(7,"multipart/form-data"),
-    IMAGE_PNG(8,"image/png");
+    JSON(1, "application/json"),
+    X_WWW_FORM_URLENCODED(2, "application/x-www-form-urlencoded"),
+    JAVASCRIPT(3, "application/javascript"),
+    TEXT_HTML(4, "text/html"),
+    TEXT_XML(5, "text/xml"),
+    TEXT_CSS(6, "text/css"),
+    FORM_DATA(7, "multipart/form-data"),
+    IMAGE_PNG(8, "image/png");
 
     private int id;
     private String value;
-    ContentTypeEnum(int id, String value){
-        this.id =id;
-        this.value=value;
+
+    ContentTypeEnum(int id, String value) {
+        this.id = id;
+        this.value = value;
     }
 
     public int getId() {
@@ -33,18 +34,18 @@ public enum ContentTypeEnum {
         this.value = value;
     }
 
-    public static String getValue(int id){
-        for(ContentTypeEnum e:ContentTypeEnum.values()){
-            if(e.getId()==id){
+    public static String getValue(int id) {
+        for (ContentTypeEnum e : ContentTypeEnum.values()) {
+            if (e.getId() == id) {
                 return e.getValue();
             }
         }
         return null;
     }
 
-    public static Integer getId(String value){
-        for(ContentTypeEnum e:ContentTypeEnum.values()){
-            if(e.getValue().equalsIgnoreCase(value)){
+    public static Integer getId(String value) {
+        for (ContentTypeEnum e : ContentTypeEnum.values()) {
+            if (e.getValue().equalsIgnoreCase(value)) {
                 return e.getId();
             }
         }

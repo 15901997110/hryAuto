@@ -48,8 +48,8 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer updateOne(Integer id, Tenv tenv) {
-        if (id == null || tenv == null||id==0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || tenv == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         tenv.setId(id);
         return tenvMapper.updateByPrimaryKeySelective(tenv);
@@ -57,24 +57,24 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer insertOne(Tenv tenv) {
-        ReflectUtil.setInvalidFieldToNull(tenv,false);
-        if(tenv==null||tenv.getEnvkey()==null){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"envkey必填");
+        ReflectUtil.setInvalidFieldToNull(tenv, false);
+        if (tenv == null || tenv.getEnvkey() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "envkey必填");
         }
         //先判断数据是否存在
         TenvExample example = new TenvExample();
         example.createCriteria().andEnvkeyEqualTo(tenv.getEnvkey());
         List<Tenv> tenvList = tenvMapper.selectByExample(example);
         if (tenvList != null && tenvList.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD,"envkey="+tenv.getEnvkey()+"的记录已经存在");//抛出异常:记录存在
+            throw new HryException(StatusCodeEnum.EXIST_RECORD, "envkey=" + tenv.getEnvkey() + "的记录已经存在");//抛出异常:记录存在
         }
         return tenvMapper.insertSelective(tenv);
     }
 
     @Override
     public Integer deleteOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         //先删除tenvdetail表中的记录
         Tenvdetail tenvdetail = new Tenvdetail();
@@ -82,7 +82,7 @@ public class TenvServiceImpl implements TenvService {
         tenvdetailService.deleteByCondition(tenvdetail);
 
         //删除tcase表中的记录
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setEnvid(id);
         tcaseService.deleteByCondition(tcase);
 

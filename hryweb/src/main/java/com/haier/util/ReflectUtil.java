@@ -152,7 +152,7 @@ public class ReflectUtil {
         for (Field field : fields) {
             field.setAccessible(true);
             String fname = field.getName();
-            Object value = getFieldValue(child,fname,true);
+            Object value = getFieldValue(child, fname, true);
             try {
                 field.set(parent, value);
             } catch (IllegalAccessException e) {

@@ -27,5 +27,5 @@ public interface TiService {
 
     List<Ti> selectByCondition(Ti ti);
 
-    List<TiWithCaseVO> selectTiWithCaseVO (Ti ti);
+    List<TiWithCaseVO> selectTiWithCaseVO(Ti ti);
 }

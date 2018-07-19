@@ -87,15 +87,15 @@ public class HryHttpClientUtil {
             try {
                 return HttpClientUtil.get(httpConfig);
             } catch (HttpProcessException e) {
-                log.error("发送http请求异常了:",e);
-                return "错误:发送http请求异常了-"+e.toString();
+                log.error("发送http请求异常了:", e);
+                return "错误:发送http请求异常了-" + e.toString();
             }
         } else {
             try {
                 return HttpClientUtil.post(httpConfig);
             } catch (HttpProcessException e) {
-                log.error("发送http请求异常了:",e);
-                return "错误:发送http请求异常了-"+e.toString();
+                log.error("发送http请求异常了:", e);
+                return "错误:发送http请求异常了-" + e.toString();
             }
         }
     }

@@ -8,7 +8,7 @@ import lombok.Data;
  * @Date: 2018/5/16 18:05
  */
 @Data
-public class Result<T>  {
+public class Result<T> {
     private Integer status;
     private String msg;
     private T data;

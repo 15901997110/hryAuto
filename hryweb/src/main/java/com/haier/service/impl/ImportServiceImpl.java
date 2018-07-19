@@ -122,9 +122,9 @@ public class ImportServiceImpl implements ImportService {
                 //解析Json，设置Iparamsample
                 List parameJsonObject = postJsonObject.getJSONArray("parameters");
                 //如果parameJsonObject为空，则直接赋值为空
-                if(parameJsonObject.size()==0){
+                if (parameJsonObject.size() == 0) {
                     ti.setIparamsample("");
-                }else {
+                } else {
                     Map<String, Object> parametersMap = (Map<String, Object>) parameJsonObject.get(0);
                     Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
                     if (Objects.isNull(schema)) {
@@ -236,11 +236,11 @@ public class ImportServiceImpl implements ImportService {
                                 paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
                             } else {
                                 String samples = items.get("type").toString();
-                                if ("integer".equals(samples)){
+                                if ("integer".equals(samples)) {
                                     paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
-                                }else if ("string".equals(samples)){
+                                } else if ("string".equals(samples)) {
                                     paramsamples.append("[\"").append(samples.replace("string", "")).append("\"],");
-                                }else if ("number".equals(samples)){
+                                } else if ("number".equals(samples)) {
                                     paramsamples.append("[").append(samples.replace("number", "0")).append("],");
                                 } else {
                                     paramsamples.append("[").append(samples).append("],");

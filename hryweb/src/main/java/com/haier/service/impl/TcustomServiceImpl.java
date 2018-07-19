@@ -199,8 +199,8 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustomdetail> tcustomdetails_interface = new ArrayList<>();//定制的接口
         List<Tcustomdetail> tcustomdetails_case = new ArrayList<>();//定制的用例
 
-        List<Integer> service_ids=new ArrayList<>();
-        List<String> service_names=new ArrayList<>();
+        List<Integer> service_ids = new ArrayList<>();
+        List<String> service_names = new ArrayList<>();
 
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
             /**

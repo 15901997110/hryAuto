@@ -12,6 +12,6 @@ import java.util.List;
  * @Date: 2018/7/13 15:17
  */
 @Data
-public class TiWithCaseVO extends Ti{
+public class TiWithCaseVO extends Ti {
     private List<Tcase> tcases;
 }

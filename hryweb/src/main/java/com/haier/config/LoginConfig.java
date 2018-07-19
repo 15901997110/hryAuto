@@ -17,8 +17,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class LoginConfig implements WebMvcConfigurer {
     @Autowired
     LoginInterceptor loginInterceptor;
+
     @Override
-    public void  addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration interceptorRegistration = registry.addInterceptor(loginInterceptor);
         //拦截配置
         interceptorRegistration.addPathPatterns("/**");
