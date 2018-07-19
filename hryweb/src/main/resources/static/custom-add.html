@@ -50,26 +50,11 @@
                 <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid" placeholder="请输入运行策略..."></textarea>
             </div>
         </div>
-
-
-
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务-接口-用例：</label>
             <div class="formControls col-xs-8 col-sm-9" id="services">
             </div>
         </div>
-
-
-       <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <a id="checkAll" name="checkAll"><i class="icon-ok"></i>全选</a>
-                <a id="clear" name="clear"><i class="icon-ok"></i> 清除</a>
-
-            </div>
-            <table id="services" style="width:57%;height: 20%;margin-left:27%;">
-            </table>
-        </div>-->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addCustom()"><i class="icon-ok"></i> 确定</button>
@@ -367,7 +352,7 @@
         });
         return all;
     }
-
+    //初始化处理
     $(document).ready(function () {
         //onclick='checkAllservice("+row.id+")'
         var serviceList=getServiceList();
@@ -473,7 +458,6 @@
         $("#show-"+serviceId+"").html(h);
     }
 
-
     function tiChecked(obj,serviceId,tiId){
         var tcases=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
         var tis=document.getElementsByName("ti-"+serviceId+"");
@@ -504,6 +488,7 @@
 
     function caseChecked(obj,tiId,serviceId){
         var tcase=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
+        var tis=document.getElementsByName("ti-"+serviceId+"");
         var s=document.getElementById("serviceBox-"+serviceId+"");
         if(obj.checked == true){
             document.getElementById("tiBox-"+tiId+"").checked = true;
@@ -517,9 +502,18 @@
                 }
             }
 
-            if(b == true){
+            if(b){
                 document.getElementById("tiBox-"+tiId+"").checked = false;
-                s.checked = false;
+                var c=true;
+                for(var j=0;j<tis.length;j++){
+                    if(tis[j].checked == true){
+                        c=false;
+                    }
+                }
+                if(c){
+                    s.checked = false;
+                }
+
             }
 
 
@@ -551,6 +545,12 @@
                 s.clientid=value;
                 s.clientname=getServiceKey(value);
                 s.parentclientid=0;
+                var obj=$("#service-"+value+" :checkbox:checked");
+                if(obj.length>1){
+                    s.haschild=true;
+                }else{
+                    s.haschild=false;
+                }
                 service[i] = s;
 
             }else if(name.match("ti")){
@@ -560,6 +560,12 @@
                 s.clientid=value;
                 s.clientname=ti.iuri;
                 s.parentclientid=ti.serviceid;
+                var obj=$("#ti-"+value+" :checkbox:checked");
+                if(obj.length>1){
+                    s.haschild=true;
+                }else{
+                    s.haschild=false;
+                }
                 service[i] = s;
 
             }else if(name.match("tcase")){
@@ -569,6 +575,7 @@
                 s.clientid=value;
                 s.clientname=tcase.casename;
                 s.parentclientid=tcase.iid;
+                s.haschild=false;
                 service[i] = s;
 
             }

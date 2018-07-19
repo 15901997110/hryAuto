@@ -36,16 +36,6 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <a id="checkAll" name="checkAll"><i class="icon-ok"></i>全选</a>
-                <a id="clear" name="clear"><i class="icon-ok"></i> 清除</a>
-
-            </div>
-            <table id="services" style="width:57%;height: 20%;margin-left:27%;">
-            </table>
-        </div>
-        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>环境：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
@@ -59,6 +49,11 @@
             <label class="form-label col-xs-4 col-sm-3">运行策略：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid" placeholder="请输入运行策略..."></textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务-接口-用例：</label>
+            <div class="formControls col-xs-8 col-sm-9" id="services">
             </div>
         </div>
         <div class="row cl">
@@ -103,113 +98,6 @@
         return null;
     }
 
-
-
-    //页面加载处理
-    $(document).ready(function () {
-        var id = getParameter('id');
-        var serviceList=getServiceList();
-        var env=getTenvList();
-        var obj=new Object();
-        obj.id=id;
-        var json=JSON.stringify(obj);
-
-        $.ajax({
-            type: "post",
-            url: "/tcustom/selectOne",
-            data: json,
-            dataType: "json",
-            contentType: 'application/json;charset=utf-8',
-            success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
-                console.log(data);
-
-                if(status == 0){
-                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
-                    $("#submit").append(submit);
-                    var customname=list.customname;
-                    var serviceid=list.tcustomdetails;
-                    var envid=list.envid;
-                    var strategy=list.strategy;
-
-                    $("#customname").val(customname);
-
-                    var services="";
-                    var trHtml="";
-                    var tdHtml="";
-
-                    for(var i=0;i<serviceList.length;i++){
-                        var j = i+1;
-                        var row=serviceList[i];
-                        var box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\">&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
-                        for(var k=0;k<serviceid.length;k++){
-                            var service=serviceid[k];
-
-                            if(row.id == service.clientid){
-                                box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\" checked>&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
-                            }
-                        }
-
-                        var td="<td style=\"width:30%;\">"+box+"</td>";
-
-                        if(j%2 == 0){
-                            tdHtml+= td;
-                            trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                            services=services+trHtml;
-                            tdHtml="";
-                            trHtml="";
-                        }
-                        if(j%2 == 1){
-                            tdHtml+= td;
-                        }
-                        if(j%2 == 1 && j==serviceList.length){
-                            trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                            services=services+trHtml;
-                        }
-
-                    }
-                    $("#services").append(services);
-
-                    var tenv="";
-                    for(n=0;n<env.length;n++){
-                        var row=env[n];
-                        var rowHtml="";
-                        if(envid == row.id){
-                            rowHtml="<option value=\""+row.id+"\" selected>"+row.envkey+"</option>";
-                        }else{
-                            rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
-                        }
-                        tenv=tenv+rowHtml;
-                    }
-                    $("#env").append(tenv);
-                    $("#strategy").val(strategy);
-                    layer.close(layerIndex);
-                }else{
-                    layer.close(layerIndex);
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            }
-        });
-
-
-    });
-
-    <!--选择全部-->
-    $("#checkAll").click(function(){
-        $("#services :checkbox").prop("checked", true);
-    });
-
-    <!--全不选-->
-    $("#clear").click(function(){
-        $("#services :checkbox").prop("checked", false);
-    });
-
     function getServiceList(){
         var service=null;
         $.ajaxSetup({async : false});
@@ -250,6 +138,55 @@
             }
         });
         return service;
+    }
+
+    function getServiceKey(serviceId){
+        var serviceKey=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/selectByConditionSimple",
+            data: {
+
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    var list=data.data;
+                    for(var i=0;i<list.length;i++){
+                        var row=list[i];
+                        if(row.id== serviceId){
+                            serviceKey=row.servicekey;
+                        }
+
+                    }
+                }else{
+                    layer.alert(data.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return serviceKey;
     }
 
     function getTenvList(){
@@ -294,6 +231,371 @@
         return env;
     }
 
+    //根据接口id查询接口信息
+    function getTiById(tiId){
+        var ti=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne",
+            data: {
+                id:tiId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    ti=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return ti;
+    }
+
+    //根据用例id查询用例信息
+    function getTcaseById(caseId){
+        var tcase=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tcase/selectOne",
+            data: {
+                id:caseId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    tcase=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return tcase;
+    }
+
+    function getAllTiAndCaseByServiceId(serviceId){
+        var all=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectTiWithCaseVO",
+            data: {
+                serviceid:serviceId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    all=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return all;
+    }
+
+
+    //页面加载处理
+    $(document).ready(function () {
+        var id = getParameter('id');
+        var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom("+id+")\"><i class=\"icon-ok\"></i> 确定</button>";
+        $("#submit").append(submit);
+
+        var obj=new Object();
+        obj.id=id;
+        var json=JSON.stringify(obj);
+        $.ajax({
+            type: "post",
+            url: "/tcustom/selectOne",
+            data: json,
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (data) {
+                var status=data.status;
+                var msg=data.msg;
+                console.log(data);
+                var serviceList=getServiceList();
+                var env=getTenvList();
+
+                if(status == 0){
+                    var customname=data.data.customname;
+                    $("#customname").val(customname);
+                    var strategy=data.data.strategy;
+                    $("#strategy").val(strategy);
+                    var envid=data.data.envid;
+                    var tenv="";
+                    for(k=0;k<env.length;k++){
+                        var row=env[k];
+                        var rowHtml="";
+                        if(row.id == envid){
+                            rowHtml="<option value=\""+row.id+"\" selected>"+row.envkey+"</option>";
+                        }else{
+                            rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
+                        }
+                        tenv=tenv+rowHtml;
+                    }
+                    $("#env").append(tenv);
+
+                    var services="";
+                    for(var i=0;i<serviceList.length;i++){
+                        var row=serviceList[i];
+                        var rowHtml="<dl class=\"permission-list\" id='service-"+row.id+"' style='width: 80%;'>\n" +
+                            "<dt>\n" +
+                            " <label style='font-size:16px;'><input style='width:18px;height: 18px;' type=\"checkbox\" value=\""+row.id+"\" name=\"service\" id=\"serviceBox-"+row.id+"\" onclick='clearAll(this,"+row.id+")'>"+row.servicekey+"</label>\n" +
+                            "<label id='show-"+row.id+"'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread("+row.id+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
+                            "</dt>\n" +
+                            "</dl>";
+                        services=services+rowHtml;
+
+                    }
+                    $("#services").append(services);
+
+                    var list=data.data.tcustomdetails;
+                    for(var j=0;j<list.length;j++){
+                        var ser=list[j];
+                        if(ser.clientlevel == 1){
+                            var serviceId=ser.clientid;
+                            $("#serviceBox-"+serviceId+"").prop("checked", true);
+
+                        }else if(ser.clientlevel == 2){
+                            var serviceId=ser.parentclientid;
+                            var tiId=ser.clientid;
+                            spread(serviceId);
+                            $("#tiBox-"+tiId+"").prop("checked", true);
+
+                        }else if(ser.clientlevel == 3){
+                            var caseId=ser.clientid;
+                            $("#caseBox-"+caseId+"").prop("checked", true);
+                        }
+
+                    }
+                    layer.close(layerIndex);
+
+                }else{
+                    layer.close(layerIndex);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            }
+        });
+
+
+    });
+
+    //展开处理
+    function spread(serviceId){
+        var list=getAllTiAndCaseByServiceId(serviceId);
+        if(list.length == 0){
+            layer.alert("该服务下无接口！");
+        }else{
+            $("#show-"+serviceId+"").html("");
+            var h="<a title=\"收起\" href=\"javascript:0;\" onclick=\"retract("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe699;</i></a>";
+            $("#show-"+serviceId+"").html(h);
+
+            var tiHtml="";
+            var caseHtml="";
+            for(var i=0;i<list.length;i++){
+                var row=list[i];
+                var tcases=row.tcases;
+                if(tcases.length == 0){
+                    var ti="<dd>\n" +
+                        "<dl id='ti-"+row.id+"' class=\"cl permission-list2\">\n" +
+                        "<dt style='float:none;'>\n" +
+                        "<label style='font-size:14px;'>" +
+                        "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\""+row.id+"\" name=\"ti-"+serviceId+"\" id=\"tiBox-"+row.id+"\" onclick='tiChecked(this,"+serviceId+","+row.id+")'>"+row.iuri+"("+row.remark+")" +
+                        "</label>\n" +
+                        "</dt>\n" +
+                        "<dl>\n" +
+                        "</dd>";
+                }else{
+                    for(var k=0;k<tcases.length;k++){
+                        var tcase=tcases[k];
+
+                        var t="<dd style='padding:1px;'>\n" +
+                            "<dl id='case-"+tcase.id+"' class=\"cl permission-list2\">\n" +
+                            "<dt>\n" +
+                            "<label style='font-size:12px;'><input type=\"checkbox\" value=\""+tcase.id+"\" name=\"tcase-"+serviceId+"-"+row.id+"\" id=\"caseBox-"+tcase.id+"\" onclick='caseChecked(this,"+row.id+","+serviceId+")'>"+tcase.casename+"("+tcase.id+")</label>\n" +
+                            "</dt>\n" +
+                            "<dl>\n" +
+                            "</dd>";
+                        caseHtml=caseHtml+t;
+
+                    }
+
+                    var ti="<dd>\n" +
+                        "<dl id='ti-"+row.id+"' class=\"cl permission-list2\">\n" +
+                        "<dt style='float:none;'>\n" +
+                        "<label style='font-size:14px;'><input style='width:16px;height: 16px;' type=\"checkbox\" value=\""+row.id+"\" name=\"ti-"+serviceId+"\" id=\"tiBox-"+row.id+"\" onclick='tiChecked(this,"+serviceId+","+row.id+")'>"+row.iuri+"("+row.remark+")</label>\n" +
+                        "</dt>\n" +
+                        ""+caseHtml+"\n" +
+                        "<dl>\n" +
+                        "</dd>";
+                    caseHtml="";
+                }
+                tiHtml=tiHtml+ti;
+
+            }
+            $("#service-"+serviceId+"").append(tiHtml);
+        }
+
+    }
+
+    //收起处理
+    function retract(serviceId){
+        //$("#"+serviceId+"").children('dd').remove();
+        $("#service-"+serviceId+"").children('dd').hide();
+        $("#show-"+serviceId+"").html("");
+        var h="<a title=\"展开\" href=\"javascript:0;\" onclick=\"showTi("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a>";
+        $("#show-"+serviceId+"").html(h);
+
+    }
+
+    //显示服务下所有接口用例
+    function showTi(serviceId){
+        $("#service-"+serviceId+"").children('dd').show();
+        $("#show-"+serviceId+"").html("");
+        var h="<a title=\"收起\" href=\"javascript:0;\" onclick=\"retract("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe699;</i></a>";
+        $("#show-"+serviceId+"").html(h);
+    }
+
+    function tiChecked(obj,serviceId,tiId){
+        var tcases=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
+        var tis=document.getElementsByName("ti-"+serviceId+"");
+        var s=document.getElementById("serviceBox-"+serviceId+"");
+        for(var i=0;i<tcases.length;i++){
+            if(obj.checked == true){
+                //tcases[i].checked = true;
+                s.checked = true;
+            }else{
+                tcases[i].checked = false;
+            }
+
+        }
+        var b=true;
+        for(var j=0;j<tis.length;j++){
+            if(tis[j].checked == true){
+                s.checked = true;
+                b=false;
+            }
+        }
+
+        if(b == true){
+            s.checked = false;
+        }
+
+
+    }
+
+    function caseChecked(obj,tiId,serviceId){
+        var tcase=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
+        var tis=document.getElementsByName("ti-"+serviceId+"");
+        var s=document.getElementById("serviceBox-"+serviceId+"");
+        if(obj.checked == true){
+            document.getElementById("tiBox-"+tiId+"").checked = true;
+            s.checked = true;
+
+        }else{
+            var b=true;
+            for(var i=0;i<tcase.length;i++){
+                if(tcase[i].checked == true){
+                    b=false;
+                }
+            }
+
+            if(b){
+                document.getElementById("tiBox-"+tiId+"").checked = false;
+                var c=true;
+                for(var j=0;j<tis.length;j++){
+                    if(tis[j].checked == true){
+                        c=false;
+                    }
+                }
+                if(c){
+                    s.checked = false;
+                }
+
+            }
+
+
+        }
+
+    }
+
+    function clearAll(obj,serviceId){
+        if(obj.checked == false){
+            $("#service-"+serviceId+" :checkbox").prop("checked", false);
+        }
+    }
+
+
     //编辑定制测试提交
     function editCustom(id){
         var customname = $("#customname").val();
@@ -303,12 +605,51 @@
 
         var service = new Array();
         $("#services :checkbox:checked").each(function(i){
-            var s=new Object();
-            s.clientlevel=1;
-            s.clientid=$(this).val();
-            var serviceKey=getServiceKey($(this).val());
-            s.clientname=serviceKey;
-            service[i] = s;
+
+            var value=$(this).val();
+            var name=$(this).attr("name");
+            if(name.match("service")){
+                var s=new Object();
+                s.clientlevel=1;
+                s.clientid=value;
+                s.clientname=getServiceKey(value);
+                s.parentclientid=0;
+                var obj=$("#service-"+value+" :checkbox:checked");
+                if(obj.length>1){
+                    s.haschild=true;
+                }else{
+                    s.haschild=false;
+                }
+                service[i] = s;
+
+            }else if(name.match("ti")){
+                var ti=getTiById(value);
+                var s=new Object();
+                s.clientlevel=2;
+                s.clientid=value;
+                s.clientname=ti.iuri;
+                s.parentclientid=ti.serviceid;
+                var obj=$("#ti-"+value+" :checkbox:checked");
+                if(obj.length>1){
+                    s.haschild=true;
+                }else{
+                    s.haschild=false;
+                }
+                service[i] = s;
+
+            }else if(name.match("tcase")){
+                var tcase=getTcaseById(value);
+                var s=new Object();
+                s.clientlevel=3;
+                s.clientid=value;
+                s.clientname=tcase.casename;
+                s.parentclientid=tcase.iid;
+                s.haschild=false;
+                service[i] = s;
+
+            }
+
+
         });
 
         if(customname == null || customname == ""){
@@ -348,7 +689,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         })
