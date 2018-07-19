@@ -50,7 +50,17 @@
                 <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid" placeholder="请输入运行策略..."></textarea>
             </div>
         </div>
+
+
+
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务-接口-用例：</label>
+            <div class="formControls col-xs-8 col-sm-9" id="services">
+            </div>
+        </div>
+
+
+       <!-- <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <a id="checkAll" name="checkAll"><i class="icon-ok"></i>全选</a>
@@ -59,7 +69,7 @@
             </div>
             <table id="services" style="width:57%;height: 20%;margin-left:27%;">
             </table>
-        </div>
+        </div>-->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addCustom()"><i class="icon-ok"></i> 确定</button>
@@ -230,37 +240,151 @@
         return env;
     }
 
-    $(document).ready(function () {
+    //根据接口id查询接口信息
+    function getTiById(tiId){
+        var ti=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectOne",
+            data: {
+                id:tiId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    ti=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
 
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return ti;
+    }
+
+    //根据用例id查询用例信息
+    function getTcaseById(caseId){
+        var tcase=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/tcase/selectOne",
+            data: {
+                id:caseId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    tcase=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return tcase;
+    }
+
+    function getAllTiAndCaseByServiceId(serviceId){
+        var all=null;
+        $.ajaxSetup({async : false});
+        $.ajax({
+            type: "post",
+            url: "/ti/selectTiWithCaseVO",
+            data: {
+                serviceid:serviceId
+            },
+            dataType: "json",
+            success: function (data) {
+                layer.close(layerIndex);
+                var status=data.status;
+                var msg=data.msg;
+                if(status == 0){
+                    all=data.data;
+                }else{
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail:function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function(xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return all;
+    }
+
+    $(document).ready(function () {
+        //onclick='checkAllservice("+row.id+")'
         var serviceList=getServiceList();
         var env=getTenvList();
         var services="";
-        var trHtml="";
-        var tdHtml="";
         for(var i=0;i<serviceList.length;i++){
-            var j = i+1;
             var row=serviceList[i];
-            var box="<input type=\"checkbox\" id=\"checkbox-"+row.id+"\" value=\""+row.id+"\" style=\"width:18px;height: 18px;font-size: 14px;\">&nbsp;<label for='checkbox-"+row.id+"'>"+row.servicekey+"</label>";
-            var td="<td style=\"width:30%;\">"+box+"</td>";
-
-            if(j%2 == 0){
-                tdHtml+= td;
-                trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                services=services+trHtml;
-                tdHtml="";
-                trHtml="";
-            }
-            if(j%2 == 1){
-                tdHtml+= td;
-            }
-            if(j%2 == 1 && j==serviceList.length){
-                trHtml+="<tr style=\"width:57%;\">"+tdHtml+"</tr>";
-                services=services+trHtml;
-            }
+            var rowHtml="<dl class=\"permission-list\" id='service-"+row.id+"' style='width: 80%;'>\n" +
+                            "<dt>\n" +
+                                " <label style='font-size:16px;'><input style='width:18px;height: 18px;' type=\"checkbox\" value=\""+row.id+"\" name=\"service\" id=\"serviceBox-"+row.id+"\" onclick='clearAll(this,"+row.id+")'>"+row.servicekey+"</label>\n" +
+                                "<label id='show-"+row.id+"'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread("+row.id+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
+                            "</dt>\n" +
+                        "</dl>";
+            services=services+rowHtml;
 
         }
         $("#services").append(services);
-
 
         var tenv="";
         for(k=0;k<env.length;k++){
@@ -273,15 +397,141 @@
 
     });
 
-    <!--选择全部-->
-    $("#checkAll").click(function(){
-        $("#services :checkbox").prop("checked", true);
-    });
+    //展开处理
+    function spread(serviceId){
+        var list=getAllTiAndCaseByServiceId(serviceId);
+        if(list.length == 0){
+            layer.alert("该服务下无接口！");
+        }else{
+            $("#show-"+serviceId+"").html("");
+            var h="<a title=\"收起\" href=\"javascript:0;\" onclick=\"retract("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe699;</i></a>";
+            $("#show-"+serviceId+"").html(h);
 
-    <!--全不选-->
-    $("#clear").click(function(){
-        $("#services :checkbox").prop("checked", false);
-    });
+            var tiHtml="";
+            var caseHtml="";
+            for(var i=0;i<list.length;i++){
+                var row=list[i];
+                var tcases=row.tcases;
+                if(tcases.length == 0){
+                    var ti="<dd>\n" +
+                        "<dl id='ti-"+row.id+"' class=\"cl permission-list2\">\n" +
+                        "<dt style='float:none;'>\n" +
+                        "<label style='font-size:14px;'>" +
+                        "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\""+row.id+"\" name=\"ti-"+serviceId+"\" id=\"tiBox-"+row.id+"\" onclick='tiChecked(this,"+serviceId+","+row.id+")'>"+row.iuri+"("+row.remark+")" +
+                        "</label>\n" +
+                        "</dt>\n" +
+                        "<dl>\n" +
+                        "</dd>";
+                }else{
+                    for(var k=0;k<tcases.length;k++){
+                        var tcase=tcases[k];
+
+                        var t="<dd style='padding:1px;'>\n" +
+                            "<dl id='case-"+tcase.id+"' class=\"cl permission-list2\">\n" +
+                            "<dt>\n" +
+                            "<label style='font-size:12px;'><input type=\"checkbox\" value=\""+tcase.id+"\" name=\"tcase-"+serviceId+"-"+row.id+"\" id=\"caseBox-"+tcase.id+"\" onclick='caseChecked(this,"+row.id+","+serviceId+")'>"+tcase.casename+"("+tcase.id+")</label>\n" +
+                            "</dt>\n" +
+                            "<dl>\n" +
+                            "</dd>";
+                        caseHtml=caseHtml+t;
+
+                    }
+
+                    var ti="<dd>\n" +
+                        "<dl id='ti-"+row.id+"' class=\"cl permission-list2\">\n" +
+                        "<dt style='float:none;'>\n" +
+                        "<label style='font-size:14px;'><input style='width:16px;height: 16px;' type=\"checkbox\" value=\""+row.id+"\" name=\"ti-"+serviceId+"\" id=\"tiBox-"+row.id+"\" onclick='tiChecked(this,"+serviceId+","+row.id+")'>"+row.iuri+"("+row.remark+")</label>\n" +
+                        "</dt>\n" +
+                        ""+caseHtml+"\n" +
+                        "<dl>\n" +
+                        "</dd>";
+                    caseHtml="";
+                }
+                tiHtml=tiHtml+ti;
+
+            }
+            $("#service-"+serviceId+"").append(tiHtml);
+        }
+
+    }
+
+    //收起处理
+    function retract(serviceId){
+        //$("#"+serviceId+"").children('dd').remove();
+        $("#service-"+serviceId+"").children('dd').hide();
+        $("#show-"+serviceId+"").html("");
+        var h="<a title=\"展开\" href=\"javascript:0;\" onclick=\"showTi("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a>";
+        $("#show-"+serviceId+"").html(h);
+
+    }
+
+    //显示服务下所有接口用例
+    function showTi(serviceId){
+        $("#service-"+serviceId+"").children('dd').show();
+        $("#show-"+serviceId+"").html("");
+        var h="<a title=\"收起\" href=\"javascript:0;\" onclick=\"retract("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe699;</i></a>";
+        $("#show-"+serviceId+"").html(h);
+    }
+
+
+    function tiChecked(obj,serviceId,tiId){
+        var tcases=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
+        var tis=document.getElementsByName("ti-"+serviceId+"");
+        var s=document.getElementById("serviceBox-"+serviceId+"");
+        for(var i=0;i<tcases.length;i++){
+            if(obj.checked == true){
+                //tcases[i].checked = true;
+                s.checked = true;
+            }else{
+                tcases[i].checked = false;
+            }
+
+        }
+        var b=true;
+        for(var j=0;j<tis.length;j++){
+            if(tis[j].checked == true){
+                s.checked = true;
+                b=false;
+            }
+        }
+
+        if(b == true){
+            s.checked = false;
+        }
+
+
+    }
+
+    function caseChecked(obj,tiId,serviceId){
+        var tcase=document.getElementsByName("tcase-"+serviceId+"-"+tiId+"");
+        var s=document.getElementById("serviceBox-"+serviceId+"");
+        if(obj.checked == true){
+            document.getElementById("tiBox-"+tiId+"").checked = true;
+            s.checked = true;
+
+        }else{
+            var b=true;
+            for(var i=0;i<tcase.length;i++){
+                if(tcase[i].checked == true){
+                    b=false;
+                }
+            }
+
+            if(b == true){
+                document.getElementById("tiBox-"+tiId+"").checked = false;
+                s.checked = false;
+            }
+
+
+        }
+
+    }
+
+    function clearAll(obj,serviceId){
+        if(obj.checked == false){
+            $("#service-"+serviceId+" :checkbox").prop("checked", false);
+        }
+    }
 
     //添加定制测试
     function addCustom(){
@@ -292,12 +542,38 @@
 
         var service = new Array();
         $("#services :checkbox:checked").each(function(i){
-            var s=new Object();
-            s.clientlevel=1;
-            s.clientid=$(this).val();
-            var serviceKey=getServiceKey($(this).val());
-            s.clientname=serviceKey;
-            service[i] = s;
+
+            var value=$(this).val();
+            var name=$(this).attr("name");
+            if(name.match("service")){
+                var s=new Object();
+                s.clientlevel=1;
+                s.clientid=value;
+                s.clientname=getServiceKey(value);
+                s.parentclientid=0;
+                service[i] = s;
+
+            }else if(name.match("ti")){
+                var ti=getTiById(value);
+                var s=new Object();
+                s.clientlevel=2;
+                s.clientid=value;
+                s.clientname=ti.iuri;
+                s.parentclientid=ti.serviceid;
+                service[i] = s;
+
+            }else if(name.match("tcase")){
+                var tcase=getTcaseById(value);
+                var s=new Object();
+                s.clientlevel=3;
+                s.clientid=value;
+                s.clientname=tcase.casename;
+                s.parentclientid=tcase.iid;
+                service[i] = s;
+
+            }
+
+
         });
 
         if(customname == null || customname == ""){
@@ -360,6 +636,18 @@
         }
 
     }
+
+
+
+
+    /*$(function(){
+        $(".permission-list dt input:checkbox").click(function(){
+            $(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+        });
+
+});*/
+
+
 </script>
 
 </body>
