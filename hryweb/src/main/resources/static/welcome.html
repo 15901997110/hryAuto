@@ -67,8 +67,8 @@
                         ctotalArr.push(parseInt(arrayList[i].ctotal));
                         itotalByCaseArr.push(parseInt(arrayList[i].itotalByCase));
                         itotalNoCaseArr.push(parseInt(arrayList[i].itotalNoCase));
-                        irateArr.push(parseInt(arrayList[i].irate));
-                        cfinenessArr.push(parseInt(arrayList[i].cfineness));
+                        irateArr.push(parseFloat(arrayList[i].irate));
+                        cfinenessArr.push(parseFloat(arrayList[i].cfineness));
                     }
                     //save series
                     options1.series[0].data = itotalArr;
@@ -121,7 +121,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                '<td style="padding:0"><b>{point.y} 个</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -164,7 +164,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f}%</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -200,7 +200,7 @@
             tooltip: {
                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} 个</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.2f} 个</b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
