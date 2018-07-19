@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Spring上下文获取工具
- * @author caobin
- * @version 1.0 2016年2月24日
  */
 @Component
 public class SpringContextHolder implements ApplicationContextAware {
