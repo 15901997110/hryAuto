@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.testng.IReporter;
+import org.testng.ITestNGListener;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlInclude;
@@ -358,12 +360,18 @@ public class TcustomServiceImpl implements TcustomService {
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        this.run(null, treportId, reportName, sMap);
+        this.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return;
+    }
+    public void updateReportStatus(Integer reportId) {
+        Treport treport = new Treport();
+        treport.setId(reportId);
+        treport.setStatus(StatusEnum.TEN.getId());
+        treportService.updateOne(treport);
     }
 
     @Async("asyncServiceExecutor")
-    public void run(Map<String, String> params, Integer reportId, String reportName, Map<Tcustomdetail, XmlClass> sMap) {
+    public void run(Map<String, String> params, Integer reportId, String reportName, String customName, Map<Tcustomdetail, XmlClass> sMap) {
         TestNG ng = new TestNG();
         XmlSuite suite = new XmlSuite();
         suite.setName("AutoSuite");
@@ -377,6 +385,7 @@ public class TcustomServiceImpl implements TcustomService {
 
             XmlTest test = new XmlTest(suite);
             test.setName(key.getClientname());
+            //test.setName("test.setName 测试测试");
             test.setXmlClasses(Arrays.asList(clazz));
 
             tests.add(test);
@@ -384,8 +393,15 @@ public class TcustomServiceImpl implements TcustomService {
 
         suite.setTests(tests);
         ng.setXmlSuites(Arrays.asList(suite));
-        ng.addListener(new HryReporter(reportPath, reportName));
+
+        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
+        ng.addListener(reporter);
         ng.run();
+
+        /**
+         * 运行完成之后,更新treport状态
+         */
+        updateReportStatus(reportId);
     }
 
     @Async("asyncServiceExecutor")
@@ -411,16 +427,13 @@ public class TcustomServiceImpl implements TcustomService {
         suite.setTests(xmlTests);
 
         testNG.setXmlSuites(Arrays.asList(suite));
-        testNG.addListener(new HryReporter(reportPath, reportName));
+        ITestNGListener reporter = new HryReporter(reportPath, reportName);
+        testNG.addListener(reporter);
         testNG.run();
-
 
         /**
          * 运行完成之后,更新treport状态
          */
-        Treport treport = new Treport();
-        treport.setId(reportId);
-        treport.setStatus(StatusEnum.TEN.getId());
-        treportService.updateOne(treport);
+        updateReportStatus(reportId);
     }
 }
