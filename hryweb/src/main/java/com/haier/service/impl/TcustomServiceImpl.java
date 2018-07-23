@@ -67,9 +67,11 @@ public class TcustomServiceImpl implements TcustomService {
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
         tcustomMapper.insertSelective(tcustom);
         Integer customId = tcustom.getId();//获取插入的自增Id
-        for (Tcustomdetail tcustomdetail : tcustomdetails) {
-            tcustomdetail.setCustomid(customId);
-            tcustomdetailService.insertOne(tcustomdetail);
+        if (tcustomdetails != null && tcustomdetails.size() > 0) {
+            for (Tcustomdetail tcustomdetail : tcustomdetails) {
+                tcustomdetail.setCustomid(customId);
+                tcustomdetailService.insertOne(tcustomdetail);
+            }
         }
         return customId;
     }
