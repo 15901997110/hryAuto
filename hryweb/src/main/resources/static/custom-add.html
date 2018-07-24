@@ -529,6 +529,7 @@
 
     //添加定制测试
     function addCustom(){
+        layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
         var customname = $("#customname").val();
         var env = $("#env").val();
         var strategy = $("#strategy").val();
@@ -613,6 +614,7 @@
                     var status=data.status;
                     var msg=data.msg;
                     if(status == 0){
+                        layer.close(layerIndex);
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);

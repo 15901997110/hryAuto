@@ -243,6 +243,15 @@
                             status="报告完成";
                         }
 
+                        var servicenames=JSON.parse(row.servicenames);
+                        var ul="";
+                        for(var k=0;k<servicenames.length;k++){
+                            var serv=servicenames[k];
+                            var li="<li>"+serv+"</li>";
+                            ul=ul+li;
+
+                        }
+
 
 
 
@@ -251,15 +260,16 @@
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.reportname+"</td>\n" +
+                            "<td><a title='测试报告详情' target='_blank' href='.."+row.reportname+"'>"+row.reportname+"</a></td>\n" +
                             "<td>"+row.username+"</td>\n" +
                             "<td >"+row.customname+/*"|"+row.servicename+*/"</td>\n" +
                             "<td>"+row.envkey+"</td>\n" +
-                            "<td>"+row.serviceid+"</td>\n" +
+                            /*"<td>"+row.serviceid+"</td>\n" +*/
+                            "<td style='text-align: left;'><ul id='serv'>"+ul+"</ul></td>\n" +
                             "<td>"+row.testtime+"</td>\n" +
                             "<td>"+status+"</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"treport_details("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"运行\" target='_blank' href='.."+row.reportname+"'  style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"treport_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
@@ -415,20 +425,30 @@
                             status="报告完成";
                         }
 
+                        var servicenames=JSON.parse(row.servicenames);
+                        var ul="";
+                        for(var k=0;k<servicenames.length;k++){
+                            var serv=servicenames[k];
+                            var li="<li>"+serv+"</li>";
+                            ul=ul+li;
+
+                        }
+
 
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.reportname+"</td>\n" +
+                            "<td><a title='测试报告详情' target='_blank' href='.."+row.reportname+"'>"+row.reportname+"</a></td>\n" +
                             "<td>"+row.username+"</td>\n" +
                             "<td >"+row.customname+/*"|"+row.servicename+*/"</td>\n" +
                             "<td>"+row.envkey+"</td>\n" +
-                            "<td>"+row.serviceid+"</td>\n" +
+                            /*"<td>"+row.serviceid+"</td>\n" +*/
+                            "<td style='text-align: left;'><ul id='serv'>"+ul+"</ul></td>\n" +
                             "<td>"+row.testtime+"</td>\n" +
                             "<td>"+status+"</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"treport_details("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"查看\" target='_blank' href='.."+row.reportname+"'  style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"treport_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
