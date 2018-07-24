@@ -217,8 +217,9 @@
                 var list = data;
                 var status = data.status;
                 var msg = data.msg;
+                var url=data.data;
                 if (status == 0) {
-                    layer.alert("测试执行中，请稍后到测试报告页面查看！", {
+                    layer.alert("<a title='查看' target='_blank' href='.."+url+"'>测试执行中，请稍后到测试报告页面查看！</a>", {
                         skin: 'layer-ext-moon'
                     });
 
