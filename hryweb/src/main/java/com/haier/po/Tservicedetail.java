@@ -1,6 +1,6 @@
 package com.haier.po;
 
-public class Tenvdetail {
+public class Tservicedetail {
     private Integer id;
 
     private Integer serviceid;

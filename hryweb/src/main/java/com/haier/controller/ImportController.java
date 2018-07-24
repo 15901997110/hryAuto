@@ -6,10 +6,10 @@ import com.alibaba.fastjson.parser.Feature;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.ImportInterfaceResult;
-import com.haier.po.Tenvdetail;
+import com.haier.po.Tservicedetail;
 import com.haier.response.Result;
 import com.haier.service.ImportService;
-import com.haier.service.TenvdetailService;
+import com.haier.service.TservicedetailService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class ImportController {
     @Autowired
     ImportService importService;
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @PostMapping("/interfaceImport")
     public Result interfaceImport(
@@ -64,22 +64,22 @@ public class ImportController {
 
 
         //1.通过serviceId和envId找到swaggerUrl
-        Tenvdetail tenvdetail = new Tenvdetail();
-        tenvdetail.setServiceid(serviceId);
-        tenvdetail.setEnvid(envId);
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setServiceid(serviceId);
+        tservicedetail.setEnvid(envId);
         String swaggerUrl = null;
-        List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(tenvdetail);
-        if (tenvdetailList != null && tenvdetailList.size() > 0) {
+        List<Tservicedetail> tservicedetailList = tservicedetailService.selectByCondition(tservicedetail);
+        if (tservicedetailList != null && tservicedetailList.size() > 0) {
             //查询到记录,应该有且只有一条记录,否则就是脏数据
-            swaggerUrl = tenvdetailList.get(0).getSwaggerurl();
+            swaggerUrl = tservicedetailList.get(0).getSwaggerurl();
             if (swaggerUrl == null || "".equals(swaggerUrl.trim())) {
-                throw new HryException(38, "serviceId=" + serviceId + ",envId=" + envId + "对应的swagger地址为空,请先维护tenvdetail信息");
+                throw new HryException(38, "serviceId=" + serviceId + ",envId=" + envId + "对应的swagger地址为空,请先维护tservicedetail信息");
             } else {
                 swaggerUrl = swaggerUrl.trim();
             }
         } else {
             //未查询到记录
-            throw new HryException(StatusCodeEnum.NOT_FOUND, "tenvdetail表查询serviceId=" + serviceId + ",envId=" + envId);
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "tservicedetail表查询serviceId=" + serviceId + ",envId=" + envId);
         }
         //2.通过url发送get请求,得到返回json
         String responseJson = importService.sendGet(swaggerUrl);

@@ -24,15 +24,16 @@ public class StatisticController {
 
     /**
      * 实时统计
+     *
      * @return
      */
     @GetMapping("/realtimeOld")
-    public Result<List<RealtimeStatistic>> realtimeStatisticsOld(){
+    public Result<List<RealtimeStatistic>> realtimeStatisticsOld() {
         return ResultUtil.success(statisticService.statisticCurrentOld());
     }
 
     @GetMapping("/realtime")
-    public Result<List<RealtimeStatistic>> realtimeStatistics(){
+    public Result<List<RealtimeStatistic>> realtimeStatistics() {
         return ResultUtil.success(statisticService.statisticCurrent());
     }
 }

@@ -40,12 +40,12 @@ public class PgwTest {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
-    private String i_c;
-    private JSONObject i_c_JSONObject;
+    private String i_c;//接收外部传参,定制的用例
+    private JSONObject i_c_JSONObject;//将定制的用例从String类型转成JSONObject类型
     private String baseUrl;//http://host:port
     private String url;
     private Tservice tservice;
-    private Tenvdetail tenvdetail;
+    private Tservicedetail tservicedetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
 
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
@@ -60,12 +60,12 @@ public class PgwTest {
         }
 
         tservice = runService.getTservice(this.serviceId);
-        tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
+        tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         init();
     }
 
     public void init() {
-        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tenvdetail.getHostinfo();
+        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
     }
 
     public Boolean getBoolResult(Params params) {
@@ -75,19 +75,20 @@ public class PgwTest {
         Ti ti = params.getTi();
         Tcase tcase = params.getTcase();
         url = baseUrl + ti.getIuri();
-        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, BeforeUtil.replace(tcase.getRequestparam(), tenvdetail.getDbinfo()));
+        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
+        Reporter.log("实际请求参数 : " + requestParam);
+        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
         return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
     }
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
         //Reporter.log(params.getTi().toString());
-        Reporter.log(params.getTcase().toString());
-        Assert.assertTrue(true);
-        //Assert.assertTrue(this.getBoolResult(params));
+        Reporter.log("用例设计参数 : " + params.getTcase().getRequestparam());
+        Assert.assertTrue(this.getBoolResult(params));
     }
 
-    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
+/*    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(Params params) {
         log.info("自己打印的日志:" + params.toString());
         Assert.assertTrue(true);
@@ -99,7 +100,7 @@ public class PgwTest {
         System.out.println("System.out.println():" + params);
         Assert.assertTrue(true);
         //Assert.assertTrue(this.getBoolResult(params));
-    }
+    }*/
 
 
     @DataProvider(name = "provider")

@@ -5,7 +5,7 @@
   <select id="queryAllVoListByCondition" parameterType="QueryAllVo" resultType="QueryAllVo">
      SELECT * FROM tcase LEFT JOIN ti ON tcase.`iId`=ti.`id`
      LEFT JOIN tservice ON ti.`serviceId`=tservice.`id`
-      LEFT JOIN tenvdetail ON tservice.`id`=tenvDetail.`serviceId`
+      LEFT JOIN tservicedetail ON tservice.`id`=tenvDetail.`serviceId`
   </select>
 
 </mapper>

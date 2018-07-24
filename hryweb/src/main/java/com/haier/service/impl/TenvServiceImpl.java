@@ -6,12 +6,11 @@ import com.haier.mapper.TenvMapper;
 import com.haier.po.Tcase;
 import com.haier.po.Tenv;
 import com.haier.po.TenvExample;
-import com.haier.po.Tenvdetail;
+import com.haier.po.Tservicedetail;
 import com.haier.service.TcaseService;
 import com.haier.service.TenvService;
-import com.haier.service.TenvdetailService;
+import com.haier.service.TservicedetailService;
 import com.haier.util.ReflectUtil;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class TenvServiceImpl implements TenvService {
     TenvMapper tenvMapper;
 
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @Autowired
     TcaseService tcaseService;
@@ -48,8 +47,8 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer updateOne(Integer id, Tenv tenv) {
-        if (id == null || tenv == null||id==0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || tenv == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
         tenv.setId(id);
         return tenvMapper.updateByPrimaryKeySelective(tenv);
@@ -57,32 +56,32 @@ public class TenvServiceImpl implements TenvService {
 
     @Override
     public Integer insertOne(Tenv tenv) {
-        ReflectUtil.setInvalidFieldToNull(tenv,false);
-        if(tenv==null||tenv.getEnvkey()==null){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"envkey必填");
+        ReflectUtil.setInvalidFieldToNull(tenv, false);
+        if (tenv == null || tenv.getEnvkey() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "envkey必填");
         }
         //先判断数据是否存在
         TenvExample example = new TenvExample();
         example.createCriteria().andEnvkeyEqualTo(tenv.getEnvkey());
         List<Tenv> tenvList = tenvMapper.selectByExample(example);
         if (tenvList != null && tenvList.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD,"envkey="+tenv.getEnvkey()+"的记录已经存在");//抛出异常:记录存在
+            throw new HryException(StatusCodeEnum.EXIST_RECORD, "envkey=" + tenv.getEnvkey() + "的记录已经存在");//抛出异常:记录存在
         }
         return tenvMapper.insertSelective(tenv);
     }
 
     @Override
     public Integer deleteOne(Integer id) {
-        if(id==null||id==0){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"id必填");
+        if (id == null || id == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
-        //先删除tenvdetail表中的记录
-        Tenvdetail tenvdetail = new Tenvdetail();
-        tenvdetail.setEnvid(id);
-        tenvdetailService.deleteByCondition(tenvdetail);
+        //先删除tservicedetail表中的记录
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setEnvid(id);
+        tservicedetailService.deleteByCondition(tservicedetail);
 
         //删除tcase表中的记录
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setEnvid(id);
         tcaseService.deleteByCondition(tcase);
 

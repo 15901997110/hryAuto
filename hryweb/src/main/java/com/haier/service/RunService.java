@@ -11,8 +11,12 @@ import java.util.List;
  */
 public interface RunService {
     Tservice getTservice(Integer serviceId);
+
     Tenv getTenv(Integer envId);
-    Tenvdetail getTenvdetail(Integer serviceId,Integer envId);
-    Ti getTi(Integer serviceId,String uri);
-    List<Tcase> getTcase(Integer iId, Integer envId ,String caseDesigner);
+
+    Tservicedetail getTservicedetail(Integer serviceId, Integer envId);
+
+    Ti getTi(Integer serviceId, String uri);
+
+    List<Tcase> getTcase(Integer iId, Integer envId, String caseDesigner);
 }

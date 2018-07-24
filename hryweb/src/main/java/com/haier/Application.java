@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 
-@SpringBootApplication(exclude = {  MongoAutoConfiguration.class })
+@SpringBootApplication(exclude = {MongoAutoConfiguration.class})
 @MapperScan("com.haier.mapper")
 public class Application {
-    public static void main(String[] args){
-        SpringApplication.run(Application.class,args);
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }

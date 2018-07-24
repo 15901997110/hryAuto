@@ -9,8 +9,7 @@ package com.haier.enums;
 public enum DBTypeEnum {
     MYSQL("com.mysql.jdbc.Driver"),
     ORACLE("oracle.jdbc.driver.OracleDriver"),
-    DB2("com.ibm.db2.jcc.DB2Driver")
-    ;
+    DB2("com.ibm.db2.jcc.DB2Driver");
 
 
     private String driverName;

@@ -8,6 +8,7 @@ import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
+import com.haier.util.RunUtil;
 import com.haier.vo.CustomVO;
 import com.haier.service.*;
 import com.haier.testng.listener.HryReporter;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.testng.ITestNGListener;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlInclude;
@@ -58,18 +60,23 @@ public class TcustomServiceImpl implements TcustomService {
     TreportService treportService;
 
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @Autowired
     TcustomdetailService tcustomdetailService;
+
+    @Autowired
+    RunUtil runUtil;
 
     @Override
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
         tcustomMapper.insertSelective(tcustom);
         Integer customId = tcustom.getId();//获取插入的自增Id
-        for (Tcustomdetail tcustomdetail : tcustomdetails) {
-            tcustomdetail.setCustomid(customId);
-            tcustomdetailService.insertOne(tcustomdetail);
+        if (tcustomdetails != null && tcustomdetails.size() > 0) {
+            for (Tcustomdetail tcustomdetail : tcustomdetails) {
+                tcustomdetail.setCustomid(customId);
+                tcustomdetailService.insertOne(tcustomdetail);
+            }
         }
         return customId;
     }
@@ -199,8 +206,8 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustomdetail> tcustomdetails_interface = new ArrayList<>();//定制的接口
         List<Tcustomdetail> tcustomdetails_case = new ArrayList<>();//定制的用例
 
-        List<Integer> service_ids=new ArrayList<>();
-        List<String> service_names=new ArrayList<>();
+        List<Integer> service_ids = new ArrayList<>();
+        List<String> service_names = new ArrayList<>();
 
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
             /**
@@ -285,15 +292,15 @@ public class TcustomServiceImpl implements TcustomService {
         Integer envid = customVO.getEnvid();
         User user = userService.selectOne(executeUserId);
 
-        Tenvdetail condition = new Tenvdetail();
+        Tservicedetail condition = new Tservicedetail();
         for (Tcustomdetail tcustomdetail : tcustomdetails_service) {
             condition.setEnvid(envid);
             condition.setServiceid(tcustomdetail.getClientid());
-            List<Tenvdetail> tenvdetails_service = tenvdetailService.selectByCondition(condition);
-            if (tenvdetails_service != null && tenvdetails_service.size() > 0) {
+            List<Tservicedetail> tservicedetails_service = tservicedetailService.selectByCondition(condition);
+            if (tservicedetails_service != null && tservicedetails_service.size() > 0) {
 
                 //取第1条记录,按正常情况 ,有且仅有一条记录才对,否则 就是脏数据
-                Tenvdetail s0 = tenvdetails_service.get(0);
+                Tservicedetail s0 = tservicedetails_service.get(0);
 
                 //测试类必须已经填写
                 if (s0.getClazz() != null && !"".equals(s0.getClazz())) {
@@ -356,69 +363,8 @@ public class TcustomServiceImpl implements TcustomService {
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        this.run(null, treportId, reportName, sMap);
+        runUtil.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return;
     }
 
-    @Async("asyncServiceExecutor")
-    public void run(Map<String, String> params, Integer reportId, String reportName, Map<Tcustomdetail, XmlClass> sMap) {
-        TestNG ng = new TestNG();
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite");
-        if (params != null) {
-            suite.setParameters(params);//这是全局的参数,预留未来可能的需求(现在并未使用 2018-07-14)
-        }
-        List<XmlTest> tests = new ArrayList<>();
-        for (Map.Entry entry : sMap.entrySet()) {
-            Tcustomdetail key = (Tcustomdetail) entry.getKey();
-            XmlClass clazz = (XmlClass) entry.getValue();
-
-            XmlTest test = new XmlTest(suite);
-            test.setName(key.getClientname());
-            test.setXmlClasses(Arrays.asList(clazz));
-
-            tests.add(test);
-        }
-
-        suite.setTests(tests);
-        ng.setXmlSuites(Arrays.asList(suite));
-        ng.addListener(new HryReporter(reportPath, reportName));
-        ng.run();
-    }
-
-    @Async("asyncServiceExecutor")
-    public void run(Map<String, String> params, Integer reportId, String reportName, List<XmlClass> xmlClasses) {
-
-        /**
-         * 运行测试用例
-         */
-        TestNG testNG = new TestNG();
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite");
-        if (params != null) {
-            suite.setParameters(params);
-        }
-        List<XmlTest> xmlTests = new ArrayList<>();
-        for (XmlClass c : xmlClasses) {
-            XmlTest test = new XmlTest(suite);
-            test.setName(c.getName().substring(c.getName().lastIndexOf(".") + 1));
-            test.setClasses(Arrays.asList(c));
-            xmlTests.add(test);
-        }
-
-        suite.setTests(xmlTests);
-
-        testNG.setXmlSuites(Arrays.asList(suite));
-        testNG.addListener(new HryReporter(reportPath, reportName));
-        testNG.run();
-
-
-        /**
-         * 运行完成之后,更新treport状态
-         */
-        Treport treport = new Treport();
-        treport.setId(reportId);
-        treport.setStatus(StatusEnum.TEN.getId());
-        treportService.updateOne(treport);
-    }
 }

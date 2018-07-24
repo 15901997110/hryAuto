@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.haier.mapper.TenvdetailCustomMapper">
-    <resultMap id="TenvdetailCustomResultMap" type="com.haier.po.TenvdetailCustom">
+<mapper namespace="com.haier.mapper.TservicedetailCustomMapper">
+    <resultMap id="TservicedetailCustomResultMap" type="com.haier.po.TservicedetailCustom">
         <id column="id" property="id"/>
         <result column="serviceid" property="serviceid"></result>
         <result column="servicekey" property="servicekey"/>
@@ -16,35 +16,35 @@
         <result column="clazz" property="clazz"/>
         <result column="status" property="status"/>
     </resultMap>
-    <select id="selectByCondition" parameterType="com.haier.po.TenvdetailCustom"
-            resultMap="TenvdetailCustomResultMap">
+    <select id="selectByCondition" parameterType="com.haier.po.TservicedetailCustom"
+            resultMap="TservicedetailCustomResultMap">
         SELECT
-        tenvdetail.`id`,
-        tenvdetail.`serviceId`,
+        tservicedetail.`id`,
+        tservicedetail.`serviceId`,
         tservice.`serviceKey`,
         tservice.`serviceName`,
         tservice.`editor`,
-        tenvdetail.`envId`,
+        tservicedetail.`envId`,
         tenv.`envKey`,
         tenv.`remark`,
-        tenvdetail.`hostInfo`,
-        tenvdetail.`dbInfo`,
-        tenvdetail.`swaggerUrl`,
-        tenvdetail.`clazz`,
-        tenvdetail.`status`
-        FROM tenvdetail
-        INNER JOIN tservice ON tenvdetail.`serviceId` = tservice.`id` AND tservice.`isDel` = 0
-        INNER JOIN tenv ON tenvdetail.`envId` = tenv.`id`
-        WHERE tenvdetail.status>0
+        tservicedetail.`hostInfo`,
+        tservicedetail.`dbInfo`,
+        tservicedetail.`swaggerUrl`,
+        tservicedetail.`clazz`,
+        tservicedetail.`status`
+        FROM tservicedetail
+        INNER JOIN tservice ON tservicedetail.`serviceId` = tservice.`id` AND tservice.`isDel` = 0
+        INNER JOIN tenv ON tservicedetail.`envId` = tenv.`id`
+        WHERE tservicedetail.status>0
         <if test="_parameter!=null">
             <if test="id!=null">
-                AND tenvdetail.id=#{id}
+                AND tservicedetail.id=#{id}
             </if>
             <if test="serviceid!=null">
-                AND tenvdetail.serviceId=#{serviceid}
+                AND tservicedetail.serviceId=#{serviceid}
             </if>
             <if test="envid!=null">
-                AND tenvdetail.envId=#{envid}
+                AND tservicedetail.envId=#{envid}
             </if>
             <if test="servicekey!=null">
                 AND (tservice.serviceKey like #{servicekey} or tservice.serviceName like #{servicekey})
@@ -56,13 +56,13 @@
                 AND (tenv.envKey like #{envkey} or tenv.remark like #{envkey})
             </if>
             <if test="hostinfo!=null">
-                AND tenvdetail.hostInfo like #{hostinfo}
+                AND tservicedetail.hostInfo like #{hostinfo}
             </if>
             <if test="dbinfo!=null">
-                AND tenvdetail.dbInfo like #{dbinfo}
+                AND tservicedetail.dbInfo like #{dbinfo}
             </if>
             <if test="swaggerurl!=null">
-                AND tenvdetail.swaggerUrl like #{swaggerurl}
+                AND tservicedetail.swaggerUrl like #{swaggerurl}
             </if>
         </if>
     </select>

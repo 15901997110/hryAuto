@@ -18,25 +18,25 @@ import java.util.Map;
 public class EnumUtil {
 
     /**
-     *@description: 获取所有枚举项
-     *@params: [t]
-     *@return: java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
-     *@author: luqiwei
-     *@date: 2018-05-30
+     * @description: 获取所有枚举项
+     * @params: [t]
+     * @return: java.util.List<java.util.Map   <   java.lang.String   ,   java.lang.Object>>
+     * @author: luqiwei
+     * @date: 2018-05-30
      */
-    public static <T extends Enum> List<Map<String,Object>> getEnumList(T[] t){
-        List<Map<String,Object>> list=new ArrayList<>();
-        for(T _t:t){
-            Map<String,Object> map=new LinkedHashMap<>();
+    public static <T extends Enum> List<Map<String, Object>> getEnumList(T[] t) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (T _t : t) {
+            Map<String, Object> map = new LinkedHashMap<>();
             Field[] declaredFields = _t.getClass().getDeclaredFields();
-            for(Field field:declaredFields){
-                if(!field.isEnumConstant()){
+            for (Field field : declaredFields) {
+                if (!field.isEnumConstant()) {
                     field.setAccessible(true);
-                    if(!field.getType().isInstance(t)){
+                    if (!field.getType().isInstance(t)) {
                         try {
-                            map.put(field.getName(),field.get(_t));
+                            map.put(field.getName(), field.get(_t));
                         } catch (IllegalAccessException e) {
-                            log.error("获取枚举类失败:",e);
+                            log.error("获取枚举类失败:", e);
                         }
                     }
                 }

@@ -1,14 +1,21 @@
 package com.haier.util;
 
+import com.haier.enums.StatusEnum;
+import com.haier.po.Tcustomdetail;
 import com.haier.po.Treport;
+import com.haier.service.TreportService;
 import com.haier.testng.listener.HryReporter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.testng.ITestNGListener;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -17,41 +24,85 @@ import java.util.*;
  * @Date: 2018/6/29 15:11
  */
 @Slf4j
+@Component
 public class RunUtil {
+    @Value("${zdy.reportPath}")
+    String reportPath;
 
-/*    public static void run(Integer userId, Integer customId, String reportPath,String resourcePathPattern, List<XmlClass> xmlClasses) {
-        List<XmlClass> distinctClazzs = HryUtil.distinct(xmlClasses);
-        if (distinctClazzs == null) {
-            return;
+    @Autowired
+    TreportService treportService;
+
+    @Async("asyncServiceExecutor")
+    public void run(Map<String, String> params, Integer reportId, String reportName, String customName, Map<Tcustomdetail, XmlClass> sMap) {
+        TestNG ng = new TestNG();
+        XmlSuite suite = new XmlSuite();
+        suite.setName("AutoSuite");
+        if (params != null) {
+            suite.setParameters(params);//这是全局的参数,预留未来可能的需求(现在并未使用 2018-07-14)
         }
-        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "report_" + userId + "_" + customId + "_" + date + ".html";
-        runNG(null, reportPath,resourcePathPattern, reportName, xmlClasses);
-    }*/
+        List<XmlTest> tests = new ArrayList<>();
+        for (Map.Entry entry : sMap.entrySet()) {
+            Tcustomdetail key = (Tcustomdetail) entry.getKey();
+            XmlClass clazz = (XmlClass) entry.getValue();
 
-/*    private static void runNG(Map<String, String> params, String reportPath, String resourcePathPattern,String reportName, List<XmlClass> xmlClasses) {
+            XmlTest test = new XmlTest(suite);
+            test.setName(key.getClientname());
+            //test.setName("test.setName 测试测试");
+            test.setXmlClasses(Arrays.asList(clazz));
 
-
-        if (xmlClasses == null || xmlClasses.size() == 0) {
-            return;
+            tests.add(test);
         }
+
+        suite.setTests(tests);
+        ng.setXmlSuites(Arrays.asList(suite));
+
+        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
+        ng.addListener(reporter);
+        ng.run();
+
+        /**
+         * 运行完成之后,更新treport状态
+         */
+        updateReportStatus(reportId);
+    }
+
+    @Async("asyncServiceExecutor")
+    public void run(Map<String, String> params, Integer reportId, String reportName, List<XmlClass> xmlClasses) {
+
+        /**
+         * 运行测试用例
+         */
         TestNG testNG = new TestNG();
         XmlSuite suite = new XmlSuite();
+        suite.setName("AutoSuite");
+        if (params != null) {
+            suite.setParameters(params);
+        }
         List<XmlTest> xmlTests = new ArrayList<>();
-        for(XmlClass c:xmlClasses){
-            XmlTest test=new XmlTest(suite);
-            test.setName(c.getName().substring(c.getName().lastIndexOf(".")+1));
+        for (XmlClass c : xmlClasses) {
+            XmlTest test = new XmlTest(suite);
+            test.setName(c.getName().substring(c.getName().lastIndexOf(".") + 1));
             test.setClasses(Arrays.asList(c));
             xmlTests.add(test);
         }
 
-        suite.setName("AutoSuite");
         suite.setTests(xmlTests);
 
         testNG.setXmlSuites(Arrays.asList(suite));
-        testNG.addListener(new HryReporter(reportPath, reportName));
-
+        ITestNGListener reporter = new HryReporter(reportPath, reportName);
+        testNG.addListener(reporter);
         testNG.run();
 
-    }*/
+        /**
+         * 运行完成之后,更新treport状态
+         */
+        updateReportStatus(reportId);
+    }
+
+    public void updateReportStatus(Integer reportId) {
+        Treport treport = new Treport();
+        treport.setId(reportId);
+        treport.setStatus(StatusEnum.TEN.getId());
+        treportService.updateOne(treport);
+    }
 }

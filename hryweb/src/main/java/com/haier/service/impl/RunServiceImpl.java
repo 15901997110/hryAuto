@@ -20,7 +20,7 @@ public class RunServiceImpl implements RunService {
     @Autowired
     TenvService tenvService;
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
     @Autowired
     TiService tiService;
     @Autowired
@@ -37,21 +37,21 @@ public class RunServiceImpl implements RunService {
     }
 
     @Override
-    public Tenvdetail getTenvdetail(Integer serviceId, Integer envId) {
-        Tenvdetail tenvdetail = new Tenvdetail();
-        tenvdetail.setServiceid(serviceId);
-        tenvdetail.setEnvid(envId);
-        List<Tenvdetail> tenvdetailList = tenvdetailService.selectByCondition(tenvdetail);
-        //正常情况有且只会返回一个tenvdetail,如果返回多个,则取第一个
-        if (tenvdetailList != null && tenvdetailList.size() > 0) {
-            return tenvdetailList.get(0);
+    public Tservicedetail getTservicedetail(Integer serviceId, Integer envId) {
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setServiceid(serviceId);
+        tservicedetail.setEnvid(envId);
+        List<Tservicedetail> tservicedetailList = tservicedetailService.selectByCondition(tservicedetail);
+        //正常情况有且只会返回一个tservicedetail,如果返回多个,则取第一个
+        if (tservicedetailList != null && tservicedetailList.size() > 0) {
+            return tservicedetailList.get(0);
         }
         return null;
     }
 
     @Override
     public Ti getTi(Integer serviceId, String iUri) {
-        Ti ti=new Ti();
+        Ti ti = new Ti();
         ti.setServiceid(serviceId);
         ti.setIuri(iUri);
         List<Ti> tis = tiService.selectByCondition(ti);
@@ -63,7 +63,7 @@ public class RunServiceImpl implements RunService {
 
     @Override
     public List<Tcase> getTcase(Integer iId, Integer envId, String caseDesigner) {
-        Tcase tcase=new Tcase();
+        Tcase tcase = new Tcase();
         tcase.setIid(iId);
         tcase.setEnvid(envId);
         tcase.setAuthor(caseDesigner);

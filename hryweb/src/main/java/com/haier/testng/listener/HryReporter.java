@@ -25,9 +25,9 @@ import java.util.*;
  */
 @Slf4j
 public class HryReporter implements IReporter {
-    private String reportPath;
-    private String fileName;
-    private String customName;
+    private String reportPath;//测试报告存入于服务器的位置 如:C:/testngReport/(windows环境下的存放地址)
+    private String fileName;//测试报告访问的地址 如: /test-output/report_u53_c14_20180723_151134.html   访问时前面加域名即可
+    private String customName;//测试报告中的报告名称,一般传定制名称
 
     public HryReporter(String reportPath, String fileName) {
         this.reportPath = reportPath;
@@ -177,16 +177,18 @@ public class HryReporter implements IReporter {
                 String desc = "";
                 String testName = "";
                 try {
-                    testName = result.getMethod().getMethod().getAnnotation(Test.class).testName();
-                    desc = result.getMethod().getMethod().getAnnotation(Test.class).description();
+
+                    //testName = result.getMethod().getMethod().getAnnotation(Test.class).testName();//此方法已经过期 ,不再使用
+                    testName = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(Test.class).testName();
+                    desc = result.getMethod().getDescription();
                 } catch (RuntimeException e) {
 
                 }
-                log.debug("测试方法上的@Test注解的testName=" + testName);
+
+/*                log.debug("测试方法上的@Test注解的testName=" + testName);
                 log.debug("测试方法上的@Test注解的description=" + desc);
                 log.debug("result.getMethod().getMethodName()=" + result.getMethod().getMethodName());
-                log.debug("result.getMethod().getDescription()=" + result.getMethod().getDescription());
-
+                log.debug("result.getMethod().getDescription()=" + result.getMethod().getDescription());*/
 
                 name = testName + "(" + desc + ")";
                 if ("".equals(desc) && "".equals(testName)) {
@@ -204,10 +206,10 @@ public class HryReporter implements IReporter {
                 /**
                  * 如果有参数,测试报告中将参数展示出来
                  */
-                String p="";
+                String p = "";
                 if (parameters != null && parameters.length > 0) {
                     for (Object param : parameters) {
-                        p+=param.toString();
+                        p += param.toString();
                     }
                 }
                 Reporter.log("这是Reporter.log打印出来的");

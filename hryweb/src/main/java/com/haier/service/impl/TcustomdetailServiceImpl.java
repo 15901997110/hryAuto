@@ -78,15 +78,15 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
 
     @Override
     public List<Tcustomdetail> selectByCondition(Tcustomdetail tcustomdetail) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tcustomdetail,false);
+        ReflectUtil.setFieldAddPercentAndCleanZero(tcustomdetail, false);
 
-        TcustomdetailExample example=new TcustomdetailExample();
+        TcustomdetailExample example = new TcustomdetailExample();
         TcustomdetailExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
-        if(tcustomdetail!=null){
-            if(tcustomdetail.getCustomid()!=null){//如果定制id存在 ,则根据定制id查询
+        if (tcustomdetail != null) {
+            if (tcustomdetail.getCustomid() != null) {//如果定制id存在 ,则根据定制id查询
                 criteria.andCustomidEqualTo(tcustomdetail.getCustomid());
-                if(tcustomdetail.getClientlevel()!=null){//如果定制级别存在 ,并且定制id也存在 ,则可查询定制级别
+                if (tcustomdetail.getClientlevel() != null) {//如果定制级别存在 ,并且定制id也存在 ,则可查询定制级别
                     criteria.andClientlevelEqualTo(tcustomdetail.getClientlevel());
                 }
             }
@@ -97,12 +97,12 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
 
     @Override
     public List<Tcustomdetail> selectByCondition(Integer customId) {
-        return this.selectByCondition(customId,null);
+        return this.selectByCondition(customId, null);
     }
 
     @Override
-    public List<Tcustomdetail> selectByCondition(Integer customId,Integer clientLevel) {
-        Tcustomdetail tcustomdetail=new Tcustomdetail();
+    public List<Tcustomdetail> selectByCondition(Integer customId, Integer clientLevel) {
+        Tcustomdetail tcustomdetail = new Tcustomdetail();
         tcustomdetail.setCustomid(customId);
         tcustomdetail.setClientlevel(clientLevel);
         return this.selectByCondition(tcustomdetail);
