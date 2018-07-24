@@ -76,7 +76,8 @@ public class PgwTest {
         Tcase tcase = params.getTcase();
         url = baseUrl + ti.getIuri();
         String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
-        Reporter.log("实际请求参数 : " + requestParam);
+        Reporter.log("实际请求参数 : ");
+        Reporter.log(requestParam);
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
         return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
     }
@@ -84,7 +85,9 @@ public class PgwTest {
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
         //Reporter.log(params.getTi().toString());
-        Reporter.log("用例设计参数 : " + params.getTcase().getRequestparam());
+        Reporter.log("用例设计参数 : ");
+        Reporter.log(params.getTcase().getRequestparam());
+
         Assert.assertTrue(this.getBoolResult(params));
     }
 

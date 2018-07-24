@@ -1,6 +1,7 @@
 package com.haier.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.haier.enums.AssertTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Reporter;
 
@@ -20,8 +21,12 @@ public class AssertUtil {
         log.info("expected:" + expected);
         log.info("actual:" + actual);
         log.info("actualType:" + actualType);*/
-        Reporter.log("期望结果 : "+expected);
-        Reporter.log("实际结果 : "+actual);
+        Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType) + "(" + assertType + ")");
+        Reporter.log("期望结果 :");
+        Reporter.log(expected);
+        Reporter.log("实际结果 :");
+        Reporter.log(actual);
+
         switch (assertType) {
             //1.assertType=equal,完全相等
             case 1:
