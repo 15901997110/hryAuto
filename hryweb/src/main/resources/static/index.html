@@ -112,6 +112,15 @@
                 </ul>
             </dd>
         </dl>
+        <dl id="menu-workInfo">
+            <dt><i class="Hui-iconfont">&#xe623;</i> 工作管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li id="workContentList"><a data-href="workContent-list.html" data-title="每日工作内容" href="javascript:;">每日工作内容</a></li>
+                    <li id="allWorkReport"><a data-href="allWork-report.html" data-title="上海质量部日报表汇总" href="javascript:;">上海质量部日报表汇总</a></li>
+                </ul>
+            </dd>
+        </dl>
         <dl id="menu-comments">
             <dt><i class="Hui-iconfont">&#xe622;</i> 评论管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
@@ -224,9 +233,9 @@
         var realName=$.cookie('realnameCookie');
         var groupId=$.cookie('groupidCookie');
         $("#userName").append(realName);
-/*        if(groupId != 1){
-            $("#userList").hide();
-        }*/
+        if(groupId != 11){
+            $("#menu-workInfo").hide();
+        }
         if(groupId != 1){
             $("#menu-comments").hide();
             $("#menu-member").hide();
