@@ -130,7 +130,6 @@ public class TcustomController {
         if (customId == null || customId == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行定制测试时,定制测试id必填!");
         }
-        tcustomService.run(customId, executeUserId);
-        return ResultUtil.success();
+        return ResultUtil.success(tcustomService.run(customId, executeUserId));
     }
 }

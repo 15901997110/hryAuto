@@ -37,5 +37,5 @@ public interface TcustomService {
 
     List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom);
 
-    void run(Integer customId, Integer executeUserId);
+    String run(Integer customId, Integer executeUserId);
 }

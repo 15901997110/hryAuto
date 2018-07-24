@@ -189,7 +189,7 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public void run(Integer customId, Integer executeUserId) {
+    public String run(Integer customId, Integer executeUserId) {
 
         //VO包含Tcustom 和 Tcustomdetail
         CustomVO customVO = this.selectOne(customId);
@@ -358,7 +358,7 @@ public class TcustomServiceImpl implements TcustomService {
         Integer treportId = treport.getId();
 
         runner.run(null, treportId, reportName, customVO.getCustomname(), sMap);
-        return;
+        return resourcePathPattern + reportName;
     }
 
 }
