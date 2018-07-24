@@ -1,4 +1,4 @@
-package com.haier.util;
+package com.haier.testng.run;
 
 import com.haier.enums.StatusEnum;
 import com.haier.po.Tcustomdetail;
@@ -16,7 +16,10 @@ import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -25,7 +28,7 @@ import java.util.*;
  */
 @Slf4j
 @Component
-public class RunUtil {
+public class Runner {
     @Value("${zdy.reportPath}")
     String reportPath;
 

@@ -8,8 +8,8 @@ package com.haier.enums;
 public enum StatusEnum {
     ONE(1, "正常"),
     _ONE(-1, "删除"),
-    FIVE(5, "流程进行中"),
-    TEN(10, "流程结束");
+    FIVE(5, "报告中"),
+    TEN(10, "报告完成");
 
     private Integer id;
     private String desc;

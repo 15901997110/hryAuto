@@ -8,22 +8,16 @@ import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
-import com.haier.util.RunUtil;
+import com.haier.testng.run.Runner;
 import com.haier.vo.CustomVO;
 import com.haier.service.*;
-import com.haier.testng.listener.HryReporter;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.testng.ITestNGListener;
-import org.testng.TestNG;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlInclude;
-import org.testng.xml.XmlSuite;
-import org.testng.xml.XmlTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -66,7 +60,7 @@ public class TcustomServiceImpl implements TcustomService {
     TcustomdetailService tcustomdetailService;
 
     @Autowired
-    RunUtil runUtil;
+    Runner runner;
 
     @Override
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
@@ -363,7 +357,7 @@ public class TcustomServiceImpl implements TcustomService {
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        runUtil.run(null, treportId, reportName, customVO.getCustomname(), sMap);
+        runner.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return;
     }
 
