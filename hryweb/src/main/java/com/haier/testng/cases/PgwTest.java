@@ -45,7 +45,7 @@ public class PgwTest {
     private String baseUrl;//http://host:port
     private String url;
     private Tservice tservice;
-    private Tenvdetail tenvdetail;
+    private Tservicedetail tservicedetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
 
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
@@ -60,12 +60,12 @@ public class PgwTest {
         }
 
         tservice = runService.getTservice(this.serviceId);
-        tenvdetail = runService.getTenvdetail(this.serviceId, this.envId);
+        tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         init();
     }
 
     public void init() {
-        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tenvdetail.getHostinfo();
+        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
     }
 
     public Boolean getBoolResult(Params params) {
@@ -75,7 +75,7 @@ public class PgwTest {
         Ti ti = params.getTi();
         Tcase tcase = params.getTcase();
         url = baseUrl + ti.getIuri();
-        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tenvdetail.getDbinfo());
+        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
         Reporter.log("实际请求参数 : " + requestParam);
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
         return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);

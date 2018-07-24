@@ -14,7 +14,7 @@ public interface RunService {
 
     Tenv getTenv(Integer envId);
 
-    Tenvdetail getTenvdetail(Integer serviceId, Integer envId);
+    Tservicedetail getTservicedetail(Integer serviceId, Integer envId);
 
     Ti getTi(Integer serviceId, String uri);
 

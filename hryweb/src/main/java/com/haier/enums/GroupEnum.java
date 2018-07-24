@@ -28,7 +28,7 @@ public enum GroupEnum {
     OP_HZ(25, "运维-HZ"),
     OTHER_HZ(26, "其它-HZ"),
 
-    BOSS(9999, "波司");
+    BOSS(9999, "BOSS");
     private Integer groupId;
     private String desc;
 

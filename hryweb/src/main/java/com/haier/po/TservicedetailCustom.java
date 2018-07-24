@@ -3,7 +3,7 @@ package com.haier.po;
 import lombok.Data;
 
 @Data
-public class TenvdetailCustom extends Tenvdetail {
+public class TservicedetailCustom extends Tservicedetail {
     private String servicekey;
     private String servicename;
     private String seditor;

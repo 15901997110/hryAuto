@@ -3,14 +3,14 @@ package com.haier.po;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TenvdetailExample {
+public class TservicedetailExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public TenvdetailExample() {
+    public TservicedetailExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

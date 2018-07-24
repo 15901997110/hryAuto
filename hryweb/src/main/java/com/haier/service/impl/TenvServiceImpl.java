@@ -6,12 +6,11 @@ import com.haier.mapper.TenvMapper;
 import com.haier.po.Tcase;
 import com.haier.po.Tenv;
 import com.haier.po.TenvExample;
-import com.haier.po.Tenvdetail;
+import com.haier.po.Tservicedetail;
 import com.haier.service.TcaseService;
 import com.haier.service.TenvService;
-import com.haier.service.TenvdetailService;
+import com.haier.service.TservicedetailService;
 import com.haier.util.ReflectUtil;
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class TenvServiceImpl implements TenvService {
     TenvMapper tenvMapper;
 
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @Autowired
     TcaseService tcaseService;
@@ -76,10 +75,10 @@ public class TenvServiceImpl implements TenvService {
         if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
-        //先删除tenvdetail表中的记录
-        Tenvdetail tenvdetail = new Tenvdetail();
-        tenvdetail.setEnvid(id);
-        tenvdetailService.deleteByCondition(tenvdetail);
+        //先删除tservicedetail表中的记录
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setEnvid(id);
+        tservicedetailService.deleteByCondition(tservicedetail);
 
         //删除tcase表中的记录
         Tcase tcase = new Tcase();

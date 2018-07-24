@@ -8,7 +8,7 @@ import com.haier.exception.HryException;
 import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
-import com.haier.service.TenvdetailService;
+import com.haier.service.TservicedetailService;
 import com.haier.service.TiService;
 import com.haier.service.TserviceService;
 import com.haier.util.ReflectUtil;
@@ -16,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Ref;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +39,7 @@ public class TserviceServiceImpl implements TserviceService {
     TiService tiService;
 
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @Override
     public Tservice selectOne(Integer id) {
@@ -152,10 +150,10 @@ public class TserviceServiceImpl implements TserviceService {
         Ti ti = new Ti();
         ti.setServiceid(id);
         tiService.deleteByCondition(ti);
-        //删除tenvdetail表中的记录
-        Tenvdetail tenvdetail = new Tenvdetail();
-        tenvdetail.setServiceid(id);
-        tenvdetailService.deleteByCondition(tenvdetail);
+        //删除tservicedetail表中的记录
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setServiceid(id);
+        tservicedetailService.deleteByCondition(tservicedetail);
 
         //删除tservice表中的记录
         Tservice tservice = new Tservice();

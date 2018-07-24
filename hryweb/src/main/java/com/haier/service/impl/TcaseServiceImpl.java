@@ -48,7 +48,7 @@ public class TcaseServiceImpl implements TcaseService {
     TenvMapper tenvMapper;
 
     @Autowired
-    TenvdetailMapper tenvdetailMapper;
+    TservicedetailMapper tservicedetailMapper;
 
     @Autowired
     TiService tiService;
@@ -169,15 +169,15 @@ public class TcaseServiceImpl implements TcaseService {
         Ti ti = tiMapper.selectByPrimaryKey(iId);
         Tservice tservice = tserviceMapper.selectByPrimaryKey(ti.getServiceid());
         Integer httpType = tservice.getHttptype() + 0;
-        TenvdetailExample tenvdetailExample = new TenvdetailExample();
-        TenvdetailExample.Criteria criteria = tenvdetailExample.createCriteria();
+        TservicedetailExample tservicedetailExample = new TservicedetailExample();
+        TservicedetailExample.Criteria criteria = tservicedetailExample.createCriteria();
         criteria.andStatusGreaterThan(0);//查询status>0的数据
         criteria.andServiceidEqualTo(tservice.getId());//查询serviceId
         if (envId != null) {
             criteria.andEnvidEqualTo(envId);//如果envId!=null,查询此envId,否则,查询所有envd数据
         }
-        List<Tenvdetail> tenvdetailList = tenvdetailMapper.selectByExample(tenvdetailExample);
-        if (tenvdetailList == null || tenvdetailList.size() < 1) {
+        List<Tservicedetail> tservicedetailList = tservicedetailMapper.selectByExample(tservicedetailExample);
+        if (tservicedetailList == null || tservicedetailList.size() < 1) {
             throw new HryException(StatusCodeEnum.NOT_FOUND, "服务环境映射表中未找到serviceId=" + tservice.getId() + ",envId=" + envId + "的数据" +
                     ",case必须基于环境来运行");
         }
@@ -201,7 +201,7 @@ public class TcaseServiceImpl implements TcaseService {
 
 
         //根据环境信息,遍历执行用例
-        for (Tenvdetail tenvdetail : tenvdetailList) {
+        for (Tservicedetail tservicedetail : tservicedetailList) {
             String actualParam = requestparam;
             if (ti.getIparamtype() != null) {//参数类型有填写
                 //处理参数-前置统一处理,匹配各种<<<xxx>>>关键字
@@ -210,7 +210,7 @@ public class TcaseServiceImpl implements TcaseService {
 
                     JSONObject dbinfo = null;
                     try {
-                        dbinfo = JSON.parseObject(tenvdetail.getDbinfo());
+                        dbinfo = JSON.parseObject(tservicedetail.getDbinfo());
                     } catch (Exception e) {
                         log.warn("dbinfo转换异常,系统将当成dbinfo=null来处理");
                     }
@@ -249,15 +249,15 @@ public class TcaseServiceImpl implements TcaseService {
             RunOneResultSub runOneResultSub = new RunOneResultSub();
             runOneResultSub.setActualParam(actualParam);
             //发送http请求
-            String url = HttpTypeEnum.getValue(httpType) + "://" + tenvdetail.getHostinfo() + ti.getIuri();
+            String url = HttpTypeEnum.getValue(httpType) + "://" + tservicedetail.getHostinfo() + ti.getIuri();
             String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, param);
 
             //断言结果
             Boolean result = AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
 
             runOneResultSub.setActual(actual);
-            runOneResultSub.setEnv(EnvEnum.getValue(tenvdetail.getEnvid()));
-            runOneResultSub.setHostInfo(tenvdetail.getHostinfo());
+            runOneResultSub.setEnv(EnvEnum.getValue(tservicedetail.getEnvid()));
+            runOneResultSub.setHostInfo(tservicedetail.getHostinfo());
             if (result) {
                 runOneResultSub.setResult(AssertResultEnum.PASS);
             } else {

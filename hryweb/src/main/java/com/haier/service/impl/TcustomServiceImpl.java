@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.testng.IReporter;
 import org.testng.ITestNGListener;
 import org.testng.TestNG;
 import org.testng.xml.XmlClass;
@@ -60,7 +59,7 @@ public class TcustomServiceImpl implements TcustomService {
     TreportService treportService;
 
     @Autowired
-    TenvdetailService tenvdetailService;
+    TservicedetailService tservicedetailService;
 
     @Autowired
     TcustomdetailService tcustomdetailService;
@@ -289,15 +288,15 @@ public class TcustomServiceImpl implements TcustomService {
         Integer envid = customVO.getEnvid();
         User user = userService.selectOne(executeUserId);
 
-        Tenvdetail condition = new Tenvdetail();
+        Tservicedetail condition = new Tservicedetail();
         for (Tcustomdetail tcustomdetail : tcustomdetails_service) {
             condition.setEnvid(envid);
             condition.setServiceid(tcustomdetail.getClientid());
-            List<Tenvdetail> tenvdetails_service = tenvdetailService.selectByCondition(condition);
-            if (tenvdetails_service != null && tenvdetails_service.size() > 0) {
+            List<Tservicedetail> tservicedetails_service = tservicedetailService.selectByCondition(condition);
+            if (tservicedetails_service != null && tservicedetails_service.size() > 0) {
 
                 //取第1条记录,按正常情况 ,有且仅有一条记录才对,否则 就是脏数据
-                Tenvdetail s0 = tenvdetails_service.get(0);
+                Tservicedetail s0 = tservicedetails_service.get(0);
 
                 //测试类必须已经填写
                 if (s0.getClazz() != null && !"".equals(s0.getClazz())) {
