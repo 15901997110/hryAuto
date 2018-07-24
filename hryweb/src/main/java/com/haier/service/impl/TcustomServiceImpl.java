@@ -8,6 +8,7 @@ import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
+import com.haier.util.RunUtil;
 import com.haier.vo.CustomVO;
 import com.haier.service.*;
 import com.haier.testng.listener.HryReporter;
@@ -63,6 +64,9 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Autowired
     TcustomdetailService tcustomdetailService;
+
+    @Autowired
+    RunUtil runUtil;
 
     @Override
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
@@ -359,80 +363,8 @@ public class TcustomServiceImpl implements TcustomService {
         treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
         Integer treportId = treport.getId();
 
-        this.run(null, treportId, reportName, customVO.getCustomname(), sMap);
+        runUtil.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return;
     }
-    public void updateReportStatus(Integer reportId) {
-        Treport treport = new Treport();
-        treport.setId(reportId);
-        treport.setStatus(StatusEnum.TEN.getId());
-        treportService.updateOne(treport);
-    }
 
-    @Async("asyncServiceExecutor")
-    public void run(Map<String, String> params, Integer reportId, String reportName, String customName, Map<Tcustomdetail, XmlClass> sMap) {
-        TestNG ng = new TestNG();
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite");
-        if (params != null) {
-            suite.setParameters(params);//这是全局的参数,预留未来可能的需求(现在并未使用 2018-07-14)
-        }
-        List<XmlTest> tests = new ArrayList<>();
-        for (Map.Entry entry : sMap.entrySet()) {
-            Tcustomdetail key = (Tcustomdetail) entry.getKey();
-            XmlClass clazz = (XmlClass) entry.getValue();
-
-            XmlTest test = new XmlTest(suite);
-            test.setName(key.getClientname());
-            //test.setName("test.setName 测试测试");
-            test.setXmlClasses(Arrays.asList(clazz));
-
-            tests.add(test);
-        }
-
-        suite.setTests(tests);
-        ng.setXmlSuites(Arrays.asList(suite));
-
-        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
-        ng.addListener(reporter);
-        ng.run();
-
-        /**
-         * 运行完成之后,更新treport状态
-         */
-        updateReportStatus(reportId);
-    }
-
-    @Async("asyncServiceExecutor")
-    public void run(Map<String, String> params, Integer reportId, String reportName, List<XmlClass> xmlClasses) {
-
-        /**
-         * 运行测试用例
-         */
-        TestNG testNG = new TestNG();
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite");
-        if (params != null) {
-            suite.setParameters(params);
-        }
-        List<XmlTest> xmlTests = new ArrayList<>();
-        for (XmlClass c : xmlClasses) {
-            XmlTest test = new XmlTest(suite);
-            test.setName(c.getName().substring(c.getName().lastIndexOf(".") + 1));
-            test.setClasses(Arrays.asList(c));
-            xmlTests.add(test);
-        }
-
-        suite.setTests(xmlTests);
-
-        testNG.setXmlSuites(Arrays.asList(suite));
-        ITestNGListener reporter = new HryReporter(reportPath, reportName);
-        testNG.addListener(reporter);
-        testNG.run();
-
-        /**
-         * 运行完成之后,更新treport状态
-         */
-        updateReportStatus(reportId);
-    }
 }
