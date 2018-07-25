@@ -35,7 +35,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             "import java.util.Iterator;\n" +
             "import java.util.List;";
     private String sClass="@Slf4j\n" +
-            "public class PgwTest";
+            "public class ${className}";
     private String sField="private Integer serviceId;\n" +
             "    private Integer envId;\n" +
             "    private String caseDesigner;\n" +
@@ -46,8 +46,90 @@ public class AutocodeServiceImpl implements AutocodeService {
             "    private Tservice tservice;\n" +
             "    private Tservicedetail tservicedetail;\n" +
             "    private RunService runService = SpringContextHolder.getBean(RunService.class);\n";
-    private String sMethodOne="";
-    private String sMethodMore="";
+    private String sMethodBefore="@Parameters({\"serviceId\", \"envId\", \"caseDesigner\", \"i_c\"})\n" +
+            "    @BeforeClass\n" +
+            "    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c) {\n" +
+            "        this.serviceId = serviceId;\n" +
+            "        this.envId = envId;\n" +
+            "        this.caseDesigner = caseDesigner;\n" +
+            "        this.i_c = i_c;\n" +
+            "        if (this.i_c != null && !\"\".equals(this.i_c)) {\n" +
+            "            this.i_c_JSONObject = JSONObject.parseObject(i_c);\n" +
+            "        }\n" +
+            "        tservice = runService.getTservice(this.serviceId);\n" +
+            "        tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);\n" +
+            "        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + \"://\" + tservicedetail.getHostinfo();\n" +
+            "    }\n";
+    private String sMethodProvider=" @DataProvider(name = \"provider\")\n" +
+            "    public Object[] getCase(Method method) {\n" +
+            "\n" +
+            "        Object[] objects;\n" +
+            "        String iUri;\n" +
+            "        //testName可能未填写\n" +
+            "        try {\n" +
+            "            iUri = method.getAnnotation(Test.class).testName();\n" +
+            "            if (iUri == null || \"\".equals(iUri)) {\n" +
+            "                Reporter.log(\"测试方法中没有没有@Test(testName=\\\"\\\")注解\");\n" +
+            "                throw new SkipException(\"测试方法中没有没有@Test(testName=\\\"\\\")注解\");\n" +
+            "            }\n" +
+            "        } catch (NullPointerException e) {\n" +
+            "            log.error(\"获取测试方法的@Test注解异常:\" + method.getName(), e);\n" +
+            "            throw new SkipException(\"获取测试方法的@Test注解异常\");\n" +
+            "        }\n" +
+            "\n" +
+            "        Ti ti = runService.getTi(this.serviceId, iUri);\n" +
+            "        if (ti == null) {\n" +
+            "            return null;\n" +
+            "        }\n" +
+            "        //此接口对应的全部用例\n" +
+            "        List<Tcase> tcases = runService.getTcase(ti.getId(), this.envId, this.caseDesigner);\n" +
+            "        if (tcases == null || tcases.size() == 0) {\n" +
+            "            return null;\n" +
+            "        }\n" +
+            "\n" +
+            "        //如果用户有定制测试用例,则使用用户定制的用例来进行测试\n" +
+            "        if (this.i_c_JSONObject != null && this.i_c_JSONObject.size() > 0) {\n" +
+            "            JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());\n" +
+            "            if (customCaseArray != null && customCaseArray.size() > 0) {\n" +
+            "                Iterator<Tcase> iterator = tcases.iterator();\n" +
+            "                while (iterator.hasNext()) {\n" +
+            "                    Tcase tcase = iterator.next();\n" +
+            "                    //数据库中查到的caseid不在定制列表中,则移除掉\n" +
+            "                    if (!customCaseArray.contains(tcase.getId())) {\n" +
+            "                        iterator.remove();\n" +
+            "                    }\n" +
+            "                }\n" +
+            "            }\n" +
+            "        }\n" +
+            "        objects = new Object[tcases.size()];\n" +
+            "        for (int i = 0; i < tcases.size(); i++) {\n" +
+            "            Params params = new Params();\n" +
+            "            params.setTi(ti);\n" +
+            "            params.setTcase(tcases.get(i));\n" +
+            "            objects[i] = params;\n" +
+            "        }\n" +
+            "        return objects;\n" +
+            "    }\n";
+    private String sMethodGetBoolResult="  public Boolean getBoolResult(Params params) {\n" +
+            "        if (params == null || params.getTcase() == null || params.getTcase() == null) {\n" +
+            "            return false;\n" +
+            "        }\n" +
+            "        Ti ti = params.getTi();\n" +
+            "        Tcase tcase = params.getTcase();\n" +
+            "        url = baseUrl + ti.getIuri();\n" +
+            "        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());\n" +
+            "        Reporter.log(\"实际请求参数 : \");\n" +
+            "        Reporter.log(requestParam);\n" +
+            "        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);\n" +
+            "        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);\n" +
+            "    }\n";
+    private String sMethodTest="    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
+            "    public void ${testMethodName}(Params params) {\n" +
+            "        Reporter.log(\"用例设计参数 : \");\n" +
+            "        Reporter.log(params.getTcase().getRequestparam());\n" +
+            "        Assert.assertTrue(this.getBoolResult(params));\n" +
+            "    }\n";
+
     private String sBraceLeft="{";
     private String sBraceRight="}";
     @Override
