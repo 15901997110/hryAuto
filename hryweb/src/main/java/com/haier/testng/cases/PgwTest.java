@@ -103,8 +103,6 @@ public class PgwTest {
 
         Object[] objects;
         String iUri;
-        String testMethodName = method.getName();
-
         //testName可能未填写
         try {
             iUri = method.getAnnotation(Test.class).testName();
