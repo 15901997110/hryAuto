@@ -1,5 +1,6 @@
 zdy:
   reportPath: /opt/app_java1.8/testngReport/
+  resourcePathPattern: /test-output/
 server:
   port: 8885
 logging:
