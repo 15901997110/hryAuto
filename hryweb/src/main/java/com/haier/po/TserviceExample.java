@@ -315,52 +315,52 @@ public class TserviceExample {
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeEqualTo(Short value) {
+        public Criteria andHttptypeEqualTo(Integer value) {
             addCriterion("httpType =", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeNotEqualTo(Short value) {
+        public Criteria andHttptypeNotEqualTo(Integer value) {
             addCriterion("httpType <>", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeGreaterThan(Short value) {
+        public Criteria andHttptypeGreaterThan(Integer value) {
             addCriterion("httpType >", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeGreaterThanOrEqualTo(Short value) {
+        public Criteria andHttptypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("httpType >=", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeLessThan(Short value) {
+        public Criteria andHttptypeLessThan(Integer value) {
             addCriterion("httpType <", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeLessThanOrEqualTo(Short value) {
+        public Criteria andHttptypeLessThanOrEqualTo(Integer value) {
             addCriterion("httpType <=", value, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeIn(List<Short> values) {
+        public Criteria andHttptypeIn(List<Integer> values) {
             addCriterion("httpType in", values, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeNotIn(List<Short> values) {
+        public Criteria andHttptypeNotIn(List<Integer> values) {
             addCriterion("httpType not in", values, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeBetween(Short value1, Short value2) {
+        public Criteria andHttptypeBetween(Integer value1, Integer value2) {
             addCriterion("httpType between", value1, value2, "httptype");
             return (Criteria) this;
         }
 
-        public Criteria andHttptypeNotBetween(Short value1, Short value2) {
+        public Criteria andHttptypeNotBetween(Integer value1, Integer value2) {
             addCriterion("httpType not between", value1, value2, "httptype");
             return (Criteria) this;
         }
@@ -375,52 +375,52 @@ public class TserviceExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsdelEqualTo(Short value) {
+        public Criteria andIsdelEqualTo(Integer value) {
             addCriterion("isDel =", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelNotEqualTo(Short value) {
+        public Criteria andIsdelNotEqualTo(Integer value) {
             addCriterion("isDel <>", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelGreaterThan(Short value) {
+        public Criteria andIsdelGreaterThan(Integer value) {
             addCriterion("isDel >", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelGreaterThanOrEqualTo(Short value) {
+        public Criteria andIsdelGreaterThanOrEqualTo(Integer value) {
             addCriterion("isDel >=", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelLessThan(Short value) {
+        public Criteria andIsdelLessThan(Integer value) {
             addCriterion("isDel <", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelLessThanOrEqualTo(Short value) {
+        public Criteria andIsdelLessThanOrEqualTo(Integer value) {
             addCriterion("isDel <=", value, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelIn(List<Short> values) {
+        public Criteria andIsdelIn(List<Integer> values) {
             addCriterion("isDel in", values, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelNotIn(List<Short> values) {
+        public Criteria andIsdelNotIn(List<Integer> values) {
             addCriterion("isDel not in", values, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelBetween(Short value1, Short value2) {
+        public Criteria andIsdelBetween(Integer value1, Integer value2) {
             addCriterion("isDel between", value1, value2, "isdel");
             return (Criteria) this;
         }
 
-        public Criteria andIsdelNotBetween(Short value1, Short value2) {
+        public Criteria andIsdelNotBetween(Integer value1, Integer value2) {
             addCriterion("isDel not between", value1, value2, "isdel");
             return (Criteria) this;
         }
@@ -552,6 +552,76 @@ public class TserviceExample {
 
         public Criteria andEditorNotBetween(String value1, String value2) {
             addCriterion("editor not between", value1, value2, "editor");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIsNull() {
+            addCriterion("className is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIsNotNull() {
+            addCriterion("className is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameEqualTo(String value) {
+            addCriterion("className =", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotEqualTo(String value) {
+            addCriterion("className <>", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameGreaterThan(String value) {
+            addCriterion("className >", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameGreaterThanOrEqualTo(String value) {
+            addCriterion("className >=", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLessThan(String value) {
+            addCriterion("className <", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLessThanOrEqualTo(String value) {
+            addCriterion("className <=", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLike(String value) {
+            addCriterion("className like", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotLike(String value) {
+            addCriterion("className not like", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIn(List<String> values) {
+            addCriterion("className in", values, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotIn(List<String> values) {
+            addCriterion("className not in", values, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameBetween(String value1, String value2) {
+            addCriterion("className between", value1, value2, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotBetween(String value1, String value2) {
+            addCriterion("className not between", value1, value2, "classname");
             return (Criteria) this;
         }
     }

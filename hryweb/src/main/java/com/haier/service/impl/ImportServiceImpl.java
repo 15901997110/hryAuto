@@ -57,7 +57,7 @@ public class ImportServiceImpl implements ImportService {
     @Override
     public Integer findServiceId(String serviceKey, String serviceName, String realName) {
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
-        criteria.andServicekeyEqualTo(serviceKey).andIsdelEqualTo((short) 0);
+        criteria.andServicekeyEqualTo(serviceKey).andIsdelEqualTo(0);
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
 
         if (tservices != null && tservices.size() > 0) {//有记录,则取出第一条记录的ID

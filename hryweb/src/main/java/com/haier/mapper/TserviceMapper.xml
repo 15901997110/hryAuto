@@ -5,10 +5,11 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="serviceKey" jdbcType="VARCHAR" property="servicekey" />
     <result column="serviceName" jdbcType="VARCHAR" property="servicename" />
-    <result column="httpType" jdbcType="SMALLINT" property="httptype" />
-    <result column="isDel" jdbcType="SMALLINT" property="isdel" />
+    <result column="httpType" jdbcType="INTEGER" property="httptype" />
+    <result column="isDel" jdbcType="INTEGER" property="isdel" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="editor" jdbcType="VARCHAR" property="editor" />
+    <result column="className" jdbcType="VARCHAR" property="classname" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, serviceKey, serviceName, httpType, isDel, updateTime, editor
+    id, serviceKey, serviceName, httpType, isDel, updateTime, editor, className
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TserviceExample" resultMap="BaseResultMap">
     select
@@ -101,15 +102,15 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tservice" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.haier.po.Tservice">
     insert into tservice (id, serviceKey, serviceName, 
       httpType, isDel, updateTime, 
-      editor)
+      editor, className)
     values (#{id,jdbcType=INTEGER}, #{servicekey,jdbcType=VARCHAR}, #{servicename,jdbcType=VARCHAR}, 
-      #{httptype,jdbcType=SMALLINT}, #{isdel,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP}, 
-      #{editor,jdbcType=VARCHAR})
+      #{httptype,jdbcType=INTEGER}, #{isdel,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{editor,jdbcType=VARCHAR}, #{classname,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tservice" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.haier.po.Tservice">
     insert into tservice
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -133,6 +134,9 @@
       <if test="editor != null">
         editor,
       </if>
+      <if test="classname != null">
+        className,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -145,16 +149,19 @@
         #{servicename,jdbcType=VARCHAR},
       </if>
       <if test="httptype != null">
-        #{httptype,jdbcType=SMALLINT},
+        #{httptype,jdbcType=INTEGER},
       </if>
       <if test="isdel != null">
-        #{isdel,jdbcType=SMALLINT},
+        #{isdel,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
         #{updatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="editor != null">
         #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null">
+        #{classname,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -177,16 +184,19 @@
         serviceName = #{record.servicename,jdbcType=VARCHAR},
       </if>
       <if test="record.httptype != null">
-        httpType = #{record.httptype,jdbcType=SMALLINT},
+        httpType = #{record.httptype,jdbcType=INTEGER},
       </if>
       <if test="record.isdel != null">
-        isDel = #{record.isdel,jdbcType=SMALLINT},
+        isDel = #{record.isdel,jdbcType=INTEGER},
       </if>
       <if test="record.updatetime != null">
         updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.editor != null">
         editor = #{record.editor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classname != null">
+        className = #{record.classname,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -198,10 +208,11 @@
     set id = #{record.id,jdbcType=INTEGER},
       serviceKey = #{record.servicekey,jdbcType=VARCHAR},
       serviceName = #{record.servicename,jdbcType=VARCHAR},
-      httpType = #{record.httptype,jdbcType=SMALLINT},
-      isDel = #{record.isdel,jdbcType=SMALLINT},
+      httpType = #{record.httptype,jdbcType=INTEGER},
+      isDel = #{record.isdel,jdbcType=INTEGER},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
-      editor = #{record.editor,jdbcType=VARCHAR}
+      editor = #{record.editor,jdbcType=VARCHAR},
+      className = #{record.classname,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -216,16 +227,19 @@
         serviceName = #{servicename,jdbcType=VARCHAR},
       </if>
       <if test="httptype != null">
-        httpType = #{httptype,jdbcType=SMALLINT},
+        httpType = #{httptype,jdbcType=INTEGER},
       </if>
       <if test="isdel != null">
-        isDel = #{isdel,jdbcType=SMALLINT},
+        isDel = #{isdel,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
       <if test="editor != null">
         editor = #{editor,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null">
+        className = #{classname,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -234,10 +248,11 @@
     update tservice
     set serviceKey = #{servicekey,jdbcType=VARCHAR},
       serviceName = #{servicename,jdbcType=VARCHAR},
-      httpType = #{httptype,jdbcType=SMALLINT},
-      isDel = #{isdel,jdbcType=SMALLINT},
+      httpType = #{httptype,jdbcType=INTEGER},
+      isDel = #{isdel,jdbcType=INTEGER},
       updateTime = #{updatetime,jdbcType=TIMESTAMP},
-      editor = #{editor,jdbcType=VARCHAR}
+      editor = #{editor,jdbcType=VARCHAR},
+      className = #{classname,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -1,9 +1,7 @@
 package com.haier.po;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Tservice {
@@ -13,13 +11,16 @@ public class Tservice {
 
     private String servicename;
 
-    private Short httptype;
+    private Integer httptype;
 
-    private Short isdel;
+    private Integer isdel;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     private String editor;
+
+    private String classname;
 
     public Integer getId() {
         return id;
@@ -45,22 +46,21 @@ public class Tservice {
         this.servicename = servicename == null ? null : servicename.trim();
     }
 
-    public Short getHttptype() {
+    public Integer getHttptype() {
         return httptype;
     }
 
-    public void setHttptype(Short httptype) {
+    public void setHttptype(Integer httptype) {
         this.httptype = httptype;
     }
 
-    public Short getIsdel() {
+    public Integer getIsdel() {
         return isdel;
     }
 
-    public void setIsdel(Short isdel) {
+    public void setIsdel(Integer isdel) {
         this.isdel = isdel;
     }
-    //@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 
     public Date getUpdatetime() {
         return updatetime;
@@ -71,16 +71,18 @@ public class Tservice {
     }
 
     public String getEditor() {
-        //将邮箱截取用户名返回
-        if(this.editor!=null){
-            if(editor.contains("@")){
-                return editor.split("@")[0];
-            }
-        }
         return editor;
     }
 
     public void setEditor(String editor) {
         this.editor = editor == null ? null : editor.trim();
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname == null ? null : classname.trim();
     }
 }

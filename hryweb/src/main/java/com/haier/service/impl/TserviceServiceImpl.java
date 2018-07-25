@@ -70,12 +70,12 @@ public class TserviceServiceImpl implements TserviceService {
 
             //除非调用者指定查询isdel==1的数据,则查询删除的数据
             if (tservice.getIsdel() != null && tservice.getIsdel() == 1) {
-                criteria.andIsdelEqualTo((short) 1);
+                criteria.andIsdelEqualTo(1);
             } else {//否则只查询未删除的数据
-                criteria.andIsdelEqualTo((short) 0);
+                criteria.andIsdelEqualTo(0);
             }
         } else {
-            criteria.andIsdelEqualTo((short) 0);
+            criteria.andIsdelEqualTo(0);
         }
 
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
@@ -93,7 +93,7 @@ public class TserviceServiceImpl implements TserviceService {
         TserviceExample tserviceExample = new TserviceExample();
         tserviceExample.setOrderByClause("updateTime desc,id desc");
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
-        criteria.andIsdelNotEqualTo((short) 1);
+        criteria.andIsdelNotEqualTo(1);
 
         if (tservice != null) {
             if (tservice.getId() != null)
@@ -131,7 +131,7 @@ public class TserviceServiceImpl implements TserviceService {
         TserviceExample tserviceExample = new TserviceExample();
         tserviceExample.createCriteria()
                 .andServicekeyEqualTo(tservice.getServicekey())
-                .andIsdelEqualTo((short) 0);
+                .andIsdelEqualTo(0);
         List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
         if (tservices != null && tservices.size() > 0) {
             throw new HryException(StatusCodeEnum.EXIST_RECORD, "servicekey=" + tservice.getServicekey() + "的记录已经存在");
@@ -157,7 +157,7 @@ public class TserviceServiceImpl implements TserviceService {
 
         //删除tservice表中的记录
         Tservice tservice = new Tservice();
-        tservice.setIsdel((short) 1);
+        tservice.setIsdel(1);
         return this.updateOne(id, tservice);
     }
 }
