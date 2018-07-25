@@ -287,7 +287,7 @@
 
                 }else{
                     layer.close(layerIndex);
-                    layer.alert(JSON.stringify(data), {
+                    layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });
@@ -359,6 +359,12 @@
                         }else if(row.irequestmethod == 2){
                             irequestmethod="get";
                         }
+
+                        var remark="";
+                        if(row.remark != null){
+                            remark=row.remark;
+                        }
+
                         var iContentType="";
                         for(var m=0;m<ContentTypeEnum.length;m++){
                             var row1=ContentTypeEnum[m];
@@ -433,7 +439,7 @@
                     layer.close(layerIndex);
 
                 }else{
-                    layer.alert(JSON.stringify(data), {
+                    layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });
@@ -472,7 +478,7 @@
                         window.location.reload();
                         layer.msg('已删除!',{icon:1,time:1000});
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });
