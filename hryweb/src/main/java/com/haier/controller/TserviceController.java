@@ -33,6 +33,11 @@ public class TserviceController {
      */
     @PostMapping(value = "/selectByCondition")
     public Result selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
+        ReflectUtil.setFieldAddPercentAndCleanZero(tservice, false);
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
         return ResultUtil.success(tserviceService.selectByCondition(tservice, pageNum, pageSize));
     }
 
@@ -44,6 +49,7 @@ public class TserviceController {
      */
     @PostMapping("/selectByConditionSimple")
     public Result selectByConditionSimple(Tservice tservice) {
+
         return ResultUtil.success(tserviceService.selectByCondition(tservice));
     }
 

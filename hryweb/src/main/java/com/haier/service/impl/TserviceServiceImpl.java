@@ -48,34 +48,21 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
-        if (pageNum == null || pageSize == null) {
-            pageNum = 1;
-            pageSize = 10;
-        }
-
         TserviceExample tserviceExample = new TserviceExample();
 
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
+        criteria.andIsdelNotEqualTo(1);
         //如果传入的对象不是null,则设置查询条件
         if (tservice != null) {
             if (tservice.getId() != null) {
                 criteria.andIdEqualTo(tservice.getId());
             }
             if (tservice.getServicekey() != null) {
-                criteria.andServicekeyLike("%" + tservice.getServicekey() + "%");
+                criteria.andServicekeyLike(tservice.getServicekey());
             }
             if (tservice.getServicename() != null) {
-                criteria.andServicenameLike("%" + tservice.getServicename() + "%");
+                criteria.andServicenameLike(tservice.getServicename());
             }
-
-            //除非调用者指定查询isdel==1的数据,则查询删除的数据
-            if (tservice.getIsdel() != null && tservice.getIsdel() == 1) {
-                criteria.andIsdelEqualTo(1);
-            } else {//否则只查询未删除的数据
-                criteria.andIsdelEqualTo(0);
-            }
-        } else {
-            criteria.andIsdelEqualTo(0);
         }
 
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
@@ -112,7 +99,6 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public Integer updateOne(Tservice tservice) {
-        verify(tservice);
         return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 
