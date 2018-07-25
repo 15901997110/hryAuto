@@ -78,10 +78,9 @@ public class TserviceServiceImpl implements TserviceService {
     public List<Tservice> selectByCondition(Tservice tservice) {
         ReflectUtil.setFieldAddPercentAndCleanZero(tservice, false);
         TserviceExample tserviceExample = new TserviceExample();
-        tserviceExample.setOrderByClause("updateTime desc,id desc");
+        tserviceExample.setOrderByClause(SortEnum.UPDATETIME.getValue());
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andIsdelNotEqualTo(1);
-
         if (tservice != null) {
             if (tservice.getId() != null)
                 criteria.andIdEqualTo(tservice.getId());
@@ -91,9 +90,7 @@ public class TserviceServiceImpl implements TserviceService {
             }
             if (tservice.getEditor() != null)
                 criteria.andEditorLike(tservice.getEditor());
-
         }
-
         return tserviceMapper.selectByExample(tserviceExample);
     }
 
