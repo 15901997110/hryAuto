@@ -172,6 +172,11 @@
                             irequestmethod="get";
                         }
 
+                        var remark="";
+                        if(row.remark != null){
+                            remark=row.remark;
+                        }
+
                         var iContentType="";
                         for(var m=0;m<ContentTypeEnum.length;m++){
                             var row1=ContentTypeEnum[m];
@@ -201,7 +206,7 @@
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.servicekey+"</td>\n" +
                             "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
-                            "<td >"+row.remark+"</td>\n" +
+                            "<td >"+remark+"</td>\n" +
                             "<td >"+irequestmethod+"</td>\n" +
                             "<td>"+iContentType+"</td>\n" +
                             "<td>"+iParamType+"</td>\n" +

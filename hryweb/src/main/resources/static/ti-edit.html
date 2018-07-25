@@ -209,7 +209,10 @@
                     var id = list.id;
                     var serviceid = list.serviceid;
                     var iuri = list.iuri;
-                    var remark = list.remark;
+                    var remark = "";
+                    if(list.remark != null){
+                        remark=list.remark;
+                    }
                     var irequestmethod = list.irequestmethod;
                     var icontenttype = list.icontenttype;
                     var iparamtype = list.iparamtype;
