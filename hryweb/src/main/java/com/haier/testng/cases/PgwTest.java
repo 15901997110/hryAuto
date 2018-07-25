@@ -50,13 +50,8 @@ public class PgwTest {
         if (this.i_c != null && !"".equals(this.i_c)) {
             this.i_c_JSONObject = JSONObject.parseObject(i_c);
         }
-
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
-        init();
-    }
-
-    public void init() {
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
     }
 
@@ -76,10 +71,8 @@ public class PgwTest {
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
-        //Reporter.log(params.getTi().toString());
         Reporter.log("用例设计参数 : ");
         Reporter.log(params.getTcase().getRequestparam());
-
         Assert.assertTrue(this.getBoolResult(params));
     }
 
@@ -139,8 +132,6 @@ public class PgwTest {
                 }
             }
         }
-
-
         objects = new Object[tcases.size()];
         for (int i = 0; i < tcases.size(); i++) {
             Params params = new Params();
