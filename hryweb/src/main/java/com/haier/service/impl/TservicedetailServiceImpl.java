@@ -6,7 +6,6 @@ import com.haier.enums.SortEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TservicedetailCustomMapper;
-import com.haier.mapper.TserviceMapper;
 import com.haier.mapper.TservicedetailMapper;
 import com.haier.po.Tservicedetail;
 import com.haier.po.TservicedetailCustom;
