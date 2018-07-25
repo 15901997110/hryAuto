@@ -32,13 +32,19 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务标识：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="servicekey" name="servicekey">
+                <input type="text" class="input-text" value="" placeholder="区分服务的唯一字段,最好使用英文填写" id="servicekey" name="servicekey">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->服务描述：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="servicename" name="servicename">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">默认类名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="按类名规范填写,自动生成测试类时会用到此信息" id="classname" name="classname">
             </div>
         </div>
         <div class="row cl">
@@ -62,7 +68,7 @@
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTservice()"><i class="icon-ok"></i> 确定</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTservice()"><i class="icon-ok"></i> 提交</button>
             </div>
         </div>
     </form>
@@ -192,12 +198,11 @@
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
         var author = $("#editor").val();
+        var classname=$("#classname").val();
         if(author=="--请选择负责人--"){
             author=null;
         }
-        var loginName=$.cookie('identityCookie'); // 读取 cookie
-        var realName=$.cookie('realnameCookie');
-        var groupId=$.cookie('groupidCookie');
+
         if(servicekey == null || servicekey == ""){
             layer.alert("服务标识不能为空！");
             return;
@@ -219,7 +224,8 @@
                     servicename:servicename,
                     httptype:httptype,
                     editor:author,
-                    /*isdel:0*/
+                    classname:classname
+                    /*isdel:0 不必传状态,数据库默认0*/
                 },
                 dataType: "json",
                 success: function (data) {
@@ -230,7 +236,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });

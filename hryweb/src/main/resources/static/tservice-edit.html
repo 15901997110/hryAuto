@@ -135,6 +135,7 @@
                     var servicename = list.servicename;
                     var httptype=list.httptype;
                     var editor=list.editor;
+                    var classname=list.classname;
                     var option="";
                     if(httptype == 1){
                         option="<option value=\"1\" selected>Http</option>\n" +
@@ -168,6 +169,12 @@
                         "            <label class=\"form-label col-xs-4 col-sm-3\">服务描述：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <input type=\"text\" class=\"input-text\" value=\""+servicename+"\" placeholder=\"\" id=\"servicename\" name=\"servicename\">\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">默认类名：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\""+classname+"\" placeholder=\"\" id=\"classname\" name=\"classname\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
@@ -218,9 +225,7 @@
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
         var author = $("#editor").val();
-        var loginName=$.cookie('identityCookie'); // 读取 cookie
-        var realName=$.cookie('realnameCookie');
-        var groupId=$.cookie('groupidCookie');
+        var classname=$("#classname").val();
 
         if(servicekey == null || servicekey == ""){
             layer.msg("服务标识不能为空！");
@@ -241,6 +246,7 @@
                     servicename:servicename,
                     httptype:httptype,
                     editor:author,
+                    classname:classname
                     /*isdel:0*/
                 },
                 dataType: 'json',
