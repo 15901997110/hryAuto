@@ -154,15 +154,32 @@
                         }else if(row.httptype == 2){
                             type="Https";
                         }
+
+                        var servicename="";
+                        if(row.servicename != null){
+                            servicename=row.servicename;
+                        }
+
+                        var classname="";
+                        if(row.classname != null){
+                            classname=row.classname;
+                        }
+
+                        var editor="";
+                        if(row.editor != null){
+                            editor=row.editor;
+                        }
+
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td>"+row.classname+"</td>\n" +
+                            "<td>"+servicename+"</td>\n" +
+                            "<td>"+classname+"</td>\n" +
                             "<td >"+type+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
+                            "<td>"+editor+"</span></td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
@@ -304,15 +321,31 @@
                         }else if(row.httptype == 2){
                             type="Https";
                         }
+
+                        var servicename="";
+                        if(row.servicename != null){
+                            servicename=row.servicename;
+                        }
+
+                        var classname="";
+                        if(row.classname != null){
+                            classname=row.classname;
+                        }
+
+                        var editor="";
+                        if(row.editor != null){
+                            editor=row.editor;
+                        }
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+row.servicename+"</td>\n" +
-                            "<td>"+row.classname+"</td>\n" +
+                            "<td>"+servicename+"</td>\n" +
+                            "<td>"+classname+"</td>\n" +
                             "<td >"+type+"</td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+row.editor+"</span></td>\n" +
+                            "<td>"+editor+"</span></td>\n" +
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
@@ -393,7 +426,7 @@
                         window.location.reload();
                         layer.msg('已删除!',{icon:1,time:1000});
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });

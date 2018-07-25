@@ -132,10 +132,22 @@
 
                 if(status == 0){
                     var servicekey = list.servicekey;
-                    var servicename = list.servicename;
                     var httptype=list.httptype;
-                    var editor=list.editor;
-                    var classname=list.classname;
+                    var servicename="";
+                    if(list.servicename != null){
+                        servicename=list.servicename;
+                    }
+
+                    var classname="";
+                    if(list.classname != null){
+                        classname=list.classname;
+                    }
+
+                    var editor="";
+                    if(list.editor != null){
+                        editor=list.editor;
+                    }
+
                     var option="";
                     if(httptype == 1){
                         option="<option value=\"1\" selected>Http</option>\n" +
@@ -192,7 +204,8 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"editor\" id=\"editor\">\n" +
-                        "                        "+authorHtml+" "+
+                                                "<option>请选择</option>\n"+
+                        "                       "+authorHtml+" "+
                         "                    </select>\n" +
                         "                </span>\n" +
                         "            </div>\n" +
@@ -206,7 +219,7 @@
                     $("#form").append(html);
                     $("#editor").select2();
                 }else{
-                    layer.alert(JSON.stringify(data), {
+                    layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });

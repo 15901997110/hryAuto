@@ -145,7 +145,7 @@
 
                     $("#form").append(html);
                 }else{
-                    layer.alert(JSON.stringify(data), {
+                    layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     })
@@ -190,7 +190,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         })
