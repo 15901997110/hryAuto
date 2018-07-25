@@ -17,7 +17,7 @@ public interface TserviceService {
 
     List<Tservice> selectByCondition(Tservice tservice);
 
-    Integer updateOne(Integer id, Tservice tservice);
+    Integer updateOne(Tservice tservice);
 
     //返回主键
     Integer insertOne(Tservice tservice);

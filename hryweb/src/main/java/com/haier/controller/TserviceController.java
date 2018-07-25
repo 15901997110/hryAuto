@@ -1,8 +1,10 @@
 package com.haier.controller;
 
+import com.haier.exception.HryException;
 import com.haier.po.Tservice;
 import com.haier.response.Result;
 import com.haier.service.TserviceService;
+import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,11 @@ public class TserviceController {
      */
     @PostMapping(value = "/updateOne")
     public Result updateOne(Tservice tservice) {
-        return ResultUtil.success(tserviceService.updateOne(tservice.getId(), tservice));
+        ReflectUtil.setInvalidFieldToNull(tservice, false);
+        if (tservice.getId() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必传");
+        }
+        return ResultUtil.success(tserviceService.updateOne(tservice));
     }
 
     /**
