@@ -45,7 +45,7 @@ public class AssertUtil {
                 //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
             case 2:
                 try {
-                    if (actual != null && (actual.trim().contains(expected.trim()) || actual.matches(expected)))
+                    if (actual != null && (actual.trim().contains(expected == null ? "" : expected.trim()) || actual.matches(expected)))
                         return true;
                     else
                         return false;
