@@ -351,9 +351,16 @@
                     var remark = list.remark;
                     var iid=list.iid;
                     var envid=list.envid;
-                    var requestparam=list.requestparam;
+
+                    var requestparam="";
+                    if(list.requestparam != null){
+                        requestparam=list.requestparam;
+                    }
                     var asserttype=list.asserttype;
-                    var expected=list.expected;
+                    var expected="";
+                    if(list.expected != null){
+                        expected=list.expected;
+                    }
                     var author=list.author;
                     var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase("+id+")\"><i class=\"icon-ok\"></i> 确定</button>" +
                         "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"test\" name=\"admin-role-save\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>";
@@ -505,7 +512,7 @@
                     id:id,
                     casename:caseName,
                     remark:remark,
-                    serviceid:service,
+                    /*serviceid:service,*/
                     iid:ti,
                     envid:env,
                     requestparam:requestParam,
