@@ -208,6 +208,11 @@
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
+                        var remark="";
+                        if(row.remark != null){
+                            remark=row.remark;
+                        }
+
                         for(var k=0;k<assertList.length;k++){
                             var one=assertList[k];
                             if(one.id == row.asserttype){
@@ -243,7 +248,7 @@
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.casename+"</td>\n" +
-                            "<td>"+row.remark+"</td>\n" +
+                            "<td>"+remark+"</td>\n" +
                             "<td >"+row.servicekey+/*"|"+row.servicename+*/"</td>\n" +
                             "<td>"+envKey+"</td>\n" +
                             "<td>"+row.iremark+"</td>\n" +
@@ -406,6 +411,11 @@
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
 
+                        var remark="";
+                        if(row.remark != null){
+                            remark=row.remark;
+                        }
+
                         for(var k=0;k<assertList.length;k++){
                             var one=assertList[k];
                             if(one.id == row.asserttype){
@@ -439,7 +449,7 @@
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
                             "<td>"+row.casename+"</td>\n" +
-                            "<td>"+row.remark+"</td>\n" +
+                            "<td>"+remark+"</td>\n" +
                             "<td >"+row.servicekey+"|"+row.servicename+"</td>\n" +
                             "<td>"+envKey+"</td>\n" +
                             "<td>"+row.iremark+"</td>\n" +
