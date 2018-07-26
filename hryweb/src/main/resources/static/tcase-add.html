@@ -33,13 +33,15 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName" style="width:100%;">
+                <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName"
+                       style="width:100%;">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">用例描述：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <input type="text" class="input-text" value="" placeholder="用例描述" id="remark" name="remark" style="width:100%;">
+                <input type="text" class="input-text" value="" placeholder="用例描述" id="remark" name="remark"
+                       style="width:100%;">
             </div>
         </div>
         <div class="row cl">
@@ -98,7 +100,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">设计人：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <input type="text" class="input-text" value="" placeholder="" id="author" name="author" style="width:100%;"
+                <input type="text" class="input-text" value="" placeholder="" id="author" name="author"
+                       style="width:100%;"
                        disabled="disabled">
             </div>
         </div>
@@ -318,6 +321,50 @@
 
     }
 
+    //根据用例id查询用例信息
+    function getTcaseById(caseId) {
+        var tcase = null;
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "post",
+            url: "/tcase/selectOne",
+            data: {
+                id: caseId
+            },
+            dataType: "json",
+            success: function (data) {
+
+                //layer.close(layerIndex);
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    tcase = data.data;
+                } else {
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+
+            },
+            fail: function (data) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        });
+        return tcase;
+    }
+
     /*function getTitype(tId) {
         var titype;
         $.ajaxSetup({async: false});
@@ -356,31 +403,46 @@
         var serviceList = getServiceList();
         var env = getTenvList();
         var assertTypeList = getAssertType();
-        var selectedEnv = "";
-        var selectedService = "";
-        var selectedTi = "";
-        var selectedAssertType="";
-        var selectedRequestparam="";
-        var selectedExpected="";
-        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
-            var cells = getParameter('cellArr').split(",");
-            selectedRequestparam = getParameter('requestparam');
-            selectedExpected = getParameter('expected');
-            $("#caseName").val(cells[0]);
-            $("#remark").val(cells[1]);
-            $("#requestParam").val(selectedRequestparam);
-            $("#expected").val(selectedExpected);
+        var selectedEnv = null;
+        var selectedService = null;
+        var selectedTi = null;
+        var selectedAssertType = null;
+        var selectedRequestparam = null;
 
-            selectedEnv = cells[3];
-            selectedService = cells[2];
-            selectedTi = cells[5];
-            selectedAssertType = cells[6];
+        /*        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
+                    var cells = getParameter('cellArr').split(",");
+                    selectedRequestparam = getParameter('requestparam');
+                    selectedExpected = getParameter('expected');
+                    $("#caseName").val(cells[0]);
+                    $("#remark").val(cells[1]);
+                    $("#requestParam").val(selectedRequestparam);
+                    $("#expected").val(selectedExpected);
+
+                    selectedEnv = cells[3];
+                    selectedService = cells[2];
+                    selectedTi = cells[5];
+                    selectedAssertType = cells[6];
+                }*/
+        if (getParameter('id') != null && getParameter('id') != "") {
+            debugger;
+            var tcase = getTcaseById(getParameter('id'));
+            $("#caseName").val(tcase.casename);
+            $("#remark").val(tcase.remark);
+            $("#requestParam").val(tcase.requestparam);
+
+            $("#expected").val(tcase.expected);
+
+            selectedEnv = tcase.envid;
+            selectedService = tcase.serviceid;
+            selectedTi = tcase.iid;
+            selectedAssertType = tcase.asserttype;
+            selectedRequestparam=true;
         }
         var tenv = "";
         for (k = 0; k < env.length; k++) {
             var row = env[k];
             var rowHtml;
-            if (row.envkey == selectedEnv) {
+            if (row.id == selectedEnv) {
                 rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.envkey + "</option>";
             } else {
                 rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
@@ -394,7 +456,7 @@
         for (i = 0; i < serviceList.length; i++) {
             var row = serviceList[i];
             var rowHtml;
-            if (row.servicename == selectedService.split("|")[0]) {
+            if (row.id == selectedService) {
                 rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.servicekey + "</option>"
             } else {
                 rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>"
@@ -414,11 +476,11 @@
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
                 var rowHtml;
-                if (row.iuri == selectedTi) {
-                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
+                if (row.id == selectedTi) {
+                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
 
                 } else {
-                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
+                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
 
                 }
                 tis = tis + rowHtml;
@@ -427,15 +489,15 @@
             $("#ti").select2();
 
 
-            if (selectedRequestparam == "") {
+            if (selectedRequestparam == null) {
                 var tId = $("#ti").val();
                 var iparamsample = getOneTi(tId).iparamsample;
                 //var iparamtype = getTitype(tId);
                 var iparamtype = getOneTi(tId).iparamtype;
-                if(iparamsample.length >0 && iparamtype ==1){
+                if (iparamsample.length > 0 && iparamtype == 1) {
                     var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                     $("#requestParam").val(requestJson);
-                }else {
+                } else {
                     $("#requestParam").val(iparamsample);
                 }
             }
@@ -446,7 +508,7 @@
         for (var m = 0; m < assertTypeList.length; m++) {
             var row = assertTypeList[m];
             var rowHtml;
-            if (row.value == selectedAssertType) {
+            if (row.id == selectedAssertType) {
                 rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.value + "</option>";
             } else {
                 rowHtml = "<option value=\"" + row.id + "\">" + row.value + "</option>";
@@ -465,26 +527,24 @@
         return null;
     }
 
-
-
     //接口改变处理
     function tiChange() {
         var tId = $("#ti").val();
-        var t=getOneTi(tId);
-        var remark=t.remark;
+        var t = getOneTi(tId);
+        var remark = t.remark;
         $("#caseName").val(remark);
 
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
-        if(iparamsample.length >0 && iparamtype ==1){
+        if (iparamsample.length > 0 && iparamtype == 1) {
             try {
                 var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                 $("#requestParam").val(requestJson);
-            }catch (e) {
+            } catch (e) {
                 $("#requestParam").val(iparamsample);
             }
-        }else {
+        } else {
             $("#requestParam").val(iparamsample);
         }
         //$("#requestParam").empty();
@@ -504,7 +564,7 @@
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
-                var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "("+row.remark+")</option>";
+                var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
                 tis = tis + rowHtml;
             }
             //$("#ti").find("option:selected").text("");
@@ -520,18 +580,18 @@
     }
 
     //断言类型改变处理
-    function assertTypeChage(){
-        var assertType=$("#assertType").val();
-        var assertTypeList=getAssertType();
-        var placeholder="";
-        for(var i=0;i<assertTypeList.length;i++){
-            var row=assertTypeList[i];
-            if(row.id == assertType){
-                placeholder=row.desc;
-                $("#expected").prop("placeholder",placeholder);
+    function assertTypeChage() {
+        var assertType = $("#assertType").val();
+        var assertTypeList = getAssertType();
+        var placeholder = "";
+        for (var i = 0; i < assertTypeList.length; i++) {
+            var row = assertTypeList[i];
+            if (row.id == assertType) {
+                placeholder = row.desc;
+                $("#expected").prop("placeholder", placeholder);
                 break;
-            }else{
-                $("#expected").prop("placeholder","");
+            } else {
+                $("#expected").prop("placeholder", "");
             }
         }
 
@@ -550,7 +610,7 @@
         var expected = $("#expected").val();
         var author = $("#author").val();
 
-        if(caseName == null || caseName == ""){
+        if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
             return;
         } else if (ti == null || ti == "") {
@@ -566,7 +626,7 @@
                 data: {
                     casename: caseName,
                     remark: remark,
-                    serviceid:service,
+                    serviceid: service,
                     iid: ti,
                     envid: env,
                     requestparam: requestParam,
