@@ -38,7 +38,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     i++;
                 }
                 if ("realnameCookie".equals(cookie.getName())) {
-                    log.debug("realnameCookie:" + cookie.getValue());
                     i++;
                 }
                 if ("groupidCookie".equals(cookie.getName())) {
