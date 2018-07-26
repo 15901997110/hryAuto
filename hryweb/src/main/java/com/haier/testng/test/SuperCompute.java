@@ -1,4 +1,4 @@
-package com.haier.testng.cases;
+package com.haier.testng.test;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -22,13 +22,9 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @Description:
- * @Author: luqiwei
- * @Date: 2018/6/22 17:50
- */
+@SuppressWarnings("Duplicates")
 @Slf4j
-public class PgwTest {
+public class SuperCompute {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -54,42 +50,6 @@ public class PgwTest {
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
     }
-
-    public Boolean getBoolResult(Params params) {
-        if (params == null || params.getTcase() == null || params.getTcase() == null) {
-            return false;
-        }
-        Ti ti = params.getTi();
-        Tcase tcase = params.getTcase();
-        url = baseUrl + ti.getIuri();
-        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
-        Reporter.log("实际请求参数 : ");
-        Reporter.log(requestParam);
-        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
-        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
-    }
-
-    @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
-    public void tradeQueryFacade_tradeQuery(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
-    }
-
-/*    @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
-    public void payToCardFacade_payToCard(Params params) {
-        log.info("自己打印的日志:" + params.toString());
-        Assert.assertTrue(true);
-        //Assert.assertTrue(this.getBoolResult(params));
-    }
-
-    @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
-    public void payToAccountFacade_payToAccount(Params params) {
-        System.out.println("System.out.println():" + params);
-        Assert.assertTrue(true);
-        //Assert.assertTrue(this.getBoolResult(params));
-    }*/
-
 
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
@@ -140,5 +100,26 @@ public class PgwTest {
             objects[i] = params;
         }
         return objects;
+    }
+
+    public Boolean getBoolResult(Params params) {
+        if (params == null || params.getTcase() == null || params.getTcase() == null) {
+            return false;
+        }
+        Ti ti = params.getTi();
+        Tcase tcase = params.getTcase();
+        url = baseUrl + ti.getIuri();
+        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
+        Reporter.log("实际请求参数 : ");
+        Reporter.log(requestParam);
+        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
+        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
+    }
+
+    @Test(testName = "/add", dataProvider = "provider", description = "求和方法")
+    public void add(Params params) {
+        Reporter.log("用例设计参数 : ");
+        Reporter.log(params.getTcase().getRequestparam());
+        Assert.assertTrue(this.getBoolResult(params));
     }
 }

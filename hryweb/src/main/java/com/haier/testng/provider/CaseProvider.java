@@ -10,8 +10,5 @@ import java.lang.reflect.Method;
  * @Date: 2018/7/6 16:17
  */
 public class CaseProvider {
-/*    @DataProvider
-    public static Object[] getCase(Method method){
 
-    }*/
 }

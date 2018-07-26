@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -21,7 +24,7 @@ import java.util.List;
 @Service
 @Slf4j
 public class AutocodeServiceImpl implements AutocodeService {
-    private static final String sPackage = "package com.haier.testng.cases;\n";
+    private static final String sPackage = "package com.haier.testng.test;\n\n";
     private static final String sImport = "import com.alibaba.fastjson.JSONArray;\n" +
             "import com.alibaba.fastjson.JSONObject;\n" +
             "import com.haier.enums.HttpTypeEnum;\n" +
@@ -42,8 +45,9 @@ public class AutocodeServiceImpl implements AutocodeService {
             "\n" +
             "import java.lang.reflect.Method;\n" +
             "import java.util.Iterator;\n" +
-            "import java.util.List;";
-    private static final String sClass = "@Slf4j\n" +
+            "import java.util.List;\n\n";
+    private static final String sClass = "@SuppressWarnings(\"Duplicates\")\n" +
+            "@Slf4j\n" +
             "public class ${className}";
     private static final String sField = "private Integer serviceId;\n" +
             "    private Integer envId;\n" +
@@ -139,8 +143,8 @@ public class AutocodeServiceImpl implements AutocodeService {
             "        Assert.assertTrue(this.getBoolResult(params));\n" +
             "    }\n";
 
-    private static final String sBraceLeft = "{";
-    private static final String sBraceRight = "}";
+    private static final String sBraceLeft = "{\n";
+    private static final String sBraceRight = "}\n";
 
     @Value("${zdy.autoCodeDir}")
     String autoCodeDir;
@@ -152,12 +156,17 @@ public class AutocodeServiceImpl implements AutocodeService {
     TiService tiService;
 
     @Override
-    public void generate() {
+    public Map<String, String> generate() {
         List<Tservice> tservices = tserviceService.selectByCondition(null);
+        Map<String, String> ret = new HashMap<>();
+        if (tservices == null || tservices.size() == 0) {
+            return null;
+        }
         for (Tservice tservice : tservices) {
 
             if (tservice.getClassname() == null || "".equals(tservice.getClassname())) {
                 log.warn("服务id=" + tservice.getId() + ",默认测试类名未填写,无法生成测试类");
+                ret.put(tservice.getServicekey() + "(" + tservice.getId() + ")", "默认测试类名未填写,无法生成测试类");
                 continue;
             }
             Ti condition = new Ti();
@@ -165,6 +174,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             List<Ti> tis = tiService.selectByCondition(condition);
             if (tis == null || tis.size() == 0) {
                 log.warn("服务id=" + tservice.getId() + ",此服务无有效接口信息,无需生成测试类");
+                ret.put(tservice.getServicekey() + "(" + tservice.getId() + ")", "此服务无有效接口信息,无需生成测试类");
                 continue;
             }
 
@@ -178,12 +188,13 @@ public class AutocodeServiceImpl implements AutocodeService {
             sb.append(sMethodBefore);
             sb.append(sMethodProvider);
             sb.append(sMethodGetBoolResult);
+
             for (Ti ti : tis) {
                 String iUri = ti.getIuri();
                 String desc = ti.getRemark();
                 String testMethodName = iUri.substring(iUri.indexOf("/") + 1).replaceAll("/", "_");
                 String testMethod = sMethodTest.replaceAll("\\$\\{annoTestName\\}", iUri)
-                        .replaceAll("\\$\\{annoDesc\\}", desc)
+                        .replaceAll("\\$\\{annoDesc\\}", desc != null ? desc : "no desc")
                         .replaceAll("\\$\\{testMethodName\\}", testMethodName);
                 sb.append(testMethod);
             }
@@ -192,6 +203,9 @@ public class AutocodeServiceImpl implements AutocodeService {
             String fileName = autoCodeDir + className + ".java";
 
             FileUtil.saveContent(sb.toString(), fileName);
+            ret.put(tservice.getServicekey() + "(" + tservice.getId() + ")", fileName);
+
         }
+        return ret;
     }
 }
