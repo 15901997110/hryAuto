@@ -65,9 +65,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <span class="select-box" style="width:100%;">
+                <span class="select-box" style="width:100%;" id="ti-span">
                     <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
-                        <!--<option value="" selected>请选择接口</option>-->
                     </select>
 				</span>
             </div>
@@ -465,12 +464,16 @@
         if (r != null) return decodeURI(r[2]);
         return null;
     }
+
+
+
     //接口改变处理
     function tiChange() {
         var tId = $("#ti").val();
         var t=getOneTi(tId);
         var remark=t.remark;
         $("#caseName").val(remark);
+
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
