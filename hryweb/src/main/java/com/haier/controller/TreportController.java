@@ -43,6 +43,11 @@ public class TreportController {
         return ResultUtil.success(treportService.deleteOne(id));
     }
 
+    @PostMapping("/getStatus")
+    public Result getStatus(@RequestParam("reportname") String reportname) {
+        return ResultUtil.success(treportService.getStatus(reportname));
+    }
+
     @PostMapping("/selectByCondition")
     public Result selectByCondition(Treport treport, Date startTime, Date endTime, Integer pageNum, Integer pageSize) {
         if (pageNum == null) {

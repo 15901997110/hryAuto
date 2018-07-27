@@ -45,6 +45,20 @@ public class TreportServiceImpl implements TreportService {
     }
 
     @Override
+    public Integer getStatus(String reportname) {
+        TreportExample example = new TreportExample();
+        example.createCriteria().andReportnameEqualTo(reportname);
+        List<Treport> treports = treportMapper.selectByExample(example);
+        if(treports!=null&&treports.size()>0){
+            return treports.get(0).getStatus();
+        }
+        else{
+            return -1;
+        }
+    }
+
+
+    @Override
     public PageInfo<Treport> selectByCondition(Treport treport, Date startTime, Date endTime, Integer pageNum, Integer pageSize) {
         ReflectUtil.setFieldAddPercentAndCleanZero(treport, false);
         TreportExample example = new TreportExample();

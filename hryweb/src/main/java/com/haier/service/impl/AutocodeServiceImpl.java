@@ -73,7 +73,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             "        tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);\n" +
             "        baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + \"://\" + tservicedetail.getHostinfo();\n" +
             "    }\n";
-    private static final String sMethodProvider = " @DataProvider(name = \"provider\")\n" +
+    private static final String sMethodProvider = "  @DataProvider(name = \"provider\")\n" +
             "    public Object[] getCase(Method method) {\n" +
             "\n" +
             "        Object[] objects;\n" +
@@ -92,12 +92,12 @@ public class AutocodeServiceImpl implements AutocodeService {
             "\n" +
             "        Ti ti = runService.getTi(this.serviceId, iUri);\n" +
             "        if (ti == null) {\n" +
-            "            return null;\n" +
+            "            throw new SkipException(\"测试服务下面没有接口:\"+iUri);\n" +
             "        }\n" +
             "        //此接口对应的全部用例\n" +
             "        List<Tcase> tcases = runService.getTcase(ti.getId(), this.envId, this.caseDesigner);\n" +
             "        if (tcases == null || tcases.size() == 0) {\n" +
-            "            return null;\n" +
+            "            throw new SkipException(\"此接口无可用的测试用例\");\n" +
             "        }\n" +
             "\n" +
             "        //如果用户有定制测试用例,则使用用户定制的用例来进行测试\n" +
