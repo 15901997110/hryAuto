@@ -124,6 +124,11 @@
                             ul=ul+li;
                         }
 
+                        var strategy="";
+                        if(row.strategy != null){
+                            strategy=row.strategy;
+                        }
+
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>\n" +
@@ -132,7 +137,7 @@
                            /* "<td>"+service+"</td>\n" +*/
                             "<td style='text-align: left;'><ul id='serv'>"+ul+"</ul></td>\n" +
                             "<td>"+row.envkey+"</td>\n" +
-                            "<td>"+row.strategy+"</td>\n" +
+                            "<td>"+strategy+"</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"custom_run("+row.id+")\" class=\"ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
                             "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html',"+row.id+",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
