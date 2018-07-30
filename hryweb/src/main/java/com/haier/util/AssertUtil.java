@@ -3,6 +3,8 @@ package com.haier.util;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.AssertTypeEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;
 
 import java.util.Map;
@@ -30,27 +32,14 @@ public class AssertUtil {
         switch (assertType) {
             //1.assertType=equal,完全相等
             case 1:
-                if (actual == null || expected == null) {
-                    if (actual == null && expected == null)
-                        return true;
-                    else
-                        return false;
-                } else {
-                    if (actual.trim().equals(expected.trim()))
-                        return true;
-                    else
-                        return false;
-
-                }
-                //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
+                return StringUtils.equalsIgnoreCase(actual, expected);
+            //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
             case 2:
-                try {
-                    if (actual != null && (actual.trim().contains(expected == null ? "" : expected.trim()) || actual.matches(expected)))
-                        return true;
-                    else
-                        return false;
-                } catch (PatternSyntaxException e) {
-                    log.error("", e);
+                if (StringUtils.containsIgnoreCase(actual, expected)) {
+                    return true;
+                } else if (StringUtils.countMatches(actual, expected) > 0) {
+                    return true;
+                } else {
                     return false;
                 }
                 //3.assertType=key-value,实际值中抽取出的key-value与指定值中提取的key-value相等,包含,或者正则匹配
