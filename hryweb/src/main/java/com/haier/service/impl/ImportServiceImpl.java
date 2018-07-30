@@ -9,6 +9,7 @@ import com.haier.po.*;
 import com.haier.service.ImportService;
 import com.haier.util.HryHttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -214,7 +215,7 @@ public class ImportServiceImpl implements ImportService {
 
     //ref内层嵌套json解析
     private static void parseRef(String ref, Ti ti, Map<String, Object> definitions, StringBuilder paramsamples) {
-        if (org.apache.commons.lang.StringUtils.isNotBlank(ref) && ref.contains("/")) {
+        if (StringUtils.isNotBlank(ref) && ref.contains("/")) {
             //ref值的/之后的最后一段字英文字符
             String defKey = ref.substring(ref.lastIndexOf("/") + 1, ref.length());
             Map<String, Object> definitionsMap = (Map<String, Object>) definitions.get(defKey);

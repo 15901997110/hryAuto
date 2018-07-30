@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>测试报告</title>
+    <title>测试中</title>
     <style type="text/css">
         body {
             font-size: 14px;
@@ -174,8 +174,11 @@
 
         });
 
-        setInterval(selectReport,2000,reportname);
+        setInterval(selectReport,5000,reportname);//每5秒钟主动查询一次测试报告的状态
         function selectReport(reportname) {
+            if(reportname==null||reportname==""){
+                return;
+            }
             var reportStatus=null;
             $.ajaxSetup({async : false});
             $.ajax({
