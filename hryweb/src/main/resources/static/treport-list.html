@@ -254,13 +254,13 @@
                         var a = "";
                         var view = "";
                         var status = "";
-                        if (row.status == 5) {
-                            status = "报告中";
-                            a = rePortName;
-                        } else {
+                        if (row.status == 10) {
                             status = "报告完成";
                             a = "<a title='测试报告详情' target='_blank' href='.." + row.reportname + "' style=\"text-decoration: underline; color:#0000ff;\">" + rePortName + "</a>";
                             view = "<a title=\"查看\" target='_blank' href='.." + row.reportname + "'  style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe725;</i></a> \n"
+                        } else {
+                            status = "报告中";
+                            a = rePortName;
                         }
 
                         var servicenames = JSON.parse(row.servicenames);
