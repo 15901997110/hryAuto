@@ -31,6 +31,25 @@
 <article class="page-container">
     <form method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>服务：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                <span class="select-box" style="width:100%;">
+                    <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
+                        <!--<option value="" selected>请选择服务</option>-->
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                <span class="select-box" style="width:100%;" id="ti-span">
+                    <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <input type="text" class="input-text" value="" placeholder="用例名称" id="caseName" name="caseName"
@@ -50,25 +69,6 @@
                 <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="env" id="env">
                         <option value="" selected>请选择环境</option>
-                    </select>
-				</span>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>服务：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <span class="select-box" style="width:100%;">
-                    <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
-                        <!--<option value="" selected>请选择服务</option>-->
-                    </select>
-				</span>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <span class="select-box" style="width:100%;" id="ti-span">
-                    <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
                     </select>
 				</span>
             </div>
@@ -131,7 +131,23 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<!--完善用例名称自动赋值功能,by luqiwei-->
+<!--<script type="text/javascript">
+    (function () {
+        var previous=null;
+        $("#ti").on('focus', function () {
+            // Store the current value on focus and on change
+            previous = this.text;
+        }).change(function () {
+            // Do something with the previous value after the change
+            alert(previous);
 
+            // Make sure the previous value is updated
+            previous = this.text;
+            alert(previous);
+        });
+    })();
+</script>-->
 
 <script type="text/javascript">
     //loading
@@ -436,7 +452,7 @@
             selectedService = tcase.serviceid;
             selectedTi = tcase.iid;
             selectedAssertType = tcase.asserttype;
-            selectedRequestparam=true;
+            selectedRequestparam = true;
         }
         var tenv = "";
         for (k = 0; k < env.length; k++) {
