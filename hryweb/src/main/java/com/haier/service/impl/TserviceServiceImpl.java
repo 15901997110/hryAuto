@@ -90,6 +90,8 @@ public class TserviceServiceImpl implements TserviceService {
             }
             if (tservice.getEditor() != null)
                 criteria.andEditorLike(tservice.getEditor());
+            if(tservice.getClassname()!=null)
+                criteria.andClassnameEqualTo(tservice.getClassname().replaceAll("%",""));
         }
         return tserviceMapper.selectByExample(tserviceExample);
     }
