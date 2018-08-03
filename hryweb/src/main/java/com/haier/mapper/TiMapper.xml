@@ -6,13 +6,13 @@
     <result column="serviceId" jdbcType="INTEGER" property="serviceid" />
     <result column="iUri" jdbcType="VARCHAR" property="iuri" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="iRequestMethod" jdbcType="SMALLINT" property="irequestmethod" />
-    <result column="iContentType" jdbcType="SMALLINT" property="icontenttype" />
-    <result column="iParamType" jdbcType="SMALLINT" property="iparamtype" />
+    <result column="iRequestMethod" jdbcType="INTEGER" property="irequestmethod" />
+    <result column="iContentType" jdbcType="INTEGER" property="icontenttype" />
+    <result column="iParamType" jdbcType="INTEGER" property="iparamtype" />
     <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample" />
-    <result column="iResponseType" jdbcType="SMALLINT" property="iresponsetype" />
+    <result column="iResponseType" jdbcType="INTEGER" property="iresponsetype" />
     <result column="iDev" jdbcType="VARCHAR" property="idev" />
-    <result column="iStatus" jdbcType="SMALLINT" property="istatus" />
+    <result column="iStatus" jdbcType="INTEGER" property="istatus" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -108,15 +108,15 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
-    insert into ti (id, serviceId, iUri,
+    insert into ti (id, serviceId, iUri, 
       remark, iRequestMethod, iContentType, 
       iParamType, iParamSample, iResponseType, 
       iDev, iStatus, updateTime
       )
     values (#{id,jdbcType=INTEGER}, #{serviceid,jdbcType=INTEGER}, #{iuri,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{irequestmethod,jdbcType=SMALLINT}, #{icontenttype,jdbcType=SMALLINT}, 
-      #{iparamtype,jdbcType=SMALLINT}, #{iparamsample,jdbcType=VARCHAR}, #{iresponsetype,jdbcType=SMALLINT}, 
-      #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=SMALLINT}, #{updatetime,jdbcType=TIMESTAMP}
+      #{remark,jdbcType=VARCHAR}, #{irequestmethod,jdbcType=INTEGER}, #{icontenttype,jdbcType=INTEGER}, 
+      #{iparamtype,jdbcType=INTEGER}, #{iparamsample,jdbcType=VARCHAR}, #{iresponsetype,jdbcType=INTEGER}, 
+      #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
@@ -173,25 +173,25 @@
         #{remark,jdbcType=VARCHAR},
       </if>
       <if test="irequestmethod != null">
-        #{irequestmethod,jdbcType=SMALLINT},
+        #{irequestmethod,jdbcType=INTEGER},
       </if>
       <if test="icontenttype != null">
-        #{icontenttype,jdbcType=SMALLINT},
+        #{icontenttype,jdbcType=INTEGER},
       </if>
       <if test="iparamtype != null">
-        #{iparamtype,jdbcType=SMALLINT},
+        #{iparamtype,jdbcType=INTEGER},
       </if>
       <if test="iparamsample != null">
         #{iparamsample,jdbcType=VARCHAR},
       </if>
       <if test="iresponsetype != null">
-        #{iresponsetype,jdbcType=SMALLINT},
+        #{iresponsetype,jdbcType=INTEGER},
       </if>
       <if test="idev != null">
         #{idev,jdbcType=VARCHAR},
       </if>
       <if test="istatus != null">
-        #{istatus,jdbcType=SMALLINT},
+        #{istatus,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
         #{updatetime,jdbcType=TIMESTAMP},
@@ -220,25 +220,25 @@
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
       <if test="record.irequestmethod != null">
-        iRequestMethod = #{record.irequestmethod,jdbcType=SMALLINT},
+        iRequestMethod = #{record.irequestmethod,jdbcType=INTEGER},
       </if>
       <if test="record.icontenttype != null">
-        iContentType = #{record.icontenttype,jdbcType=SMALLINT},
+        iContentType = #{record.icontenttype,jdbcType=INTEGER},
       </if>
       <if test="record.iparamtype != null">
-        iParamType = #{record.iparamtype,jdbcType=SMALLINT},
+        iParamType = #{record.iparamtype,jdbcType=INTEGER},
       </if>
       <if test="record.iparamsample != null">
         iParamSample = #{record.iparamsample,jdbcType=VARCHAR},
       </if>
       <if test="record.iresponsetype != null">
-        iResponseType = #{record.iresponsetype,jdbcType=SMALLINT},
+        iResponseType = #{record.iresponsetype,jdbcType=INTEGER},
       </if>
       <if test="record.idev != null">
         iDev = #{record.idev,jdbcType=VARCHAR},
       </if>
       <if test="record.istatus != null">
-        iStatus = #{record.istatus,jdbcType=SMALLINT},
+        iStatus = #{record.istatus,jdbcType=INTEGER},
       </if>
       <if test="record.updatetime != null">
         updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
@@ -254,13 +254,13 @@
       serviceId = #{record.serviceid,jdbcType=INTEGER},
       iUri = #{record.iuri,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      iRequestMethod = #{record.irequestmethod,jdbcType=SMALLINT},
-      iContentType = #{record.icontenttype,jdbcType=SMALLINT},
-      iParamType = #{record.iparamtype,jdbcType=SMALLINT},
+      iRequestMethod = #{record.irequestmethod,jdbcType=INTEGER},
+      iContentType = #{record.icontenttype,jdbcType=INTEGER},
+      iParamType = #{record.iparamtype,jdbcType=INTEGER},
       iParamSample = #{record.iparamsample,jdbcType=VARCHAR},
-      iResponseType = #{record.iresponsetype,jdbcType=SMALLINT},
+      iResponseType = #{record.iresponsetype,jdbcType=INTEGER},
       iDev = #{record.idev,jdbcType=VARCHAR},
-      iStatus = #{record.istatus,jdbcType=SMALLINT},
+      iStatus = #{record.istatus,jdbcType=INTEGER},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -279,25 +279,25 @@
         remark = #{remark,jdbcType=VARCHAR},
       </if>
       <if test="irequestmethod != null">
-        iRequestMethod = #{irequestmethod,jdbcType=SMALLINT},
+        iRequestMethod = #{irequestmethod,jdbcType=INTEGER},
       </if>
       <if test="icontenttype != null">
-        iContentType = #{icontenttype,jdbcType=SMALLINT},
+        iContentType = #{icontenttype,jdbcType=INTEGER},
       </if>
       <if test="iparamtype != null">
-        iParamType = #{iparamtype,jdbcType=SMALLINT},
+        iParamType = #{iparamtype,jdbcType=INTEGER},
       </if>
       <if test="iparamsample != null">
         iParamSample = #{iparamsample,jdbcType=VARCHAR},
       </if>
       <if test="iresponsetype != null">
-        iResponseType = #{iresponsetype,jdbcType=SMALLINT},
+        iResponseType = #{iresponsetype,jdbcType=INTEGER},
       </if>
       <if test="idev != null">
         iDev = #{idev,jdbcType=VARCHAR},
       </if>
       <if test="istatus != null">
-        iStatus = #{istatus,jdbcType=SMALLINT},
+        iStatus = #{istatus,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
         updateTime = #{updatetime,jdbcType=TIMESTAMP},
@@ -310,13 +310,13 @@
     set serviceId = #{serviceid,jdbcType=INTEGER},
       iUri = #{iuri,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
-      iRequestMethod = #{irequestmethod,jdbcType=SMALLINT},
-      iContentType = #{icontenttype,jdbcType=SMALLINT},
-      iParamType = #{iparamtype,jdbcType=SMALLINT},
+      iRequestMethod = #{irequestmethod,jdbcType=INTEGER},
+      iContentType = #{icontenttype,jdbcType=INTEGER},
+      iParamType = #{iparamtype,jdbcType=INTEGER},
       iParamSample = #{iparamsample,jdbcType=VARCHAR},
-      iResponseType = #{iresponsetype,jdbcType=SMALLINT},
+      iResponseType = #{iresponsetype,jdbcType=INTEGER},
       iDev = #{idev,jdbcType=VARCHAR},
-      iStatus = #{istatus,jdbcType=SMALLINT},
+      iStatus = #{istatus,jdbcType=INTEGER},
       updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -375,52 +375,52 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodEqualTo(Short value) {
+        public Criteria andIrequestmethodEqualTo(Integer value) {
             addCriterion("iRequestMethod =", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodNotEqualTo(Short value) {
+        public Criteria andIrequestmethodNotEqualTo(Integer value) {
             addCriterion("iRequestMethod <>", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodGreaterThan(Short value) {
+        public Criteria andIrequestmethodGreaterThan(Integer value) {
             addCriterion("iRequestMethod >", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodGreaterThanOrEqualTo(Short value) {
+        public Criteria andIrequestmethodGreaterThanOrEqualTo(Integer value) {
             addCriterion("iRequestMethod >=", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodLessThan(Short value) {
+        public Criteria andIrequestmethodLessThan(Integer value) {
             addCriterion("iRequestMethod <", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodLessThanOrEqualTo(Short value) {
+        public Criteria andIrequestmethodLessThanOrEqualTo(Integer value) {
             addCriterion("iRequestMethod <=", value, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodIn(List<Short> values) {
+        public Criteria andIrequestmethodIn(List<Integer> values) {
             addCriterion("iRequestMethod in", values, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodNotIn(List<Short> values) {
+        public Criteria andIrequestmethodNotIn(List<Integer> values) {
             addCriterion("iRequestMethod not in", values, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodBetween(Short value1, Short value2) {
+        public Criteria andIrequestmethodBetween(Integer value1, Integer value2) {
             addCriterion("iRequestMethod between", value1, value2, "irequestmethod");
             return (Criteria) this;
         }
 
-        public Criteria andIrequestmethodNotBetween(Short value1, Short value2) {
+        public Criteria andIrequestmethodNotBetween(Integer value1, Integer value2) {
             addCriterion("iRequestMethod not between", value1, value2, "irequestmethod");
             return (Criteria) this;
         }
@@ -435,52 +435,52 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeEqualTo(Short value) {
+        public Criteria andIcontenttypeEqualTo(Integer value) {
             addCriterion("iContentType =", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeNotEqualTo(Short value) {
+        public Criteria andIcontenttypeNotEqualTo(Integer value) {
             addCriterion("iContentType <>", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeGreaterThan(Short value) {
+        public Criteria andIcontenttypeGreaterThan(Integer value) {
             addCriterion("iContentType >", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeGreaterThanOrEqualTo(Short value) {
+        public Criteria andIcontenttypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("iContentType >=", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeLessThan(Short value) {
+        public Criteria andIcontenttypeLessThan(Integer value) {
             addCriterion("iContentType <", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeLessThanOrEqualTo(Short value) {
+        public Criteria andIcontenttypeLessThanOrEqualTo(Integer value) {
             addCriterion("iContentType <=", value, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeIn(List<Short> values) {
+        public Criteria andIcontenttypeIn(List<Integer> values) {
             addCriterion("iContentType in", values, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeNotIn(List<Short> values) {
+        public Criteria andIcontenttypeNotIn(List<Integer> values) {
             addCriterion("iContentType not in", values, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeBetween(Short value1, Short value2) {
+        public Criteria andIcontenttypeBetween(Integer value1, Integer value2) {
             addCriterion("iContentType between", value1, value2, "icontenttype");
             return (Criteria) this;
         }
 
-        public Criteria andIcontenttypeNotBetween(Short value1, Short value2) {
+        public Criteria andIcontenttypeNotBetween(Integer value1, Integer value2) {
             addCriterion("iContentType not between", value1, value2, "icontenttype");
             return (Criteria) this;
         }
@@ -495,52 +495,52 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeEqualTo(Short value) {
+        public Criteria andIparamtypeEqualTo(Integer value) {
             addCriterion("iParamType =", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeNotEqualTo(Short value) {
+        public Criteria andIparamtypeNotEqualTo(Integer value) {
             addCriterion("iParamType <>", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeGreaterThan(Short value) {
+        public Criteria andIparamtypeGreaterThan(Integer value) {
             addCriterion("iParamType >", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeGreaterThanOrEqualTo(Short value) {
+        public Criteria andIparamtypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("iParamType >=", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeLessThan(Short value) {
+        public Criteria andIparamtypeLessThan(Integer value) {
             addCriterion("iParamType <", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeLessThanOrEqualTo(Short value) {
+        public Criteria andIparamtypeLessThanOrEqualTo(Integer value) {
             addCriterion("iParamType <=", value, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeIn(List<Short> values) {
+        public Criteria andIparamtypeIn(List<Integer> values) {
             addCriterion("iParamType in", values, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeNotIn(List<Short> values) {
+        public Criteria andIparamtypeNotIn(List<Integer> values) {
             addCriterion("iParamType not in", values, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeBetween(Short value1, Short value2) {
+        public Criteria andIparamtypeBetween(Integer value1, Integer value2) {
             addCriterion("iParamType between", value1, value2, "iparamtype");
             return (Criteria) this;
         }
 
-        public Criteria andIparamtypeNotBetween(Short value1, Short value2) {
+        public Criteria andIparamtypeNotBetween(Integer value1, Integer value2) {
             addCriterion("iParamType not between", value1, value2, "iparamtype");
             return (Criteria) this;
         }
@@ -625,52 +625,52 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeEqualTo(Short value) {
+        public Criteria andIresponsetypeEqualTo(Integer value) {
             addCriterion("iResponseType =", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeNotEqualTo(Short value) {
+        public Criteria andIresponsetypeNotEqualTo(Integer value) {
             addCriterion("iResponseType <>", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeGreaterThan(Short value) {
+        public Criteria andIresponsetypeGreaterThan(Integer value) {
             addCriterion("iResponseType >", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeGreaterThanOrEqualTo(Short value) {
+        public Criteria andIresponsetypeGreaterThanOrEqualTo(Integer value) {
             addCriterion("iResponseType >=", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeLessThan(Short value) {
+        public Criteria andIresponsetypeLessThan(Integer value) {
             addCriterion("iResponseType <", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeLessThanOrEqualTo(Short value) {
+        public Criteria andIresponsetypeLessThanOrEqualTo(Integer value) {
             addCriterion("iResponseType <=", value, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeIn(List<Short> values) {
+        public Criteria andIresponsetypeIn(List<Integer> values) {
             addCriterion("iResponseType in", values, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeNotIn(List<Short> values) {
+        public Criteria andIresponsetypeNotIn(List<Integer> values) {
             addCriterion("iResponseType not in", values, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeBetween(Short value1, Short value2) {
+        public Criteria andIresponsetypeBetween(Integer value1, Integer value2) {
             addCriterion("iResponseType between", value1, value2, "iresponsetype");
             return (Criteria) this;
         }
 
-        public Criteria andIresponsetypeNotBetween(Short value1, Short value2) {
+        public Criteria andIresponsetypeNotBetween(Integer value1, Integer value2) {
             addCriterion("iResponseType not between", value1, value2, "iresponsetype");
             return (Criteria) this;
         }
@@ -755,52 +755,52 @@ public class TiExample {
             return (Criteria) this;
         }
 
-        public Criteria andIstatusEqualTo(Short value) {
+        public Criteria andIstatusEqualTo(Integer value) {
             addCriterion("iStatus =", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusNotEqualTo(Short value) {
+        public Criteria andIstatusNotEqualTo(Integer value) {
             addCriterion("iStatus <>", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusGreaterThan(Short value) {
+        public Criteria andIstatusGreaterThan(Integer value) {
             addCriterion("iStatus >", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusGreaterThanOrEqualTo(Short value) {
+        public Criteria andIstatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("iStatus >=", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusLessThan(Short value) {
+        public Criteria andIstatusLessThan(Integer value) {
             addCriterion("iStatus <", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusLessThanOrEqualTo(Short value) {
+        public Criteria andIstatusLessThanOrEqualTo(Integer value) {
             addCriterion("iStatus <=", value, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusIn(List<Short> values) {
+        public Criteria andIstatusIn(List<Integer> values) {
             addCriterion("iStatus in", values, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusNotIn(List<Short> values) {
+        public Criteria andIstatusNotIn(List<Integer> values) {
             addCriterion("iStatus not in", values, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusBetween(Short value1, Short value2) {
+        public Criteria andIstatusBetween(Integer value1, Integer value2) {
             addCriterion("iStatus between", value1, value2, "istatus");
             return (Criteria) this;
         }
 
-        public Criteria andIstatusNotBetween(Short value1, Short value2) {
+        public Criteria andIstatusNotBetween(Integer value1, Integer value2) {
             addCriterion("iStatus not between", value1, value2, "istatus");
             return (Criteria) this;
         }

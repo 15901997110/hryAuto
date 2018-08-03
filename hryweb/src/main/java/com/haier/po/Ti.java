@@ -1,7 +1,5 @@
 package com.haier.po;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class Ti {
@@ -13,21 +11,20 @@ public class Ti {
 
     private String remark;
 
-    private Short irequestmethod;
+    private Integer irequestmethod;
 
-    private Short icontenttype;
+    private Integer icontenttype;
 
-    private Short iparamtype;
+    private Integer iparamtype;
 
     private String iparamsample;
 
-    private Short iresponsetype;
+    private Integer iresponsetype;
 
     private String idev;
 
-    private Short istatus;
+    private Integer istatus;
 
-    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     public Integer getId() {
@@ -62,27 +59,27 @@ public class Ti {
         this.remark = remark == null ? null : remark.trim();
     }
 
-    public Short getIrequestmethod() {
+    public Integer getIrequestmethod() {
         return irequestmethod;
     }
 
-    public void setIrequestmethod(Short irequestmethod) {
+    public void setIrequestmethod(Integer irequestmethod) {
         this.irequestmethod = irequestmethod;
     }
 
-    public Short getIcontenttype() {
+    public Integer getIcontenttype() {
         return icontenttype;
     }
 
-    public void setIcontenttype(Short icontenttype) {
+    public void setIcontenttype(Integer icontenttype) {
         this.icontenttype = icontenttype;
     }
 
-    public Short getIparamtype() {
+    public Integer getIparamtype() {
         return iparamtype;
     }
 
-    public void setIparamtype(Short iparamtype) {
+    public void setIparamtype(Integer iparamtype) {
         this.iparamtype = iparamtype;
     }
 
@@ -94,11 +91,11 @@ public class Ti {
         this.iparamsample = iparamsample == null ? null : iparamsample.trim();
     }
 
-    public Short getIresponsetype() {
+    public Integer getIresponsetype() {
         return iresponsetype;
     }
 
-    public void setIresponsetype(Short iresponsetype) {
+    public void setIresponsetype(Integer iresponsetype) {
         this.iresponsetype = iresponsetype;
     }
 
@@ -110,11 +107,11 @@ public class Ti {
         this.idev = idev == null ? null : idev.trim();
     }
 
-    public Short getIstatus() {
+    public Integer getIstatus() {
         return istatus;
     }
 
-    public void setIstatus(Short istatus) {
+    public void setIstatus(Integer istatus) {
         this.istatus = istatus;
     }
 
