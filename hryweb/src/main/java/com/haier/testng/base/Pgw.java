@@ -45,6 +45,10 @@ public class Pgw {
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
         dbInfo = tservicedetail.getDbinfo();
     }
+    public Pgw(String baseUrl,String dbInfo){
+        this.baseUrl=baseUrl;
+        this.dbInfo=dbInfo;
+    }
 
     private String baseUrl;
     private String dbInfo;

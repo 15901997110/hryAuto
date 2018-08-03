@@ -24,7 +24,7 @@ import java.util.List;
 
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class Pgw {
+public class PgwDemo {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;

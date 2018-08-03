@@ -5,13 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
-import com.haier.testng.base.Pgw;
 import com.haier.util.AssertUtil;
 import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.SkipException;
@@ -26,7 +24,7 @@ import java.util.List;
 
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class PgwTestDefault {
+public class PgwTestProcess {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -37,7 +35,6 @@ public class PgwTestDefault {
     private Tservice tservice;
     private Tservicedetail tservicedetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
-    private Pgw pgw;
 
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
@@ -46,13 +43,12 @@ public class PgwTestDefault {
         this.envId = envId;
         this.caseDesigner = caseDesigner;
         this.i_c = i_c;
-        if (StringUtils.isNotBlank(i_c)) {
+        if (this.i_c != null && !"".equals(this.i_c)) {
             this.i_c_JSONObject = JSONObject.parseObject(i_c);
         }
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
-        pgw=new Pgw(baseUrl,tservicedetail.getDbinfo());
     }
 
     @DataProvider(name = "provider")
@@ -117,13 +113,14 @@ public class PgwTestDefault {
         Reporter.log("实际请求参数 : ");
         Reporter.log(requestParam);
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
-        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype());
+        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
     }
 
     @Test(testName = "/accountBalanceQueryFacade/accountBalanceQuery", dataProvider = "provider", description = "账户余额查询")
     public void accountBalanceQueryFacade_accountBalanceQuery(Params params) {
-        String actual = pgw.accountBalanceQueryFacade_accountBalanceQuery(params);
-        AssertUtil.supperAssert(params.getTcase().getAsserttype() + 0, params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
+        Reporter.log("用例设计参数 : ");
+        Reporter.log(params.getTcase().getRequestparam());
+        Assert.assertTrue(this.getBoolResult(params));
     }
 
     @Test(testName = "/fundPurchaseFacade/fundPurchase", dataProvider = "provider", description = "基金申购")
