@@ -28,7 +28,7 @@
         <label style="margin-left:50px">服务id：</label><input type="text" name="id" id="id" placeholder=" 服务id" style="width:12%" class="input-text">
         <label style="margin-left:50px">服务标识：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务标识" style="width:12%" class="input-text">
         <label style="margin-left:50px">服务描述：</label><input type="text" name="servicename" id="servicename" placeholder=" 服务描述" style="width:12%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;width:100px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
+        <button name="find" id="find" style="margin-left:50px;width:100px;" class="btn btn-success" type="button" onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜服务</button>
         <button name="empty" id="empty" style="margin-left:10px;width:100px;" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -64,7 +64,7 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -126,25 +126,11 @@
                 var status=data.status;
                 var msg=data.msg;
                 var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var beforePage=data.data.prePage;
-                var nextPage=data.data.nextPage;
                 console.log(data);
                 var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
-                    $("#total").html("");
                     $("#teserviceList").html("");
-                    $("#totalPages").html("");
-                    $("#now").html("");
-                    $("#pager").html("");
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
@@ -186,203 +172,9 @@
                         html = html + rowHtml;
                     }
 
-                    if(pages<5){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-
-                    }else{
-                        if(now>4 && now<(pages-3)){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(now-1);i<now+2;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
-
-                        }else if(now>(pages-4) && now<=pages){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(pages-4);i<=pages;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-
-                            }
-                            //pagesHtml= pagesHtml + "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
-
-                        }else if(now>0 && now<=4){
-
-                            for(var i=0;i<=4;i++){
-                                if((i+1)==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }
-
-                                pagesHtml= pagesHtml + pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                        }
-
-                    }
-
-                    $("#total").append(total);
                     $("#teserviceList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
+                    pagination(data);
                     layer.close(layerIndex);
-                }else{
-                    layer.close(layerIndex);
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                }
-            }
-        });
-    }
-
-    //筛选
-    function find(){
-        var id = $("#id").val();
-        var servicekey = $("#servicekey").val();
-        var servicename = $("#servicename").val();
-        $.ajax({
-            type: "post",
-            url: "/tservice/selectByCondition",
-            data: {
-
-                id:id,
-                servicekey:servicekey,
-                servicename:servicename,
-                pageNum:1,
-                pageSize:10
-            },
-            dataType: "json",
-            success: function (data) {
-
-                $("#total").html("");
-                $("#teserviceList").html("");
-                $("#totalPages").html("");
-                $("#now").html("");
-                $("#pager").html("");
-
-                var status=data.status;
-                var msg=data.msg;
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
-
-                if(status == 0){
-                    var list=data.data.list;
-                    var total=data.data.total;
-                    var pages=data.data.pages;
-                    var now=data.data.pageNum;
-                    var before=data.data.prePage;
-                    var next=data.data.nextPage;
-                    console.log(data);
-                    if(data.data.list.length==0){
-                        $("#dataTables_info").hide();
-                        var h="<tr><td colspan='8' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
-                        $("#teserviceList").append(h);
-                        layer.close(layerIndex);
-                        return;
-                    }
-                    for(var i=0;i<list.length;i++){
-                        var row = list[i];
-                        var type="";
-                        if(row.httptype == 1){
-                            type="Http";
-                        }else if(row.httptype == 2){
-                            type="Https";
-                        }
-
-                        var servicename="";
-                        if(row.servicename != null){
-                            servicename=row.servicename;
-                        }
-
-                        var classname="";
-                        if(row.classname != null){
-                            classname=row.classname;
-                        }
-
-                        var editor="";
-                        if(row.editor != null){
-                            editor=row.editor;
-                        }
-
-                        var rowHtml = "<tr class=\"text-c\">\n" +
-                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+servicename+"</td>\n" +
-                            "<td>"+classname+"</td>\n" +
-                            "<td >"+type+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td>"+editor+"</span></td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservice_edit('服务编辑','tservice-edit.html',"+row.id+",'800','400')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservice_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
-                            "</tr>";
-                        html = html + rowHtml;
-                    }
-
-                    if(pages<6){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                    }else{
-                        for(var i=0;i<5;i++){
-                            if((i+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                        pagesHtml= pagesHtml + "<span> …</span>\n" +
-                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                    }
-
-                    $("#total").append(total);
-                    $("#teserviceList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
-                    layer.close(layerIndex);
-
                 }else{
                     layer.close(layerIndex);
                     layer.alert(msg, {
@@ -408,37 +200,8 @@
 
     /*服务-删除*/
     function tservice_del(obj,id){
-        layer.confirm('服务删除将会删除接口表记录，确定要这样做吗？\n注意：我们会记录你的操作！',function(index){
-            //alert("要删除的id="+id);
-            $.ajax({
-                type: 'POST',
-                url: '/tservice/deleteOne',
-                data:{
-                    id:id
-                },
-                dataType: 'json',
-                success: function(data){
-                    layer.close(layerIndex);
-                    var status=data.status;
-                    var msg=data.msg;
-                    if(status == 0){
-                        $(obj).parents("tr").remove();
-                        window.location.reload();
-                        layer.msg('已删除!',{icon:1,time:1000});
-                    }else{
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                    }
-
-                },
-                error:function(data) {
-                    layer.close(layerIndex);
-                    console.log(data);
-                },
-            });
-        });
+        var ms="服务删除将会删除接口表记录，确定要这样做吗？\n注意：我们会记录你的操作！";
+        del(obj,id,"/tservice/deleteOne",ms);
     }
 
 </script>

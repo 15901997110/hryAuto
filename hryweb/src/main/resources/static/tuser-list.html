@@ -33,7 +33,7 @@
                 <option value="" selected>请选择用户组</option>
             </select>
         </span>
-        <button name="find" id="find" style="margin-left:50px;weidth:80px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+        <button name="find" id="find" style="margin-left:50px;weidth:80px;" class="btn btn-success" type="button" onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
         <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -96,7 +96,6 @@
     function empty(){
         $("#identity").val("");
         $("#realname").val("");
-        //$("#groupid").val("");
         $("#groupid option:first").prop("selected", 'selected');
     }
 
@@ -141,26 +140,12 @@
                 var status=data.status;
                 var msg=data.msg;
                 var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var beforePage=data.data.prePage;
-                var nextPage=data.data.nextPage;
                 console.log(data);
                 var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
-                    $("#total").html("");
+
                     $("#tuserList").html("");
-                    $("#totalPages").html("");
-                    $("#now").html("");
-                    $("#pager").html("");
-
                     var groups=userGroup();
                     var groupName="";
 
@@ -192,70 +177,8 @@
                         html = html + rowHtml;
                     }
 
-                    if(pages<5){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-
-                    }else{
-                        if(now>4 && now<(pages-3)){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(now-1);i<now+2;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
-
-                        }else if(now>(pages-4) && now<=pages){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(pages-4);i<=pages;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-
-                            }
-
-                        }else if(now>0 && now<=4){
-
-                            for(var i=0;i<=4;i++){
-                                if((i+1)==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }
-
-                                pagesHtml= pagesHtml + pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                        }
-
-                    }
-
-                    $("#total").append(total);
                     $("#tuserList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
+                    pagination(data);
                     layer.close(layerIndex);
 
                 }else{
@@ -271,124 +194,6 @@
         });
 
 
-    }
-
-    //筛选
-    function find(){
-        var identity = $("#identity").val();
-        var realname = $("#realname").val();
-        var groupid = $("#groupid").val();
-        $.ajax({
-            type: "post",
-            url: "/user/selectByConditionWithPageInfo",
-            data: {
-                identity:identity,
-                realname:realname,
-                groupid:groupid,
-                pageNum:1,
-                pageSize:10
-            },
-            dataType: "json",
-            success: function (data) {
-
-                $("#total").html("");
-                $("#tuserList").html("");
-                $("#totalPages").html("");
-                $("#now").html("");
-                $("#pager").html("");
-                if(data.data.list.length==0){
-                    $("#dataTables_info").hide();
-                    var h="<tr><td colspan='7' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
-                    $("#tuserList").append(h);
-                    layer.close(layerIndex);
-                    return;
-                }
-
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var before=data.data.prePage;
-                var next=data.data.nextPage;
-                console.log(data);
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
-
-                if(status == 0){
-                    var groups=userGroup();
-                    var groupName="";
-                    for(var i=0;i<list.length;i++){
-                        var row = list[i];
-
-                        for(var k=0;k<groups.length;k++){
-                            var one=groups[k];
-                            if(one.groupId == row.groupid){
-                                groupName=one.desc;
-                            }
-                        }
-                        var remark=row.remark;
-                        if(row.remark == null){
-                            remark="";
-                        }
-                        var rowHtml = "<tr class=\"text-c\">\n" +
-                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+groupName+"</td>\n" +
-                            "<td>"+row.identity+"</td>\n" +
-                            "<td >"+row.realname+"</td>\n" +
-                            "<td>"+remark+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tuser_edit('用户编辑','tuser-edit.html',"+row.id+",'800','500')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tuser_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
-                            "</tr>";
-                        html = html + rowHtml;
-                    }
-
-                    if(pages<6){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                    }else{
-                        for(var i=0;i<5;i++){
-                            if((i+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                        pagesHtml= pagesHtml + "<span> …</span>\n" +
-                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                    }
-
-                    $("#total").append(total);
-                    $("#tuserList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
-                    layer.close(layerIndex);
-
-                }else{
-                    layer.close(layerIndex);
-                    layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                }
-            }
-        });
     }
 
     function userGroup(){
@@ -433,35 +238,8 @@
 
     /*用户-删除*/
     function tuser_del(obj,id){
-        layer.confirm('用户删除需谨慎，请确认是否删除！',function(index){
-            //alert("要删除的id="+id);
-            $.ajax({
-                type: 'POST',
-                url: '/user/deleteOne',
-                data:{
-                    id:id
-                },
-                dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    if(status == 0){
-                        $(obj).parents("tr").remove();
-                        window.location.reload();
-                        layer.msg('已删除!',{icon:1,time:1000});
-                    }else{
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                    }
-
-                },
-                error:function(data) {
-                    console.log(data);
-                },
-            });
-        });
+        var ms="用户删除需谨慎，请确认是否删除！";
+        del(obj,id,"/user/deleteOne",ms);
     }
 
 </script>

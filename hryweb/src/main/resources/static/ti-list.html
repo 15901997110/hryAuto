@@ -29,7 +29,7 @@
         <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:10%" class="input-text">
         <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址" style="width:15%" class="input-text">
         <label style="margin-left:30px">开发者：</label><input type="text" name="idev" id="idev" placeholder=" 开发者" style="width:10%" class="input-text">
-        <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button" onclick="find()"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
+        <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button" onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
         <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -56,7 +56,6 @@
                 <th width="8%">请求参数类型</th>
                 <th width="5%">返回类型</th>
                 <th width="5%">开发者</th>
-                <!--<th width="25%">请求参数</th>-->
                 <th width="9%">更新时间</th>
                 <th width="10%">操作</th>
             </tr>
@@ -73,12 +72,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<!--<script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>-->
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
     var layerIndex;
@@ -122,7 +121,6 @@
 
         var allEnum=getAllEnum();
         var ContentTypeEnum=allEnum.ContentTypeEnum;
-        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
         var ResponseTypeEnum=allEnum.ResponseTypeEnum;
 
 
@@ -139,29 +137,14 @@
             },
             dataType: "json",
             success: function (data) {
-
                 var status=data.status;
                 var msg=data.msg;
                 var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var beforePage=data.data.prePage;
-                var nextPage=data.data.nextPage;
                 console.log(data);
                 var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+beforePage+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+nextPage+")' id=\"table_next\">下一页</a>";
 
                 if(status == 0){
-                    $("#total").html("");
                     $("#interfaceList").html("");
-                    $("#totalPages").html("");
-                    $("#now").html("");
-                    $("#pager").html("");
 
                     for(var i=0;i<list.length;i++){
                         var row = list[i];
@@ -218,227 +201,12 @@
                             "</tr>";
                         html = html + rowHtml;
                     }
-
-                    if(pages<5){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-
-                    }else{
-                        if(now>4 && now<(pages-3)){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(now-1);i<now+2;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-
-
-                        }else if(now>(pages-4) && now<=pages){
-                            var pagesHtml="<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
-                                "<span> …</span>";
-                            for(i=(pages-4);i<=pages;i++){
-                                if(i==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i)+")'>"+(i)+"</a>";
-                                }
-                                pagesHtml = pagesHtml+pageHtml;
-
-                            }
-
-                        }else if(now>0 && now<=4){
-
-                            for(var i=0;i<=4;i++){
-                                if((i+1)==now){
-                                    var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }else{
-                                    var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                                }
-
-                                pagesHtml= pagesHtml + pageHtml;
-                            }
-                            pagesHtml= pagesHtml + "<span> …</span>\n" +
-                                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                        }
-
-                    }
-
-                    $("#total").append(total);
                     $("#interfaceList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
+                    pagination(data);
                     layer.close(layerIndex);
 
                 }else{
                     layer.close(layerIndex);
-                    layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                }
-            }
-        });
-    }
-
-    //筛选
-    function find(){
-        var serviceid = $("#serviceid").val();
-        var remark = $("#remark").val();
-        var iuri = $("#iuri").val();
-        var idev = $("#idev").val();
-
-        var allEnum=getAllEnum();
-        var ContentTypeEnum=allEnum.ContentTypeEnum;
-        var RequestMethodTypeEnum=allEnum.RequestMethodTypeEnum;
-        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
-        $.ajax({
-            type: "post",
-            url: "/ti/selectByCondition",
-            data: {
-                servicekey:serviceid,
-                iuri:iuri,
-                idev:idev,
-                remark:remark,
-                pageNum:1,
-                pageSize:10
-            },
-            dataType: "json",
-            success: function (data) {
-
-                $("#total").html("");
-                $("#interfaceList").html("");
-                $("#totalPages").html("");
-                $("#now").html("");
-                $("#pager").html("");
-                if(data.data.list.length==0){
-                    layer.close(layerIndex);
-                    $("#dataTables_info").hide();
-                    var h="<tr><td colspan='12' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
-                    $("#interfaceList").append(h);
-                    return;
-                }
-
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
-                var total=data.data.total;
-                var pages=data.data.pages;
-                var now=data.data.pageNum;
-                var before=data.data.prePage;
-                var next=data.data.nextPage;
-                console.log(data);
-                var html = "";
-                var pagesHtml="";
-                var pageStart="<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip("+before+")' id=\"table_previous\">上一页</a>\n" +
-                    "            <span id=\"pages\">";
-                var pageEnd="</span>\n" +
-                    "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip("+next+")' id=\"table_next\">下一页</a>";
-
-                if(status == 0){
-                    for(var i=0;i<list.length;i++){
-                        var row = list[i];
-                        var irequestmethod="";
-                        if(row.irequestmethod == 1){
-                            irequestmethod="post";
-                        }else if(row.irequestmethod == 2){
-                            irequestmethod="get";
-                        }
-
-                        var remark="";
-                        if(row.remark != null){
-                            remark=row.remark;
-                        }
-
-                        var iContentType="";
-                        for(var m=0;m<ContentTypeEnum.length;m++){
-                            var row1=ContentTypeEnum[m];
-                            if(row.icontenttype == row1.id){
-                                iContentType=row1.value;
-                            }
-                        }
-
-                        var iParamType="";
-                        for(var n=0;n<ResponseTypeEnum.length;n++){
-                            var row2=ResponseTypeEnum[n];
-                            if(row.iparamtype == row2.id){
-                                iParamType=row2.value;
-                            }
-                        }
-
-                        var iResponseType="";
-                        for(var k=0;k<ResponseTypeEnum.length;k++){
-                            var row3=ResponseTypeEnum[k];
-                            if(row.iresponsetype == row3.id){
-                                iResponseType=row3.value;
-                            }
-                        }
-
-                        var rowHtml = "<tr class=\"text-c\">\n" +
-                            "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
-                            "<td >"+row.remark+"</td>\n" +
-                            "<td >"+irequestmethod+"</td>\n" +
-                            "<td>"+iContentType+"</td>\n" +
-                            "<td>"+iParamType+"</td>\n" +
-                            "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.idev+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
-                            "</tr>";
-                        html = html + rowHtml;
-                    }
-
-                    if(pages<6){
-                        for(var k=0;k<pages;k++){
-                            if((k+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(k+1)+")'>"+(k+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                    }else{
-                        for(var i=0;i<5;i++){
-                            if((i+1)==now){
-                                var pageHtml="<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }else{
-                                var pageHtml="<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+(i+1)+")'>"+(i+1)+"</a>";
-                            }
-                            pagesHtml= pagesHtml + pageHtml;
-                        }
-                        pagesHtml= pagesHtml + "<span> …</span>\n" +
-                            "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip("+pages+")'>"+pages+"</a>";
-                    }
-
-                    $("#total").append(total);
-                    $("#interfaceList").append(html);
-                    $("#totalPages").append(pages);
-                    $("#now").append(now);
-                    $("#pager").append(pageStart);
-                    $("#pages").append(pagesHtml);
-                    $("#pager").append(pageEnd);
-                    layer.close(layerIndex);
-
-                }else{
                     layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -461,65 +229,11 @@
 
     //删除接口
     function ti_del(obj,id){
-        layer.confirm('接口删除需谨慎，请确认是否删除...！',function(index){
-            //alert("要删除的id="+id);
-            $.ajax({
-                type: 'POST',
-                url: '/ti/deleteOne',
-                data:{
-                    id:id
-                },
-                dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    if(status == 0){
-                        $(obj).parents("tr").remove();
-                        window.location.reload();
-                        layer.msg('已删除!',{icon:1,time:1000});
-                    }else{
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                    }
-
-                },
-                error:function(data) {
-                    console.log(data);
-                },
-            });
-        });
+        var ms="请确认是否要删除id="+id+"的接口数据";
+        del(obj,id,"/ti/deleteOne",ms);
     }
 
-    //获取枚举值数组
-    function getAllEnum(){
-        var allEnum=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "get",
-            url: "/enum/allEnum",
-            data: {
-            },
-            dataType: "json",
-            success: function (data) {
-                allEnum=data;
-            },
-            fail:function (data) {
-                layer.alert(JSON.stringify(data), {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-            },
-            error: function(xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    });
-            }
-        });
-        return allEnum;
-    }
+
 
 
 </script>

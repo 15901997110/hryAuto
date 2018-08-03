@@ -50,7 +50,7 @@
         </tbody>
     </table>
 </div>
-
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -173,38 +173,9 @@
     }
     /*定制测试-删除*/
     function custom_del(obj,id){
-        layer.confirm('是否删除测试定制，请确认？',function(index){
-            //alert("要删除的id="+id);
-            var o=new Object();
-            o.id=id;
-            var json=JSON.stringify(o);
+        var ms="是否删除测试定制，请确认!";
+        del_json(obj,id,"/tcustom/deleteOne",ms);
 
-            $.ajax({
-                type: 'POST',
-                url: '/tcustom/deleteOne',
-                data:json,
-                dataType: 'json',
-                contentType: 'application/json;charset=utf-8',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    if(status == 0){
-                        $(obj).parents("tr").remove();
-                        window.location.reload();
-                        layer.msg('已删除!',{icon:1,time:1000});
-                    }else{
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        })
-                    }
-
-                },
-                error:function(data) {
-                    console.log(data);
-                },
-            });
-        });
     }
 
     //运行
