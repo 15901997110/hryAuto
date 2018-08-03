@@ -30,6 +30,9 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 mybatis:
   mapper-locations: com/haier/mapper/*.xml
   type-aliases-package: com.haier.po
