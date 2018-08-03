@@ -27,7 +27,7 @@ public class Treport {
 
     private String servicenames;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date testtime;
 
     private Integer status;

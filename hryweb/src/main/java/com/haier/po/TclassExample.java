@@ -165,73 +165,143 @@ public class TclassExample {
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyIsNull() {
-            addCriterion("classKey is null");
+        public Criteria andPackagenameIsNull() {
+            addCriterion("packageName is null");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyIsNotNull() {
-            addCriterion("classKey is not null");
+        public Criteria andPackagenameIsNotNull() {
+            addCriterion("packageName is not null");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyEqualTo(String value) {
-            addCriterion("classKey =", value, "classkey");
+        public Criteria andPackagenameEqualTo(String value) {
+            addCriterion("packageName =", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyNotEqualTo(String value) {
-            addCriterion("classKey <>", value, "classkey");
+        public Criteria andPackagenameNotEqualTo(String value) {
+            addCriterion("packageName <>", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyGreaterThan(String value) {
-            addCriterion("classKey >", value, "classkey");
+        public Criteria andPackagenameGreaterThan(String value) {
+            addCriterion("packageName >", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyGreaterThanOrEqualTo(String value) {
-            addCriterion("classKey >=", value, "classkey");
+        public Criteria andPackagenameGreaterThanOrEqualTo(String value) {
+            addCriterion("packageName >=", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyLessThan(String value) {
-            addCriterion("classKey <", value, "classkey");
+        public Criteria andPackagenameLessThan(String value) {
+            addCriterion("packageName <", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyLessThanOrEqualTo(String value) {
-            addCriterion("classKey <=", value, "classkey");
+        public Criteria andPackagenameLessThanOrEqualTo(String value) {
+            addCriterion("packageName <=", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyLike(String value) {
-            addCriterion("classKey like", value, "classkey");
+        public Criteria andPackagenameLike(String value) {
+            addCriterion("packageName like", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyNotLike(String value) {
-            addCriterion("classKey not like", value, "classkey");
+        public Criteria andPackagenameNotLike(String value) {
+            addCriterion("packageName not like", value, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyIn(List<String> values) {
-            addCriterion("classKey in", values, "classkey");
+        public Criteria andPackagenameIn(List<String> values) {
+            addCriterion("packageName in", values, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyNotIn(List<String> values) {
-            addCriterion("classKey not in", values, "classkey");
+        public Criteria andPackagenameNotIn(List<String> values) {
+            addCriterion("packageName not in", values, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyBetween(String value1, String value2) {
-            addCriterion("classKey between", value1, value2, "classkey");
+        public Criteria andPackagenameBetween(String value1, String value2) {
+            addCriterion("packageName between", value1, value2, "packagename");
             return (Criteria) this;
         }
 
-        public Criteria andClasskeyNotBetween(String value1, String value2) {
-            addCriterion("classKey not between", value1, value2, "classkey");
+        public Criteria andPackagenameNotBetween(String value1, String value2) {
+            addCriterion("packageName not between", value1, value2, "packagename");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIsNull() {
+            addCriterion("className is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIsNotNull() {
+            addCriterion("className is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameEqualTo(String value) {
+            addCriterion("className =", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotEqualTo(String value) {
+            addCriterion("className <>", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameGreaterThan(String value) {
+            addCriterion("className >", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameGreaterThanOrEqualTo(String value) {
+            addCriterion("className >=", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLessThan(String value) {
+            addCriterion("className <", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLessThanOrEqualTo(String value) {
+            addCriterion("className <=", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameLike(String value) {
+            addCriterion("className like", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotLike(String value) {
+            addCriterion("className not like", value, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameIn(List<String> values) {
+            addCriterion("className in", values, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotIn(List<String> values) {
+            addCriterion("className not in", values, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameBetween(String value1, String value2) {
+            addCriterion("className between", value1, value2, "classname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassnameNotBetween(String value1, String value2) {
+            addCriterion("className not between", value1, value2, "classname");
             return (Criteria) this;
         }
 

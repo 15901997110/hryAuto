@@ -1,13 +1,13 @@
 package com.haier.po;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class Tclass {
     private Integer id;
 
-    private String classkey;
+    private String packagename;
+
+    private String classname;
 
     private Integer sid;
 
@@ -17,7 +17,6 @@ public class Tclass {
 
     private String remark;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     private Integer status;
@@ -30,12 +29,20 @@ public class Tclass {
         this.id = id;
     }
 
-    public String getClasskey() {
-        return classkey;
+    public String getPackagename() {
+        return packagename;
     }
 
-    public void setClasskey(String classkey) {
-        this.classkey = classkey == null ? null : classkey.trim();
+    public void setPackagename(String packagename) {
+        this.packagename = packagename == null ? null : packagename.trim();
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname == null ? null : classname.trim();
     }
 
     public Integer getSid() {

@@ -15,7 +15,6 @@ public class Tservice {
 
     private Integer isdel;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatetime;
 
     private String editor;
