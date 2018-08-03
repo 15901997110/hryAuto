@@ -106,72 +106,51 @@ public class PgwTestDefault {
         return objects;
     }
 
-    public Boolean getBoolResult(Params params) {
-        if (params == null || params.getTcase() == null || params.getTcase() == null) {
-            return false;
-        }
-        Ti ti = params.getTi();
-        Tcase tcase = params.getTcase();
-        url = baseUrl + ti.getIuri();
-        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
-        Reporter.log("实际请求参数 : ");
-        Reporter.log(requestParam);
-        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);
-        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype());
-    }
-
     @Test(testName = "/accountBalanceQueryFacade/accountBalanceQuery", dataProvider = "provider", description = "账户余额查询")
     public void accountBalanceQueryFacade_accountBalanceQuery(Params params) {
         String actual = pgw.accountBalanceQueryFacade_accountBalanceQuery(params);
-        AssertUtil.supperAssert(params.getTcase().getAsserttype() + 0, params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/fundPurchaseFacade/fundPurchase", dataProvider = "provider", description = "基金申购")
     public void fundPurchaseFacade_fundPurchase(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.fundPurchaseFacade_fundPurchase(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/fundShareQueryFacade/fundShareQuery", dataProvider = "provider", description = "基金份额查询")
     public void fundShareQueryFacade_fundShareQuery(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.fundShareQueryFacade_fundShareQuery(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/gatewayPostNotifyFacade/kjtPayNotify", dataProvider = "provider", description = "快捷通回调")
     public void gatewayPostNotifyFacade_kjtPayNotify(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.gatewayPostNotifyFacade_kjtPayNotify(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/instantTradeFacade/instantTrade", dataProvider = "provider", description = "即时收单")
     public void instantTradeFacade_instantTrade(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.instantTradeFacade_instantTrade(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.payToAccountFacade_payToAccount(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.payToCardFacade_payToCard(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+        String actual = pgw.tradeQueryFacade_tradeQuery(params);
+        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 }
