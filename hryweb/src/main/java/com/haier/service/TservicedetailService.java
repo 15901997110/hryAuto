@@ -20,6 +20,8 @@ public interface TservicedetailService {
 
     Tservicedetail selectOne(Integer id);
 
+    Tservicedetail selectOne(Integer serviceId,Integer envId);
+
     Integer updateOne(Tservicedetail tservicedetail);
 
     List<Tservicedetail> selectByCondition(Tservicedetail tservicedetail);

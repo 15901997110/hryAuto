@@ -101,6 +101,21 @@ public class TservicedetailServiceImpl implements TservicedetailService {
     }
 
     @Override
+    public Tservicedetail selectOne(Integer serviceId, Integer envId) {
+        if (serviceId == null || envId == null) {
+            return null;
+        }
+        Tservicedetail tservicedetail = new Tservicedetail();
+        tservicedetail.setServiceid(serviceId);
+        tservicedetail.setEnvid(envId);
+        List<Tservicedetail> tservicedetails = this.selectByCondition(tservicedetail);
+        if (tservicedetails != null && tservicedetails.size() > 0) {
+            return tservicedetails.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public Integer updateOne(Tservicedetail tservicedetail) {
         ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
         if (tservicedetail == null || tservicedetail.getId() == null) {

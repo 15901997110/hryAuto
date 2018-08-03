@@ -10,6 +10,7 @@ import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.SkipException;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class Pgw {
+public class PgwTestDefault {
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -43,7 +44,7 @@ public class Pgw {
         this.envId = envId;
         this.caseDesigner = caseDesigner;
         this.i_c = i_c;
-        if (this.i_c != null && !"".equals(this.i_c)) {
+        if (StringUtils.isNotBlank(i_c)) {
             this.i_c_JSONObject = JSONObject.parseObject(i_c);
         }
         tservice = runService.getTservice(this.serviceId);

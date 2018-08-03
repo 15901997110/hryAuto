@@ -3,7 +3,8 @@
 <mapper namespace="com.haier.mapper.TclassMapper">
   <resultMap id="BaseResultMap" type="com.haier.po.Tclass">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="classKey" jdbcType="VARCHAR" property="classkey" />
+    <result column="packageName" jdbcType="VARCHAR" property="packagename" />
+    <result column="className" jdbcType="VARCHAR" property="classname" />
     <result column="sId" jdbcType="INTEGER" property="sid" />
     <result column="sKey" jdbcType="VARCHAR" property="skey" />
     <result column="author" jdbcType="VARCHAR" property="author" />
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, classKey, sId, sKey, author, remark, updateTime, status
+    id, packageName, className, sId, sKey, author, remark, updateTime, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TclassExample" resultMap="BaseResultMap">
     select
@@ -102,22 +103,27 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tclass" keyProperty="id" useGeneratedKeys="true">
-    insert into tclass (id, classKey, sId, 
-      sKey, author, remark, 
-      updateTime, status)
-    values (#{id,jdbcType=INTEGER}, #{classkey,jdbcType=VARCHAR}, #{sid,jdbcType=INTEGER}, 
-      #{skey,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{updatetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.haier.po.Tclass">
+    insert into tclass (id, packageName, className, 
+      sId, sKey, author, 
+      remark, updateTime, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{packagename,jdbcType=VARCHAR}, #{classname,jdbcType=VARCHAR}, 
+      #{sid,jdbcType=INTEGER}, #{skey,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tclass" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="com.haier.po.Tclass">
     insert into tclass
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="classkey != null">
-        classKey,
+      <if test="packagename != null">
+        packageName,
+      </if>
+      <if test="classname != null">
+        className,
       </if>
       <if test="sid != null">
         sId,
@@ -142,8 +148,11 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="classkey != null">
-        #{classkey,jdbcType=VARCHAR},
+      <if test="packagename != null">
+        #{packagename,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null">
+        #{classname,jdbcType=VARCHAR},
       </if>
       <if test="sid != null">
         #{sid,jdbcType=INTEGER},
@@ -177,8 +186,11 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.classkey != null">
-        classKey = #{record.classkey,jdbcType=VARCHAR},
+      <if test="record.packagename != null">
+        packageName = #{record.packagename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classname != null">
+        className = #{record.classname,jdbcType=VARCHAR},
       </if>
       <if test="record.sid != null">
         sId = #{record.sid,jdbcType=INTEGER},
@@ -206,7 +218,8 @@
   <update id="updateByExample" parameterType="map">
     update tclass
     set id = #{record.id,jdbcType=INTEGER},
-      classKey = #{record.classkey,jdbcType=VARCHAR},
+      packageName = #{record.packagename,jdbcType=VARCHAR},
+      className = #{record.classname,jdbcType=VARCHAR},
       sId = #{record.sid,jdbcType=INTEGER},
       sKey = #{record.skey,jdbcType=VARCHAR},
       author = #{record.author,jdbcType=VARCHAR},
@@ -220,8 +233,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.haier.po.Tclass">
     update tclass
     <set>
-      <if test="classkey != null">
-        classKey = #{classkey,jdbcType=VARCHAR},
+      <if test="packagename != null">
+        packageName = #{packagename,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null">
+        className = #{classname,jdbcType=VARCHAR},
       </if>
       <if test="sid != null">
         sId = #{sid,jdbcType=INTEGER},
@@ -246,7 +262,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.haier.po.Tclass">
     update tclass
-    set classKey = #{classkey,jdbcType=VARCHAR},
+    set packageName = #{packagename,jdbcType=VARCHAR},
+      className = #{classname,jdbcType=VARCHAR},
       sId = #{sid,jdbcType=INTEGER},
       sKey = #{skey,jdbcType=VARCHAR},
       author = #{author,jdbcType=VARCHAR},

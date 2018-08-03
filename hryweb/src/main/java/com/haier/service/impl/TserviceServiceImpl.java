@@ -47,6 +47,19 @@ public class TserviceServiceImpl implements TserviceService {
     }
 
     @Override
+    public Tservice selectOne(String className) {
+        if (className == null)
+            return null;
+        Tservice tservice = new Tservice();
+        tservice.setClassname(className);
+        List<Tservice> tservices = this.selectByCondition(tservice);
+        if (tservices != null && tservices.size() > 0) {
+            return tservices.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
         TserviceExample tserviceExample = new TserviceExample();
 
@@ -90,8 +103,8 @@ public class TserviceServiceImpl implements TserviceService {
             }
             if (tservice.getEditor() != null)
                 criteria.andEditorLike(tservice.getEditor());
-            if(tservice.getClassname()!=null)
-                criteria.andClassnameEqualTo(tservice.getClassname().replaceAll("%",""));
+            if (tservice.getClassname() != null)
+                criteria.andClassnameEqualTo(tservice.getClassname().replaceAll("%", ""));
         }
         return tserviceMapper.selectByExample(tserviceExample);
     }

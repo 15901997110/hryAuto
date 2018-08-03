@@ -13,6 +13,8 @@ import java.util.List;
 public interface TserviceService {
     Tservice selectOne(Integer id);
 
+    Tservice selectOne(String className);//根据classname字段精确筛选Tservice
+
     PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize);
 
     List<Tservice> selectByCondition(Tservice tservice);

@@ -50,8 +50,8 @@ public class TclassServiceImpl implements TclassService {
         TclassExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
         if (tclass != null) {
-            if (tclass.getClasskey() != null) {
-                criteria.andClasskeyEqualTo(tclass.getClasskey().replaceAll("%", ""));
+            if (tclass.getClassname() != null) {
+                criteria.andClassnameEqualTo(tclass.getClassname().replaceAll("%", ""));
             }
             if (tclass.getAuthor() != null) {
                 criteria.andAuthorLike(tclass.getAuthor());

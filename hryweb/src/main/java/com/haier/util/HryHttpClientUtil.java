@@ -9,9 +9,16 @@ import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.enums.RequestParamTypeEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
+import com.haier.po.Params;
+import com.haier.po.Tcase;
+import com.haier.po.Ti;
+import com.haier.service.TcaseService;
+import com.haier.service.TiService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
+import org.testng.Reporter;
 
 import java.util.Map;
 import java.util.Objects;
@@ -100,4 +107,36 @@ public class HryHttpClientUtil {
         }
     }
 
+    public static String send(String baseUrl, String dbInfo, Integer caseId) {
+        TcaseService caseService = SpringContextHolder.getBean(TcaseService.class);
+        TiService iService = SpringContextHolder.getBean(TiService.class);
+        Tcase tcase = caseService.selectOne(caseId);
+        Ti ti = iService.selectOne(tcase.getIid());
+        Params params = new Params();
+        params.setTi(ti);
+        params.setTcase(tcase);
+        return send(baseUrl, dbInfo, params);
+    }
+
+    /**
+     * @description: 接收请求参数 已经处理过的Params,处理过的参数封装到Params.Tcase.Requestparam 中
+     * @params:
+     * @return:
+     * @author: luqiwei
+     * @date: 2018-08-03
+     */
+    public static String send(String baseUrl, String dbInfo, Params params) {
+        Ti ti = params.getTi();
+        Tcase tcase = params.getTcase();
+        Integer requestMethodType = ti.getIrequestmethod().intValue();
+        Integer requestParamType = ti.getIparamtype().intValue();
+        Integer contentType = ti.getIcontenttype().intValue();
+        String param = tcase.getRequestparam();
+        Reporter.log("用例设计参数:" + param);
+        if (StringUtils.isNotBlank(param)) {
+            param = BeforeUtil.replace(param, dbInfo);
+        }
+        Reporter.log("实际请求参数:" + param);
+        return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);
+    }
 }
