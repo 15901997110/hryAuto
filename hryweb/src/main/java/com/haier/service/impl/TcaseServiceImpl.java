@@ -168,7 +168,7 @@ public class TcaseServiceImpl implements TcaseService {
         }
         Ti ti = tiMapper.selectByPrimaryKey(iId);
         Tservice tservice = tserviceMapper.selectByPrimaryKey(ti.getServiceid());
-        Integer httpType = tservice.getHttptype() + 0;
+        Integer httpType = tservice.getHttptype();
         TservicedetailExample tservicedetailExample = new TservicedetailExample();
         TservicedetailExample.Criteria criteria = tservicedetailExample.createCriteria();
         criteria.andStatusGreaterThan(0);//查询status>0的数据
@@ -192,7 +192,7 @@ public class TcaseServiceImpl implements TcaseService {
         runOneResult.setIUri(ti.getIuri());
         runOneResult.setParam(requestparam);
         runOneResult.setPrarmType(RequestParamTypeEnum.getValue(ti.getIparamtype()));
-        runOneResult.setRequestMethod(RequestMethodTypeEnum.getValue(ti.getIrequestmethod() + 0));
+        runOneResult.setRequestMethod(RequestMethodTypeEnum.getValue(ti.getIrequestmethod()));
         runOneResult.setResponseType(ResponseTypeEnum.getValue(ti.getIresponsetype()));
         runOneResult.setServiceKey(tservice.getServicekey());
 
@@ -222,7 +222,7 @@ public class TcaseServiceImpl implements TcaseService {
 
                 if (actualParam != null && !"".equals(actualParam.trim())) {
                     //参数类型为Json,且参数内容不为空
-                    if (RequestParamTypeEnum.JSON.getId() == ti.getIparamtype() + 0) {
+                    if (RequestParamTypeEnum.JSON.getId() == ti.getIparamtype()) {
                         try {
                             param = JSON.parseObject(actualParam);
                         } catch (RuntimeException e) {
@@ -232,7 +232,7 @@ public class TcaseServiceImpl implements TcaseService {
                     }
 
                     //参数类型为Map,且参数内容不为空
-                    else if (RequestParamTypeEnum.MAP.getId() == ti.getIparamtype() + 0) {
+                    else if (RequestParamTypeEnum.MAP.getId() == ti.getIparamtype()) {
                         //暂未实现,具体遇到此种情况,再来实现
                         throw new HryException(StatusCodeEnum.PARAMS_FORMAT_ERROR, "现在仅支持Json格式参数!不支持Map");
                     } else {
@@ -250,10 +250,10 @@ public class TcaseServiceImpl implements TcaseService {
             runOneResultSub.setActualParam(actualParam);
             //发送http请求
             String url = HttpTypeEnum.getValue(httpType) + "://" + tservicedetail.getHostinfo() + ti.getIuri();
-            String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, param);
+            String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), param);
 
             //断言结果
-            Boolean result = AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);
+            Boolean result = AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
 
             runOneResultSub.setActual(actual);
             runOneResultSub.setEnv(EnvEnum.getValue(tservicedetail.getEnvid()));

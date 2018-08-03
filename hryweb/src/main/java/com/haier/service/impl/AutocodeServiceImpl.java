@@ -133,8 +133,8 @@ public class AutocodeServiceImpl implements AutocodeService {
             "        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());\n" +
             "        Reporter.log(\"实际请求参数 : \");\n" +
             "        Reporter.log(requestParam);\n" +
-            "        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod() + 0, ti.getIcontenttype() + 0, ti.getIparamtype() + 0, requestParam);\n" +
-            "        return AssertUtil.supperAssert(tcase.getAsserttype() + 0, tcase.getExpected(), actual, ti.getIresponsetype() + 0);\n" +
+            "        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), ti.getIcontenttype(), ti.getIparamtype(), requestParam);\n" +
+            "        return AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());\n" +
             "    }\n";
     private static final String sMethodTest = "    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
             "    public void ${testMethodName}(Params params) {\n" +
