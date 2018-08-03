@@ -56,7 +56,7 @@ public class TiServiceImpl implements TiService {
         tiExample.createCriteria()
                 .andServiceidEqualTo(ti.getServiceid())
                 .andIuriEqualTo(ti.getIuri())
-                .andIstatusNotEqualTo((short) -1);
+                .andIstatusNotEqualTo( -1);
         List<Ti> tis = tiMapper.selectByExample(tiExample);
         if (tis != null && tis.size() > 0) {
             throw new HryException(StatusCodeEnum.EXIST_RECORD);
@@ -97,7 +97,7 @@ public class TiServiceImpl implements TiService {
         //2.再删除ti表中的记录
         Ti ti = new Ti();
         ti.setId(id);
-        ti.setIstatus((short) -1);
+        ti.setIstatus( -1);
         return tiMapper.updateByPrimaryKeySelective(ti);
     }
 
@@ -124,10 +124,10 @@ public class TiServiceImpl implements TiService {
         //再删除ti中的记录
         TiExample tiExample = new TiExample();
         tiExample.createCriteria()
-                .andIstatusGreaterThan((short) 0)
+                .andIstatusGreaterThan( 0)
                 .andServiceidEqualTo(ti.getServiceid());
         Ti i = new Ti();
-        i.setIstatus((short) -1);
+        i.setIstatus( -1);
         return tiMapper.updateByExampleSelective(i, tiExample);
     }
 
@@ -158,7 +158,7 @@ public class TiServiceImpl implements TiService {
         ReflectUtil.setFieldAddPercentAndCleanZero(ti, false);
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
-        criteria.andIstatusGreaterThan((short) 0);
+        criteria.andIstatusGreaterThan( 0);
         if (ti != null) {
             if (ti.getServiceid() != null) {
                 criteria.andServiceidEqualTo(ti.getServiceid());

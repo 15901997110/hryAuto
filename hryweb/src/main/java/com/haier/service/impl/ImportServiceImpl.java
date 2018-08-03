@@ -91,7 +91,7 @@ public class ImportServiceImpl implements ImportService {
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
         criteria.andServiceidEqualTo(serviceId);//筛选serviceId
-        criteria.andIstatusNotEqualTo((short) -1);//筛选状态!=-1(非删除的数据)
+        criteria.andIstatusNotEqualTo( -1);//筛选状态!=-1(非删除的数据)
         List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
         List<String> existIuri = new ArrayList<String>();
         Map<String, Integer> existIuriId = new HashMap<String, Integer>();//后续更新记录时会用到primaryKey
