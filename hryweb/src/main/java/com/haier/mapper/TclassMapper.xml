@@ -103,7 +103,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tclass">
+  <insert id="insert" parameterType="com.haier.po.Tclass" keyProperty="id" useGeneratedKeys="true">
     insert into tclass (id, packageName, className, 
       sId, sKey, author, 
       remark, updateTime, status
@@ -113,7 +113,7 @@
       #{remark,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tclass">
+  <insert id="insertSelective" parameterType="com.haier.po.Tclass" useGeneratedKeys="true" keyProperty="id">
     insert into tclass
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

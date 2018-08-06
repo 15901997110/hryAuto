@@ -17,6 +17,7 @@ public enum StatusCodeEnum {
     PRIMARYKEY_NULL(8, "主键不可为空"),
     REGEX_ERROR_PWD(9, "密码不符合规范"),
     DANGER_OPERATION(10, "危险操作不被允许"),
+    REGEX_ERROR(11,"正则不匹配"),
     HTTP_ERROR(100, "发送http请求时异常"),
     PARSE_JSON_ERROR(101, "字符串转换为JSONObject时异常"),
 

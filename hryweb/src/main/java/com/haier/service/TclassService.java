@@ -17,6 +17,10 @@ public interface TclassService {
 
     Integer deleteOne(Integer id);
 
+    Integer deleteByCondition(Tclass tclass);
+
+    Tclass selectOne(Integer id);
+
     List<Tclass> selectByCondition(Tclass tclass);
 
     PageInfo<Tclass> selectByCondition(Tclass tclass, Integer pageNum, Integer pageSize);

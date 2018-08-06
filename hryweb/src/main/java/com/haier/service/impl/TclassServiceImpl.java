@@ -26,7 +26,9 @@ public class TclassServiceImpl implements TclassService {
 
     @Override
     public Integer insertOne(Tclass tclass) {
+
         mapper.insertSelective(tclass);
+
         return tclass.getId();
     }
 
@@ -41,6 +43,28 @@ public class TclassServiceImpl implements TclassService {
         tclass.setId(id);
         tclass.setStatus(-1);
         return this.updateOne(tclass);
+    }
+
+    @Override
+    public Integer deleteByCondition(Tclass tclass) {
+        TclassExample example = new TclassExample();
+        TclassExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusGreaterThan(0);
+        if (tclass != null && tclass.getSid() != null) {
+
+            criteria.andSidEqualTo(tclass.getSid());
+        } else {
+            return 0;
+        }
+        Tclass record = new Tclass();
+        record.setStatus(-1);
+
+        return mapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public Tclass selectOne(Integer id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
     @Override
