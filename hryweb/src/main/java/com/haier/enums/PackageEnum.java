@@ -6,7 +6,9 @@ package com.haier.enums;
  * @Date: 2018/8/6 11:20
  */
 public enum PackageEnum {
-    TEST("com.haier.testng.test");
+    TEST("com.haier.testng.test"),
+    BASE("com.haier.testng.base")
+    ;
 
     public String getPackageName() {
         return packageName;
