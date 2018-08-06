@@ -62,10 +62,16 @@ public class TclassController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新操作时,id必填");
         }
 
-        //数据重复性校验
-        Tclass condition = new Tclass();
-        condition.setStatus(1);
+        //数据校验
         if (tclass.getClassname() != null) {
+            //类名校验
+            if (!tclass.getClassname().matches("[A-Z][a-zA-Z0-9]+")) {
+                throw new HryException(StatusCodeEnum.REGEX_ERROR, "类名必须符合规则:首字母须大写,其余部分只能由字母和数字组成!");
+            }
+
+            //数据重复性校验
+            Tclass condition = new Tclass();
+            condition.setStatus(1);
             condition.setClassname(tclass.getClassname());
             List<Tclass> tclasses = service.selectByCondition(condition);
             if (tclasses.size() > 0) {//存在 多条记录,并且id还不是自己的id
