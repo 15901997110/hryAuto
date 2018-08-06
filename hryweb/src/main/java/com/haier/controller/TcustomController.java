@@ -62,6 +62,9 @@ public class TcustomController {
             if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
             }
+            if (tcustomdetail.getClientlevel() == ClientLevelEnum.SERVICE.getLevel() && tcustomdetail.getClassname() == null) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制服务时(服务id=" + tcustomdetail.getClientid() + "),必须指定此服务使用的测试类");
+            }
             //当定制明细为接口和用例时,需要校验parentClientId不为0或者null
             if (tcustomdetail.getClientlevel() != ClientLevelEnum.SERVICE.getLevel() &&
                     (tcustomdetail.getParentclientid() == null || tcustomdetail.getParentclientid() == 0)) {
