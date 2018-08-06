@@ -9,6 +9,7 @@
     <result column="parentClientId" jdbcType="INTEGER" property="parentclientid" />
     <result column="hasChild" jdbcType="BIT" property="haschild" />
     <result column="clientName" jdbcType="VARCHAR" property="clientname" />
+    <result column="className" jdbcType="VARCHAR" property="classname" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, customId, clientLevel, clientId, parentClientId, hasChild, clientName, status
+    id, customId, clientLevel, clientId, parentClientId, hasChild, clientName, className, 
+    status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcustomdetailExample" resultMap="BaseResultMap">
     select
@@ -103,19 +105,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.haier.po.Tcustomdetail">
-    insert into tcustomdetail (id, customId, clientLevel, 
-      clientId, parentClientId, hasChild, 
-      clientName, status)
-    values (#{id,jdbcType=INTEGER}, #{customid,jdbcType=INTEGER}, #{clientlevel,jdbcType=INTEGER}, 
-      #{clientid,jdbcType=INTEGER}, #{parentclientid,jdbcType=INTEGER}, #{haschild,jdbcType=BIT}, 
-      #{clientname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tcustomdetail (customId, clientLevel, clientId, 
+      parentClientId, hasChild, clientName, 
+      className, status)
+    values (#{customid,jdbcType=INTEGER}, #{clientlevel,jdbcType=INTEGER}, #{clientid,jdbcType=INTEGER}, 
+      #{parentclientid,jdbcType=INTEGER}, #{haschild,jdbcType=BIT}, #{clientname,jdbcType=VARCHAR}, 
+      #{classname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcustomdetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tcustomdetail
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="customid != null">
         customId,
       </if>
@@ -134,14 +139,14 @@
       <if test="clientname != null">
         clientName,
       </if>
+      <if test="classname != null">
+        className,
+      </if>
       <if test="status != null">
         status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="customid != null">
         #{customid,jdbcType=INTEGER},
       </if>
@@ -159,6 +164,9 @@
       </if>
       <if test="clientname != null">
         #{clientname,jdbcType=VARCHAR},
+      </if>
+      <if test="classname != null">
+        #{classname,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -195,6 +203,9 @@
       <if test="record.clientname != null">
         clientName = #{record.clientname,jdbcType=VARCHAR},
       </if>
+      <if test="record.classname != null">
+        className = #{record.classname,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -212,6 +223,7 @@
       parentClientId = #{record.parentclientid,jdbcType=INTEGER},
       hasChild = #{record.haschild,jdbcType=BIT},
       clientName = #{record.clientname,jdbcType=VARCHAR},
+      className = #{record.classname,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -238,6 +250,9 @@
       <if test="clientname != null">
         clientName = #{clientname,jdbcType=VARCHAR},
       </if>
+      <if test="classname != null">
+        className = #{classname,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -252,6 +267,7 @@
       parentClientId = #{parentclientid,jdbcType=INTEGER},
       hasChild = #{haschild,jdbcType=BIT},
       clientName = #{clientname,jdbcType=VARCHAR},
+      className = #{classname,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -38,4 +38,6 @@ public interface TcustomService {
     List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom);
 
     String run(Integer customId, Integer executeUserId);
+
+
 }

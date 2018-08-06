@@ -15,6 +15,8 @@ public class Tcustomdetail {
 
     private String clientname;
 
+    private String classname;
+
     private Integer status;
 
     public Integer getId() {
@@ -71,6 +73,14 @@ public class Tcustomdetail {
 
     public void setClientname(String clientname) {
         this.clientname = clientname == null ? null : clientname.trim();
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname == null ? null : classname.trim();
     }
 
     public Integer getStatus() {
