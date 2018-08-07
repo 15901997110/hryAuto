@@ -308,6 +308,19 @@ function getParameter(name) {
     return null;
 }
 
+/*将html格式转为字串*/
+function strToHtml(s)
+{
+    if(s == null|| s == ""){
+        return   "";
+    }else{
+        s   =   s.replace("&","&");
+        s   =   s.rep("<","<");
+        s   =   s.replace(">",">");
+        s   =   s.replace(" ","   ");
+    }
+    return   s;
+}
 
 
 
