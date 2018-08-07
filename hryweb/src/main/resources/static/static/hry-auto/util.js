@@ -217,3 +217,145 @@ function userGroup(){
     });
     return usergroup;
 }
+
+//获取服务List
+function getServiceList(){
+    var service=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/tservice/selectByConditionSimple",
+        data: {
+
+        },
+        dataType: "json",
+        success: function (data) {
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                service=data.data;
+            }else{
+                layer.alert(data.msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return service;
+}
+
+//获取技术部人员List
+function getUserList() {
+    var dev = null;
+    var groupId = $.cookie('groupidCookie');
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/user/selectByCondition",
+        data: {},
+        dataType: "json",
+        success: function (data) {
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                layer.close(layerIndex);
+                dev = data.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return dev;
+}
+
+//
+function getParameter(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
+/*将html格式转为字串*/
+function strToHtml(s)
+{
+    if(s == null|| s == ""){
+        return   "";
+    }else{
+        s   =   s.replace("&","&");
+        s   =   s.rep("<","<");
+        s   =   s.replace(">",">");
+        s   =   s.replace(" ","   ");
+    }
+    return   s;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

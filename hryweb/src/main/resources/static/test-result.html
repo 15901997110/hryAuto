@@ -66,7 +66,7 @@
         </table>
     </div>
 </div>
-
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -112,12 +112,11 @@
                 }else if(row.result == "PASS"){
                     css="#08ad16";
                 }
-
                 var rowHtml = "<tr class=\"text-c\" id="+t+">\n" +
                     "<td>"+row.env+"</td>\n" +
                     "<td>"+row.hostInfo+"</td>\n" +
                     "<td>"+assertType+"</td>\n" +
-                    "<td>"+row.actualParam+"</td>"+
+                    "<td><xmp>"+row.actualParam+"></xmp></td>"+
                     "<td>"+expected+"</td>\n" +
                     "<td >"+row.actual+"</td>\n" +
                     "<td>"+row.result+"</td>\n" +
