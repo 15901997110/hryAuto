@@ -24,9 +24,6 @@ import java.util.List;
 @SuppressWarnings("Duplicates")
 @Slf4j
 public class PgwTestDefault extends PgwBase{
-/*    {
-        log.info("构造代码块");
-    }*/
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
@@ -36,6 +33,7 @@ public class PgwTestDefault extends PgwBase{
     private Tservice tservice;
     private Tservicedetail tservicedetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
+
 
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
