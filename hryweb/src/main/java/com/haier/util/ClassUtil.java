@@ -1,5 +1,7 @@
 package com.haier.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -14,6 +16,7 @@ import java.util.jar.JarFile;
  * @Author: luqiwei
  * @Date: 2018/8/7 18:54
  */
+@Slf4j
 public class ClassUtil {
     /**
      * 获取某包下（包括该包的所有子包）所有类
@@ -40,8 +43,10 @@ public class ClassUtil {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         String packagePath = packageName.replace(".", "/");
         URL url = loader.getResource(packagePath);
+        log.debug("url.getPath:"+url.getPath());
         if (url != null) {
             String type = url.getProtocol();
+
             if (type.equals("file")) {
                 fileNames = getClassNameByFile(url.getPath(), null, childPackage);
             } else if (type.equals("jar")) {
