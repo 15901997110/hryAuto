@@ -8,7 +8,7 @@ package com.haier.enums;
 public enum BeforeRegexEnum {
     UUID("(?i)<<<uuid>>>"),//匹配rd
     SQL("((?i)<<<sql:)((?!.*?<<<).*?)(>>>)"),//匹配以 "<<<sql:" 开头,中间不包含 "<<<" 字符串,以 ">>>" 结尾(非贪心)
-
+    VAR("((?i)<<<var:)((?!.*?<<<).*?)(>>>)"),//匹配以 "<<<var:" 开头,中间不包含 "<<<" 字符串,以 ">>>" 结尾(非贪心)
 
     ;
     private String pattern;

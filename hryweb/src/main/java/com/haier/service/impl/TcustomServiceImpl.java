@@ -1,10 +1,7 @@
 package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.haier.enums.ClientLevelEnum;
-import com.haier.enums.ParamKeyEnum;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.enums.StatusEnum;
+import com.haier.enums.*;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
@@ -228,7 +225,14 @@ public class TcustomServiceImpl implements TcustomService {
             }
         }
 
+        /**
+         * iMap<服务id,List<接口名称>>
+         */
         Map<Integer, List<String>> iMap = new HashMap<>();
+
+        /**
+         * cMap<服务id,Map<接口名称,List<用例id>>>
+         */
         Map<Integer, Map<String, List<Integer>>> cMap = new HashMap<>();
 
         if (tcustomdetails_interface.size() > 0) {
@@ -272,9 +276,15 @@ public class TcustomServiceImpl implements TcustomService {
                     }
                 }
                 if (i_c_map.size() > 0) {
-                    cMap.put(i.getParentclientid(), i_c_map);
+                    if (cMap.containsKey(i.getParentclientid())) {
+                        //如果serviceId已经存在 ,则将i_c_map合并到原来的i_c_map中,fixed by luqiwei 2018/08/07
+                        cMap.get(i.getParentclientid()).putAll(i_c_map);//map.putAll():映射不存在则复制,存在则覆盖
+                    } else {
+                        cMap.put(i.getParentclientid(), i_c_map);
+                    }
                 }
             }
+
         }
 
 
@@ -286,9 +296,51 @@ public class TcustomServiceImpl implements TcustomService {
         Integer envid = customVO.getEnvid();
         User user = userService.selectOne(executeUserId);
 
-        Tservicedetail condition = new Tservicedetail();
+//        Tservicedetail condition = new Tservicedetail();
         for (Tcustomdetail tcustomdetail : tcustomdetails_service) {
-            condition.setEnvid(envid);
+            //构建测试类
+            XmlClass xmlClass = new XmlClass(PackageEnum.TEST.getPackageName() + "." + tcustomdetail.getClassname());
+
+            Map<String, String> params = new HashMap<>();//构建测试类常规参数
+            params.put(ParamKeyEnum.SERVICEID.getKey(), tcustomdetail.getClientid() + "");
+            params.put(ParamKeyEnum.ENVID.getKey(), envid + "");
+            params.put(ParamKeyEnum.DESIGNER.getKey(), "");//此字段为预留后期使用,先传空值
+
+            //构建此测试类对应的方法选择器(如果有的话)
+            if (iMap.size() > 0) {
+                List<String> runInterface = iMap.get(tcustomdetail.getClientid());
+                if (runInterface != null && runInterface.size() > 0) {
+                    List<XmlInclude> xmlIncludes = new ArrayList<>();
+                    for (String s : runInterface) {
+                        XmlInclude include = new XmlInclude(s);
+                        xmlIncludes.add(include);
+                    }
+                    xmlClass.setIncludedMethods(xmlIncludes);
+                }
+            }
+
+            //构建此测试类对应的case参数(如果有的话)
+            String i_c_jsonStr = "";
+            if (cMap.size() > 0) {
+                Map<String, List<Integer>> stringListMap = cMap.get(tcustomdetail.getClientid());
+                if (stringListMap != null && stringListMap.size() > 0) {
+                    i_c_jsonStr = JSON.toJSONString(stringListMap);
+
+                }
+            }
+            params.put(ParamKeyEnum.I_C.getKey(), i_c_jsonStr);//参数名:i_c
+            xmlClass.setParameters(params);
+            sMap.put(tcustomdetail, xmlClass);//建立映射关系
+
+
+            /**
+             * 以下注释的内容为老的直接从tservicedetail表中获取对应的测试类
+             * 原因:
+             * 现在需求变化为:一个服务可以对应多个测试类,
+             * 测试类信息直接维护到定制详情表中(tcustomdetail.className),前提是tcustomdetail.clientLevel=1,即服务才会也必须要标记测试类信息
+             */
+
+            /*condition.setEnvid(envid);
             condition.setServiceid(tcustomdetail.getClientid());
             List<Tservicedetail> tservicedetails_service = tservicedetailService.selectByCondition(condition);
             if (tservicedetails_service != null && tservicedetails_service.size() > 0) {
@@ -332,8 +384,9 @@ public class TcustomServiceImpl implements TcustomService {
                     params.put(ParamKeyEnum.I_C.getKey(), i_c_jsonStr);//参数名:i_c
                     xmlClass.setParameters(params);
                     sMap.put(tcustomdetail, xmlClass);//建立映射关系
-                }
-            }
+
+        }
+    }*/
         }
 
         Tenv tenv = tenvService.selectOne(envid);

@@ -206,16 +206,16 @@ public class TcaseServiceImpl implements TcaseService {
             if (ti.getIparamtype() != null) {//参数类型有填写
                 //处理参数-前置统一处理,匹配各种<<<xxx>>>关键字
                 if (requestparam != null && !"".equals(requestparam.trim())) {
-                    actualParam = requestparam.replaceAll("\\n", "").trim();
+                   /* actualParam = requestparam.replaceAll("\\n", "").trim();
 
                     JSONObject dbinfo = null;
                     try {
                         dbinfo = JSON.parseObject(tservicedetail.getDbinfo());
                     } catch (Exception e) {
                         log.warn("dbinfo转换异常,系统将当成dbinfo=null来处理");
-                    }
-                    while (BeforeUtil.needReplace(actualParam)) {
-                        actualParam = BeforeUtil.replace(actualParam, dbinfo);
+                    }*/
+                    while (BeforeUtil.isNeedReplace(actualParam)) {
+                        actualParam = BeforeUtil.replace(actualParam, tservicedetail.getDbinfo(),null);
                     }
                 }
                 log.debug("实际请求参数:" + actualParam);

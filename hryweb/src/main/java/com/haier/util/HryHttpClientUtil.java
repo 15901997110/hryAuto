@@ -119,7 +119,7 @@ public class HryHttpClientUtil {
     }
 
     /**
-     * @description: 接收请求参数 已经处理过的Params,处理过的参数封装到Params.Tcase.Requestparam 中
+     * @description: 接收请求参数, 处理过的参数封装到Params.Tcase.Requestparam中
      * @params:
      * @return:
      * @author: luqiwei
@@ -132,9 +132,10 @@ public class HryHttpClientUtil {
         Integer requestParamType = ti.getIparamtype().intValue();
         Integer contentType = ti.getIcontenttype().intValue();
         String param = tcase.getRequestparam();
+        Reporter.log("用例id:" + tcase.getId());
         Reporter.log("用例设计参数:" + param);
         if (StringUtils.isNotBlank(param)) {
-            param = BeforeUtil.replace(param, dbInfo);
+            param = BeforeUtil.replace(param, dbInfo, null);
         }
         Reporter.log("实际请求参数:" + param);
         return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);

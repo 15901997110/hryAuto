@@ -63,7 +63,7 @@ public class PgwTest {
         Ti ti = params.getTi();
         Tcase tcase = params.getTcase();
         url = baseUrl + ti.getIuri();
-        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo());
+        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo(),this);
         Reporter.log("实际请求参数 : ");
         Reporter.log(requestParam);
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), ti.getIcontenttype(), ti.getIparamtype(), requestParam);

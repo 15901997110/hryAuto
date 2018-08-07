@@ -5,14 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
-import com.haier.testng.base.Pgw;
+import com.haier.testng.base.PgwBase;
 import com.haier.util.AssertUtil;
-import com.haier.util.BeforeUtil;
-import com.haier.util.HryHttpClientUtil;
 import com.haier.util.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
@@ -26,18 +23,19 @@ import java.util.List;
 
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class PgwTestDefault {
+public class PgwTestDefault extends PgwBase{
+/*    {
+        log.info("构造代码块");
+    }*/
     private Integer serviceId;
     private Integer envId;
     private String caseDesigner;
-    private String i_c;//接收外部传参,定制的用例
     private JSONObject i_c_JSONObject;//将定制的用例从String类型转成JSONObject类型
     private String baseUrl;//http://host:port
-    private String url;
+    private String dbInfo;
     private Tservice tservice;
     private Tservicedetail tservicedetail;
     private RunService runService = SpringContextHolder.getBean(RunService.class);
-    private Pgw pgw;
 
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
@@ -45,14 +43,13 @@ public class PgwTestDefault {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
-        this.i_c = i_c;
         if (StringUtils.isNotBlank(i_c)) {
             this.i_c_JSONObject = JSONObject.parseObject(i_c);
         }
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
-        pgw=new Pgw(baseUrl,tservicedetail.getDbinfo());
+        dbInfo=tservicedetail.getDbinfo();
     }
 
     @DataProvider(name = "provider")
@@ -108,49 +105,49 @@ public class PgwTestDefault {
 
     @Test(testName = "/accountBalanceQueryFacade/accountBalanceQuery", dataProvider = "provider", description = "账户余额查询")
     public void accountBalanceQueryFacade_accountBalanceQuery(Params params) {
-        String actual = pgw.accountBalanceQueryFacade_accountBalanceQuery(params);
+        String actual = this.accountBalanceQueryFacade_accountBalanceQuery(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/fundPurchaseFacade/fundPurchase", dataProvider = "provider", description = "基金申购")
     public void fundPurchaseFacade_fundPurchase(Params params) {
-        String actual = pgw.fundPurchaseFacade_fundPurchase(params);
+        String actual = this.fundPurchaseFacade_fundPurchase(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/fundShareQueryFacade/fundShareQuery", dataProvider = "provider", description = "基金份额查询")
     public void fundShareQueryFacade_fundShareQuery(Params params) {
-        String actual = pgw.fundShareQueryFacade_fundShareQuery(params);
+        String actual = this.fundShareQueryFacade_fundShareQuery(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/gatewayPostNotifyFacade/kjtPayNotify", dataProvider = "provider", description = "快捷通回调")
     public void gatewayPostNotifyFacade_kjtPayNotify(Params params) {
-        String actual = pgw.gatewayPostNotifyFacade_kjtPayNotify(params);
+        String actual = this.gatewayPostNotifyFacade_kjtPayNotify(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/instantTradeFacade/instantTrade", dataProvider = "provider", description = "即时收单")
     public void instantTradeFacade_instantTrade(Params params) {
-        String actual = pgw.instantTradeFacade_instantTrade(params);
+        String actual = this.instantTradeFacade_instantTrade(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(Params params) {
-        String actual = pgw.payToAccountFacade_payToAccount(params);
+        String actual = this.payToAccountFacade_payToAccount(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(Params params) {
-        String actual = pgw.payToCardFacade_payToCard(params);
+        String actual = this.payToCardFacade_payToCard(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(Params params) {
-        String actual = pgw.tradeQueryFacade_tradeQuery(params);
+        String actual = this.tradeQueryFacade_tradeQuery(baseUrl,dbInfo,params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
 }
