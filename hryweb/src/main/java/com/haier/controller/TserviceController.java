@@ -97,5 +97,19 @@ public class TserviceController {
         return ResultUtil.success(tserviceService.deleteOne(id));
     }
 
+    /**
+     * 获取所有服务对应的测试类
+     */
+    @PostMapping("/getTestClasses")
+    public Result getTestClasses() {
+        return ResultUtil.success(tserviceService.getTestClasses());
+    }
 
+    /**
+     * 根据Service获取所有测试类
+     */
+    @PostMapping("/getTestClassesBySKey")
+    public Result getTestClassesBySKey(String sKey) {
+        return ResultUtil.success(tserviceService.getTestClasses(sKey));
+    }
 }

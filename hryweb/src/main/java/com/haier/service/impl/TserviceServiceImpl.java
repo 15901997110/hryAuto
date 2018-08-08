@@ -2,6 +2,8 @@ package com.haier.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.anno.SKey;
+import com.haier.enums.PackageEnum;
 import com.haier.enums.SortEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
@@ -11,13 +13,15 @@ import com.haier.po.*;
 import com.haier.service.TservicedetailService;
 import com.haier.service.TiService;
 import com.haier.service.TserviceService;
+import com.haier.util.ClassUtil;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Description: TserviceService实现类
@@ -164,5 +168,58 @@ public class TserviceServiceImpl implements TserviceService {
         tservice.setId(id);
         tservice.setIsdel(1);
         return this.updateOne(tservice);
+    }
+
+    @Override
+    public Map<String, List<String>> getTestClasses() {
+        Map<String, List<String>> ret = new HashMap<>();
+        List<String> baseClassNames = ClassUtil.getClassName(PackageEnum.BASE.getPackageName());
+        List<String> testClassNames = ClassUtil.getClassName(PackageEnum.TEST.getPackageName());
+        //循环base类,找到Skey
+        for (String baseClassName : baseClassNames) {
+            List<String> list = new ArrayList<>();
+            String baseClassSkeyValue = null;
+            try {
+                Class<?> baseClass = Class.forName(baseClassName);
+                try {
+                    baseClassSkeyValue = baseClass.getAnnotation(SKey.class).value();
+
+                    //循环test类
+                    for (String testClassName : testClassNames) {
+                        String simpleTestClassName;
+                        try {
+                            Class<?> testClass = Class.forName(testClassName);
+                            simpleTestClassName = testClass.getSimpleName();
+                            try {
+                                String testClassSkeyValue = testClass.getAnnotation(SKey.class).value();
+                                if (testClassSkeyValue.equals(baseClassSkeyValue)) {
+                                    list.add(simpleTestClassName);
+                                }
+                            } catch (NullPointerException e) {
+
+                            }
+                        } catch (ClassNotFoundException e) {
+
+                        }
+                    }
+                } catch (NullPointerException e) {
+
+                }
+
+            } catch (ClassNotFoundException e) {
+
+            }
+            if (StringUtils.isNotBlank(baseClassSkeyValue)) {
+                ret.put(baseClassSkeyValue, list);
+            }
+        }
+        return ret;
+    }
+
+    @Override
+    public List<String> getTestClasses(String sKey) {
+        Map<String, List<String>> testClasses = this.getTestClasses();
+        List<String> strings = testClasses.get(sKey);
+        return strings == null ? new ArrayList<>() : strings;
     }
 }

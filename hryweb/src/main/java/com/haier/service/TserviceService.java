@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.haier.po.Tservice;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -25,4 +26,8 @@ public interface TserviceService {
     Integer insertOne(Tservice tservice);
 
     Integer deleteOne(Integer id);//id为主键
+
+    Map<String,List<String>>  getTestClasses();
+
+    List<String> getTestClasses(String sKey);
 }
