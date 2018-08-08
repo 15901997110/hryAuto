@@ -3,57 +3,55 @@ package com.haier.testng.base;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.anno.SKey;
+import com.haier.anno.Uri;
 import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
-import com.haier.util.AssertUtil;
-import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;
 import org.testng.SkipException;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @Description: LanmaoBase
+ * @Author: 自动生成
+ * @Date: 2018/08/08 16:56:17
+ */
 @SuppressWarnings("Duplicates")
 @Slf4j
 @SKey("Lanmao")
 public class LanmaoBase {
-private Integer serviceId;
-    private Integer envId;
-    private String caseDesigner;
-    private String i_c;//接收外部传参,定制的用例
-    private JSONObject i_c_JSONObject;//将定制的用例从String类型转成JSONObject类型
-    private String baseUrl;//http://host:port
-    private String url;
-    private Tservice tservice;
-    private Tservicedetail tservicedetail;
-    private RunService runService = SpringContextHolder.getBean(RunService.class);
-@Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
-    @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c) {
+    public Integer serviceId;
+    public Integer envId;
+    public String caseDesigner;
+    public JSONObject i_c_JSONObject;//将定制的用例从String类型转成JSONObject类型
+    public String baseUrl;//http://host:port
+    public String dbInfo;
+    public Tservice tservice;
+    public Tservicedetail tservicedetail;
+    public RunService runService = SpringContextHolder.getBean(RunService.class);
+
+    public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c) {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
-        this.i_c = i_c;
-        if (this.i_c != null && !"".equals(this.i_c)) {
+        if (StringUtils.isNotBlank(i_c)) {
             this.i_c_JSONObject = JSONObject.parseObject(i_c);
         }
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         baseUrl = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo();
+        dbInfo = tservicedetail.getDbinfo();
     }
-  @DataProvider(name = "provider")
-    public Object[] getCase(Method method) {
 
+    public Object[] provider(Method method) {
         Object[] objects;
         String iUri;
         //testName可能未填写
@@ -70,7 +68,7 @@ private Integer serviceId;
 
         Ti ti = runService.getTi(this.serviceId, iUri);
         if (ti == null) {
-            throw new SkipException("测试服务下面没有接口:"+iUri);
+            throw new SkipException("测试服务下面没有接口:" + iUri);
         }
         //此接口对应的全部用例
         List<Tcase> tcases = runService.getTcase(ti.getId(), this.envId, this.caseDesigner);
@@ -101,371 +99,299 @@ private Integer serviceId;
         }
         return objects;
     }
-  public Boolean getBoolResult(Params params) {
-        if (params == null || params.getTcase() == null || params.getTcase() == null) {
-            return false;
-        }
-        Ti ti = params.getTi();
-        Tcase tcase = params.getTcase();
-        url = baseUrl + ti.getIuri();
-        String requestParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo(),null);
-        Reporter.log("实际请求参数 : ");
-        Reporter.log(requestParam);
-        String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), ti.getIcontenttype(), ti.getIparamtype(), requestParam);
-        return AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
+
+    @Uri(value = "/accountFacade/accountRecharge", desc = "调账充值接口:一键从天天聚迁移至存管余额使用")
+    public String accountFacade_accountRecharge(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/accountRecharge", dataProvider = "provider", description = "调账充值接口:一键从天天聚迁移至存管余额使用")
-    public void accountFacade_accountRecharge(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/activateStockedUser", desc = "会员激活")
+    public String accountFacade_activateStockedUser(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/activateStockedUser", dataProvider = "provider", description = "会员激活")
-    public void accountFacade_activateStockedUser(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/auditBindCard", desc = "换卡审核")
+    public String accountFacade_auditBindCard(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/auditBindCard", dataProvider = "provider", description = "换卡审核")
-    public void accountFacade_auditBindCard(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/bindCardGeneral", desc = "个人和企业直连换卡")
+    public String accountFacade_bindCardGeneral(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/bindCardGeneral", dataProvider = "provider", description = "个人和企业直连换卡")
-    public void accountFacade_bindCardGeneral(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/checkPassword", desc = "校验密码")
+    public String accountFacade_checkPassword(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/checkPassword", dataProvider = "provider", description = "校验密码")
-    public void accountFacade_checkPassword(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/enterpriseBindBankcard", desc = "企业换绑卡")
+    public String accountFacade_enterpriseBindBankcard(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/enterpriseBindBankcard", dataProvider = "provider", description = "企业换绑卡")
-    public void accountFacade_enterpriseBindBankcard(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/enterpriseEntrustImportUser", desc = "企业委托开户")
+    public String accountFacade_enterpriseEntrustImportUser(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/enterpriseEntrustImportUser", dataProvider = "provider", description = "企业委托开户")
-    public void accountFacade_enterpriseEntrustImportUser(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/enterpriseInformationUpdate", desc = "企业信息变更")
+    public String accountFacade_enterpriseInformationUpdate(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/enterpriseInformationUpdate", dataProvider = "provider", description = "企业信息变更")
-    public void accountFacade_enterpriseInformationUpdate(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/enterpriseRegister", desc = "企业绑卡注册")
+    public String accountFacade_enterpriseRegister(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/enterpriseRegister", dataProvider = "provider", description = "企业绑卡注册")
-    public void accountFacade_enterpriseRegister(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/entrustImportUser", desc = "个人委托开户")
+    public String accountFacade_entrustImportUser(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/entrustImportUser", dataProvider = "provider", description = "个人委托开户")
-    public void accountFacade_entrustImportUser(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/modifyMobileExpand", desc = "预留手机号更新")
+    public String accountFacade_modifyMobileExpand(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/modifyMobileExpand", dataProvider = "provider", description = "预留手机号更新")
-    public void accountFacade_modifyMobileExpand(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/personalBindBankcardExpand", desc = "个人换绑卡")
+    public String accountFacade_personalBindBankcardExpand(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/personalBindBankcardExpand", dataProvider = "provider", description = "个人换绑卡")
-    public void accountFacade_personalBindBankcardExpand(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/personalRegister", desc = "个人绑卡注册")
+    public String accountFacade_personalRegister(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/personalRegister", dataProvider = "provider", description = "个人绑卡注册")
-    public void accountFacade_personalRegister(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/resetPassword", desc = "修改密码")
+    public String accountFacade_resetPassword(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/resetPassword", dataProvider = "provider", description = "修改密码")
-    public void accountFacade_resetPassword(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/accountFacade/unBindBankcard", desc = "解绑银行卡")
+    public String accountFacade_unBindBankcard(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/accountFacade/unBindBankcard", dataProvider = "provider", description = "解绑银行卡")
-    public void accountFacade_unBindBankcard(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/gatewayFacade/notify", desc = "异步回调")
+    public String gatewayFacade_notify(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/gatewayFacade/notify", dataProvider = "provider", description = "异步回调")
-    public void gatewayFacade_notify(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/lanmaoReconFacade/download", desc = "获取恒丰原始对账文件")
+    public String lanmaoReconFacade_download(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/lanmaoReconFacade/download", dataProvider = "provider", description = "获取恒丰原始对账文件")
-    public void lanmaoReconFacade_download(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/lanmaoReconFacade/manualRecon", desc = "手工对账接口")
+    public String lanmaoReconFacade_manualRecon(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/lanmaoReconFacade/manualRecon", dataProvider = "provider", description = "手工对账接口")
-    public void lanmaoReconFacade_manualRecon(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/lanmaoReconFacade/queryReconInfo", desc = "查询交易对账汇总结果信息")
+    public String lanmaoReconFacade_queryReconInfo(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/lanmaoReconFacade/queryReconInfo", dataProvider = "provider", description = "查询交易对账汇总结果信息")
-    public void lanmaoReconFacade_queryReconInfo(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/lanmaoReconFacade/queryReconStatusDetail", desc = "查询具体类型的对账状态详情")
+    public String lanmaoReconFacade_queryReconStatusDetail(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/lanmaoReconFacade/queryReconStatusDetail", dataProvider = "provider", description = "查询具体类型的对账状态详情")
-    public void lanmaoReconFacade_queryReconStatusDetail(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryAuthorizationEntrustPayRecord", desc = "委托支付授权记录查询")
+    public String queryFacade_queryAuthorizationEntrustPayRecord(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryAuthorizationEntrustPayRecord", dataProvider = "provider", description = "委托支付授权记录查询")
-    public void queryFacade_queryAuthorizationEntrustPayRecord(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryCancelTransactionSale", desc = "查询取消预处理")
+    public String queryFacade_queryCancelTransactionSale(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryCancelTransactionSale", dataProvider = "provider", description = "查询取消预处理")
-    public void queryFacade_queryCancelTransactionSale(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryDebentureSale", desc = "债权出让查询")
+    public String queryFacade_queryDebentureSale(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryDebentureSale", dataProvider = "provider", description = "债权出让查询")
-    public void queryFacade_queryDebentureSale(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryGeneralFreeze", desc = "通用冻结查询")
+    public String queryFacade_queryGeneralFreeze(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryGeneralFreeze", dataProvider = "provider", description = "通用冻结查询")
-    public void queryFacade_queryGeneralFreeze(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryInterceptWithdraw", desc = "查询提现拦截")
+    public String queryFacade_queryInterceptWithdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryInterceptWithdraw", dataProvider = "provider", description = "查询提现拦截")
-    public void queryFacade_queryInterceptWithdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryPreTransaction", desc = "交易预处理查询")
+    public String queryFacade_queryPreTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryPreTransaction", dataProvider = "provider", description = "交易预处理查询")
-    public void queryFacade_queryPreTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryProjectInformation", desc = "标的信息查询")
+    public String queryFacade_queryProjectInformation(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryProjectInformation", dataProvider = "provider", description = "标的信息查询")
-    public void queryFacade_queryProjectInformation(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryRechargeTransaction", desc = "充值交易查询")
+    public String queryFacade_queryRechargeTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryRechargeTransaction", dataProvider = "provider", description = "充值交易查询")
-    public void queryFacade_queryRechargeTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryTransactionConfirmation", desc = "交易确认查询")
+    public String queryFacade_queryTransactionConfirmation(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryTransactionConfirmation", dataProvider = "provider", description = "交易确认查询")
-    public void queryFacade_queryTransactionConfirmation(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryTransactionFreeze", desc = "冻结交易查询")
+    public String queryFacade_queryTransactionFreeze(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryTransactionFreeze", dataProvider = "provider", description = "冻结交易查询")
-    public void queryFacade_queryTransactionFreeze(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryTransactionUnfreeze", desc = "解冻交易查询")
+    public String queryFacade_queryTransactionUnfreeze(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryTransactionUnfreeze", dataProvider = "provider", description = "解冻交易查询")
-    public void queryFacade_queryTransactionUnfreeze(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryUpdateBankcardAuditDetail", desc = "查询换卡记录")
+    public String queryFacade_queryUpdateBankcardAuditDetail(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryUpdateBankcardAuditDetail", dataProvider = "provider", description = "查询换卡记录")
-    public void queryFacade_queryUpdateBankcardAuditDetail(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryUserInformation", desc = "用户信息查询")
+    public String queryFacade_queryUserInformation(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryUserInformation", dataProvider = "provider", description = "用户信息查询")
-    public void queryFacade_queryUserInformation(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/queryFacade/queryWithdrawTransaction", desc = "提现交易查询")
+    public String queryFacade_queryWithdrawTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/queryFacade/queryWithdrawTransaction", dataProvider = "provider", description = "提现交易查询")
-    public void queryFacade_queryWithdrawTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/autoWithdraw", desc = "自动提现")
+    public String rechargeAndWithdrawFacade_autoWithdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/autoWithdraw", dataProvider = "provider", description = "自动提现")
-    public void rechargeAndWithdrawFacade_autoWithdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/cancelWithdraw", desc = "取消提现")
+    public String rechargeAndWithdrawFacade_cancelWithdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/cancelWithdraw", dataProvider = "provider", description = "取消提现")
-    public void rechargeAndWithdrawFacade_cancelWithdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/confirmWithdraw", desc = "提现确认")
+    public String rechargeAndWithdrawFacade_confirmWithdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/confirmWithdraw", dataProvider = "provider", description = "提现确认")
-    public void rechargeAndWithdrawFacade_confirmWithdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/directRecharge", desc = "自动充值")
+    public String rechargeAndWithdrawFacade_directRecharge(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/directRecharge", dataProvider = "provider", description = "自动充值")
-    public void rechargeAndWithdrawFacade_directRecharge(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/interceptWithdraw", desc = "提现拦截")
+    public String rechargeAndWithdrawFacade_interceptWithdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/interceptWithdraw", dataProvider = "provider", description = "提现拦截")
-    public void rechargeAndWithdrawFacade_interceptWithdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/recharge", desc = "充值")
+    public String rechargeAndWithdrawFacade_recharge(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/recharge", dataProvider = "provider", description = "充值")
-    public void rechargeAndWithdrawFacade_recharge(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/rechargeFundsTransfer", desc = "打款划拨充值")
+    public String rechargeAndWithdrawFacade_rechargeFundsTransfer(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/rechargeFundsTransfer", dataProvider = "provider", description = "打款划拨充值")
-    public void rechargeAndWithdrawFacade_rechargeFundsTransfer(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/rechargeAndWithdrawFacade/withdraw", desc = "提现")
+    public String rechargeAndWithdrawFacade_withdraw(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/rechargeAndWithdrawFacade/withdraw", dataProvider = "provider", description = "提现")
-    public void rechargeAndWithdrawFacade_withdraw(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/asyncTransaction", desc = "批量交易")
+    public String tradeFacade_asyncTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/asyncTransaction", dataProvider = "provider", description = "批量交易")
-    public void tradeFacade_asyncTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/authorizationEntrustPay", desc = "委托支付授权")
+    public String tradeFacade_authorizationEntrustPay(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/authorizationEntrustPay", dataProvider = "provider", description = "委托支付授权")
-    public void tradeFacade_authorizationEntrustPay(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/cancelDebentureSale", desc = "取消债权出让")
+    public String tradeFacade_cancelDebentureSale(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/cancelDebentureSale", dataProvider = "provider", description = "取消债权出让")
-    public void tradeFacade_cancelDebentureSale(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/cancelPreTransaction", desc = "预处理取消")
+    public String tradeFacade_cancelPreTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/cancelPreTransaction", dataProvider = "provider", description = "预处理取消")
-    public void tradeFacade_cancelPreTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/cancelUserAuthorization", desc = "取消用户授权")
+    public String tradeFacade_cancelUserAuthorization(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/cancelUserAuthorization", dataProvider = "provider", description = "取消用户授权")
-    public void tradeFacade_cancelUserAuthorization(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/confirmCheckfile", desc = "强制对账文件确认，慎用")
+    public String tradeFacade_confirmCheckfile(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/confirmCheckfile", dataProvider = "provider", description = "强制对账文件确认，慎用")
-    public void tradeFacade_confirmCheckfile(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/debentureSale", desc = "单笔债权出让")
+    public String tradeFacade_debentureSale(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/debentureSale", dataProvider = "provider", description = "单笔债权出让")
-    public void tradeFacade_debentureSale(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/establishProject", desc = "创建标的")
+    public String tradeFacade_establishProject(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/establishProject", dataProvider = "provider", description = "创建标的")
-    public void tradeFacade_establishProject(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/freeze", desc = "冻结接口")
+    public String tradeFacade_freeze(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/freeze", dataProvider = "provider", description = "冻结接口")
-    public void tradeFacade_freeze(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/freezePreTransaction", desc = "冻结预处理")
+    public String tradeFacade_freezePreTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/freezePreTransaction", dataProvider = "provider", description = "冻结预处理")
-    public void tradeFacade_freezePreTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/modifyProject", desc = "变更标的")
+    public String tradeFacade_modifyProject(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/modifyProject", dataProvider = "provider", description = "变更标的")
-    public void tradeFacade_modifyProject(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/unfreeze", desc = "解冻接口")
+    public String tradeFacade_unfreeze(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/unfreeze", dataProvider = "provider", description = "解冻接口")
-    public void tradeFacade_unfreeze(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/unfreezeTradePassword", desc = "交易密码解冻")
+    public String tradeFacade_unfreezeTradePassword(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/unfreezeTradePassword", dataProvider = "provider", description = "交易密码解冻")
-    public void tradeFacade_unfreezeTradePassword(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/userAuthorization", desc = "用户授权")
+    public String tradeFacade_userAuthorization(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/userAuthorization", dataProvider = "provider", description = "用户授权")
-    public void tradeFacade_userAuthorization(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/userAutoPreTransaction", desc = "授权预处理")
+    public String tradeFacade_userAutoPreTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/userAutoPreTransaction", dataProvider = "provider", description = "授权预处理")
-    public void tradeFacade_userAutoPreTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/userPreTransaction", desc = "用户预处理")
+    public String tradeFacade_userPreTransaction(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
-    @Test(testName = "/tradeFacade/userPreTransaction", dataProvider = "provider", description = "用户预处理")
-    public void tradeFacade_userPreTransaction(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
-    }
-    @Test(testName = "/tradeFacade/verifyDeduct", dataProvider = "provider", description = "验密扣费")
-    public void tradeFacade_verifyDeduct(Params params) {
-        Reporter.log("用例设计参数 : ");
-        Reporter.log(params.getTcase().getRequestparam());
-        Assert.assertTrue(this.getBoolResult(params));
+
+    @Uri(value = "/tradeFacade/verifyDeduct", desc = "验密扣费")
+    public String tradeFacade_verifyDeduct(String baseUrl, String dbInfo, Params params) {
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
     }
 }

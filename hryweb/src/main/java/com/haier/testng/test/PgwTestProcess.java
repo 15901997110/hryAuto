@@ -35,7 +35,6 @@ public class PgwTestProcess extends PgwBase {
         requestNo = actualJsonObject.getString("requestNo");
 
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
-        Assert.assertTrue(false);
     }
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询", dependsOnMethods = "payToAccountFacade_payToAccount")

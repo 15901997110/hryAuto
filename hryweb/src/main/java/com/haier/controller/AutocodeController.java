@@ -19,8 +19,18 @@ public class AutocodeController {
     @Autowired
     AutocodeService autocodeService;
 
-    @PostMapping("/generate")
-    public Result generrate() {
+/*    @PostMapping("/generate")
+    public Result generate() {
         return ResultUtil.success(autocodeService.generate());
+    }*/
+
+    @PostMapping("/generateBaseClass")
+    public Result generateBaseClass() {
+        return ResultUtil.success(autocodeService.generateBaseClass());
+    }
+
+    @PostMapping("/generateDefaultClass")
+    public Result generateDefaultClass() {
+        return ResultUtil.success(autocodeService.generateDefaultTestClass());
     }
 }
