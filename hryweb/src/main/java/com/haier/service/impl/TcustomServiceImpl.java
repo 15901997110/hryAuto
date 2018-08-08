@@ -296,10 +296,13 @@ public class TcustomServiceImpl implements TcustomService {
         Integer envid = customVO.getEnvid();
         User user = userService.selectOne(executeUserId);
 
+        log.info("即将运行定制:" + customId);
 //        Tservicedetail condition = new Tservicedetail();
         for (Tcustomdetail tcustomdetail : tcustomdetails_service) {
             //构建测试类
-            XmlClass xmlClass = new XmlClass(PackageEnum.TEST.getPackageName() + "." + tcustomdetail.getClassname());
+            String testClassName = PackageEnum.TEST.getPackageName() + "." + tcustomdetail.getClassname();
+            log.info("此次定制要测试的类:" + testClassName);
+            XmlClass xmlClass = new XmlClass(testClassName);
 
             Map<String, String> params = new HashMap<>();//构建测试类常规参数
             params.put(ParamKeyEnum.SERVICEID.getKey(), tcustomdetail.getClientid() + "");

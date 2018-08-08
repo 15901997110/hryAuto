@@ -126,6 +126,10 @@ public class HryHttpClientUtil {
      * @date: 2018-08-03
      */
     public static String send(String baseUrl, String dbInfo, Params params) {
+        return send(baseUrl,dbInfo,params,null);
+    }
+
+    public static <T>String send(String baseUrl,String dbInfo,Params params,T entity){
         Ti ti = params.getTi();
         Tcase tcase = params.getTcase();
         Integer requestMethodType = ti.getIrequestmethod().intValue();
@@ -133,9 +137,9 @@ public class HryHttpClientUtil {
         Integer contentType = ti.getIcontenttype().intValue();
         String param = tcase.getRequestparam();
         Reporter.log("用例id:" + tcase.getId());
-        Reporter.log("用例设计参数:" + param);
+        Reporter.log("用例设计参数:" + param.replaceAll("<","＜").replaceAll(">","＞"));
         if (StringUtils.isNotBlank(param)) {
-            param = BeforeUtil.replace(param, dbInfo, null);
+            param = BeforeUtil.replace(param, dbInfo, entity);
         }
         Reporter.log("实际请求参数:" + param);
         return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);

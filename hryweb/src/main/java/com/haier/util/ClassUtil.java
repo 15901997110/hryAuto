@@ -14,11 +14,11 @@ import java.util.jar.JarFile;
 public class ClassUtil {
 
     /**
-     *@description: 根据包名获取所有类名
-     *@params: [packageName-包名]
-     *@return: java.util.List<java.lang.String>
-     *@author: luqiwei
-     *@date: 2018-08-08
+     * @description: 根据包名获取所有类名(不包含子包)
+     * @params: [packageName-包名]
+     * @return: java.util.List<java.lang.String>
+     * @author: luqiwei
+     * @date: 2018-08-08
      */
     public static List<String> getClassName(String packageName) {
         return getClassName(packageName, false);

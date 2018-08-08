@@ -212,9 +212,6 @@ public class HryReporter implements IReporter {
                         p += param.toString();
                     }
                 }
-                Reporter.log("这是Reporter.log打印出来的");
-
-
 
 
  /*               //如果有参数，则使用参数的toString组合代替报告中的name
