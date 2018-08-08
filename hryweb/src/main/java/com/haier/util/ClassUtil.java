@@ -1,7 +1,6 @@
 package com.haier.util;
 
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -11,64 +10,47 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-/**
- * @Description:
- * @Author: luqiwei
- * @Date: 2018/8/7 18:54
- */
 @Slf4j
 public class ClassUtil {
+
     /**
-     * 获取某包下（包括该包的所有子包）所有类
-     *
-     * @param packageName
-     *            包名
-     * @return 类的完整名称
+     *@description: 根据包名获取所有类名
+     *@params: [packageName-包名]
+     *@return: java.util.List<java.lang.String>
+     *@author: luqiwei
+     *@date: 2018-08-08
      */
     public static List<String> getClassName(String packageName) {
-        return getClassName(packageName, true);
+        return getClassName(packageName, false);
     }
 
     /**
-     * 获取某包下所有类
-     *
-     * @param packageName
-     *            包名
-     * @param childPackage
-     *            是否遍历子包
-     * @return 类的完整名称
+     * @description: 根据包名获取该包下的所有类名
+     * @params: [packageName-包名, recursion-是否递归获取子包中的类名]
+     * @return: java.util.List<java.lang.String>
+     * @author: luqiwei
+     * @date: 2018-08-08
      */
-    public static List<String> getClassName(String packageName, boolean childPackage) {
+    public static List<String> getClassName(String packageName, boolean recursion) {
         List<String> fileNames = null;
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         String packagePath = packageName.replace(".", "/");
         URL url = loader.getResource(packagePath);
-        log.debug("url.getPath:"+url.getPath());
+        //log.info("url:"+url);
         if (url != null) {
             String type = url.getProtocol();
-
+            //log.info("type:"+type);
             if (type.equals("file")) {
-                fileNames = getClassNameByFile(url.getPath(), null, childPackage);
+                fileNames = getClassNameByFile(url.getPath(), null, recursion);
             } else if (type.equals("jar")) {
-                fileNames = getClassNameByJar(url.getPath(), childPackage);
+                fileNames = getClassNameByJar(url.getPath(), recursion);
             }
         } else {
-            fileNames = getClassNameByJars(((URLClassLoader) loader).getURLs(), packagePath, childPackage);
+            fileNames = getClassNameByJars(((URLClassLoader) loader).getURLs(), packagePath, recursion);
         }
         return fileNames;
     }
 
-    /**
-     * 从项目文件获取某包下所有类
-     *
-     * @param filePath
-     *            文件路径
-     * @param className
-     *            类名集合
-     * @param childPackage
-     *            是否遍历子包
-     * @return 类的完整名称
-     */
     private static List<String> getClassNameByFile(String filePath, List<String> className, boolean childPackage) {
         List<String> myClassName = new ArrayList<>();
         File file = new File(filePath);
@@ -81,38 +63,37 @@ public class ClassUtil {
             } else {
                 String childFilePath = childFile.getPath();
                 if (childFilePath.endsWith(".class")) {
-                    childFilePath = childFilePath.substring(childFilePath.indexOf("\\classes") + 9,
-                            childFilePath.lastIndexOf("."));
+                    childFilePath = childFilePath.substring(childFilePath.indexOf("\\classes") + 9, childFilePath.lastIndexOf("."));
                     childFilePath = childFilePath.replace("\\", ".");
                     myClassName.add(childFilePath);
                 }
             }
         }
-
         return myClassName;
     }
 
-    /**
-     * 从jar获取某包下所有类
-     *
-     * @param jarPath
-     *            jar文件路径
-     * @param childPackage
-     *            是否遍历子包
-     * @return 类的完整名称
-     */
     private static List<String> getClassNameByJar(String jarPath, boolean childPackage) {
         List<String> myClassName = new ArrayList<>();
         String[] jarInfo = jarPath.split("!");
+//        log.info("jarInfo:" + jarInfo);
         String jarFilePath = jarInfo[0].substring(jarInfo[0].indexOf("/"));
+//        log.info("jarFilePath:"+jarFilePath);
+
         String packagePath = jarInfo[1].substring(1);
+        String packageName = jarInfo[2];
+//        log.info("packagePath:"+packagePath);
         try {
             JarFile jarFile = new JarFile(jarFilePath);
+//            log.info("jarFileName:"+jarFile.getName());
+//            log.info("jarFileSize:"+jarFile.size());
             Enumeration<JarEntry> entrys = jarFile.entries();
+
             while (entrys.hasMoreElements()) {
                 JarEntry jarEntry = entrys.nextElement();
                 String entryName = jarEntry.getName();
+//                log.info("entryname:"+entryName);
                 if (entryName.endsWith(".class")) {
+
                     if (childPackage) {
                         if (entryName.startsWith(packagePath)) {
                             entryName = entryName.replace("/", ".").substring(0, entryName.lastIndexOf("."));
@@ -126,9 +107,10 @@ public class ClassUtil {
                         } else {
                             myPackagePath = entryName;
                         }
-                        if (myPackagePath.equals(packagePath)) {
-                            entryName = entryName.replace("/", ".").substring(0, entryName.lastIndexOf("."));
-                            myClassName.add(entryName);
+//                        log.info("myPackagePath:"+myPackagePath);
+                        if (myPackagePath.equals(packagePath + packageName)) {
+                            String target = entryName.substring(packagePath.length() + 1, entryName.lastIndexOf(".")).replaceAll("/", ".");
+                            myClassName.add(target);
                         }
                     }
                 }
@@ -139,17 +121,7 @@ public class ClassUtil {
         return myClassName;
     }
 
-    /**
-     * 从所有jar中搜索该包，并获取该包下所有类
-     *
-     * @param urls
-     *            URL集合
-     * @param packagePath
-     *            包路径
-     * @param childPackage
-     *            是否遍历子包
-     * @return 类的完整名称
-     */
+
     private static List<String> getClassNameByJars(URL[] urls, String packagePath, boolean childPackage) {
         List<String> myClassName = new ArrayList<>();
         if (urls != null) {
