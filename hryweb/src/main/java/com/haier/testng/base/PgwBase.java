@@ -18,16 +18,15 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
-
 /**
  * @Description: PgwBase
  * @Author: 自动生成
- * @Date: 2018/08/08 16:56:17
+ * @Date: 2018/08/08 17:35:33
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
 @SKey("Pgw")
-public class PgwBase {
+public class PgwBase{
     public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
@@ -102,41 +101,42 @@ public class PgwBase {
 
     @Uri(value = "/accountBalanceQueryFacade/accountBalanceQuery", desc = "账户余额查询")
     public String accountBalanceQueryFacade_accountBalanceQuery(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/fundPurchaseFacade/fundPurchase", desc = "基金申购")
     public String fundPurchaseFacade_fundPurchase(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/fundShareQueryFacade/fundShareQuery", desc = "基金份额查询")
     public String fundShareQueryFacade_fundShareQuery(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/gatewayPostNotifyFacade/kjtPayNotify", desc = "快捷通回调")
     public String gatewayPostNotifyFacade_kjtPayNotify(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/instantTradeFacade/instantTrade", desc = "即时收单")
     public String instantTradeFacade_instantTrade(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/payToAccountFacade/payToAccount", desc = "转账到账户")
     public String payToAccountFacade_payToAccount(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/payToCardFacade/payToCard", desc = "付款到卡")
     public String payToCardFacade_payToCard(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
 
     @Uri(value = "/tradeQueryFacade/tradeQuery", desc = "交易查询")
     public String tradeQueryFacade_tradeQuery(String baseUrl, String dbInfo, Params params) {
-        return HryHttpClientUtil.send(baseUrl, dbInfo, params, this);
+        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
+
 }

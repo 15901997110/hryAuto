@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: LanmaoTestDefault
  * @Author: 自动生成
- * @Date: 2018/08/08 17:27:09
+ * @Date: 2018/08/08 17:35:33
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
@@ -383,4 +383,5 @@ public class LanmaoTestDefault extends LanmaoBase {
         String actual = this.tradeFacade_verifyDeduct(baseUrl, dbInfo, params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
+
 }

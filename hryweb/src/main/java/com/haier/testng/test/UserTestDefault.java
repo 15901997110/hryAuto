@@ -10,15 +10,14 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-
 /**
  * @Description: UserTestDefault
  * @Author: 自动生成
- * @Date: 2018/08/08 17:27:09
+ * @Date: 2018/08/08 17:35:33
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class UserTestDefault extends UserBase {
+public class UserTestDefault extends UserBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c) {
@@ -659,4 +658,5 @@ public class UserTestDefault extends UserBase {
         String actual = this.userFacade_verifyPasswordByRequestNo(baseUrl, dbInfo, params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
     }
+
 }

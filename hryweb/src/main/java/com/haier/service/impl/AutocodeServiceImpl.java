@@ -85,7 +85,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             "    @DataProvider(name = \"provider\")\n" +
             "    public Object[] getCase(Method method) {\n" +
             "        return provider(method);\n" +
-            "    }\n";
+            "    }\n\n";
 
     private static final String baseCommon = "    public Integer serviceId;\n" +
             "    public Integer envId;\n" +
@@ -157,16 +157,16 @@ public class AutocodeServiceImpl implements AutocodeService {
             "            objects[i] = params;\n" +
             "        }\n" +
             "        return objects;\n" +
-            "    }\n";
+            "    }\n\n";
     private static final String baseMethod = "    @Uri(value = \"${annoTestName}\", desc = \"${annoDesc}\")\n" +
             "    public String ${testMethodName}(String baseUrl, String dbInfo, Params params) {\n" +
             "        return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);\n" +
-            "    }\n";
+            "    }\n\n";
     private static final String defaultMethod = "    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
             "    public void ${testMethodName}(Params params) {\n" +
             "        String actual = this.${testMethodName}(baseUrl, dbInfo, params);\n" +
             "        AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());\n" +
-            "    }\n";
+            "    }\n\n";
 
 
     private static final String braceLeft = "{\n";
