@@ -24,11 +24,19 @@ public class AutocodeController {
         return ResultUtil.success(autocodeService.generate());
     }*/
 
+    /**
+     * 自动生成测试基类  ,测试基类只有普通方法,没有逻辑,
+     * 测试基类地址:com.haier.testng.base
+     */
     @PostMapping("/generateBaseClass")
     public Result generateBaseClass() {
         return ResultUtil.success(autocodeService.generateBaseClass());
     }
 
+    /**
+     * 自动生成一个默认的测试类,此测试类将继承于测试基类,独立实现单一接口的测试,接口与接口之间并无联系
+     * 测试类地址:com.haier.testng.test
+     */
     @PostMapping("/generateDefaultClass")
     public Result generateDefaultClass() {
         return ResultUtil.success(autocodeService.generateDefaultTestClass());
