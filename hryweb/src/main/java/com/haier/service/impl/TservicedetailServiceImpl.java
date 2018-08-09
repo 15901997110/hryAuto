@@ -36,24 +36,6 @@ public class TservicedetailServiceImpl implements TservicedetailService {
 
     @Override
     public Integer insertOne(Tservicedetail tservicedetail) {
-        if (tservicedetail == null || tservicedetail.getHostinfo() == null || tservicedetail.getServiceid() == null
-                || tservicedetail.getEnvid() == null
-                || "".equals(tservicedetail.getHostinfo().trim()) || tservicedetail.getServiceid() == 0 || tservicedetail.getEnvid() == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "serviceId,envId,hostInfo必填");
-        }
-        ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
-        //先查询数据是否有重复
-        TservicedetailExample tservicedetailExample = new TservicedetailExample();
-        tservicedetailExample.createCriteria()
-                .andServiceidEqualTo(tservicedetail.getServiceid())
-                .andEnvidEqualTo(tservicedetail.getEnvid())
-                .andStatusGreaterThan(0);
-
-        List<Tservicedetail> tservicedetailList = tservicedetailMapper.selectByExample(tservicedetailExample);
-        if (tservicedetailList != null && tservicedetailList.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD, "tservicedetail表中serviceId=" + tservicedetail.getServiceid() + ",envId=" + tservicedetail.getEnvid() + "的数据存在");
-        }
-        //插入数据
         return tservicedetailMapper.insertSelective(tservicedetail);
     }
 
@@ -117,18 +99,16 @@ public class TservicedetailServiceImpl implements TservicedetailService {
 
     @Override
     public Integer updateOne(Tservicedetail tservicedetail) {
-        ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
-        if (tservicedetail == null || tservicedetail.getId() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
         return tservicedetailMapper.updateByPrimaryKeySelective(tservicedetail);
     }
 
     @Override
     public List<Tservicedetail> selectByCondition(Tservicedetail tservicedetail) {
         ReflectUtil.setFieldAddPercentAndCleanZero(tservicedetail, false);
-        TservicedetailExample tservicedetailExample = new TservicedetailExample();
-        TservicedetailExample.Criteria criteria = tservicedetailExample.createCriteria();
+        TservicedetailExample example = new TservicedetailExample();
+
+        TservicedetailExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusGreaterThan(0);
         if (tservicedetail != null) {
             if (tservicedetail.getId() != null)
                 criteria.andIdEqualTo(tservicedetail.getId());
@@ -143,8 +123,8 @@ public class TservicedetailServiceImpl implements TservicedetailService {
             if (tservicedetail.getSwaggerurl() != null)
                 criteria.andSwaggerurlLike(tservicedetail.getSwaggerurl());
         }
-        criteria.andStatusGreaterThan(0);
-        List<Tservicedetail> tservicedetailList = tservicedetailMapper.selectByExample(tservicedetailExample);
+
+        List<Tservicedetail> tservicedetailList = tservicedetailMapper.selectByExample(example);
         return tservicedetailList;
     }
 
