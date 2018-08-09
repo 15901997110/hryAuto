@@ -41,12 +41,12 @@
                 <input type="text" class="input-text" value="" placeholder="" id="servicename" name="servicename">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">默认类名：</label>
+<!--        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">测试基类：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="按类名规范填写,自动生成测试类时会用到此信息" id="classname" name="classname">
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><!--<span class="c-red">*</span>-->协议类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
@@ -198,7 +198,7 @@
         var servicename = $("#servicename").val();
         var httptype = $("#httptype").val();
         var author = $("#editor").val();
-        var classname=$("#classname").val();
+/*        var classname=$("#classname").val();*/
         if(author=="--请选择负责人--"){
             author=null;
         }
@@ -224,7 +224,7 @@
                     servicename:servicename,
                     httptype:httptype,
                     editor:author,
-                    classname:classname
+/*                    classname:classname*/
                     /*isdel:0 不必传状态,数据库默认0*/
                 },
                 dataType: "json",
