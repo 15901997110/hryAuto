@@ -63,7 +63,7 @@ public class TcustomController {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
             }
             if (tcustomdetail.getClientlevel() == ClientLevelEnum.SERVICE.getLevel() && tcustomdetail.getClassname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制服务时(服务id=" + tcustomdetail.getClientid() + "),必须指定此服务使用的测试类");
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, tcustomdetail.getClientname() + "服务未指定测试类");
             }
             //当定制明细为接口和用例时,需要校验parentClientId不为0或者null
             if (tcustomdetail.getClientlevel() != ClientLevelEnum.SERVICE.getLevel() &&
@@ -85,6 +85,9 @@ public class TcustomController {
             ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
             if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
+            }
+            if (tcustomdetail.getClientlevel() == ClientLevelEnum.SERVICE.getLevel() && tcustomdetail.getClassname() == null) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, tcustomdetail.getClientname() + "服务未指定测试类");
             }
         }
         return ResultUtil.success(tcustomService.updateOne(customVO));
