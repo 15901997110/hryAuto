@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.haier.enums.RegexEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tservice;
 import com.haier.response.Result;
@@ -73,7 +74,27 @@ public class TserviceController {
      */
     @PostMapping(value = "/insertOne")
     public Result insertOne(Tservice tservice) {
-        log.info("新增的服务标识=" + tservice.getServicekey() + ",服务描述=" + tservice.getServicename() + "协议类型=" + tservice.getHttptype());
+        ReflectUtil.setInvalidFieldToNull(tservice, false);
+        if (tservice == null || tservice.getServicekey() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "serviceKey必填");
+        }
+        //serviceKey格式校验
+        if (!tservice.getServicekey().matches(RegexEnum.CLASSNAME_REGEX.getRegex())) {
+            throw new HryException(StatusCodeEnum.REGEX_ERROR, "服务标识(serviceKey)填写规则:首字符必须是大写字母,其余部分只能由字母,数字或下划线组成");
+        }
+
+        //数据重复性校验
+        Tservice condition = new Tservice();
+        condition.setServicekey(tservice.getServicekey());
+        List<Tservice> tservices = this.selectList(condition);
+        if (tservices.size() > 0) {
+            for (Tservice s : tservices) {
+                if (tservice.getServicekey().equals(s.getServicekey())) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "serviceKey与serviceId=" + s.getId() + "的重复");
+                }
+            }
+        }
+        tservice.setClassname(tservice.getServicekey() + "Base");
         return ResultUtil.success(tserviceService.insertOne(tservice));
     }
 
@@ -85,6 +106,25 @@ public class TserviceController {
         ReflectUtil.setInvalidFieldToNull(tservice, false);
         if (tservice.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必传");
+        }
+        //数据校验
+        if (tservice.getServicekey() != null) {
+            //serviceKey格式校验
+            if (!tservice.getServicekey().matches(RegexEnum.CLASSNAME_REGEX.getRegex())) {
+                throw new HryException(StatusCodeEnum.REGEX_ERROR, "服务标识(serviceKey)填写规则:首字符必须是大写字母,其余部分只能由字母,数字或下划线组成");
+            }
+            //serviceKey唯一性校验
+            Tservice condition = new Tservice();
+            condition.setServicekey(tservice.getServicekey());
+            List<Tservice> tservices = this.selectList(condition);
+            if (tservices.size() > 0) {
+                for (Tservice s : tservices) {
+                    if (tservice.getServicekey().equals(s.getServicekey())&&!tservice.getId().equals(s.getId())) {//id不相同,但是servicekey相同
+                        throw new HryException(StatusCodeEnum.EXIST_RECORD, "serviceKey与serviceId=" + s.getId() + "的重复");
+                    }
+                }
+            }
+            tservice.setClassname(tservice.getServicekey()+"Base");
         }
         return ResultUtil.success(tserviceService.updateOne(tservice));
     }
@@ -106,7 +146,7 @@ public class TserviceController {
     }
 
     /**
-     * 根据Service获取所有测试类
+     * 根据ServiceKey获取所有测试类
      */
     @PostMapping("/getTestClassesBySKey")
     public Result getTestClassesBySKey(String sKey) {

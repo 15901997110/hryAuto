@@ -120,33 +120,8 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public Integer insertOne(Tservice tservice) {
-        ReflectUtil.setInvalidFieldToNull(tservice, false);
-        //参数校验
-        if (Objects.isNull(tservice) || tservice.getServicekey() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "servicekey必填");
-        }
-        verify(tservice);
-
-        //插入数据
         tserviceMapper.insertSelective(tservice);
-        return tservice.getId();//返回插入的主键,注意,此返回需要先在sqlMapperXml文件中配置
-    }
-
-    public void verify(Tservice tservice) {
-        //数据重复性校验
-        TserviceExample example = new TserviceExample();
-        TserviceExample.Criteria criteriaServiceKey = example.createCriteria();//没有规则时,加载到规则中example中
-        criteriaServiceKey.andServicekeyEqualTo(tservice.getServicekey()).andIsdelEqualTo(0);
-
-        if (tservice.getClassname() != null) {
-            TserviceExample.Criteria criteriaClassname = example.createCriteria();//已经有规则时,只是创建规则,并不会加入到example中
-            criteriaClassname.andClassnameEqualTo(tservice.getClassname()).andIsdelEqualTo(0);
-            example.or(criteriaClassname);
-        }
-        List<Tservice> tservices = tserviceMapper.selectByExample(example);
-        if (tservices != null && tservices.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD, "服务标识=" + tservice.getServicekey() + ",或者默认类名=" + tservice.getClassname() + " 的记录已经存在");
-        }
+        return tservice.getId();
     }
 
     @Override

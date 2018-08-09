@@ -12,7 +12,10 @@ public enum RegexEnum {
 
     GROUP_SH_REGEX("^1[0-9]$", "上海组"),
 
-    GROUP_HZ_REGEX("^2[0-9]$", "杭州组"),;
+    GROUP_HZ_REGEX("^2[0-9]$", "杭州组"),
+
+    CLASSNAME_REGEX("[A-Z][A-Za-z0-9_]*","测试类名,首字符必须是大写字母,其余部分只能由字母或数字或下划线组成")
+            ,;
     private String regex;
     private String desc;
 
