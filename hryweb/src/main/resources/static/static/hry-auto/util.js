@@ -272,7 +272,7 @@ function getUserList() {
             var status = data.status;
             var msg = data.msg;
             if (status == 0) {
-                layer.close(layerIndex);
+                //layer.close(layerIndex);
                 dev = data.data;
             } else {
                 layer.close(layerIndex);
@@ -308,18 +308,269 @@ function getParameter(name) {
     return null;
 }
 
-/*将html格式转为字串*/
-function strToHtml(s)
-{
-    if(s == null|| s == ""){
-        return   "";
-    }else{
-        s   =   s.replace("&","&");
-        s   =   s.rep("<","<");
-        s   =   s.replace(">",">");
-        s   =   s.replace(" ","   ");
-    }
-    return   s;
+//根据serviceKey 获取测试类列表
+function getTClassListByServiceKey(serviceKey) {
+    var tClassList = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/tservice/getTestClassesBySKey",
+        data: {
+            sKey:serviceKey
+        },
+        dataType: "json",
+        success: function (data) {
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                //layer.close(layerIndex);
+                tClassList = data.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return tClassList;
+}
+
+//根据serviceId 获取serviceKey
+function getServiceKey(serviceId){
+    var serviceKey=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/tservice/selectByConditionSimple",
+        data: {
+
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                var list=data.data;
+                for(var i=0;i<list.length;i++){
+                    var row=list[i];
+                    if(row.id== serviceId){
+                        serviceKey=row.servicekey;
+                    }
+
+                }
+            }else{
+                layer.alert(data.msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return serviceKey;
+}
+
+//获取环境List
+function getTenvList(){
+    var env=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/tenv/selectAll",
+        data: {
+
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                env=data.data;
+            }else{
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return env;
+}
+
+//根据接口id查询接口信息
+function getTiById(tiId){
+    var ti=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/ti/selectOne",
+        data: {
+            id:tiId
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                ti=data.data;
+            }else{
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return ti;
+}
+
+//根据用例id查询用例信息
+function getTcaseById(caseId){
+    var tcase=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/tcase/selectOne",
+        data: {
+            id:caseId
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                tcase=data.data;
+            }else{
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return tcase;
+}
+
+//根据serviceId 获取服务下所有接口及接口下所有用例
+function getAllTiAndCaseByServiceId(serviceId){
+    var all=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/ti/selectTiWithCaseVO",
+        data: {
+            serviceid:serviceId
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status=data.status;
+            var msg=data.msg;
+            if(status == 0){
+                all=data.data;
+            }else{
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail:function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function(xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return all;
 }
 
 

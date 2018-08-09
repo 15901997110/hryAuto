@@ -64,6 +64,7 @@
 </article>
 
 <!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -92,266 +93,6 @@
         });
     });
 
-    function getServiceList(){
-        var service=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/tservice/selectByConditionSimple",
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    service=data.data;
-                }else{
-                    layer.alert(data.msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return service;
-    }
-
-    function getServiceKey(serviceId){
-        var serviceKey=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/tservice/selectByConditionSimple",
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    var list=data.data;
-                    for(var i=0;i<list.length;i++){
-                        var row=list[i];
-                        if(row.id== serviceId){
-                            serviceKey=row.servicekey;
-                        }
-
-                    }
-                }else{
-                    layer.alert(data.msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return serviceKey;
-    }
-
-    function getTenvList(){
-        var env=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/tenv/selectAll",
-            data: {
-
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    env=data.data;
-                }else{
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return env;
-    }
-
-    //根据接口id查询接口信息
-    function getTiById(tiId){
-        var ti=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectOne",
-            data: {
-                id:tiId
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    ti=data.data;
-                }else{
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return ti;
-    }
-
-    //根据用例id查询用例信息
-    function getTcaseById(caseId){
-        var tcase=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/tcase/selectOne",
-            data: {
-                id:caseId
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    tcase=data.data;
-                }else{
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return tcase;
-    }
-
-    function getAllTiAndCaseByServiceId(serviceId){
-        var all=null;
-        $.ajaxSetup({async : false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectTiWithCaseVO",
-            data: {
-                serviceid:serviceId
-            },
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    all=data.data;
-                }else{
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail:function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function(xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return all;
-    }
     //初始化处理
     $(document).ready(function () {
         //onclick='checkAllservice("+row.id+")'
@@ -360,9 +101,18 @@
         var services="";
         for(var i=0;i<serviceList.length;i++){
             var row=serviceList[i];
+            var tClassList=getTClassListByServiceKey(row.servicekey);
+            var tClassHtml="";
+            for(var m=0;m<tClassList.length;m++){
+                var tClass=tClassList[m];
+                var tClassOption="<option>"+tClass+"</option>";
+                tClassHtml=tClassHtml+tClassOption;
+
+            }
             var rowHtml="<dl class=\"permission-list\" id='service-"+row.id+"' style='width: 80%;'>\n" +
                             "<dt>\n" +
-                                " <label style='font-size:16px;'><input style='width:18px;height: 18px;' type=\"checkbox\" value=\""+row.id+"\" name=\"service\" id=\"serviceBox-"+row.id+"\" onclick='clearAll(this,"+row.id+")'>"+row.servicekey+"</label>\n" +
+                                " <label style='font-size:16px;width:100px;display:inline-block;'><input style='width:18px;height: 18px;' type=\"checkbox\" value=\""+row.id+"\" name=\"service\" id=\"serviceBox-"+row.id+"\" onclick='clearAll(this,"+row.id+")'>"+row.servicekey+"</label>\n" +
+                                "<select id='tClass-"+row.id+"' style='margin-left:100px;font-size:15px;width:180px;'><option>请选择测试类</option>"+tClassHtml+"</select>\n" +
                                 "<label id='show-"+row.id+"'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread("+row.id+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
                             "</dt>\n" +
                         "</dl>";
@@ -442,7 +192,6 @@
 
     //收起处理
     function retract(serviceId){
-        //$("#"+serviceId+"").children('dd').remove();
         $("#service-"+serviceId+"").children('dd').hide();
         $("#show-"+serviceId+"").html("");
         var h="<a title=\"展开\" href=\"javascript:0;\" onclick=\"showTi("+serviceId+")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a>";
@@ -529,11 +278,11 @@
 
     //添加定制测试
     function addCustom(){
-        layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
         var customname = $("#customname").val();
         var env = $("#env").val();
         var strategy = $("#strategy").val();
         var userid=$.cookie('uidCookie');
+
 
         var service = new Array();
         $("#services :checkbox:checked").each(function(i){
@@ -541,10 +290,15 @@
             var value=$(this).val();
             var name=$(this).attr("name");
             if(name.match("service")){
+                var tClass=$("#tClass-"+value+"").val();
+                if(tClass == "请选择测试类"){
+                    tClass="";
+                }
                 var s=new Object();
                 s.clientlevel=1;
                 s.clientid=value;
                 s.clientname=getServiceKey(value);
+                s.classname=tClass;
                 s.parentclientid=0;
                 var obj=$("#service-"+value+" :checkbox:checked");
                 if(obj.length>1){
@@ -594,7 +348,7 @@
             layer.msg("请选择环境！");
             return;
         }else{
-
+            layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             var obj=new Object();
             obj.customname=customname;
             obj.userid=userid;
@@ -645,16 +399,6 @@
         }
 
     }
-
-
-
-
-    /*$(function(){
-        $(".permission-list dt input:checkbox").click(function(){
-            $(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
-        });
-
-});*/
 
 
 </script>

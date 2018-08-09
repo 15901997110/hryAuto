@@ -39,7 +39,7 @@
             <th width="5%"><input type="checkbox" value="" name=""></th>
             <th width="5%">id</th>
             <th width="15%">定制名称</th>
-            <th width="20%">服务</th>
+            <th width="20%">服务-测试类</th>
             <th width="10%">环境</th>
             <th width="25%">运行策略</th>
             <th width="15%">操作</th>
@@ -111,11 +111,15 @@
                         for(var k=0;k<tserviceList.length;k++){
                             var serv=tserviceList[k];
                             var servicekey="";
+                            var className="";
+                            if(serv.classname != null){
+                                className=serv.classname;
+                            }
                             if(serv.clientlevel == 1){
                                 if(serv.haschild == true){
-                                    servicekey=serv.clientname+"(有定制)";
+                                    servicekey=serv.clientname+"(有定制)-"+className;
                                 }else{
-                                    servicekey=serv.clientname;
+                                    servicekey=serv.clientname+"-"+className;
                                 }
 
 
@@ -195,9 +199,6 @@
                 var msg = data.msg;
                 var url=data.data;
                 if (status == 0) {
-                    /*layer.alert("<a title='查看' target='_blank' href='.."+url+"'>测试执行中，请稍后到测试报告页面查看！</a>", {
-                        skin: 'layer-ext-moon'
-                    });*/
                     url=encodeURI("../report-loading.html?reportname="+url+"&customname="+customname);
                     window.open(url);
 

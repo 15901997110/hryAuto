@@ -86,38 +86,39 @@
     </div>
 </div>
 
-<!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
 <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
-<!--/_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
+<!--&lt;!&ndash;_footer 作为公共模版分离出去&ndash;&gt;
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script>
+&lt;!&ndash;/_footer 作为公共模版分离出去&ndash;&gt;
 
-<!--请在下方写此页面业务相关的脚本-->
+&lt;!&ndash;请在下方写此页面业务相关的脚本&ndash;&gt;
 <script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript" src="lib/select2/select2.full.js"></script>
-<script type="text/javascript" src="lib/select2/pinyin.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>-->
 <script type="text/javascript">
     var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex: -1,
+            layerIndex:-1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, {shade: [0.01, '#fff']});
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
+                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
             },
             error: function () { //报错时执行
-                layer.close(layerIndex);
                 layer.alert('显示异常，请刷新后重试', {
                     skin: 'layui-layer-molv'
                     , closeBtn: 0

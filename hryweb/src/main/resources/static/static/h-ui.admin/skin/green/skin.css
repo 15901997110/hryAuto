@@ -10,7 +10,7 @@ a{color:#333}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 .navbar-userbar > ul> > li,.navbar-userbar > ul> > li > a{ color:#fff}
 
 .Hui-aside{}/*侧边栏*/
-	.Hui-aside .menu_dropdown dt{color:#333}/*左侧二级导航菜单*/
+	.Hui-aside .menu_dropdown dt{color:#333;font-weight:bold}/*左侧二级导航菜单*/
 	.Hui-aside .menu_dropdown dt:hover{color:#148cf1}
 	.Hui-aside .menu_dropdown dt:hover [class^="icon-"]{ color:#7e8795}
 	.Hui-aside .menu_dropdown li a{color:#666;border-bottom: 1px solid #e5e5e5}
