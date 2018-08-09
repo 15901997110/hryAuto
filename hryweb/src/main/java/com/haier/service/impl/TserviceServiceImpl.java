@@ -65,29 +65,9 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public PageInfo<Tservice> selectByCondition(Tservice tservice, Integer pageNum, Integer pageSize) {
-        TserviceExample tserviceExample = new TserviceExample();
-
-        TserviceExample.Criteria criteria = tserviceExample.createCriteria();
-        criteria.andIsdelNotEqualTo(1);
-        //如果传入的对象不是null,则设置查询条件
-        if (tservice != null) {
-            if (tservice.getId() != null) {
-                criteria.andIdEqualTo(tservice.getId());
-            }
-            if (tservice.getServicekey() != null) {
-                criteria.andServicekeyLike(tservice.getServicekey());
-            }
-            if (tservice.getServicename() != null) {
-                criteria.andServicenameLike(tservice.getServicename());
-            }
-        }
-
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
-
-        List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);//如果tservice为null,则tserviceExample也为null,既不传任何条件
-
+        List<Tservice> tservices = this.selectByCondition(tservice);
         PageInfo<Tservice> pageInfo = new PageInfo<>(tservices);
-
         return pageInfo;
     }
 
@@ -95,7 +75,6 @@ public class TserviceServiceImpl implements TserviceService {
     public List<Tservice> selectByCondition(Tservice tservice) {
         ReflectUtil.setFieldAddPercentAndCleanZero(tservice, false);
         TserviceExample tserviceExample = new TserviceExample();
-        tserviceExample.setOrderByClause(SortEnum.UPDATETIME.getValue());
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andIsdelNotEqualTo(1);
         if (tservice != null) {

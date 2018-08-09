@@ -1,7 +1,5 @@
 package com.haier.po;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 
 public class Tcase {
@@ -17,6 +15,8 @@ public class Tcase {
 
     private Integer envid;
 
+    private String testclass;
+
     private String requestparam;
 
     private Integer asserttype;
@@ -27,7 +27,6 @@ public class Tcase {
 
     private String author;
 
-    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")//现在已经全局配置
     private Date updatetime;
 
     public Integer getId() {
@@ -76,6 +75,14 @@ public class Tcase {
 
     public void setEnvid(Integer envid) {
         this.envid = envid;
+    }
+
+    public String getTestclass() {
+        return testclass;
+    }
+
+    public void setTestclass(String testclass) {
+        this.testclass = testclass == null ? null : testclass.trim();
     }
 
     public String getRequestparam() {

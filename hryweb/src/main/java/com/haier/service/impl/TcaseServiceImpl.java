@@ -55,7 +55,8 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer insertOne(Tcase tcase) {
-        return tcaseMapper.insertSelective(tcase);
+        tcaseMapper.insertSelective(tcase);
+        return tcase.getId();
     }
 
     @Override
@@ -68,11 +69,6 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer deleteByCondition(Tcase tcase) {
-       /* //暂时只实现根据iId,envId删除的功能
-        ReflectUtil.setInvalidFieldToNull(tcase, false);
-        if (tcase == null || (tcase.getIid() == null && tcase.getEnvid() == null)) {
-            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "只支持根据serviceid,iid和envid删除case");
-        }*/
         TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
         criteria.andStatusGreaterThan(0);
@@ -129,6 +125,9 @@ public class TcaseServiceImpl implements TcaseService {
             if (tcase.getCasename() != null) {
                 criteria.andCasenameLike(tcase.getCasename());
             }
+            if (tcase.getTestclass() != null) {
+                criteria.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
+            }
             if (tcase.getAuthor() != null) {
                 criteria.andAuthorLike(tcase.getAuthor());
             }
@@ -147,9 +146,12 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
-        //javabean中的属性进行处理,针对String类型的并且存在非空值的属性,前后都添加%,这样在后面的查询中可以直接like
         ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
-
+        if(tcaseCustom!=null){
+            if(tcaseCustom.getTestclass()!=null){
+                tcaseCustom.setTestclass(tcaseCustom.getTestclass().replaceAll("%",""));//testclass只支持equal查询
+            }
+        }
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
         PageInfo<TcaseCustom> pageInfo = new PageInfo<>(tcaseCustomList);
@@ -215,7 +217,7 @@ public class TcaseServiceImpl implements TcaseService {
                         log.warn("dbinfo转换异常,系统将当成dbinfo=null来处理");
                     }*/
                     while (BeforeUtil.isNeedReplace(actualParam)) {
-                        actualParam = BeforeUtil.replace(actualParam, tservicedetail.getDbinfo(),null);
+                        actualParam = BeforeUtil.replace(actualParam, tservicedetail.getDbinfo(), null);
                     }
                 }
                 log.debug("实际请求参数:" + actualParam);

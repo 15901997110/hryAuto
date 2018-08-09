@@ -31,8 +31,9 @@ public class TcaseController {
     @Autowired
     TcaseService tcaseService;
 
-
-    //增
+    /**
+     * 新增Case
+     */
     @PostMapping("/insertOne")
     public Result insertOne(Tcase tcase) {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
@@ -45,9 +46,6 @@ public class TcaseController {
 
     /**
      * 删除单个tcase记录
-     *
-     * @param id
-     * @return
      */
     @PostMapping("/deleteOne")
     public Result deleteOne(@RequestParam("id") Integer id) {
