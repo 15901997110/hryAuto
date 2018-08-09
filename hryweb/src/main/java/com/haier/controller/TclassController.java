@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tclass;
@@ -35,7 +36,7 @@ public class TclassController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "类名,服务Key,服务id,测试类描述必填");
         }
         //类名校验
-        if (!tclass.getClassname().matches("[A-Z][a-zA-Z0-9]+")) {
+        if (!tclass.getClassname().matches(RegexEnum.CLASSNAME_REGEX.getRegex())) {
             throw new HryException(StatusCodeEnum.REGEX_ERROR, "类名必须符合规则:首字母须大写,其余部分只能由字母和数字组成!");
         }
 
