@@ -485,6 +485,76 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andTestclassIsNull() {
+            addCriterion("testClass is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassIsNotNull() {
+            addCriterion("testClass is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassEqualTo(String value) {
+            addCriterion("testClass =", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassNotEqualTo(String value) {
+            addCriterion("testClass <>", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassGreaterThan(String value) {
+            addCriterion("testClass >", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassGreaterThanOrEqualTo(String value) {
+            addCriterion("testClass >=", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassLessThan(String value) {
+            addCriterion("testClass <", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassLessThanOrEqualTo(String value) {
+            addCriterion("testClass <=", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassLike(String value) {
+            addCriterion("testClass like", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassNotLike(String value) {
+            addCriterion("testClass not like", value, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassIn(List<String> values) {
+            addCriterion("testClass in", values, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassNotIn(List<String> values) {
+            addCriterion("testClass not in", values, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassBetween(String value1, String value2) {
+            addCriterion("testClass between", value1, value2, "testclass");
+            return (Criteria) this;
+        }
+
+        public Criteria andTestclassNotBetween(String value1, String value2) {
+            addCriterion("testClass not between", value1, value2, "testclass");
+            return (Criteria) this;
+        }
+
         public Criteria andRequestparamIsNull() {
             addCriterion("requestParam is null");
             return (Criteria) this;

@@ -11,8 +11,9 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="iId" jdbcType="INTEGER" property="iid"/>
         <result column="envId" jdbcType="INTEGER" property="envid"/>
+        <result column="testClass" jdbcType="VARCHAR" property="testclass"/>
         <result column="requestParam" jdbcType="VARCHAR" property="requestparam"/>
-        <result column="assertType" jdbcType="SMALLINT" property="asserttype"/>
+        <result column="assertType" jdbcType="INTEGER" property="asserttype"/>
         <result column="expected" jdbcType="VARCHAR" property="expected"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
@@ -37,6 +38,9 @@
             </if>
             <if test="casename != null and casename !=''">
                 AND (tcase.`caseName` LIKE #{casename} OR tcase.`remark` LIKE #{casename})
+            </if>
+            <if test="testclass!=null and testclass!=''">
+                AND tcase.`testClass`=#{testclass}
             </if>
             <if test="iid != null and iid != 0">
                 AND tcase.`iId`=#{iid}
