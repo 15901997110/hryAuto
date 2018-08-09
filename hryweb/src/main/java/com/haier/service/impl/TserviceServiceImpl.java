@@ -103,13 +103,26 @@ public class TserviceServiceImpl implements TserviceService {
                 criteria.andIdEqualTo(tservice.getId());
             if (tservice.getServicekey() != null) {
                 criteria.andServicekeyLike(tservice.getServicekey());
-                criteria.andServicenameLike(tservice.getServicekey());
+
+                //构建一个criteria查询servicename
+                TserviceExample.Criteria criteriaServicename = tserviceExample.createCriteria();
+                criteriaServicename.andIsdelNotEqualTo(1);
+                criteriaServicename.andServicenameLike(tservice.getServicekey());
+                if (tservice.getId() != null)
+                    criteriaServicename.andIdEqualTo(tservice.getId());
+                if (tservice.getEditor() != null)
+                    criteriaServicename.andEditorLike(tservice.getEditor());
+                if (tservice.getClassname() != null)
+                    criteriaServicename.andClassnameEqualTo(tservice.getClassname().replaceAll("%", ""));
+
+                tserviceExample.or(criteriaServicename);
             }
             if (tservice.getEditor() != null)
                 criteria.andEditorLike(tservice.getEditor());
             if (tservice.getClassname() != null)
                 criteria.andClassnameEqualTo(tservice.getClassname().replaceAll("%", ""));
         }
+
         return tserviceMapper.selectByExample(tserviceExample);
     }
 
