@@ -8,7 +8,7 @@ import com.haier.enums.HttpTypeEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
 import com.haier.util.HryHttpClientUtil;
-import com.haier.util.SpringContextHolder;
+import com.haier.config.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;

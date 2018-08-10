@@ -35,7 +35,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             "import com.haier.po.*;\n" +
             "import com.haier.service.RunService;\n" +
             "import com.haier.util.HryHttpClientUtil;\n" +
-            "import com.haier.util.SpringContextHolder;\n" +
+            "import com.haier.config.SpringContextHolder;\n" +
             "import lombok.extern.slf4j.Slf4j;\n" +
             "import org.apache.commons.lang3.StringUtils;\n" +
             "import org.testng.Reporter;\n" +

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.haier.config.SpringContextHolder;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.enums.RequestParamTypeEnum;
