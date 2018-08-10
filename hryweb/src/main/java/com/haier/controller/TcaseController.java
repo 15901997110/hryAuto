@@ -66,9 +66,18 @@ public class TcaseController {
     //改
     @PostMapping("/updateOne")
     public Result updateOne(Tcase tcase) {
+        //如果EnvId==0,表明可在任意环境运行测试用例,此时setInvalidFieldToNull工具会将0值置为null值
+        //所以先在这里打个标记,后面再赋值
+        Boolean flag = false;
+        if (tcase != null && tcase.getEnvid() == 0) {
+            flag = true;
+        }
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || tcase.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
+        }
+        if (flag) {
+            tcase.setEnvid(0);
         }
         return ResultUtil.success(tcaseService.updateOne(tcase));
     }
@@ -99,14 +108,13 @@ public class TcaseController {
     }
 
     /**
-     * 运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
-     * 适用于新建case页面和编辑case页面调用此接口测试case
+     * 运行单条case
      */
     @PostMapping("/runCaseOne")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
-
-        if (tcase == null || tcase.getIid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口id必填!");
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getIid() == null || tcase.getEnvid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "在新增和编辑页面运行Case时,IId(接口),EnvId(环境)是必须的!");
         }
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
@@ -116,7 +124,14 @@ public class TcaseController {
      */
     @PostMapping("/runCaseOneById")
     public Result runCaseOneById(@RequestParam("id") Integer id) throws HttpProcessException {
-        return ResultUtil.success(tcaseService.runOne(id));
+        Tcase tcase = tcaseService.selectOne(id);
+        if (tcase == null) {
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "在用例列表页面运行Case时,CaseID是必须!");
+        }
+        if (tcase.getEnvid() == null || tcase.getEnvid() == 0) {
+            throw new HryException(911, "此用例未指定测试环境,无法运行!");
+        }
+        return this.runCaseOne(tcase);
     }
 
 }

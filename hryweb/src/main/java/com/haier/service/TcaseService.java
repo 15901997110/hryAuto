@@ -42,4 +42,7 @@ public interface TcaseService {
     RunOneResult runOne(Tcase tcase) throws HttpProcessException;
 
     RunOneResult runOne(Integer id) throws HttpProcessException;
+
+    void runOne(Tcase tcase,String testClassName);
+    void runOne(Integer caseId,String testClassName);
 }

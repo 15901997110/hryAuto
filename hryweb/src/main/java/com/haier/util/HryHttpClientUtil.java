@@ -61,7 +61,7 @@ public class HryHttpClientUtil {
 
     public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param) {
         if (url == null) {
-            return "警告:请求url为null";
+            return "错误:请求url为null";
         }
         if (requestMethodType == null) {
             requestMethodType = 1;//post
