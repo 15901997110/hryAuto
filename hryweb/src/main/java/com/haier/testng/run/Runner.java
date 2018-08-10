@@ -102,6 +102,7 @@ public class Runner {
         updateReportStatus(reportId);
     }
 
+
     public void updateReportStatus(Integer reportId) {
         Treport treport = new Treport();
         treport.setId(reportId);
