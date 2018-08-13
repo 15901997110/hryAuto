@@ -1,7 +1,12 @@
 package com.haier.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.haier.config.SpringContextHolder;
 import com.haier.enums.AssertTypeEnum;
+import com.haier.po.HryTest;
+import com.haier.po.Tcase;
+import com.haier.po.Ti;
+import com.haier.service.TiService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,8 +29,8 @@ public class AssertUtil {
         log.info("actual:" + actual);
         log.info("actualType:" + actualType);*/
         Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType) + "(" + assertType + ")");
-        Reporter.log("期望结果 :"+expected);
-        Reporter.log("实际结果 :"+actual);
+        Reporter.log("期望结果 :" + expected);
+        Reporter.log("实际结果 :" + actual);
 
         switch (assertType) {
             //1.assertType=equal,完全相等
@@ -91,5 +96,15 @@ public class AssertUtil {
             default:
                 return false;
         }
+    }
+
+    public static Boolean supperAssert(String actual, Tcase tcase) {
+        TiService tiService = SpringContextHolder.getBean(TiService.class);
+        Ti ti = tiService.selectOne(tcase.getIid());
+        return supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
+    }
+
+    public static Boolean supperAssert(String actual, HryTest test){
+        return supperAssert(test.getTcase().getAsserttype(),test.getTcase().getExpected(),actual,test.getTi().getIresponsetype());
     }
 }

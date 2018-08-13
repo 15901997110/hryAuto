@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 @SKey("Pgw")
 public class PgwBaseBackup {
-    public Integer serviceId;
+    /*public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
     public JSONObject i_c_JSONObject;//将定制的用例从String类型转成JSONObject类型
@@ -139,5 +139,5 @@ public class PgwBaseBackup {
     public String tradeQueryFacade_tradeQuery(String baseUrl, String dbInfo, Params params) {
         return HryHttpClientUtil.send(baseUrl, dbInfo, params,this);
     }
-
+*/
 }

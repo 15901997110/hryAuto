@@ -102,7 +102,7 @@ public class BeforeUtil {
 
                     }
                 } catch (NoSuchFieldException e) {
-                    log.debug("需要替换的字段(" + varName + ")在对象" + entity.toString() + "未找到", e.getMessage());
+                    log.error("需要替换的字段(" + varName + ")在对象" + entity.toString() + "未找到", e.getMessage());
                     fieldValue = "需要替换的字段(" + varName + ")在对象" + entity.toString() + "未找到";
                 }
             } else {

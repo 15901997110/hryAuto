@@ -331,7 +331,12 @@ public class TcustomServiceImpl implements TcustomService {
 
                 }
             }
+
             params.put(ParamKeyEnum.I_C.getKey(), i_c_jsonStr);//参数名:i_c
+            params.put(ParamKeyEnum.I_C_ZDY.getKey(), "");//自定义Case,定制测试中使用不到,故这里传空值
+
+            log.info("传给测试类的参数:" + params.toString());
+
             xmlClass.setParameters(params);
             sMap.put(tcustomdetail, xmlClass);//建立映射关系
 
