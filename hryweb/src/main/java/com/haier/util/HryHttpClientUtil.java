@@ -5,11 +5,9 @@ import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.config.SpringContextHolder;
-import com.haier.enums.ContentTypeEnum;
-import com.haier.enums.RequestMethodTypeEnum;
-import com.haier.enums.RequestParamTypeEnum;
-import com.haier.enums.StatusCodeEnum;
+import com.haier.enums.*;
 import com.haier.exception.HryException;
+import com.haier.po.HryTest;
 import com.haier.po.Params;
 import com.haier.po.Tcase;
 import com.haier.po.Ti;
@@ -127,10 +125,10 @@ public class HryHttpClientUtil {
      * @date: 2018-08-03
      */
     public static String send(String baseUrl, String dbInfo, Params params) {
-        return send(baseUrl,dbInfo,params,null);
+        return send(baseUrl, dbInfo, params, null);
     }
 
-    public static <T>String send(String baseUrl,String dbInfo,Params params,T entity){
+    public static <T> String send(String baseUrl, String dbInfo, Params params, T entity) {
         Ti ti = params.getTi();
         Tcase tcase = params.getTcase();
         Integer requestMethodType = ti.getIrequestmethod().intValue();
@@ -138,11 +136,32 @@ public class HryHttpClientUtil {
         Integer contentType = ti.getIcontenttype().intValue();
         String param = tcase.getRequestparam();
         Reporter.log("用例id:" + tcase.getId());
-        Reporter.log("用例设计参数:" + param.replaceAll("<","＜").replaceAll(">","＞"));
+        param=replaceParam(param,dbInfo,entity);
+        return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);
+    }
+
+    public static <T> String send(String baseUrl, String dbInfo, Tcase tcase, T entity) {
+        TiService bean = SpringContextHolder.getBean(TiService.class);
+        Ti ti = bean.selectOne(tcase.getIid());
+        Params p = new Params();
+        p.setTi(ti);
+        p.setTcase(tcase);
+        return send(baseUrl, dbInfo, p, entity);
+    }
+
+    public static <T> String send(HryTest test, T entity) {
+        String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo()+test.getTi().getIuri();
+        String param=replaceParam(test.getTcase().getRequestparam(),test.getTservicedetail().getDbinfo(),entity);
+        return send(url,test.getTi().getIrequestmethod(),test.getTi().getIcontenttype(),
+                test.getTi().getIparamtype(),param);
+    }
+
+    private static <T> String replaceParam(String param, String dbInfo, T entity) {
+        Reporter.log("用例设计参数:" + param.replaceAll("<", "＜").replaceAll(">", "＞"));
         if (StringUtils.isNotBlank(param)) {
             param = BeforeUtil.replace(param, dbInfo, entity);
+            Reporter.log("实际请求参数:" + param);
         }
-        Reporter.log("实际请求参数:" + param);
-        return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);
+        return param;
     }
 }
