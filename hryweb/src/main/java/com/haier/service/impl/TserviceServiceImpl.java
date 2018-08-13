@@ -107,11 +107,13 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public Integer updateOne(Tservice tservice) {
+        tservice.setClassname(tservice.getServicekey()+"TestDefault");
         return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 
     @Override
     public Integer insertOne(Tservice tservice) {
+        tservice.setClassname(tservice.getServicekey()+"TestDefault");
         tserviceMapper.insertSelective(tservice);
         return tservice.getId();
     }

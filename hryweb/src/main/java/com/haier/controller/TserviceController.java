@@ -94,7 +94,6 @@ public class TserviceController {
                 }
             }
         }
-        tservice.setClassname(tservice.getServicekey() + "Base");
         return ResultUtil.success(tserviceService.insertOne(tservice));
     }
 
@@ -124,7 +123,6 @@ public class TserviceController {
                     }
                 }
             }
-            tservice.setClassname(tservice.getServicekey()+"Base");
         }
         return ResultUtil.success(tserviceService.updateOne(tservice));
     }
