@@ -134,4 +134,20 @@ public class TcaseController {
         return this.runCaseOne(tcase);
     }
 
+    @PostMapping("/runCase")
+    public Result runcase(Tcase tcase,Integer userId,String testClassName){
+        ReflectUtil.setInvalidFieldToNull(tcase,false);
+        if(tcase==null||tcase.getEnvid()==null){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"运行单条Case时,必须指定运行的环境");
+        }
+        return ResultUtil.success(tcaseService.runOne(tcase,userId,testClassName));
+    }
+
+    @PostMapping("/runCaseById")
+    public Result runcase(Integer id,Integer userId,String testClassName){
+        Tcase tcase = tcaseService.selectOne(id);
+        return this.runcase(tcase,userId,testClassName);
+    }
+
+
 }

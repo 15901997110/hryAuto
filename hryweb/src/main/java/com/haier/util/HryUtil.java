@@ -70,11 +70,11 @@ public class HryUtil {
     }
 
     /**
-     *@description: 将用例封装成HryTest对象返回
-     *@params: [tservice, tservicedetail, caseDesigner, i_c_JSONObject, i_c_zdy_JSONObject, method]
-     *@return: java.lang.Object[]   其实是HryTest[]数组对象
-     *@author: luqiwei
-     *@date: 2018-08-13
+     * @description: 将用例封装成HryTest对象返回
+     * @params: [tservice, tservicedetail, caseDesigner, i_c_JSONObject, i_c_zdy_JSONObject, method]
+     * @return: java.lang.Object[]   其实是HryTest[]数组对象
+     * @author: luqiwei
+     * @date: 2018-08-13
      */
     public static Object[] getTests(Tservice tservice,
                                     Tservicedetail tservicedetail,
@@ -151,5 +151,15 @@ public class HryUtil {
             ret[i] = test;
         }
         return ret;
+    }
+
+    public static String iUri2MethodName(String iUri) {
+        String testMethodName;//对应测试类中的测试方法名
+        if (iUri.startsWith("/")) {
+            testMethodName = iUri.replaceFirst("/", "").replaceAll("/", "_");
+        } else {
+            testMethodName = iUri.replaceAll("/", "_");
+        }
+        return testMethodName;
     }
 }

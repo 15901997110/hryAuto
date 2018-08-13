@@ -40,7 +40,7 @@ public class PgwBase2 {
     public RunService runService = SpringContextHolder.getBean(RunService.class);
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        log.info("测试类接收到的ServiceId:"+serviceId);
+        log.info("测试类接收到的ServiceId:" + serviceId);
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;

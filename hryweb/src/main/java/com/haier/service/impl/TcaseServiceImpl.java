@@ -1,28 +1,26 @@
 package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.*;
 import com.haier.exception.HryException;
-import com.haier.mapper.*;
+import com.haier.mapper.TcaseCustomMapper;
+import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
 import com.haier.service.*;
-import com.haier.util.AssertUtil;
-import com.haier.util.BeforeUtil;
-import com.haier.util.HryHttpClientUtil;
-import com.haier.util.ReflectUtil;
+import com.haier.testng.run.Runner;
+import com.haier.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlInclude;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @Description:
@@ -33,6 +31,12 @@ import java.util.List;
 @Slf4j
 @Service
 public class TcaseServiceImpl implements TcaseService {
+
+    @Value("${zdy.reportPath}")
+    String reportPath;
+
+    @Value("${zdy.resourcePathPattern}")
+    String resourcePathPattern;
 
     @Autowired
     TcaseMapper tcaseMapper;
@@ -51,6 +55,16 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Autowired
     TiService tiService;
+
+    @Autowired
+    Runner runner;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    TreportService treportService;
+
 
     @Override
     public Integer insertOne(Tcase tcase) {
@@ -260,34 +274,68 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
     @Override
-    public void runOne(Tcase tcase, String testClassName) {
-        //tcase中有iId,
-
-        //确定测试类
-        //确定方法选择器,
-        //筛选用例
-        //如果不传测试类,则根据使用默认的测试类
-        if (StringUtils.isBlank(testClassName)) {
-
-        }
-    }
-
-    @Override
-    public void runOne(Integer caseId, String testClassName) {
-        Tcase tcase = this.selectOne(caseId);
+    public String runOne(Tcase tcase, Integer userId, String testClassName) {
         Ti ti = tiService.selectOne(tcase.getIid());
         Tservice tservice = tserviceService.selectOne(ti.getServiceid());
-        //如果未指定测试类,默认使用默认测试类来测试
+        Tenv tenv = tenvService.selectOne(tcase.getEnvid());
+        User user = userService.selectOne(userId);
+        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String reportName = "r_simple_u" + userId + "_s" + tservice.getId() + "_i" + ti.getId() + "_" + date + ".html";
+
+        String methodName = HryUtil.iUri2MethodName(ti.getIuri());
+        Map<String, List<Tcase>> testCase = new HashMap<>();
+        testCase.put(methodName, Arrays.asList(tcase));
+        String i_c_zdy = JSON.toJSONString(testCase);
+
+        //测试类初始化参数
+        Map<String, String> initParam = new HashMap<>();
+        initParam.put(ParamKeyEnum.SERVICEID.getKey(), tservice.getId() + "");
+        initParam.put(ParamKeyEnum.ENVID.getKey(), tenv.getId() + "");
+        initParam.put(ParamKeyEnum.DESIGNER.getKey(), "");
+        initParam.put(ParamKeyEnum.I_C.getKey(), "");
+        initParam.put(ParamKeyEnum.I_C_ZDY.getKey(), i_c_zdy);
+
+        //如果没有指定测试类名,则使用默认的测试类来测试
         if (StringUtils.isBlank(testClassName)) {
             testClassName = tservice.getClassname();
         }
-        String methodName = ti.getIuri().replaceAll("/", "-");
-        if (methodName.startsWith("_")) {
-            methodName = methodName.substring(1);
-        }
-        XmlInclude include = new XmlInclude(methodName);
+
+        //定义一个测试类
         XmlClass xmlClass = new XmlClass(PackageEnum.TEST.getPackageName() + "." + testClassName);
-        // xmlClass.setIncludedMethods();
+
+        //方法选择器
+        XmlInclude include = new XmlInclude(methodName);
+        xmlClass.setIncludedMethods(Arrays.asList(include));
+
+        //设置测试类初始化参数
+        xmlClass.setParameters(initParam);
+
+
+        //构造测试报告
+        Treport treport = new Treport();
+        treport.setServicenames(JSON.toJSONString(Arrays.asList(tservice.getServicekey()).toString()));
+        treport.setStatus(StatusEnum.FIVE.getId());
+        treport.setServiceids(JSON.toJSONString(Arrays.asList(tservice.getId())));
+        treport.setReportpath(reportPath);
+        treport.setReportname(resourcePathPattern + reportName);
+        treport.setUserid(user.getId());
+        treport.setUsername(user.getRealname());
+        treport.setEnvid(tenv.getId());
+        treport.setEnvkey(tenv.getEnvkey());
+        treport.setCustomid(0);
+        treport.setCustomname("simple:" + tcase.getCasename());
+        Integer reportId = treportService.insertOne(treport);
+
+
+        runner.run(null, reportId, reportName, Arrays.asList(xmlClass));
+        return resourcePathPattern + reportName;
+
+    }
+
+    @Override
+    public String runOne(Integer caseId, Integer userId, String testClassName) {
+        Tcase tcase = this.selectOne(caseId);
+        return this.runOne(tcase, userId, testClassName);
     }
 
 

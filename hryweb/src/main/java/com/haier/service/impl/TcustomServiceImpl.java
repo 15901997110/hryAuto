@@ -400,7 +400,7 @@ public class TcustomServiceImpl implements TcustomService {
         Tenv tenv = tenvService.selectOne(envid);
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
+        String reportName = "r_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
         //构造入库测试报告记录
         Treport treport = new Treport();
         treport.setCustomid(customVO.getId());
