@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.testng.xml.XmlClass;
+import org.testng.xml.XmlInclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,10 +104,47 @@ public class TcaseServiceImpl implements TcaseService {
         ReflectUtil.setFieldAddPercentAndCleanZero(tcase, false);
         TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
+        TcaseExample.Criteria criteria2 = null;
         criteria.andStatusGreaterThan(0);
         if (tcase != null) {
             if (tcase.getEnvid() != null) {
                 criteria.andEnvidEqualTo(tcase.getEnvid());
+                /**
+                 * 不仅要获取传入的EnvID的用例,还需要获取EnvID=0的用例,EnvId=0表明此用例可运行于任意环境
+                 */
+                criteria2 = tcaseExample.createCriteria();
+                criteria2.andStatusGreaterThan(0);
+                criteria2.andEnvidEqualTo(0);
+                if (tcase.getServiceid() != null) {
+                    criteria.andServiceidEqualTo(tcase.getServiceid());
+                }
+                if (tcase.getIid() != null) {
+                    criteria.andIidEqualTo(tcase.getIid());
+                }
+                if (tcase.getRequestparam() != null) {
+                    criteria.andRequestparamLike(tcase.getRequestparam());
+                }
+                if (tcase.getId() != null) {
+                    criteria.andIdEqualTo(tcase.getId());
+                }
+                if (tcase.getCasename() != null) {
+                    criteria.andCasenameLike(tcase.getCasename());
+                }
+                if (tcase.getTestclass() != null) {
+                    criteria.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
+                }
+                if (tcase.getAuthor() != null) {
+                    criteria.andAuthorLike(tcase.getAuthor());
+                }
+                if (tcase.getExpected() != null) {
+                    criteria.andExpectedLike(tcase.getExpected());
+                }
+                if (tcase.getRemark() != null) {
+                    criteria.andRemarkLike(tcase.getRemark());
+                }
+                if (tcase.getAsserttype() != null) {
+                    criteria.andAsserttypeEqualTo(tcase.getAsserttype());
+                }
             }
             if (tcase.getServiceid() != null) {
                 criteria.andServiceidEqualTo(tcase.getServiceid());
@@ -222,7 +261,11 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public void runOne(Tcase tcase, String testClassName) {
+        //tcase中有iId,
+
         //确定测试类
+        //确定方法选择器,
+        //筛选用例
         //如果不传测试类,则根据使用默认的测试类
         if (StringUtils.isBlank(testClassName)) {
 
@@ -231,7 +274,20 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public void runOne(Integer caseId, String testClassName) {
-
+        Tcase tcase = this.selectOne(caseId);
+        Ti ti = tiService.selectOne(tcase.getIid());
+        Tservice tservice = tserviceService.selectOne(ti.getServiceid());
+        //如果未指定测试类,默认使用默认测试类来测试
+        if (StringUtils.isBlank(testClassName)) {
+            testClassName = tservice.getClassname();
+        }
+        String methodName = ti.getIuri().replaceAll("/", "-");
+        if (methodName.startsWith("_")) {
+            methodName = methodName.substring(1);
+        }
+        XmlInclude include = new XmlInclude(methodName);
+        XmlClass xmlClass = new XmlClass(PackageEnum.TEST.getPackageName() + "." + testClassName);
+        // xmlClass.setIncludedMethods();
     }
 
 
