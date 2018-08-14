@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class PgwTestDefaultBackup extends PgwBase {
+public class PgwTestDefaultBackup extends PgwBase {/*
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c) {
@@ -76,5 +76,5 @@ public class PgwTestDefaultBackup extends PgwBase {
     public void tradeQueryFacade_tradeQuery(Params params) {
         String actual = this.tradeQueryFacade_tradeQuery(baseUrl, dbInfo, params);
         AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
-    }
+    }*/
 }
