@@ -191,6 +191,9 @@ public class TcaseServiceImpl implements TcaseService {
                 criteria.andAsserttypeEqualTo(tcase.getAsserttype());
             }
         }
+        if (criteria2 != null) {
+            tcaseExample.or(criteria2);
+        }
         return tcaseMapper.selectByExample(tcaseExample);
     }
 
