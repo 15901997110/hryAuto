@@ -76,12 +76,8 @@ public class HryUtil {
      * @author: luqiwei
      * @date: 2018-08-13
      */
-    public static Object[] getTests(Tservice tservice,
-                                    Tservicedetail tservicedetail,
-                                    String caseDesigner,
-                                    JSONObject i_c_JSONObject,
-                                    JSONObject i_c_zdy_JSONObject,
-                                    Method method) {
+    public static Object[] getTests(Tservice tservice, Tservicedetail tservicedetail, String caseDesigner,
+                                    JSONObject i_c, JSONObject i_c_zdy, Method method) {
         RunService runService = SpringContextHolder.getBean(RunService.class);
         Object[] ret;
         String iUri;
@@ -100,8 +96,8 @@ public class HryUtil {
          * 用户有自定义的Case,则返回用户自定义的Case
          */
 
-        if (i_c_zdy_JSONObject != null && i_c_zdy_JSONObject.size() > 0) {
-            JSONArray zdyCaseArray = i_c_zdy_JSONObject.getJSONArray(method.getName());
+        if (i_c_zdy != null && i_c_zdy.size() > 0) {
+            JSONArray zdyCaseArray = i_c_zdy.getJSONArray(method.getName());
             if (zdyCaseArray != null && zdyCaseArray.size() > 0) {
                 ret = new Object[zdyCaseArray.size()];
                 for (int i = 0; i < zdyCaseArray.size(); i++) {
@@ -128,8 +124,8 @@ public class HryUtil {
         /**
          * 处理用户定制的Case
          */
-        if (i_c_JSONObject != null && i_c_JSONObject.size() > 0) {
-            JSONArray customCaseArray = i_c_JSONObject.getJSONArray(method.getName());
+        if (i_c != null && i_c.size() > 0) {
+            JSONArray customCaseArray = i_c.getJSONArray(method.getName());
             if (customCaseArray != null && customCaseArray.size() > 0) {
                 Iterator<Tcase> iterator = tcases.iterator();
                 while (iterator.hasNext()) {
