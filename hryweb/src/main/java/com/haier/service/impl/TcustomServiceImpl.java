@@ -415,8 +415,7 @@ public class TcustomServiceImpl implements TcustomService {
         treport.setReportname(resourcePathPattern + reportName);
         treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
 
-        treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
-        Integer treportId = treport.getId();
+        Integer treportId = treportService.insertOne(treport);
 
         runner.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return resourcePathPattern + reportName;
