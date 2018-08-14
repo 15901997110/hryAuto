@@ -2,11 +2,9 @@ package com.haier.testng.test;
 
 import com.alibaba.fastjson.JSONObject;
 import com.haier.po.HryTest;
-import com.haier.po.Params;
 import com.haier.testng.base.PgwBase;
 import com.haier.util.AssertUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -16,10 +14,10 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class PgwTestProcess extends PgwBase {
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c","i_c_zdy"})
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c,String i_c_zdy) {
-        init(serviceId, envId, caseDesigner, i_c,i_c_zdy);
+    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
     }
 
     @DataProvider(name = "provider")
@@ -35,12 +33,12 @@ public class PgwTestProcess extends PgwBase {
         JSONObject actualJsonObject = JSONObject.parseObject(actual);
         requestNo = actualJsonObject.getString("requestNo");
 
-        //AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
+        AssertUtil.supperAssert(actual, test);
     }
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询", dependsOnMethods = "payToAccountFacade_payToAccount")
     public void tradeQueryFacade_tradeQuery(HryTest test) {
         String actual = this._tradeQueryFacade_tradeQuery(test);
-        //AssertUtil.supperAssert(params.getTcase().getAsserttype(), params.getTcase().getExpected(), actual, params.getTi().getIresponsetype());
+        AssertUtil.supperAssert(actual, test);
     }
 }
