@@ -8,6 +8,7 @@ import com.haier.service.RunService;
 import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.CookieStore;
 
 import java.lang.reflect.Method;
 
@@ -26,6 +27,7 @@ public class Base {
     public Tservice tservice;
     public Tservicedetail tservicedetail;
     public RunService runService = SpringContextHolder.getBean(RunService.class);
+    public CookieStore cookieStore;
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         log.info("测试类接收到的ServiceId:" + serviceId);
