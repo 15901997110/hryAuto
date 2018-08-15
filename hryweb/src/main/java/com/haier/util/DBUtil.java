@@ -18,9 +18,9 @@ public class DBUtil {
 
 
     //数据库连接
-    public static JdbcTemplate getJdbcTemplate(DBTypeEnum dbTypeEnum, String url, String username, String password) {
+    public static JdbcTemplate getJdbcTemplate(String driver, String url, String username, String password) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(dbTypeEnum.getDriverName());
+        dataSource.setDriverClassName(driver);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);

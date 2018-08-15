@@ -106,6 +106,70 @@ public class HryHttpClientUtil {
         }
     }
 
+/*
+    public static <T> String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, T entity) {
+        if (StringUtils.isBlank(url)) {
+            return "错误:请求url为null";
+        }
+        if (requestMethodType == null || requestMethodType == 0) {
+            requestMethodType = 1;//post
+        }
+        if (contentType == null || contentType == 0) {
+            contentType = 1;//application/json
+        }
+        if (requestParamType == null || requestParamType == 0) {
+            requestParamType = 1;//json类型(参数类型)
+        }
+
+        //设置请求Headers:Content-Type
+        Header header;
+        if (contentType == ContentTypeEnum.JSON.getId()) {
+            header = new BasicHeader("Content-Type", ContentTypeEnum.JSON.getValue());
+        } else {
+            return "警告:Content-Type暂时只支持:application/json";
+        }
+        //设置Cookie(如果有)
+        if(entity!=null){
+            try {
+                //从Base类中拿Cookie
+                entity.getClass().getSuperclass().getSuperclass().getDeclaredField("cookieHeader").get(entity);
+            } catch (IllegalAccessException e) {
+
+            } catch (NoSuchFieldException e) {
+
+            }
+        }
+
+
+        //设置请求参数
+        HttpConfig httpConfig = HttpConfig.custom().url(url).encoding("utf-8").headers(new Header[]{header});
+        if (requestParamType == RequestParamTypeEnum.JSON.getId()) {
+            if (param != null) {
+                httpConfig.json(param);
+            }
+        }
+
+
+        //发送请求,返回响应内容
+        if (requestMethodType == RequestMethodTypeEnum.GET.getId()) {
+            try {
+                return HttpClientUtil.get(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("发送http请求异常了:", e);
+                return "错误:发送http请求异常了-" + e.toString();
+            }
+        } else {
+            try {
+                return HttpClientUtil.post(httpConfig);
+            } catch (HttpProcessException e) {
+                log.error("发送http请求异常了:", e);
+                return "错误:发送http请求异常了-" + e.toString();
+            }
+        }
+//        return null;
+    }
+*/
+
     public static String send(String baseUrl, String dbInfo, Integer caseId) {
         TcaseService caseService = SpringContextHolder.getBean(TcaseService.class);
         TiService iService = SpringContextHolder.getBean(TiService.class);
@@ -136,7 +200,7 @@ public class HryHttpClientUtil {
         Integer contentType = ti.getIcontenttype().intValue();
         String param = tcase.getRequestparam();
         Reporter.log("用例id:" + tcase.getId());
-        param=replaceParam(param,dbInfo,entity);
+        param = replaceParam(param, dbInfo, entity);
         return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);
     }
 
@@ -150,10 +214,10 @@ public class HryHttpClientUtil {
     }
 
     public static <T> String send(HryTest test, T entity) {
-        String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo()+test.getTi().getIuri();
-        String param=replaceParam(test.getTcase().getRequestparam(),test.getTservicedetail().getDbinfo(),entity);
-        return send(url,test.getTi().getIrequestmethod(),test.getTi().getIcontenttype(),
-                test.getTi().getIparamtype(),param);
+        String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
+        String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
+        return send(url, test.getTi().getIrequestmethod(), test.getTi().getIcontenttype(),
+                test.getTi().getIparamtype(), param);
     }
 
     private static <T> String replaceParam(String param, String dbInfo, T entity) {

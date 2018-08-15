@@ -78,7 +78,7 @@ public class BeforeUtil {
     }
 
     /**
-     * @description: 将字符串base中的关键字<<       <       var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
+     * @description: 将字符串base中的关键字<<               <               var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
      * @params: [base-需要替换的字符串, entity-调用此方法的实体对象]
      * @return: java.lang.String
      * @author: luqiwei
@@ -150,7 +150,7 @@ public class BeforeUtil {
                     String password = dbinfoJsonObject.getString(DBInfoKeyEnum.PASSWORD.name().toLowerCase());
                     if (!StringUtils.isAnyBlank(driver, url, username, password)) {
                         try {
-                            JdbcTemplate jdbcTemplate = DBUtil.getJdbcTemplate(DBTypeEnum.MYSQL, url, username, password);
+                            JdbcTemplate jdbcTemplate = DBUtil.getJdbcTemplate(driver, url, username, password);
                             queryResult = DBUtil.queryForObject(jdbcTemplate, sql);
                             if (queryResult == null) {
                                 queryResult = "查询Sql为null";
