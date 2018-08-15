@@ -30,21 +30,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (session.getAttribute("userSession") != null) {//服务端session信息存在
             //log.debug("userSession:" + session.getAttribute("userSession").toString());
             Cookie[] cookies = request.getCookies();
-            int i = 0;
-            for (Cookie cookie : cookies) {
 
+            //校验其中一个cookie
+            for (Cookie cookie : cookies) {
                 if ("identityCookie".equals(cookie.getName())) {//客户端有Cookie信息
-                    i++;
+                    return true;
                 }
-                if ("realnameCookie".equals(cookie.getName())) {
-                    i++;
-                }
-                if ("groupidCookie".equals(cookie.getName())) {
-                    i++;
-                }
-            }
-            if (i == 3) {
-                return true;
             }
         }
 
