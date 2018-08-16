@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 @Slf4j
-public class PgwTestProcess extends PgwBase {
+public class PgwProcessTest extends PgwBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {

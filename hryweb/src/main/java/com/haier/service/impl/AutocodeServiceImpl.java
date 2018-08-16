@@ -153,7 +153,7 @@ public class AutocodeServiceImpl implements AutocodeService {
 
             StringBuffer sb = new StringBuffer();
             String sKey = tservice.getServicekey();
-            String className = sKey + "TestDefault";
+            String className = sKey + "DefaultTest";
             String supperClassName = sKey + "Base";
             sb.append(defaultHead.replaceAll("\\$\\{supperClassName\\}", supperClassName));
             sb.append(defaultClass.replaceAll("\\$\\{defaultClassName\\}", className)

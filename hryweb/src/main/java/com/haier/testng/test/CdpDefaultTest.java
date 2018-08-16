@@ -12,13 +12,13 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 /**
- * @Description: CdpTestDefault
+ * @Description: CdpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/14 13:32:43
+ * @Date: 2018/08/16 20:32:25
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class CdpTestDefault extends CdpBase{
+public class CdpDefaultTest extends CdpBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {

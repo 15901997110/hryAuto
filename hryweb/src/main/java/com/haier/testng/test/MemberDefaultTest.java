@@ -12,13 +12,13 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 /**
- * @Description: MemberTestDefault
+ * @Description: MemberDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/14 13:32:43
+ * @Date: 2018/08/16 20:32:25
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class MemberTestDefault extends MemberBase{
+public class MemberDefaultTest extends MemberBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
@@ -51,6 +51,12 @@ public class MemberTestDefault extends MemberBase{
     @Test(testName = "/bankCardFacade/checkUserBindCard", dataProvider = "provider", description = "查询用户是否绑过银行卡")
     public void bankCardFacade_checkUserBindCard(HryTest hryTest) {
         String actual = this._bankCardFacade_checkUserBindCard(hryTest);
+        AssertUtil.supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/bankCardFacade/getBankChannel", dataProvider = "provider", description = "根据银行代码和支付金额获取银行渠道")
+    public void bankCardFacade_getBankChannel(HryTest hryTest) {
+        String actual = this._bankCardFacade_getBankChannel(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
     }
 

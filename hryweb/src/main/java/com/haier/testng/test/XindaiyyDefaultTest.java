@@ -12,13 +12,13 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Method;
 
 /**
- * @Description: XindaiyyTestDefault
+ * @Description: XindaiyyDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/16 09:33:05
+ * @Date: 2018/08/16 20:32:25
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
-public class XindaiyyTestDefault extends XindaiyyBase{
+public class XindaiyyDefaultTest extends XindaiyyBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
