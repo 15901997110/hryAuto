@@ -1,5 +1,6 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
 import com.haier.enums.AssertTypeEnum;
@@ -104,7 +105,136 @@ public class AssertUtil {
         return supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
     }
 
-    public static Boolean supperAssert(String actual, HryTest test){
-        return supperAssert(test.getTcase().getAsserttype(),test.getTcase().getExpected(),actual,test.getTi().getIresponsetype());
+    public static Boolean supperAssert(String actual, HryTest test) {
+        return supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
     }
+
+    public static Boolean isMatch(Map<String, Object> expected, JSONObject actual) {
+        if (expected == null || expected.size() == 0) {
+            return false;
+        }
+        for (Map.Entry<String, Object> entry : expected.entrySet()) {
+            if (!isMatch(entry.getKey(), entry.getValue(), actual)) {
+                return false;
+            }
+        }
+        //所有key-value都已经通过校验,则返回true
+        return true;
+    }
+
+    /**
+     * 将JSONObject解析到不能再解析为止,如果发现key相同,则比较Value的值
+     *
+     * @param key
+     * @param value
+     * @param actual
+     * @return
+     */
+    private static Boolean isMatch(String key, Object value, JSONObject actual) {
+        /**
+         * 迭代解析JSONObject
+         */
+        for (Map.Entry<String, Object> entry : actual.entrySet()) {
+            String actualKey = entry.getKey();
+            Object actualValue = entry.getValue();
+
+            /**
+             * 如果actualValue是JSONObject
+             */
+            if (actualValue instanceof JSONObject) {//如果值是一个JSONObject,则迭代
+                if (isMatch(key, value, (JSONObject) actualValue)) {
+                    return true;
+                }
+
+
+            /**
+             * 如果actualValue是JSONArray
+             */
+            } else if (actualValue instanceof JSONArray) {//如果值是一个JSONArray,
+                JSONArray jsonArray = (JSONArray) actualValue;
+                if (jsonArray.size() > 0) {//首先判断JSONArray的长度
+                    //判断jsonArray的第一个元素,看其是否是对象,
+                    //注意这里可能不妥,如果JSONArray中元素类型不一致,则只判断第一个元素的类型,是不够严谨的
+                    //但是从实际实践中来看,暂时还没有发现JSONArray中元素类型不一致的情况
+                    Object o = jsonArray.get(0);
+
+                    if (o instanceof JSONObject) {//如果JsonArray中的类型为JSONObject,则迭代
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            if (isMatch(key, value, (JSONObject) jsonArray.get(i))) {
+                                return true;
+                            }
+                        }
+                    } else {//JSONArray中的类型不是JSONObject,此种情况其实绝大情况都是基本类型
+                        if (key.equals(actualKey)) {
+                            if (isMatch(value, jsonArray.toJSONString())) {
+                                return true;
+                            }
+                        }
+                    }
+                } else {//如果jsonArray的长度为0,则jsonArray=[]
+                    if (key.equals(actualKey)) {
+                        if (isMatch(value, jsonArray.toJSONString())) {
+                            return true;
+                        }
+                    }
+                }
+
+            /**
+             * actualValue不是JSON对象
+             */
+            } else {
+                if (key.equals(actualKey)) {
+                    if (isMatch(value, actualValue)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        /**
+         * 所有迭代都走完了,没有匹配到结果,则返回false
+         */
+        return false;
+    }
+
+    /**
+     * 比较对象
+     *
+     * @param expected
+     * @param actual
+     * @return
+     */
+    private static Boolean isMatch(Object expected, Object actual) {
+        if (expected == null || actual == null) {
+            if (expected == null && actual == null) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (actual.equals(expected)) {//两个对象相等
+            return true;
+        }
+        String actualStr = actual.toString().trim();
+        String expectedStr = expected.toString().trim();
+        if (actualStr.equalsIgnoreCase(expectedStr)) {//转换String后忽略大小写相等
+            return true;
+        }
+
+        if(actualStr.replaceAll("\\s","").equalsIgnoreCase(expectedStr.replaceAll("\\s",""))){
+            log.debug("替换所有空字符串后再比较相等");
+            return true;
+        }
+
+        if (actualStr.contains(expectedStr)) {//实际值包含期望值
+            return true;
+        }
+
+        if (actualStr.matches(expectedStr)) {//实际值匹配到期望的正则
+            return true;
+        }
+
+        return false;//以上都不是,返回false
+    }
+
+
 }
