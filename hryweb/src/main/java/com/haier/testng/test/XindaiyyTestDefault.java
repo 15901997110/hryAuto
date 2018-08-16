@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: XindaiyyTestDefault
  * @Author: 自动生成
- * @Date: 2018/08/15 17:31:00
+ * @Date: 2018/08/16 09:33:05
  */
 @SuppressWarnings("Duplicates")
 @Slf4j
@@ -31,26 +31,26 @@ public class XindaiyyTestDefault extends XindaiyyBase{
     }
 
     @Test(testName = "/cbp-web/book/addBookInfo.json", dataProvider = "provider", description = "新建预约")
-    public void cbp-web_book_addBookInfo.json(HryTest hryTest) {
-        String actual = this._cbp-web_book_addBookInfo.json(hryTest);
+    public void cbp_web_book_addBookInfo_json(HryTest hryTest) {
+        String actual = this._cbp_web_book_addBookInfo_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
     }
 
     @Test(testName = "/cbp-web/book/audit.json", dataProvider = "provider", description = "审核预约")
-    public void cbp-web_book_audit.json(HryTest hryTest) {
-        String actual = this._cbp-web_book_audit.json(hryTest);
+    public void cbp_web_book_audit_json(HryTest hryTest) {
+        String actual = this._cbp_web_book_audit_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
     }
 
     @Test(testName = "/cbp-web/book/queryBookList.json", dataProvider = "provider", description = "查询预约列表")
-    public void cbp-web_book_queryBookList.json(HryTest hryTest) {
-        String actual = this._cbp-web_book_queryBookList.json(hryTest);
+    public void cbp_web_book_queryBookList_json(HryTest hryTest) {
+        String actual = this._cbp_web_book_queryBookList_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
     }
 
     @Test(testName = "/cbp-web/book/review.json", dataProvider = "provider", description = "预约复核")
-    public void cbp-web_book_review.json(HryTest hryTest) {
-        String actual = this._cbp-web_book_review.json(hryTest);
+    public void cbp_web_book_review_json(HryTest hryTest) {
+        String actual = this._cbp_web_book_review_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
     }
 

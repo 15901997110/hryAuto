@@ -174,7 +174,10 @@ public class AutocodeServiceImpl implements AutocodeService {
         for (Ti ti : tis) {
             String iUri = ti.getIuri();
             String desc = ti.getRemark();
-            String testMethodName = iUri.substring(iUri.indexOf("/") + 1).replaceAll("/", "_");
+            String testMethodName = iUri.substring(iUri.indexOf("/") + 1)
+                    .replaceAll("/", "_")
+                    .replaceAll("-","_")
+                    .replaceAll("\\.","_");
             String testMethod = defaultMethod.replaceAll("\\$\\{annoTestName\\}", iUri)
                     .replaceAll("\\$\\{annoDesc\\}", desc != null ? desc : "no desc")
                     .replaceAll("\\$\\{testMethodName\\}", testMethodName);

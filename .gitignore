@@ -3,7 +3,7 @@ debug/
 */target/
 */META-INF/
 test-output/
-/mytest/
+*/mytest/
 
 
 # Compiled class file
