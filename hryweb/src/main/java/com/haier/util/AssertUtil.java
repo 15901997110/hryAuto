@@ -1,5 +1,6 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
@@ -56,7 +57,8 @@ public class AssertUtil {
                     case 1:
                         JSONObject actualJsonObj = JsonUtil.str2JsonObj(actual);
                         JSONObject expectJsonObj = JsonUtil.str2JsonObj(expected);
-                        if (actualJsonObj == null || expectJsonObj == null) {
+                        return isMatch(actualJsonObj, expectJsonObj);
+                        /*if (actualJsonObj == null || expectJsonObj == null) {
                             return false;
                         }
 
@@ -84,7 +86,7 @@ public class AssertUtil {
                             }
                         }
 
-                        return true;
+                        return true;*/
 
                     //actualType=map,对于实际返回值类型为map的处理,(暂未实现)
                     case 2:
@@ -109,7 +111,7 @@ public class AssertUtil {
         return supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
     }
 
-    public static Boolean isMatch(Map<String, Object> expected, JSONObject actual) {
+    public static Boolean isMatch(JSONObject actual, Map<String, Object> expected) {
         if (expected == null || expected.size() == 0) {
             return false;
         }
@@ -122,6 +124,10 @@ public class AssertUtil {
         return true;
     }
 
+    public static Boolean isMatch(JSONObject actual, JSONObject expected) {
+        return isMatch(actual, expected.toJavaObject(Map.class));
+    }
+
     /**
      * 将JSONObject解析到不能再解析为止,如果发现key相同,则比较Value的值
      *
@@ -130,7 +136,7 @@ public class AssertUtil {
      * @param actual
      * @return
      */
-    private static Boolean isMatch(String key, Object value, JSONObject actual) {
+    public static Boolean isMatch(String key, Object value, JSONObject actual) {
         /**
          * 迭代解析JSONObject
          */
@@ -147,9 +153,9 @@ public class AssertUtil {
                 }
 
 
-            /**
-             * 如果actualValue是JSONArray
-             */
+                /**
+                 * 如果actualValue是JSONArray
+                 */
             } else if (actualValue instanceof JSONArray) {//如果值是一个JSONArray,
                 JSONArray jsonArray = (JSONArray) actualValue;
                 if (jsonArray.size() > 0) {//首先判断JSONArray的长度
@@ -179,9 +185,9 @@ public class AssertUtil {
                     }
                 }
 
-            /**
-             * actualValue不是JSON对象
-             */
+                /**
+                 * actualValue不是JSON对象
+                 */
             } else {
                 if (key.equals(actualKey)) {
                     if (isMatch(value, actualValue)) {
@@ -220,7 +226,7 @@ public class AssertUtil {
             return true;
         }
 
-        if(actualStr.replaceAll("\\s","").equalsIgnoreCase(expectedStr.replaceAll("\\s",""))){
+        if (actualStr.replaceAll("\\s", "").equalsIgnoreCase(expectedStr.replaceAll("\\s", ""))) {
             log.debug("替换所有空字符串后再比较相等");
             return true;
         }
