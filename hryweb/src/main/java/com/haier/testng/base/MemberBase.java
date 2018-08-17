@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MemberBase
  * @Author: 自动生成
- * @Date: 2018/08/14 11:11:55
+ * @Date: 2018/08/17 14:34:00
  */
 @SKey("Member")
 public class MemberBase extends Base {
@@ -29,6 +29,11 @@ public class MemberBase extends Base {
 
     @Uri(value = "/bankCardFacade/checkUserBindCard", desc = "查询用户是否绑过银行卡")
     public String _bankCardFacade_checkUserBindCard(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/bankCardFacade/getBankChannel", desc = "根据银行代码和支付金额获取银行渠道")
+    public String _bankCardFacade_getBankChannel(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

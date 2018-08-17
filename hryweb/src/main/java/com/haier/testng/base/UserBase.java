@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: UserBase
  * @Author: 自动生成
- * @Date: 2018/08/14 11:11:55
+ * @Date: 2018/08/17 14:34:00
  */
 @SKey("User")
 public class UserBase extends Base {
