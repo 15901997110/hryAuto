@@ -204,15 +204,20 @@ public class HryReporter implements IReporter {
                     test = extenttest.createNode(name).assignCategory(categories);
                 }
 
+
                 /**
-                 * 如果有参数,测试报告中将参数展示出来
+                 * 参数现在直接使用Reporter.log打印
                  */
+
+                /*                *//**
+                 * 如果有参数,测试报告中将参数展示出来
+                 *//*
                 String p = "";
                 if (parameters != null && parameters.length > 0) {
                     for (Object param : parameters) {
                         p += param.toString();
                     }
-                }
+                }*/
 
 
  /*               //如果有参数，则使用参数的toString组合代替报告中的name
