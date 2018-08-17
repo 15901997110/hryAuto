@@ -1,6 +1,7 @@
 package com.haier.testng.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.haier.anno.Cookie;
 import com.haier.config.SpringContextHolder;
 import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
@@ -27,6 +28,8 @@ public class Base {
     public Tservice tservice;
     public Tservicedetail tservicedetail;
     public RunService runService = SpringContextHolder.getBean(RunService.class);
+
+    @Cookie
     public CookieStore cookieStore;
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
