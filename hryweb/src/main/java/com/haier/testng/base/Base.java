@@ -33,7 +33,6 @@ public class Base {
     public CookieStore cookieStore;
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        log.info("测试类接收到的ServiceId:" + serviceId);
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
@@ -45,6 +44,7 @@ public class Base {
         }
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
+        log.info("base类初始化(init()执行)完成");
     }
 
     public Object[] provider(Method method) {

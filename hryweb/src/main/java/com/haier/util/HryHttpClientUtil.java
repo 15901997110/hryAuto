@@ -1,8 +1,11 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
+import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
+import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.Cookie;
 import com.haier.config.SpringContextHolder;
@@ -19,7 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
 
@@ -66,82 +76,56 @@ public class HryHttpClientUtil {
         return send(url, requestMethodType, contentType, requestParamType, param, null);
     }
 
-    public static CookieStore getCookie(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, CookieStore requestCookies) {
-        return null;
-    }
 
     public static <T extends Base> String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, T entity) {
-        if (StringUtils.isBlank(url)) {
-            return "错误:请求url为null";
-        }
-        if (requestMethodType == null || requestMethodType == 0) {
-            requestMethodType = 1;//post
-        }
-        if (contentType == null || contentType == 0) {
-            contentType = 1;//application/json
-        }
-        if (requestParamType == null || requestParamType == 0) {
-            requestParamType = 1;//json类型(参数类型)
+
+        //请求方式,现在仅支持Post/Get
+        HttpMethods methodType;
+        if (requestMethodType.equals(RequestMethodTypeEnum.POST.getId())) {
+            methodType = HttpMethods.POST;
+        } else if (requestMethodType.equals(RequestMethodTypeEnum.GET.getId())) {
+            methodType = HttpMethods.GET;
+        } else {
+            methodType = HttpMethods.POST;
         }
 
-        //设置请求Headers:Content-Type
+        //Content-Type
         Header header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
 
-
-        //设置Cookie
-        HttpClientContext context = null;
-        if (entity != null) {
-            Field[] fields = entity.getClass().getFields();//获取所有公共字段,包括父类
-            for (Field field : fields) {
-                if (field.getAnnotation(Cookie.class) != null) {
-                    Object o = null;
-                    try {
-                        o = field.get(entity);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    if (o != null) {
-                        context = new HttpClientContext();
-                        context.setCookieStore((CookieStore) o);
-                    }
-                    break;
-                }
-            }
-        }
+        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(new Header[]{header});
 
         //设置请求参数
-        HttpConfig httpConfig = HttpConfig.custom().url(url).encoding("utf-8").headers(new Header[]{header});
-        if (context != null) {
-            httpConfig.context(context);
-        }
-        if (requestParamType == RequestParamTypeEnum.JSON.getId()) {
+        if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
             if (param != null) {
-                httpConfig.json(param);
+                config.json(param);
             }
-        } else if (requestParamType == RequestParamTypeEnum.MAP.getId()) {
+        } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
             if (param != null) {
-                //do
-                //将String转换成Map
+                Map map = JSON.parseObject(param).toJavaObject(Map.class);
+                config.map(map);
             }
         }
 
 
-        //发送请求,返回响应内容
-        if (requestMethodType == RequestMethodTypeEnum.GET.getId()) {
-            try {
-                return HttpClientUtil.get(httpConfig);
-            } catch (HttpProcessException e) {
-                log.error("发送http请求异常了:", e);
-                return "错误:发送http请求异常了-" + e.toString();
-            }
-        } else {
-            try {
-                return HttpClientUtil.post(httpConfig);
-            } catch (HttpProcessException e) {
-                log.error("发送http请求异常了:", e);
-                return "错误:发送http请求异常了-" + e.toString();
-            }
+        //发送请求
+        String responseEntity;
+        try {
+            responseEntity = HttpClientUtil.send(config);
+        } catch (HttpProcessException e) {
+            log.error("", e);
+            responseEntity = e.getMessage();
         }
+
+        //打印日志
+        log.info("--------------------start----------------------------------------");
+        log.info("请求Url:" + config.url());
+        log.info("请求方式:" + config.method().getName());
+        log.info("请求参数:" + param);
+        log.info("响应实体:" + responseEntity);
+        log.info("---------------------end-----------------------------------------");
+
+
+        return responseEntity;
 
     }
 
