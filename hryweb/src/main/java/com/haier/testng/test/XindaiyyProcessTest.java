@@ -1,26 +1,22 @@
 package com.haier.testng.test;
 
 import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.haier.Application;
 import com.haier.po.HryTest;
 import com.haier.testng.base.XindaiyyBase;
 import com.haier.util.AssertUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.message.BasicHeader;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -30,8 +26,8 @@ import java.util.UUID;
  * @Author: 自动生成
  * @Date: 2018/08/17 14:34:00
  */
-@SuppressWarnings("Duplicates")
 @Slf4j
+@SpringBootTest(classes = {Application.class})
 public class XindaiyyProcessTest extends XindaiyyBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
@@ -54,22 +50,18 @@ public class XindaiyyProcessTest extends XindaiyyBase {
         Header headerContentType = new BasicHeader("Content-Type", "application/x-www-form-urlencoded");
         Header headerCookie = new BasicHeader("Cookie", "__login_name=supper2; __login_expied=7; __login_sys=cbp");
         String requestId = UUID.randomUUID().toString().replaceAll("-", "");
-        Map<String ,Object> map=new HashMap<>();
-        map.put("loginName","supper2");
-        map.put("password","kjt123");
-        map.put("dynamicCode","");
-        map.put("requestId",requestId);
-        map.put("sysCode","cbp");
+        Map<String, Object> map = new HashMap<>();
+        map.put("loginName", "supper2");
+        map.put("password", "kjt123");
+        map.put("dynamicCode", "");
+        map.put("requestId", requestId);
+        map.put("sysCode", "cbp");
         Header[] headers = new Header[]{headerContentType, headerCookie};
 
-        HttpConfig config = HttpConfig.custom().method(HttpMethods.POST).url(url).headers(headers).map(map).encoding("utf-8");
+        HttpConfig config = HttpConfig.custom().url(url).headers(headers).map(map).encoding("utf-8");
 
-//        HttpClientContext context = new HttpClientContext();
-//        CookieStore cookieStore = new BasicCookieStore();
-//        context.setCookieStore(cookieStore);
-//        HttpConfig config = HttpConfig.custom().method(HttpMethods.POST).url(url).headers(headers).map(map).encoding("utf-8").context(context);
         String post = HttpClientUtil.post(config);
-        log.info("登录响应结果:"+post);
+        log.info("登录响应结果:" + post);
         log.info("login执行完成!!!");
     }
 

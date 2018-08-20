@@ -1,7 +1,6 @@
 package com.haier.testng.base;
 
 import com.alibaba.fastjson.JSONObject;
-import com.haier.anno.Cookie;
 import com.haier.config.SpringContextHolder;
 import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
@@ -9,7 +8,7 @@ import com.haier.service.RunService;
 import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.CookieStore;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +18,8 @@ import java.lang.reflect.Method;
  * @Date: 2018/8/14 10:49
  */
 @Slf4j
-public class Base {
+
+public class Base extends AbstractTestNGSpringContextTests {
     public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
@@ -27,10 +27,10 @@ public class Base {
     public JSONObject i_c_zdy_JSONObject;//{"methodName",list<Tcase>}
     public Tservice tservice;
     public Tservicedetail tservicedetail;
-    public RunService runService = SpringContextHolder.getBean(RunService.class);
+    public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
 
-    @Cookie
-    public CookieStore cookieStore;
+/*    @Cookie
+    public CookieStore cookieStore;*/
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         this.serviceId = serviceId;
@@ -42,6 +42,7 @@ public class Base {
         if (StringUtils.isNotBlank(i_c_zdy)) {
             this.i_c_zdy_JSONObject = JSONObject.parseObject(i_c_zdy);
         }
+        runService = SpringContextHolder.getBean(RunService.class);
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
         log.info("base类初始化(init()执行)完成");
