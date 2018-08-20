@@ -130,34 +130,34 @@ public class TcaseServiceImpl implements TcaseService {
                 criteria2.andStatusGreaterThan(0);
                 criteria2.andEnvidEqualTo(0);
                 if (tcase.getServiceid() != null) {
-                    criteria.andServiceidEqualTo(tcase.getServiceid());
+                    criteria2.andServiceidEqualTo(tcase.getServiceid());
                 }
                 if (tcase.getIid() != null) {
-                    criteria.andIidEqualTo(tcase.getIid());
+                    criteria2.andIidEqualTo(tcase.getIid());
                 }
                 if (tcase.getRequestparam() != null) {
-                    criteria.andRequestparamLike(tcase.getRequestparam());
+                    criteria2.andRequestparamLike(tcase.getRequestparam());
                 }
                 if (tcase.getId() != null) {
-                    criteria.andIdEqualTo(tcase.getId());
+                    criteria2.andIdEqualTo(tcase.getId());
                 }
                 if (tcase.getCasename() != null) {
-                    criteria.andCasenameLike(tcase.getCasename());
+                    criteria2.andCasenameLike(tcase.getCasename());
                 }
                 if (tcase.getTestclass() != null) {
-                    criteria.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
+                    criteria2.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
                 }
                 if (tcase.getAuthor() != null) {
-                    criteria.andAuthorLike(tcase.getAuthor());
+                    criteria2.andAuthorLike(tcase.getAuthor());
                 }
                 if (tcase.getExpected() != null) {
-                    criteria.andExpectedLike(tcase.getExpected());
+                    criteria2.andExpectedLike(tcase.getExpected());
                 }
                 if (tcase.getRemark() != null) {
-                    criteria.andRemarkLike(tcase.getRemark());
+                    criteria2.andRemarkLike(tcase.getRemark());
                 }
                 if (tcase.getAsserttype() != null) {
-                    criteria.andAsserttypeEqualTo(tcase.getAsserttype());
+                    criteria2.andAsserttypeEqualTo(tcase.getAsserttype());
                 }
             }
             if (tcase.getServiceid() != null) {
