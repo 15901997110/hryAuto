@@ -3,6 +3,7 @@ package com.haier.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
+import com.haier.enums.RegexEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
 import lombok.extern.slf4j.Slf4j;
@@ -150,12 +151,14 @@ public class HryUtil {
     }
 
     public static String iUri2MethodName(String iUri) {
+        if (StringUtils.isBlank(iUri)) {
+            return iUri;
+        }
         String testMethodName;//对应测试类中的测试方法名
         if (iUri.startsWith("/")) {
-            testMethodName = iUri.replaceFirst("/", "").replaceAll("/", "_");
-        } else {
-            testMethodName = iUri.replaceAll("/", "_");
+            testMethodName=iUri.substring(1);
         }
+        testMethodName = iUri.replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
         return testMethodName;
     }
 }

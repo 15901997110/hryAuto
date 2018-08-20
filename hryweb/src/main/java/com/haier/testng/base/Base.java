@@ -36,7 +36,6 @@ public class Base extends AbstractTestNGSpringContextTests {
 
     @Cookie
     public CookieStore cookieStore;
-    public Header header;
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         this.serviceId = serviceId;

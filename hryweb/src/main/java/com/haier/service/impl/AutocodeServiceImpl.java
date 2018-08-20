@@ -6,6 +6,7 @@ import com.haier.service.AutocodeService;
 import com.haier.service.TiService;
 import com.haier.service.TserviceService;
 import com.haier.util.FileUtil;
+import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -174,10 +175,7 @@ public class AutocodeServiceImpl implements AutocodeService {
         for (Ti ti : tis) {
             String iUri = ti.getIuri();
             String desc = ti.getRemark();
-            String testMethodName = iUri.substring(iUri.indexOf("/") + 1)
-                    .replaceAll("/", "_")
-                    .replaceAll("-","_")
-                    .replaceAll("\\.","_");
+            String testMethodName = HryUtil.iUri2MethodName(iUri);
             String testMethod = defaultMethod.replaceAll("\\$\\{annoTestName\\}", iUri)
                     .replaceAll("\\$\\{annoDesc\\}", desc != null ? desc : "no desc")
                     .replaceAll("\\$\\{testMethodName\\}", testMethodName);
