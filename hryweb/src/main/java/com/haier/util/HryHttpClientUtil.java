@@ -31,6 +31,8 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.testng.Reporter;
 
 import java.lang.reflect.Field;
@@ -106,6 +108,24 @@ public class HryHttpClientUtil {
             }
         }
 
+        if(entity!=null){
+            try {
+                try {
+                    Object cookieStore = entity.getClass().getField("cookieStore").get(entity);
+                    if(cookieStore!=null){
+                        HttpClientContext context=new HttpClientContext();
+                        context.setCookieStore((CookieStore) cookieStore);
+                        config.context(context);
+                    }
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        }
 
         //发送请求
         String responseEntity;
@@ -176,7 +196,7 @@ public class HryHttpClientUtil {
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
         String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
         return send(url, test.getTi().getIrequestmethod(), test.getTi().getIcontenttype(),
-                test.getTi().getIparamtype(), param);
+                test.getTi().getIparamtype(), param, entity);
     }
 
     private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {
