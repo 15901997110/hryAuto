@@ -130,7 +130,7 @@ public class TiServiceImpl implements TiService {
                 criteria.andServiceidEqualTo(ti.getServiceid());
             }
             if (ti.getIuri() != null) {
-                criteria.andIuriLike(ti.getIuri().replaceAll("%", ""));//iUri精确查询
+                criteria.andIuriEqualTo(ti.getIuri().replaceAll("%", ""));//iUri精确查询
             }
             if (ti.getRemark() != null) {
                 criteria.andRemarkLike(ti.getRemark());
