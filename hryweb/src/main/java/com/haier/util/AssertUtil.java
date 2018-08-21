@@ -1,6 +1,5 @@
 package com.haier.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
@@ -10,13 +9,11 @@ import com.haier.po.Tcase;
 import com.haier.po.Ti;
 import com.haier.service.TiService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Reporter;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * @Description: 实际结果与期望结果比较器
@@ -55,8 +52,8 @@ public class AssertUtil {
                 switch (actualType) {
                     //actualType=json,对于实际返回值类型为json的处理
                     case 1:
-                        JSONObject actualJsonObj = JsonUtil.str2JsonObj(actual);
-                        JSONObject expectJsonObj = JsonUtil.str2JsonObj(expected);
+                        JSONObject actualJsonObj = JSONUtil.str2JsonObj(actual);
+                        JSONObject expectJsonObj = JSONUtil.str2JsonObj(expected);
                         return isMatch(actualJsonObj, expectJsonObj);
                         /*if (actualJsonObj == null || expectJsonObj == null) {
                             return false;

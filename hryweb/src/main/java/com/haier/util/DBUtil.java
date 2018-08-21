@@ -29,8 +29,16 @@ public class DBUtil {
         return jdbcTemplate;
     }
 
-    //执行查询语句
-    public static String queryForObject(JdbcTemplate jdbcTemplate, String querySql) {
+    //查询
+    public static String query(JdbcTemplate jdbcTemplate, String querySql) {
         return jdbcTemplate.queryForObject(querySql, java.lang.String.class);
+    }
+
+    public static Integer insert(JdbcTemplate jdbcTemplate, String insertSql) {
+        return update(jdbcTemplate, insertSql);
+    }
+
+    public static Integer update(JdbcTemplate jdbcTemplate, String updateSql) {
+        return jdbcTemplate.update(updateSql);
     }
 }

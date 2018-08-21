@@ -16,7 +16,16 @@ public enum RegexEnum {
 
     CLASSNAME_REGEX("[A-Z][A-Za-z0-9_]*","测试类名,首字符必须是大写字母,其余部分只能由字母或数字或下划线组成"),
 
-    INVALID_CHAR_REGEX("/|-|\\.","匹配字符串中的'/'或者'-'或者'.'字符,iUri转测试方法时 需要将这类字符串替换成下划线")
+    INVALID_CHAR_REGEX("/|-|\\.","匹配字符串中的'/'或者'-'或者'.'字符,iUri转测试方法时 需要将这类字符串替换成下划线"),
+
+    SELECT_REGEX("^(?i)select.+","查询语句(以select开头)"),
+
+    INSERT_REGEX("^(?i)insert.+","新增语句(以insert开头)"),
+
+    UPDATE_REGEX("^(?i)update.+","更新语句(以update开头)")
+
+
+
     ;
     private String regex;
     private String desc;

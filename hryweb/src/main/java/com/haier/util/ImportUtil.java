@@ -10,11 +10,9 @@ import com.haier.po.Tservice;
 import com.haier.po.TserviceExample;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 导入工具类
@@ -49,7 +47,7 @@ public class ImportUtil {
         if (result == null) {
             return;
         }
-        JSONObject jsonObject = JsonUtil.str2JsonObj(result);
+        JSONObject jsonObject = JSONUtil.str2JsonObj(result);
         serviceName = jsonObject.getJSONObject("info").getString("description");
         log.debug("服务描述:{}", serviceName);
 

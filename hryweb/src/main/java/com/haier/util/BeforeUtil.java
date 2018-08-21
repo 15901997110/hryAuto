@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.BeforeRegexEnum;
 import com.haier.enums.DBInfoKeyEnum;
-import com.haier.enums.DBTypeEnum;
+import com.haier.enums.RegexEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -78,7 +78,7 @@ public class BeforeUtil {
     }
 
     /**
-     * @description: 将字符串base中的关键字<<               <               var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
+     * @description: 将字符串base中的关键字<<                                                                                                                               <                                                                                                                               var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
      * @params: [base-需要替换的字符串, entity-调用此方法的实体对象]
      * @return: java.lang.String
      * @author: luqiwei
@@ -139,7 +139,7 @@ public class BeforeUtil {
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
             String sql = matcher.group(2);//((?i)<<<sql:)((?!.*?<<<).*?)(>>>)中第二个(),即(?!.*?<<<).*?匹配到的内容就是Sql语句
-            String queryResult = "";
+            String queryResult;
             if (dbinfoJsonObject != null) {
                 log.info("dbinfo:" + dbinfoJsonObject);
                 try {
@@ -151,24 +151,33 @@ public class BeforeUtil {
                     if (!StringUtils.isAnyBlank(driver, url, username, password)) {
                         try {
                             JdbcTemplate jdbcTemplate = DBUtil.getJdbcTemplate(driver, url, username, password);
-                            queryResult = DBUtil.queryForObject(jdbcTemplate, sql);
+                            if (sql.trim().matches(RegexEnum.SELECT_REGEX.getRegex())) {
+                                queryResult = DBUtil.query(jdbcTemplate, sql);
+                            } else if (sql.trim().matches(RegexEnum.INSERT_REGEX.getRegex())) {
+                                queryResult = DBUtil.insert(jdbcTemplate, sql) + "";
+                            } else if (sql.trim().matches(RegexEnum.UPDATE_REGEX.getRegex())) {
+                                queryResult = DBUtil.update(jdbcTemplate, sql) + "";
+                            } else {
+                                queryResult = "异常:sql未执行,sql不是以select/insert/update开头,无法执行";
+                            }
+
                             if (queryResult == null) {
-                                queryResult = "查询Sql为null";
+                                queryResult = "异常:sql执行结果为null";
                             }
                         } catch (Exception e) {
-                            log.error("执行sql异常,查询结果自动转换为字符串'执行sql异常'", e);
-                            queryResult = "执行sql异常";
+                            log.error("", e);
+                            queryResult = "异常:执行sql异常";
                         }
                     } else {
                         log.error("dbinfo填写有误" + dbinfo);
-                        queryResult = "dbinfo填写有误:" + dbinfo;
+                        queryResult = "异常:dbinfo填写错误-" + dbinfo;
                     }
                 } catch (Exception e) {
                     log.error("解析dbinfo异常,查询结果自动转换为字符串'解析dbinfo异常'", e);
-                    queryResult = "解析dbinfo异常";
+                    queryResult = "异常:解析dbinfo异常";
                 }
             } else {
-                queryResult = "dbinfo为空,无法执行Sql";
+                queryResult = "异常:dbinfo为空,无法执行Sql";
             }
             base = base.substring(0, matcher.start()) + queryResult + base.substring(matcher.end());
         }

@@ -84,7 +84,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
         }
     }
 
-/*    @Test(testName = "/cbp-web/book/addBookInfo.json", dataProvider = "provider", description = "新建预约")
+    @Test(testName = "/cbp-web/book/addBookInfo.json", dataProvider = "provider", description = "新建预约")
     public void cbp_web_book_addBookInfo_json(HryTest hryTest) {
         String actual = this._cbp_web_book_addBookInfo_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
@@ -94,7 +94,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
     public void cbp_web_book_audit_json(HryTest hryTest) {
         String actual = this._cbp_web_book_audit_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
-    }*/
+    }
 
     @Test(testName = "/cbp-web/book/queryBookList.json", dataProvider = "provider", description = "查询预约列表")
     public void cbp_web_book_queryBookList_json(HryTest hryTest) {
@@ -103,10 +103,10 @@ public class XindaiyyProcessTest extends XindaiyyBase {
         AssertUtil.supperAssert(actual, hryTest);
     }
 
-/*    @Test(testName = "/cbp-web/book/review.json", dataProvider = "provider", description = "预约复核")
+    @Test(testName = "/cbp-web/book/review.json", dataProvider = "provider", description = "预约复核")
     public void cbp_web_book_review_json(HryTest hryTest) {
         String actual = this._cbp_web_book_review_json(hryTest);
         AssertUtil.supperAssert(actual, hryTest);
-    }*/
+    }
 
 }

@@ -1,15 +1,17 @@
 package com.haier.controller;
 
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.AssertTypeEnum;
+import com.haier.enums.RequestParamTypeEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
+import com.haier.po.Ti;
 import com.haier.response.Result;
 import com.haier.service.TcaseService;
+import com.haier.service.TiService;
+import com.haier.util.JSONUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,9 @@ public class TcaseController {
     @Autowired
     TcaseService tcaseService;
 
+    @Autowired
+    TiService tiService;
+
     /**
      * 新增Case
      */
@@ -45,8 +50,9 @@ public class TcaseController {
                 || tcase.getServiceid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
         }
-        //如果断言类型为key-value,则对期望值作JSON格式校验
-        verifyExpected(tcase);
+
+        //校验参数和断言类型是否符合JSON格式
+        verifyJSON(tcase);
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
 
@@ -82,26 +88,38 @@ public class TcaseController {
         if (tcase == null || tcase.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
         }
-        //如果断言类型为key-value,则对期望值作JSON格式校验
-        verifyExpected(tcase);
+        //请求参数JSON格式校验
+        verifyJSON(tcase);
+
         if (flag) {
             tcase.setEnvid(0);
         }
         return ResultUtil.success(tcaseService.updateOne(tcase));
     }
 
-    public void verifyExpected(Tcase tcase) {
-        if (tcase.getAsserttype() != null && tcase.getExpected() != null) {
-            if (tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
-                try {
-                    JSONObject jsonObject = JSONObject.parseObject(tcase.getExpected());
-                    tcase.setExpected(jsonObject.toJSONString());
-                } catch (RuntimeException e) {
-                    throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "当断言类型为" + AssertTypeEnum.KEY_VALUE.getValue() + "时,期望值必须填写JSON格式");
+    public void verifyJSON(Tcase tcase) {
+        if (tcase.getRequestparam() != null) {
+            Ti ti = tiService.selectOne(tcase.getIid());
+            if (ti != null && ti.getIparamtype().equals(RequestParamTypeEnum.JSON.getId())) {
+                String requestParamJSONFormated = JSONUtil.verify(tcase.getRequestparam());
+                if (requestParamJSONFormated != null) {
+                    tcase.setRequestparam(requestParamJSONFormated);
+                } else {
+                    throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "接口参数类型为JSON时,请求参数必须是JSON格式");
                 }
             }
         }
+        //断言类型JSON格式校验
+        if (tcase.getExpected() != null && tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
+            String expectedJSONFormated = JSONUtil.verify(tcase.getExpected());
+            if (expectedJSONFormated != null) {
+                tcase.setExpected(expectedJSONFormated);
+            } else {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "断言类型为key-value时,期望值必须是JSON格式");
+            }
+        }
     }
+
 
     //查-综合查询
     @PostMapping("/selectByCondition")
