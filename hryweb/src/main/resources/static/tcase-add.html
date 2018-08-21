@@ -74,6 +74,16 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">测试类：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                <span class="select-box" style="width:100%;">
+                    <select class="select" size="1" name="testclass" id="testclass">
+                        <option value="0" selected>请选择测试类</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid"
@@ -273,6 +283,49 @@
             }
         });
         return tiList;
+    }
+
+    function getTestclass(serviceKey){
+        var testclassList = null;
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/getTestClassesBySKey",
+            data: {
+                sKey: serviceKey
+            },
+            dataType: "json",
+            success: function (data) {
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    //layer.close(layerIndex);
+                    testclassList=data.data;
+                } else {
+                    //layer.close(layerIndex);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+
+            },
+            fail: function (data) {
+                //layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+        return testclassList;
     }
 
     function getAssertType() {
