@@ -532,6 +532,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
+                        layer.close(layerIndex);
                         layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
