@@ -1,6 +1,9 @@
 package com.haier.controller;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.haier.enums.AssertTypeEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcase;
@@ -37,10 +40,13 @@ public class TcaseController {
     @PostMapping("/insertOne")
     public Result insertOne(Tcase tcase) {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
+        //参数校验
         if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
                 || tcase.getServiceid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
         }
+        //如果断言类型为key-value,则对期望值作JSON格式校验
+        verifyExpected(tcase);
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
 
@@ -76,10 +82,25 @@ public class TcaseController {
         if (tcase == null || tcase.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
         }
+        //如果断言类型为key-value,则对期望值作JSON格式校验
+        verifyExpected(tcase);
         if (flag) {
             tcase.setEnvid(0);
         }
         return ResultUtil.success(tcaseService.updateOne(tcase));
+    }
+
+    public void verifyExpected(Tcase tcase) {
+        if (tcase.getAsserttype() != null && tcase.getExpected() != null) {
+            if (tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
+                try {
+                    JSONObject jsonObject = JSONObject.parseObject(tcase.getExpected());
+                    tcase.setExpected(jsonObject.toJSONString());
+                } catch (RuntimeException e) {
+                    throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "当断言类型为" + AssertTypeEnum.KEY_VALUE.getValue() + "时,期望值必须填写JSON格式");
+                }
+            }
+        }
     }
 
     //查-综合查询
@@ -135,18 +156,18 @@ public class TcaseController {
     }
 
     @PostMapping("/runCase")
-    public Result runcase(Tcase tcase,Integer userId,String testClassName){
-        ReflectUtil.setInvalidFieldToNull(tcase,false);
-        if(tcase==null||tcase.getEnvid()==null){
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR,"运行单条Case时,必须指定运行的环境");
+    public Result runcase(Tcase tcase, Integer userId, String testClassName) {
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getEnvid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行单条Case时,必须指定运行的环境");
         }
-        return ResultUtil.success(tcaseService.runOne(tcase,userId,testClassName));
+        return ResultUtil.success(tcaseService.runOne(tcase, userId, testClassName));
     }
 
     @PostMapping("/runCaseById")
-    public Result runcase(Integer id,Integer userId,String testClassName){
+    public Result runcase(Integer id, Integer userId, String testClassName) {
         Tcase tcase = tcaseService.selectOne(id);
-        return this.runcase(tcase,userId,testClassName);
+        return this.runcase(tcase, userId, testClassName);
     }
 
 

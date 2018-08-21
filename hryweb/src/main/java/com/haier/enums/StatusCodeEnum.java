@@ -19,7 +19,7 @@ public enum StatusCodeEnum {
     DANGER_OPERATION(10, "危险操作不被允许"),
     REGEX_ERROR(11,"正则不匹配"),
     HTTP_ERROR(100, "发送http请求时异常"),
-    PARSE_JSON_ERROR(101, "字符串转换为JSONObject时异常"),
+    PARSE_JSON_ERROR(101, "JSON转换异常"),
 
     NOT_FOUND(1000, "查询记录不存在！"),
     CHECK_ERROR(1001, "校验不满足条件"),
