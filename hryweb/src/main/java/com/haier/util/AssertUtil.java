@@ -22,11 +22,7 @@ import java.util.Objects;
  */
 @Slf4j
 public class AssertUtil {
-    public static Boolean supperAssert(Integer assertType, String expected, String actual, Integer actualType) {
-/*        log.info("assertType:" + assertType);
-        log.info("expected:" + expected);
-        log.info("actual:" + actual);
-        log.info("actualType:" + actualType);*/
+    public static void supperAssert(Integer assertType, String expected, String actual, Integer actualType) {
         Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType) + "(" + assertType + ")");
         Reporter.log("期望结果 :" + expected);
         Reporter.log("实际结果 :" + actual);
@@ -34,27 +30,31 @@ public class AssertUtil {
         switch (assertType) {
             //1.assertType=equal,完全相等
             case 1:
-                return StringUtils.equalsIgnoreCase(actual, expected);
-            //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
+                if (!StringUtils.equalsIgnoreCase(actual, expected)) {
+                    throw new AssertionError("断言失败:忽略大小写比较不相等!");
+                }
+                //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
             case 2:
-                if (StringUtils.containsIgnoreCase(actual, expected)) {
-                    return true;
-                } else if (StringUtils.countMatches(actual, expected) > 0) {
-                    return true;
-                } else {
-                    return false;
+                if (!(StringUtils.containsIgnoreCase(actual, expected)
+                        || StringUtils.countMatches(actual, expected) > 0)) {
+                    throw new AssertionError("断言失败:实际值中不包含期望值(忽略大小写)并且实际值中匹配不到期望值的正则");
                 }
                 //3.assertType=key-value,实际值中抽取出的key-value与指定值中提取的key-value相等,包含,或者正则匹配
                 //注意,此种情况时,期望值必须是以json格式存储于数据库中
             case 3:
-                if (Objects.isNull(actualType))
-                    return false;
+                if (Objects.isNull(actualType)) {
+                    throw new AssertionError("断言失败:不明确的返回值类型,请检查tcase.iResponseType字段是否填写!");
+                }
                 switch (actualType) {
                     //actualType=json,对于实际返回值类型为json的处理
                     case 1:
                         JSONObject actualJsonObj = JSONUtil.str2JsonObj(actual);
                         JSONObject expectJsonObj = JSONUtil.str2JsonObj(expected);
-                        return isMatch(actualJsonObj, expectJsonObj);
+                        if (!isMatch(actualJsonObj, expectJsonObj)) {
+                            throw new AssertionError("断言失败:实际值中未找到期望值中的key,或者实际值中找到了期望值中的key,"
+                                    + "但是对应key中实际值的value与期望值value不相等,忽略大小写比较仍不相等,去除空字符比较([ \\t\\n\\x0B\\f\\r])仍不相等,实际值包含期望值比较仍不相等,"
+                                    + "实际值匹配期望值的正则比较仍不相等!!!");
+                        }
                         /*if (actualJsonObj == null || expectJsonObj == null) {
                             return false;
                         }
@@ -85,7 +85,7 @@ public class AssertUtil {
 
                         return true;*/
 
-                    //actualType=map,对于实际返回值类型为map的处理,(暂未实现)
+                        //actualType=map,对于实际返回值类型为map的处理,(暂未实现)
                     case 2:
                         return false;
                     default:
