@@ -23,12 +23,12 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 /**
- * @SpringBootTest() 注解仅可以在调试模式下使用,
+ * @SpringBootTest() 注解仅可以在测试模式下使用(未优先启动Spring自动配置),
  * 部署上线时,Spring必然已经启动,如果此时由web发起测试,调用测试类,SpringBootTest注解会重新启动Application
  * 造成冲突 ,导致测试类初始化失败,无法完成测试
  * 需要想一想有没有兼容的办法...
  */
-/*@SpringBootTest(classes = {Application.class})*/
+//@SpringBootTest(classes = {Application.class})
 public class Base extends AbstractTestNGSpringContextTests {
     public Integer serviceId;
     public Integer envId;
