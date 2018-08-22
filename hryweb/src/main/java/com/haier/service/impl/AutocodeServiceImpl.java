@@ -37,8 +37,9 @@ public class AutocodeServiceImpl implements AutocodeService {
             "\n" +
             "import com.haier.po.HryTest;\n" +
             "import com.haier.testng.base.${supperClassName};\n" +
-            "import com.haier.util.AssertUtil;\n" +
+            "import static com.haier.util.AssertUtil.supperAssert;\n" +
             "import lombok.extern.slf4j.Slf4j;\n" +
+            /*            "import org.testng.Assert;\n"+*/
             "import org.testng.annotations.BeforeClass;\n" +
             "import org.testng.annotations.DataProvider;\n" +
             "import org.testng.annotations.Parameters;\n" +
@@ -59,7 +60,7 @@ public class AutocodeServiceImpl implements AutocodeService {
             " * @Author: 自动生成\n" +
             " * @Date: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + "\n" +
             " */\n" +
-            "@SuppressWarnings(\"Duplicates\")\n" +
+            /*            "@SuppressWarnings(\"Duplicates\")\n" +*/
             "@Slf4j\n" +
             "public class ${defaultClassName} extends ${supperClassName}";
 
@@ -84,7 +85,7 @@ public class AutocodeServiceImpl implements AutocodeService {
     private static final String defaultMethod = "    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
             "    public void ${testMethodName}(HryTest hryTest) {\n" +
             "        String actual = this._${testMethodName}(hryTest);\n" +
-            "        AssertUtil.supperAssert(actual, hryTest);\n" +
+            "        supperAssert(actual, hryTest);\n" +
             "    }\n\n";
 
 
