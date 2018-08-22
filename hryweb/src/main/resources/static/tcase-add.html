@@ -683,6 +683,15 @@
             tiChange();
 
         }
+        //服务改变时,测试类也需要联动
+        var selectedServiceKey = $("#service").find("option:selected").text();
+        var testclassList = getTestclass(selectedServiceKey);
+        var testclassHtml = "<option value=\"\" selected>请选择测试类</option>";
+        for (var i = 0; i < testclassList.length; i++) {
+            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
+        }
+        $("#testclass").empty();
+        $("#testclass").append(testclassHtml);
 
         layer.close(layerIndex);
 
@@ -718,6 +727,7 @@
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var author = $("#author").val();
+        var testclass = $("#testclass").val()
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
@@ -742,7 +752,7 @@
                     asserttype: assertType,
                     expected: expected,
                     author: author,
-                    status: 1
+                    testclass: testclass
                 },
                 dataType: "json",
                 success: function (data) {
