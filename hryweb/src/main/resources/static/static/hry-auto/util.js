@@ -257,6 +257,28 @@ function getServiceList(){
     });
     return service;
 }
+//获取环境List
+function getEnvList(){
+    var envList=null;
+    $.ajaxSetup({async : false});
+    $.ajax({
+        type: "post",
+        url: "/tenv/selectAll",
+        data: {
+        },
+        dataType: "json",
+        success: function (data) {
+            envList=data.data;
+        },
+        fail:function (data) {
+            alert(JSON.stringify(data));
+        },
+        error: function(xhr) {
+            alert('error:' + JSON.stringify(xhr));
+        }
+    });
+    return envList;
+}
 
 //获取技术部人员List
 function getUserList() {

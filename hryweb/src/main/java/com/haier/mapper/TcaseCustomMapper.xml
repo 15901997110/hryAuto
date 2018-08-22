@@ -9,6 +9,7 @@
         <result column="iremark" jdbcType="VARCHAR" property="iremark"/>
         <result column="caseName" jdbcType="VARCHAR" property="casename"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="serviceId" jdbcType="INTEGER" property="serviceid"/>
         <result column="iId" jdbcType="INTEGER" property="iid"/>
         <result column="envId" jdbcType="INTEGER" property="envid"/>
         <result column="testClass" jdbcType="VARCHAR" property="testclass"/>
@@ -29,6 +30,9 @@
         <if test="_parameter != null">
             <if test="servicekey !=null and servicekey !=''">
                 AND (tservice.`serviceKey` LIKE #{servicekey} OR tservice.`serviceName` LIKE #{servicekey})
+            </if>
+            <if test="serviceid!=null and serviceid!=0">
+                AND tcase.`serviceId` =#{serviceid}
             </if>
             <if test="iuri != null and iuri !=''">
                 AND (ti.`iUri` LIKE #{iuri} or ti.`remark` LIKE #{iuri})
