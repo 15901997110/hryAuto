@@ -275,6 +275,8 @@
                             }
                         }
 
+                        var tiName=row.iuri+""+row.iremark;
+
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>"+row.id+"</td>\n" +
@@ -291,7 +293,7 @@
                             "<textarea>"+row.requestparam+"</textarea></td>\n" +
                             "<td>"+row.updatetime+"</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run("+row.id+")\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run("+row.id+",'"+tiName+"')\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
                             "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','800','700'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
                             "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
@@ -317,27 +319,30 @@
     }
 
     //用例运行
-    function tcase_run(caseId){
-
+    function tcase_run(caseId,tiName){
+        var userId=$.cookie('uidCookie');
         $.ajax({
             type: "post",
-            url: "/tcase/runCaseOneById",
+            url: "/tcase/runCaseById",
             data: {
-                id:caseId
+                id:caseId,
+                userId:userId
             },
             dataType: "json",
             success: function (data) {
-                var list = data;
+                var url = data;
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
                     layer.close(layerIndex);
-                    var domain = "http://" + window.location.host;
+                    url=encodeURI("../report-loading.html?reportname="+url+"&customname="+tiName);
+                    window.open(url);
+                    /*var domain = "http://" + window.location.host;
                     var myPopup = window.open("test-result.html");//.postMessage(list,domain);
                     //周期性的发送消息
                     setTimeout(function () {
                         myPopup.postMessage(list, domain);
-                    }, 1000);
+                    }, 1000);*/
 
                 } else {
                     layer.close(layerIndex);
