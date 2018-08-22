@@ -10,7 +10,6 @@ import com.haier.service.RunService;
 import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -23,7 +22,13 @@ import java.lang.reflect.Method;
  * @Date: 2018/8/14 10:49
  */
 @Slf4j
-@SpringBootTest(classes = {Application.class})
+/**
+ * @SpringBootTest() 注解仅可以在调试模式下使用,
+ * 部署上线时,Spring必然已经启动,如果此时由web发起测试,调用测试类,SpringBootTest注解会重新启动Application
+ * 造成冲突 ,导致测试类初始化失败,无法完成测试
+ * 需要想一想有没有兼容的办法...
+ */
+/*@SpringBootTest(classes = {Application.class})*/
 public class Base extends AbstractTestNGSpringContextTests {
     public Integer serviceId;
     public Integer envId;
