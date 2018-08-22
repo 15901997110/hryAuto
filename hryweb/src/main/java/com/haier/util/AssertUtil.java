@@ -33,14 +33,16 @@ public class AssertUtil {
                 if (!StringUtils.equalsIgnoreCase(actual, expected)) {
                     throw new AssertionError("断言失败:忽略大小写比较不相等!");
                 }
-                //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
+                break;
+            //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
             case 2:
                 if (!(StringUtils.containsIgnoreCase(actual, expected)
                         || StringUtils.countMatches(actual, expected) > 0)) {
                     throw new AssertionError("断言失败:实际值中不包含期望值(忽略大小写)并且实际值中匹配不到期望值的正则");
                 }
-                //3.assertType=key-value,实际值中抽取出的key-value与指定值中提取的key-value相等,包含,或者正则匹配
-                //注意,此种情况时,期望值必须是以json格式存储于数据库中
+                break;
+            //3.assertType=key-value,实际值中抽取出的key-value与指定值中提取的key-value相等,包含,或者正则匹配
+            //注意,此种情况时,期望值必须是以json格式存储于数据库中
             case 3:
                 if (Objects.isNull(actualType)) {
                     throw new AssertionError("断言失败:不明确的返回值类型,请检查tcase.iResponseType字段是否填写!");
@@ -55,43 +57,14 @@ public class AssertUtil {
                                     + "但是对应key中实际值的value与期望值value不相等,忽略大小写比较仍不相等,去除空字符比较([ \\t\\n\\x0B\\f\\r])仍不相等,实际值包含期望值比较仍不相等,"
                                     + "实际值匹配期望值的正则比较仍不相等!!!");
                         }
-                        /*if (actualJsonObj == null || expectJsonObj == null) {
-                            return false;
-                        }
-
-                        for (Map.Entry<String, Object> entries : expectJsonObj.entrySet()) {
-                            Object actualO = actualJsonObj.get(entries.getKey());
-                            Object expectO = entries.getValue();
-                            //actualO为null,说明get(key)时获取为null,说明返回结果中不存在 此key,故直接返回false
-                            if (Objects.isNull(actualO) || Objects.isNull(expectO)) {
-                                if (Objects.isNull(actualO) && Objects.isNull(expectO)) {
-                                    //两个同时为null时,直接跳过,进行下一个元素的比较
-                                    continue;
-                                } else {
-                                    //一个为null,一个不为null
-                                    return false;
-                                }
-                            }
-
-                            try {
-                                if (!(actualO.equals(expectO) || actualO.toString().contains(expectO.toString()) || actualO.toString().matches(expectO.toString()))) {
-                                    return false;
-                                }
-                            } catch (PatternSyntaxException e) {
-                                log.error("", e);
-                                return false;
-                            }
-                        }
-
-                        return true;*/
-
-                        //actualType=map,对于实际返回值类型为map的处理,(暂未实现)
+                        break;
                     case 2:
                         throw new AssertionError("断言失败:暂时不支持返回值类型ti.iResponseType=2的断言逻辑,请联系很容易平台管理员!");
                     default:
                         throw new AssertionError("断言失败:当断言类型为3:key-value时,暂时只支持返回值类型ti.iResponseType=1的断言逻辑,请联系很容易平台管理员!");
                 }
-                //以上情况都未匹配
+                break;
+            //以上情况都未匹配
             default:
                 throw new AssertionError("断言失败:断言类型未指定,无法提供断言!!!");
         }
