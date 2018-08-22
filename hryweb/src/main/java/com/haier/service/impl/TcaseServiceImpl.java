@@ -239,7 +239,10 @@ public class TcaseServiceImpl implements TcaseService {
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), ti.getIcontenttype(), ti.getIparamtype(), actualParam);
 
         //断言结果
-        Boolean result = AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
+        //update by luqiwei ,现在断言直接抛出AssertionError,不再返回布尔值 2018/8/22
+        /* Boolean result = AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());*/
+        Boolean result = true;
+
 
         RunOneResult runOneResult = new RunOneResult();
         runOneResult.setAssertType(AssertTypeEnum.getValue(tcase.getAsserttype()));
@@ -259,6 +262,7 @@ public class TcaseServiceImpl implements TcaseService {
         runOneResultSub.setActual(actual);
         runOneResultSub.setEnv(EnvEnum.getValue(tservicedetail.getEnvid()));
         runOneResultSub.setHostInfo(tservicedetail.getHostinfo());
+
         if (result) {
             runOneResultSub.setResult(AssertResultEnum.PASS);
         } else {
@@ -278,7 +282,7 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public String runOne(Tcase tcase, Integer userId) {
-        String testClassName=tcase.getTestclass();
+        String testClassName = tcase.getTestclass();
         Ti ti = tiService.selectOne(tcase.getIid());
         Tservice tservice = tserviceService.selectOne(ti.getServiceid());
         Tenv tenv = tenvService.selectOne(tcase.getEnvid());
