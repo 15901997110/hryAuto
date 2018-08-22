@@ -12,6 +12,7 @@ import com.haier.service.ImportService;
 import com.haier.service.TservicedetailService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +57,7 @@ public class ImportController {
         }else{
             sEditor=sEditor.trim();
         }*/
-        if (iDev == null || "".equals(iDev)) {
+        if (StringUtils.isBlank(iDev)) {
             iDev = "自动导入";
         } else {
             iDev = iDev.trim();
