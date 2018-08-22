@@ -156,9 +156,10 @@ public class HryUtil {
         }
         String testMethodName;//对应测试类中的测试方法名
         if (iUri.startsWith("/")) {
-            testMethodName=iUri.substring(1);
+            testMethodName = iUri.substring(1).replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
+        } else {
+            testMethodName = iUri.replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
         }
-        testMethodName = iUri.replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
         return testMethodName;
     }
 }
