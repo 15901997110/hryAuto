@@ -9,7 +9,8 @@ public enum ParamKeyEnum {
     SERVICEID("serviceId", "服务ID"),
     ENVID("envId", "环境ID"),
     DESIGNER("caseDesigner", "用例设计人"),
-    I_C("i_c", "接口用例选择,存储Map<String,List<Integer>>,String-接口对应的测试方法名,List<Integer>-用例id集合"),;
+    I_C("i_c", "接口用例选择,存储Map<String,List<Integer>>,String-接口对应的测试方法名,List<Integer>-用例id集合"),
+    I_C_ZDY("i_c_zdy","接口自定义用例,存储Map<String,List<Tcase>>,String-接口对应的测试方法名,List<Tcase>-Tcase集合");
 
     ParamKeyEnum(String key, String desc) {
         this.key = key;

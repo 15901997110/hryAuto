@@ -1,12 +1,17 @@
 package com.haier.controller;
 
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.haier.enums.AssertTypeEnum;
+import com.haier.enums.RequestParamTypeEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcase;
 import com.haier.po.TcaseCustom;
+import com.haier.po.Ti;
 import com.haier.response.Result;
 import com.haier.service.TcaseService;
+import com.haier.service.TiService;
+import com.haier.util.JSONUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,16 +36,23 @@ public class TcaseController {
     @Autowired
     TcaseService tcaseService;
 
+    @Autowired
+    TiService tiService;
+
     /**
      * 新增Case
      */
     @PostMapping("/insertOne")
     public Result insertOne(Tcase tcase) {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
+        //参数校验
         if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
                 || tcase.getServiceid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
         }
+
+        //校验参数和断言类型是否符合JSON格式
+        verifyJSON(tcase);
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
 
@@ -66,12 +78,48 @@ public class TcaseController {
     //改
     @PostMapping("/updateOne")
     public Result updateOne(Tcase tcase) {
+        //如果EnvId==0,表明可在任意环境运行测试用例,此时setInvalidFieldToNull工具会将0值置为null值
+        //所以先在这里打个标记,后面再赋值
+        Boolean flag = false;
+        if (tcase != null && tcase.getEnvid() == 0) {
+            flag = true;
+        }
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || tcase.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
         }
+        //请求参数JSON格式校验
+        verifyJSON(tcase);
+
+        if (flag) {
+            tcase.setEnvid(0);
+        }
         return ResultUtil.success(tcaseService.updateOne(tcase));
     }
+
+    public void verifyJSON(Tcase tcase) {
+        if (tcase.getRequestparam() != null) {
+            Ti ti = tiService.selectOne(tcase.getIid());
+            if (ti != null && ti.getIparamtype().equals(RequestParamTypeEnum.JSON.getId())) {
+                String requestParamJSONFormated = JSONUtil.verify(tcase.getRequestparam());
+                if (requestParamJSONFormated != null) {
+                    tcase.setRequestparam(requestParamJSONFormated);
+                } else {
+                    throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "接口参数类型为JSON时,请求参数必须是JSON格式");
+                }
+            }
+        }
+        //断言类型JSON格式校验
+        if (tcase.getExpected() != null && tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
+            String expectedJSONFormated = JSONUtil.verify(tcase.getExpected());
+            if (expectedJSONFormated != null) {
+                tcase.setExpected(expectedJSONFormated);
+            } else {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "断言类型为key-value时,期望值必须是JSON格式");
+            }
+        }
+    }
+
 
     //查-综合查询
     @PostMapping("/selectByCondition")
@@ -99,14 +147,13 @@ public class TcaseController {
     }
 
     /**
-     * 运行单条case,如果不指定运行环境,系统将从服务环境映射表中寻找相应环境
-     * 适用于新建case页面和编辑case页面调用此接口测试case
+     * 运行单条case
      */
     @PostMapping("/runCaseOne")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
-
-        if (tcase == null || tcase.getIid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口id必填!");
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getIid() == null || tcase.getEnvid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "在新增和编辑页面运行Case时,IId(接口),EnvId(环境)是必须的!");
         }
         return ResultUtil.success(tcaseService.runOne(tcase));
     }
@@ -116,7 +163,42 @@ public class TcaseController {
      */
     @PostMapping("/runCaseOneById")
     public Result runCaseOneById(@RequestParam("id") Integer id) throws HttpProcessException {
-        return ResultUtil.success(tcaseService.runOne(id));
+        Tcase tcase = tcaseService.selectOne(id);
+        if (tcase == null) {
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "在用例列表页面运行Case时,CaseID是必须!");
+        }
+        if (tcase.getEnvid() == null || tcase.getEnvid() == 0) {
+            throw new HryException(911, "此用例未指定测试环境,无法运行!");
+        }
+        return this.runCaseOne(tcase);
     }
+
+    /**
+     * 用例新增和编辑页面运行单条用例(新)
+     * @param tcase-用例
+     * @param userId-用户id
+     * @return 测试报告页面地址
+     */
+    @PostMapping("/runCase")
+    public Result runcase(Tcase tcase, Integer userId) {
+        ReflectUtil.setInvalidFieldToNull(tcase, false);
+        if (tcase == null || tcase.getEnvid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行单条Case时,必须指定运行的环境");
+        }
+        return ResultUtil.success(tcaseService.runOne(tcase, userId));
+    }
+
+    /**
+     * 用例列表页面运行单条用例(新)
+     * @param id-tcase.id
+     * @param userId-user.id
+     * @return 测试报告页面地址
+     */
+    @PostMapping("/runCaseById")
+    public Result runcase(Integer id, Integer userId) {
+        Tcase tcase = tcaseService.selectOne(id);
+        return this.runcase(tcase, userId);
+    }
+
 
 }

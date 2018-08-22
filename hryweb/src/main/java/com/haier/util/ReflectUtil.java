@@ -1,6 +1,7 @@
 package com.haier.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 
@@ -61,7 +62,7 @@ public class ReflectUtil {
                 if (field.getType() == String.class) {//设置String类型字段
                     String fieldValue = (String) field.get(t);
                     if (fieldValue != null) {//字段值不为null
-                        if ("".equals(fieldValue.trim())) {//为""字段直接设置为null
+                        if (StringUtils.isBlank(fieldValue)) {//为""字段直接设置为null
                             field.set(t, null);
                         } else if (addPercent) {//不为"",且需要加%
                             field.set(t, "%" + fieldValue.trim() + "%");

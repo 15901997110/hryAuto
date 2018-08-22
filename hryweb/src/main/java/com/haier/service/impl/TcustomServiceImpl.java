@@ -331,7 +331,12 @@ public class TcustomServiceImpl implements TcustomService {
 
                 }
             }
+
             params.put(ParamKeyEnum.I_C.getKey(), i_c_jsonStr);//参数名:i_c
+            params.put(ParamKeyEnum.I_C_ZDY.getKey(), "");//自定义Case,定制测试中使用不到,故这里传空值
+
+            log.info("传给测试类的参数:" + params.toString());
+
             xmlClass.setParameters(params);
             sMap.put(tcustomdetail, xmlClass);//建立映射关系
 
@@ -395,7 +400,7 @@ public class TcustomServiceImpl implements TcustomService {
         Tenv tenv = tenvService.selectOne(envid);
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "report_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
+        String reportName = "r_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
         //构造入库测试报告记录
         Treport treport = new Treport();
         treport.setCustomid(customVO.getId());
@@ -410,8 +415,7 @@ public class TcustomServiceImpl implements TcustomService {
         treport.setReportname(resourcePathPattern + reportName);
         treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
 
-        treportService.insertOne(treport);//执行数据插入后,返回自增ID到treport.id中
-        Integer treportId = treport.getId();
+        Integer treportId = treportService.insertOne(treport);
 
         runner.run(null, treportId, reportName, customVO.getCustomname(), sMap);
         return resourcePathPattern + reportName;

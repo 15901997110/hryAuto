@@ -16,6 +16,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * @Description:
@@ -87,7 +89,7 @@ public class UserController {
 
     //登录
     @PostMapping("/login")
-    public Result login(HttpServletRequest request, HttpServletResponse response, String identity, String password) {
+    public Result login(HttpServletRequest request, HttpServletResponse response, String identity, String password) throws UnsupportedEncodingException {
         HttpSession session;
         User user = userService.findUser(identity, password);
         if (user == null) {
@@ -97,19 +99,19 @@ public class UserController {
             session.setMaxInactiveInterval(60 * 60 * 24 * 30);//秒为单位,设置一个月的有效时间
             session.setAttribute("userSession", user.getIdentity());
             //设置cookie信息
-            Cookie identityCookie = new Cookie("identityCookie", user.getIdentity());
+            Cookie identityCookie = new Cookie("identityCookie", URLEncoder.encode(user.getIdentity(), "utf-8"));
             identityCookie.setPath("/");
             identityCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
 
-            Cookie uidCookie = new Cookie("uidCookie", user.getId() + "");
+            Cookie uidCookie = new Cookie("uidCookie", URLEncoder.encode(user.getId() + "", "utf-8"));
             uidCookie.setPath("/");
             uidCookie.setMaxAge(Integer.MAX_VALUE);//设置cookie永不过期.setMaxAge单位为秒
 
-            Cookie realnameCookie = new Cookie("realnameCookie", user.getRealname());
+            Cookie realnameCookie = new Cookie("realnameCookie", URLEncoder.encode(user.getRealname(), "utf-8"));
             realnameCookie.setPath("/");
             realnameCookie.setMaxAge(Integer.MAX_VALUE);
 
-            Cookie groupidCookie = new Cookie("groupidCookie", user.getGroupid().toString());
+            Cookie groupidCookie = new Cookie("groupidCookie", URLEncoder.encode(user.getGroupid().toString(), "utf-8"));
             groupidCookie.setPath("/");
             groupidCookie.setMaxAge(Integer.MAX_VALUE);
 

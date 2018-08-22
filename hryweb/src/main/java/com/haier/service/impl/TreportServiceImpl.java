@@ -28,7 +28,8 @@ public class TreportServiceImpl implements TreportService {
 
     @Override
     public Integer insertOne(Treport treport) {
-        return treportMapper.insertSelective(treport);
+        treportMapper.insertSelective(treport);
+        return treport.getId();
     }
 
     @Override

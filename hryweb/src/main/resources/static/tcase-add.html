@@ -20,11 +20,7 @@
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
-    <!--[if IE 6]-->
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
-    <script>DD_belatedPNG.fix('*');</script>
-    <![endif]-->
-    <!--/meta 作为公共模版分离出去-->
+
     <title>新增用例</title>
 </head>
 <body>
@@ -44,7 +40,8 @@
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;" id="ti-span">
-                    <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
+                    <select class="select" prevalue="" size="1" name="ti" id="ti"
+                            onchange="tiChange(getCasename(),this.getAttribute('prevalue'))">
                     </select>
 				</span>
             </div>
@@ -77,7 +74,17 @@
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="env" id="env">
-                        <option value="" selected>请选择环境</option>
+                        <option value="0" selected>请选择环境</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">测试类：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                <span class="select-box" style="width:100%;">
+                    <select class="select" size="1" name="testclass" id="testclass">
+                        <option value="" selected>请选择测试类</option>
                     </select>
 				</span>
             </div>
@@ -147,13 +154,13 @@
         var previous=null;
         $("#ti").on('focus', function () {
             // Store the current value on focus and on change
-            previous = this.text;
+            previous = this.val().text;
         }).change(function () {
             // Do something with the previous value after the change
             alert(previous);
 
             // Make sure the previous value is updated
-            previous = this.text;
+            previous = this.val().text;
             alert(previous);
         });
     })();
@@ -208,6 +215,10 @@
             }
         });
         return service;
+    }
+
+    function getCasename() {
+        return $("#caseName").val();
     }
 
     function getTenvList() {
@@ -283,6 +294,49 @@
             }
         });
         return tiList;
+    }
+
+    function getTestclass(serviceKey) {
+        var testclassList = null;
+        $.ajaxSetup({async: false});
+        $.ajax({
+            type: "post",
+            url: "/tservice/getTestClassesBySKey",
+            data: {
+                sKey: serviceKey
+            },
+            dataType: "json",
+            success: function (data) {
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    //layer.close(layerIndex);
+                    testclassList = data.data;
+                } else {
+                    //layer.close(layerIndex);
+                    layer.alert(msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+
+            },
+            fail: function (data) {
+                //layer.close(layerIndex);
+                layer.alert(JSON.stringify(data), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+        return testclassList;
     }
 
     function getAssertType() {
@@ -423,7 +477,7 @@
     }*/
 
     $(document).ready(function () {
-        $("#iparamsample").hide();
+        //$("#iparamsample").hide();
         var realName = $.cookie('realnameCookie');
         $("#author").val(realName);
         var serviceList = getServiceList();
@@ -434,6 +488,8 @@
         var selectedTi = null;
         var selectedAssertType = null;
         var selectedRequestparam = null;
+        var selectedTestclass = null;
+        var selectedCaseName = false;
 
         /*        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
                     var cells = getParameter('cellArr').split(",");
@@ -450,11 +506,12 @@
                     selectedAssertType = cells[6];
                 }*/
         if (getParameter('id') != null && getParameter('id') != "") {
-            debugger;
+            //debugger;
             var tcase = getTcaseById(getParameter('id'));
             $("#caseName").val(tcase.casename);
+            selectedCaseName = true;
             $("#remark").val(tcase.remark);
-            $("#requestParam").val(tcase.requestparam);
+            /*$("#requestParam").val(tcase.requestparam);*/
 
             $("#expected").val(tcase.expected);
 
@@ -462,7 +519,8 @@
             selectedService = tcase.serviceid;
             selectedTi = tcase.iid;
             selectedAssertType = tcase.asserttype;
-            selectedRequestparam = true;
+            selectedRequestparam = tcase.requestparam;
+            selectedTestclass = tcase.testclass;
         }
         var tenv = "";
         for (k = 0; k < env.length; k++) {
@@ -479,6 +537,7 @@
 
 
         var services = "";
+
         for (i = 0; i < serviceList.length; i++) {
             var row = serviceList[i];
             var rowHtml;
@@ -491,6 +550,7 @@
         }
         $("#service").append(services);
 
+
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
         var tis = "";
@@ -502,18 +562,17 @@
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
                 var rowHtml;
-                if (row.id == selectedTi) {
-                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\" >" + row.iuri + "(" + row.remark + ")</option>";
+                if (selectedTi == null && j == 0) {
+                    rowHtml = "<option value=\"" + row.id + "\" selected>" + row.iuri + "(" + row.remark + ")</option>";
                 } else {
                     rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
-
                 }
                 tis = tis + rowHtml;
             }
             $("#ti").append(tis);
             $("#ti").select2();
 
-            var serviceKey=$("#service option:selected").text();
+           /* var serviceKey=$("#service option:selected").text();
             var tClassList=getTClassListByServiceKey(serviceKey);
             var tClassHtml="";
             for(var m=0;m<tClassList.length;m++){
@@ -528,14 +587,53 @@
                 var tId = $("#ti").val();
                 var iparamsample = getOneTi(tId).iparamsample;
                 //var iparamtype = getTitype(tId);
-                var iparamtype = getOneTi(tId).iparamtype;
+                var iparamtype = getOneTi(tId).iparamtype;*/
+
+            if (selectedTi != null) {//如果是复制用例,这里选中
+                $("#ti").val(selectedTi);
+            }
+            var tiSelectedText = $("#ti").find("option:selected").text();
+            var prevalue = tiSelectedText.substring(tiSelectedText.indexOf('(') + 1, tiSelectedText.lastIndexOf(')'));
+            document.getElementById("ti").setAttribute("prevalue", prevalue);
+
+
+            /**
+             * 设置参数值
+             */
+            var tId = $("#ti").val();
+            var iparamsample = getOneTi(tId).iparamsample;
+            var iparamtype = getOneTi(tId).iparamtype;
+            if (selectedRequestparam == null) {//如果不是复制用例,则使用接口的示例参数填充
+
                 if (iparamsample.length > 0 && iparamtype == 1) {
                     var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                     $("#requestParam").val(requestJson);
                 } else {
                     $("#requestParam").val(iparamsample);
                 }
+            } else if (iparamtype == 1 && $.trim(selectedRequestparam) != "") {//如果是复制用例,并且接口的参数类型是Json,则设置格式化的复制的参数
+                $("#requestParam").val(JSON.stringify(JSON.parse(selectedRequestparam), null, 2));
+            } else {//否则 ,使用复制的参数直接填充
+                $("#requestParam").val(selectedRequestparam);
             }
+
+            if (!selectedCaseName) {
+                $("#caseName").val(prevalue);//如果不用复制用例,则这里设置为prevalue的值(即默认接口名称)
+            }
+        }
+
+        /**
+         * 构造testclass
+         */
+        var selectedServiceKey = $("#service").find("option:selected").text();
+        var testclassList = getTestclass(selectedServiceKey);
+        var testclassHtml = "";
+        for (var i = 0; i < testclassList.length; i++) {
+            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
+        }
+        $("#testclass").append(testclassHtml);
+        if (selectedTestclass != null) {
+            $("#testclass").val(selectedTestclass);
         }
 
 
@@ -563,11 +661,16 @@
     }
 
     //接口改变处理
-    function tiChange() {
+    function tiChange(cName, prevalue) {
+        /*        console.log(cName);
+                console.log(prevalue);*/
         var tId = $("#ti").val();
         var t = getOneTi(tId);
         var remark = t.remark;
-        $("#caseName").val(remark);
+        if ($.trim(cName) == $.trim(prevalue) || $.trim(cName) == "") {//如果prevalue==cName,证明用户并没有编辑caseName,此时接口变更时,将会填充新的值
+            $("#caseName").val(remark);
+        }
+        document.getElementById("ti").setAttribute("prevalue", remark);//设置新的自定义属性-prevalue,为下次change准备
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
@@ -583,6 +686,7 @@
         }
         //$("#requestParam").empty();
     }
+
 
     //服务改变处理
     function serviceChange() {
@@ -608,6 +712,15 @@
             tiChange();
 
         }
+        //服务改变时,测试类也需要联动
+        var selectedServiceKey = $("#service").find("option:selected").text();
+        var testclassList = getTestclass(selectedServiceKey);
+        var testclassHtml = "<option value=\"\" selected>请选择测试类</option>";
+        for (var i = 0; i < testclassList.length; i++) {
+            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
+        }
+        $("#testclass").empty();
+        $("#testclass").append(testclassHtml);
 
         var serviceKey=$("#service option:selected").text();
         var tClassList=getTClassListByServiceKey(serviceKey);
@@ -656,6 +769,7 @@
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var author = $("#author").val();
+        var testclass = $("#testclass").val()
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
@@ -681,7 +795,7 @@
                     asserttype: assertType,
                     expected: expected,
                     author: author,
-                    status: 1
+                    testclass: testclass
                 },
                 dataType: "json",
                 success: function (data) {
@@ -746,6 +860,7 @@
                     remark: remark,
                     iid: ti,
                     envid: env,
+                    serviceid: service,
                     requestparam: requestParam,
                     asserttype: assertType,
                     expected: expected

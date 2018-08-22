@@ -3,6 +3,7 @@ debug/
 */target/
 */META-INF/
 test-output/
+testng.xml
 
 
 # Compiled class file

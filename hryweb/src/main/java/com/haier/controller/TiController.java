@@ -5,6 +5,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
+import com.haier.po.TiExample;
 import com.haier.vo.TiWithCaseVO;
 import com.haier.response.Result;
 import com.haier.service.TiService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Ref;
 import java.util.List;
 
 /**
@@ -33,6 +35,20 @@ public class TiController {
     //增
     @PostMapping("/insertOne")
     public Result insertOne(Ti ti) {
+        ReflectUtil.setInvalidFieldToNull(ti, false);
+        //简单参数校验
+        if (ti == null || ti.getServiceid() == null || ti.getIuri() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "服务ID,iUri必填");
+        }
+
+        //数据重复性校验
+        Ti condition = new Ti();
+        condition.setIuri(ti.getIuri());
+        condition.setServiceid(ti.getServiceid());
+        List<Ti> tis = tiService.selectByCondition(condition);
+        if (tis.size() > 0) {
+            throw new HryException(StatusCodeEnum.EXIST_RECORD, "存在重复记录!");
+        }
         return ResultUtil.success(tiService.insertOne(ti));
     }
 
@@ -112,7 +128,36 @@ public class TiController {
     //改
     @PostMapping("updateOne")
     public Result updateOne(Ti ti) {
-        return ResultUtil.success(tiService.updateOne(ti.getId(), ti));
+        ReflectUtil.setInvalidFieldToNull(ti, false);
+        if (ti.getId() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新或者删除接口时,ti必填");
+        }
+        //数据重复性校验
+        Ti condition = null;
+        if (ti.getServiceid() != null || ti.getIuri() != null) {
+            condition = new Ti();
+            if (ti.getServiceid() != null) {
+                condition.setServiceid(ti.getServiceid());
+            }
+            if (ti.getIuri() != null) {
+                condition.setIuri(ti.getIuri());
+            }
+        }
+        if (condition != null) {
+            List<Ti> tis = tiService.selectByCondition(condition);
+            Ti self = tiService.selectOne(ti.getId());
+            if (tis.size() > 0) {
+                for (Ti i : tis) {
+                    if (!i.getId().equals(self.getId())//id不相等
+                            && i.getServiceid().equals(ti.getServiceid() == null ? self.getServiceid() : ti.getServiceid())//服务相等
+                            && i.getIuri().equals(ti.getIuri() == null ? self.getIuri() : ti.getIuri())//iUri相等
+                            ) {
+                        throw new HryException(StatusCodeEnum.EXIST_RECORD, "重复记录id=" + i.getId());
+                    }
+                }
+            }
+        }
+        return ResultUtil.success(tiService.updateOne(ti));
     }
 
 
@@ -127,6 +172,9 @@ public class TiController {
      */
     @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
+        if(id==null||id==0){
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
+        }
         return ResultUtil.success(tiService.deleteOne(id));
     }
 

@@ -9,6 +9,7 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.*;
 import org.testng.annotations.Test;
 import org.testng.xml.XmlSuite;
@@ -26,7 +27,7 @@ import java.util.*;
 @Slf4j
 public class HryReporter implements IReporter {
     private String reportPath;//测试报告存入于服务器的位置 如:C:/testngReport/(windows环境下的存放地址)
-    private String fileName;//测试报告访问的地址 如: /test-output/report_u53_c14_20180723_151134.html   访问时前面加域名即可
+    private String fileName;//测试报告访问的地址 如: report_u53_c14_20180723_151134.html   访问时前面加域名即可
     private String customName;//测试报告中的报告名称,一般传定制名称
 
     public HryReporter(String reportPath, String fileName) {
@@ -133,7 +134,7 @@ public class HryReporter implements IReporter {
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
 
         htmlReporter.config().setDocumentTitle("很容易自动化测试报告");
-        if (customName != null) {
+        if (StringUtils.isNotBlank(customName)) {
             htmlReporter.config().setReportName(customName);
         } else {
             htmlReporter.config().setReportName("未指定定制名称");
@@ -203,15 +204,20 @@ public class HryReporter implements IReporter {
                     test = extenttest.createNode(name).assignCategory(categories);
                 }
 
+
                 /**
-                 * 如果有参数,测试报告中将参数展示出来
+                 * 参数现在直接使用Reporter.log打印
                  */
+
+                /*                *//**
+                 * 如果有参数,测试报告中将参数展示出来
+                 *//*
                 String p = "";
                 if (parameters != null && parameters.length > 0) {
                     for (Object param : parameters) {
                         p += param.toString();
                     }
-                }
+                }*/
 
 
  /*               //如果有参数，则使用参数的toString组合代替报告中的name

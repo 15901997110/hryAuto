@@ -27,8 +27,20 @@
 
     <div >
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">
-            <label style="margin-left:80px;">环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">
+            <!--<label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" 服务" style="width:12%" class="input-text">-->
+            <label style="margin-left:65px;">服务：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="serviceKey" id="serviceKey">
+                    <option value="">请选择</option>
+                </select>
+            </span>
+            <!--<label style="margin-left:80px;">环境：</label><input type="text" name="envKey" id="envKey" placeholder=" 环境" style="width:12%" class="input-text">-->
+            <label style="margin-left:80px;">环境：</label>
+            <span class="select-box" style="width:12%">
+                <select class="select" size="1" name="envKey" id="envKey">
+                    <option value="" selected>请选择</option>
+                </select>
+            </span>
             <label style="margin-left:50px;">Host：</label><input type="text" name="hostInfo" id="hostInfo" placeholder=" Host" style="width:12%" class="input-text">
         </div>
         <div style="margin-left:30px;margin-top:20px;">
@@ -53,9 +65,9 @@
                 <th width="10%">服务</th>
                 <th width="5%">环境</th>
                 <th width="10%">Host</th>
-                <th width="30%">数据库信息</th>
-                <th width="15%">SwaggerUrl</th>
-                <th width="15%">测试类</th>
+                <th width="40%">数据库信息</th>
+                <th width="20%">SwaggerUrl</th>
+<!--                <th width="15%">测试类</th>-->
                 <th width="5%">操作</th>
             </tr>
             </thead>
@@ -96,8 +108,10 @@
     });
 
     function empty(){
-        $("#servicekey").val("");
-        $("#envKey").val("");
+        // $("#servicekey").val("");
+        $("#serviceKey option:first").prop("selected", 'selected');
+        $("#envKey option:first").prop("selected", 'selected');
+        //$("#envKey").val("");
         $("#hostInfo").val("");
         $("#dbInfo").val("");
         $("#swaggerUrl").val("");
@@ -105,15 +119,33 @@
 
     //查询用户列表
     $(document).ready(function () {
+        var list = getServiceList();
+        var html = "";
+        for (i = 0; i < list.length; i++) {
+            var row = list[i];
+            var rowHtml = "<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+            html = html + rowHtml;
+        }
+        $("#serviceKey").append(html);
+
+        var envlist=getEnvList();
+        var envhtml="";
+        for(j=0;j<envlist.length;j++){
+            var row=envlist[j];
+            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
+            envhtml=envhtml+rowHtml;
+        }
+        $("#envKey").append(envhtml);
         pageSkip(1);
     });
 
     //分页查询
     function pageSkip(index){
+
         if(index==0){
             return;
         }
-        var servicekey = $("#servicekey").val();
+        var servicekey = $("#serviceKey").val();
         var envKey = $("#envKey").val();
         var hostInfo = $("#hostInfo").val();
         var dbInfo = $("#dbInfo").val();
@@ -123,8 +155,8 @@
             type: "post",
             url: "/tservicedetail/selectByCondition",
             data: {
-                servicekey:servicekey,
-                envKey:envKey,
+                serviceid:servicekey,
+                envid:envKey,
                 hostinfo:hostInfo,
                 dbinfo:dbInfo,
                 swaggerurl:swaggerUrl,
@@ -171,8 +203,13 @@
                             "<td>"+row.envkey+"</td>\n" +
                             "<td>"+row.hostinfo+"</td>\n" +
                             "<td><pre style='text-align:left;border: 0px;' >"+dbInfo+"</pre></td>\n" +
+<<<<<<< HEAD
                             "<td>"+swaggerurl+"</td>\n" +
                             "<td>"+clazz+"</td>\n" +
+=======
+                            "<td>"+row.swaggerurl+"</td>\n" +
+                            /*"<td>"+clazz+"</td>\n" +*/
+>>>>>>> master
                             "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"tservicedetail_edit('映射关系编辑','tservicedetail-edit.html',"+row.id+",'800','600')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tservicedetail_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
@@ -183,6 +220,7 @@
                     layer.close(layerIndex);
 
                 }else{
+                    layer.close(layerIndex);
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'

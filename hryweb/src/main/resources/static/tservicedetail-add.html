@@ -68,12 +68,12 @@
                 <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl" name="swaggerUrl">
             </div>
         </div>
-        <div class="row cl">
+        <!--<div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">测试类：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="测试类" id="clazz" name="clazz">
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="addTenvDetail()"><i class="icon-ok"></i> 新增</button>
@@ -224,7 +224,7 @@
         var hostInfo = $("#hostInfo").val();
         var dbInfo = $("#dbInfo").val();
         var swaggerUrl = $("#swaggerUrl").val();
-        var clazz = $("#clazz").val();
+        // var clazz = $("#clazz").val();
 
         if(service == null || service == ""){
             layer.msg("请选择服务！");
@@ -245,7 +245,7 @@
                     hostinfo:hostInfo,
                     dbinfo:dbInfo,
                     swaggerurl:swaggerUrl,
-                    clazz:clazz,
+                    /*clazz:clazz,*/
                     status:1
                 },
                 dataType: "json",

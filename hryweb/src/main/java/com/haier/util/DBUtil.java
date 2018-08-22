@@ -18,9 +18,9 @@ public class DBUtil {
 
 
     //数据库连接
-    public static JdbcTemplate getJdbcTemplate(DBTypeEnum dbTypeEnum, String url, String username, String password) {
+    public static JdbcTemplate getJdbcTemplate(String driver, String url, String username, String password) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(dbTypeEnum.getDriverName());
+        dataSource.setDriverClassName(driver);
         dataSource.setUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
@@ -29,8 +29,16 @@ public class DBUtil {
         return jdbcTemplate;
     }
 
-    //执行查询语句
-    public static String queryForObject(JdbcTemplate jdbcTemplate, String querySql) {
+    //查询
+    public static String query(JdbcTemplate jdbcTemplate, String querySql) {
         return jdbcTemplate.queryForObject(querySql, java.lang.String.class);
+    }
+
+    public static Integer insert(JdbcTemplate jdbcTemplate, String insertSql) {
+        return update(jdbcTemplate, insertSql);
+    }
+
+    public static Integer update(JdbcTemplate jdbcTemplate, String updateSql) {
+        return jdbcTemplate.update(updateSql);
     }
 }

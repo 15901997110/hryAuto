@@ -1,4 +1,4 @@
-package com.haier.util;
+package com.haier.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

@@ -15,7 +15,7 @@ import java.util.List;
 public interface TiService {
     Integer insertOne(Ti ti);
 
-    Integer updateOne(Integer id, Ti ti);
+    Integer updateOne(Ti ti);
 
     Integer deleteOne(Integer id);//需谨慎操作,删除ti表的记录,将会连带删除tcase表的记录
 
