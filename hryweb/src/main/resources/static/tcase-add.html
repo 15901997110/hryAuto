@@ -46,7 +46,7 @@
 				</span>
             </div>
         </div>
-        <div class="row cl">
+       <!-- <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">测试类：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;" id="tClass-span">
@@ -54,7 +54,7 @@
                     </select>
 				</span>
             </div>
-        </div>
+        </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
@@ -185,296 +185,9 @@
         });
     });
 
-    function getServiceList() {
-        var service = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/tservice/selectByConditionSimple",
-            data: {},
-            dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-                if (status == 0) {
-                    layer.close(layerIndex);
-                    service = data.data;
-                } else {
-                    layer.close(layerIndex);
-                    alert(msg);
-                }
-
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                alert(JSON.stringify(data));
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                alert('error:' + JSON.stringify(xhr));
-            }
-        });
-        return service;
-    }
-
     function getCasename() {
         return $("#caseName").val();
     }
-
-    function getTenvList() {
-        var env = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/tenv/selectAll",
-            data: {},
-            dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-                if (status == 0) {
-                    layer.close(layerIndex);
-                    env = data.data;
-                } else {
-                    layer.close(layerIndex);
-                    alert(msg);
-                }
-
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                alert(JSON.stringify(data));
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                alert('error:' + JSON.stringify(xhr));
-            }
-        });
-        return env;
-    }
-
-    function getTiList(serviceid) {
-        var tiList = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectByConditionSimple",
-            data: {
-                serviceid: serviceid
-            },
-            dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-                if (status == 0) {
-                    layer.close(layerIndex);
-                    tiList = data.data;
-                } else {
-                    layer.close(layerIndex);
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                }
-
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return tiList;
-    }
-
-    function getTestclass(serviceKey) {
-        var testclassList = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/tservice/getTestClassesBySKey",
-            data: {
-                sKey: serviceKey
-            },
-            dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-                if (status == 0) {
-                    //layer.close(layerIndex);
-                    testclassList = data.data;
-                } else {
-                    //layer.close(layerIndex);
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                }
-
-            },
-            fail: function (data) {
-                //layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return testclassList;
-    }
-
-    function getAssertType() {
-        var assertType = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "get",
-            url: "/enum/assertTypeEnum",
-            data: {},
-            dataType: "json",
-            success: function (data) {
-                layer.close(layerIndex);
-                assertType = data;
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return assertType;
-    }
-
-    function getOneTi(tId) {
-        var ti;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectOne",
-            data: {
-                id: tId
-            },
-            dataType: "json",
-            success: function (data) {
-                ti = data.data;
-                layer.close(layerIndex);
-            },
-            fail: function (data) {
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return ti;
-
-
-    }
-
-    //根据用例id查询用例信息
-    function getTcaseById(caseId) {
-        var tcase = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/tcase/selectOne",
-            data: {
-                id: caseId
-            },
-            dataType: "json",
-            success: function (data) {
-
-                //layer.close(layerIndex);
-                var status = data.status;
-                var msg = data.msg;
-                if (status == 0) {
-                    tcase = data.data;
-                } else {
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-
-            },
-            fail: function (data) {
-                layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                })
-            },
-            error: function (xhr) {
-                layer.close(layerIndex);
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                })
-            }
-        });
-        return tcase;
-    }
-
-    /*function getTitype(tId) {
-        var titype;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectOne",
-            data: {
-                id: tId
-            },
-            dataType: "json",
-            success: function (data) {
-                titype = data.data.iparamtype;
-                layer.close(layerIndex);
-            },
-            fail: function (data) {
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return titype;
-
-    }*/
 
     $(document).ready(function () {
         //$("#iparamsample").hide();
@@ -601,8 +314,8 @@
              * 设置参数值
              */
             var tId = $("#ti").val();
-            var iparamsample = getOneTi(tId).iparamsample;
-            var iparamtype = getOneTi(tId).iparamtype;
+            var iparamsample = getTiById(tId).iparamsample;
+            var iparamtype = getTiById(tId).iparamtype;
             if (selectedRequestparam == null) {//如果不是复制用例,则使用接口的示例参数填充
 
                 if (iparamsample.length > 0 && iparamtype == 1) {
@@ -626,7 +339,7 @@
          * 构造testclass
          */
         var selectedServiceKey = $("#service").find("option:selected").text();
-        var testclassList = getTestclass(selectedServiceKey);
+        var testclassList = getTClassListByServiceKey(selectedServiceKey);
         var testclassHtml = "";
         for (var i = 0; i < testclassList.length; i++) {
             testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
@@ -665,7 +378,7 @@
         /*        console.log(cName);
                 console.log(prevalue);*/
         var tId = $("#ti").val();
-        var t = getOneTi(tId);
+        var t = getTiById(tId);
         var remark = t.remark;
         if ($.trim(cName) == $.trim(prevalue) || $.trim(cName) == "") {//如果prevalue==cName,证明用户并没有编辑caseName,此时接口变更时,将会填充新的值
             $("#caseName").val(remark);
@@ -714,7 +427,7 @@
         }
         //服务改变时,测试类也需要联动
         var selectedServiceKey = $("#service").find("option:selected").text();
-        var testclassList = getTestclass(selectedServiceKey);
+        var testclassList = getTClassListByServiceKey(selectedServiceKey);
         var testclassHtml = "<option value=\"\" selected>请选择测试类</option>";
         for (var i = 0; i < testclassList.length; i++) {
             testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
@@ -764,7 +477,7 @@
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
-        var tClass=$("#tClass").val();
+        //var tClass=$("#tClass").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
@@ -789,7 +502,6 @@
                     remark: remark,
                     serviceid: service,
                     iid: ti,
-                    testclass:tClass,
                     envid: env,
                     requestparam: requestParam,
                     asserttype: assertType,
@@ -843,7 +555,8 @@
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
-        var author = $("#author").val();
+        var testClass=$("#testclass").val();
+        var userId=$.cookie('uidCookie');
 
         if (ti == null || ti == "") {
             layer.alert("请选择接口！");
@@ -854,7 +567,7 @@
         } else {
             $.ajax({
                 type: "post",
-                url: "/tcase/runCaseOne",
+                url: "/tcase/runCase",
                 data: {
                     casename: caseName,
                     remark: remark,
@@ -862,27 +575,30 @@
                     envid: env,
                     serviceid: service,
                     requestparam: requestParam,
+                    testclass:testClass,
                     asserttype: assertType,
-                    expected: expected
-                    /*author:author,
-                    status:1*/
+                    expected: expected,
+                    userId:userId
                 },
                 dataType: "json",
                 success: function (data) {
-                    var list = data;
+                    var url = data.data;
                     var status = data.status;
                     var msg = data.msg;
                     if (status == 0) {
                         layer.close(layerIndex);
-                        var domain = "http://" + window.location.host;
+                        var tiName=$("#ti").find("option:selected").text();
+                        url=encodeURI("../report-loading.html?reportname="+url+"&customname="+tiName);
+                        window.open(url);
+                        /*var domain = "http://" + window.location.host;
                         var myPopup = window.open("test-result.html");//.postMessage(list,domain);
                         //周期性的发送消息
                         setTimeout(function () {
                             myPopup.postMessage(list, domain);
                         }, 1000);
-                        /* parent.window.location.reload();
+                        /!* parent.window.location.reload();
                          var index = parent.layer.getFrameIndex(window.name);
-                         parent.layer.close(index);*/
+                         parent.layer.close(index);*!/*/
                     } else {
                         layer.close(layerIndex);
                         layer.alert(msg, {

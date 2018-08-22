@@ -595,9 +595,156 @@ function getAllTiAndCaseByServiceId(serviceId){
     return all;
 }
 
+//根据serviceKey 获取该服务下所有测试类
+/*function getTestclass(serviceKey) {
+    var testclassList = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/tservice/getTestClassesBySKey",
+        data: {
+            sKey: serviceKey
+        },
+        dataType: "json",
+        success: function (data) {
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                //layer.close(layerIndex);
+                testclassList = data.data;
+            } else {
+                //layer.close(layerIndex);
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            }
 
+        },
+        fail: function (data) {
+            //layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            });
+        }
+    });
+    return testclassList;
+}*/
 
+//根据serviceId 获取接口list
+function getTiList(serviceid) {
+    var tiList = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/ti/selectByConditionSimple",
+        data: {
+            serviceid: serviceid
+        },
+        dataType: "json",
+        success: function (data) {
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                layer.close(layerIndex);
+                tiList = data.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            }
 
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            });
+        }
+    });
+    return tiList;
+}
+
+// 获取断言枚举值list
+function getAssertType() {
+    var assertType = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "get",
+        url: "/enum/assertTypeEnum",
+        data: {},
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            assertType = data;
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            });
+        }
+    });
+    return assertType;
+}
+
+// 根据接口id获取接口示例
+function getTitype(iid) {
+    var titype;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/ti/selectOne",
+        data: {
+            id: iid
+        },
+        dataType: "json",
+        success: function (data) {
+            titype = data.data.iparamtype;
+            layer.close(layerIndex);
+        },
+        fail: function (data) {
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            });
+        }
+    });
+    return titype;
+
+}
 
 
 
