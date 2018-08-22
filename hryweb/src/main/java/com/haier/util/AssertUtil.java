@@ -87,25 +87,24 @@ public class AssertUtil {
 
                         //actualType=map,对于实际返回值类型为map的处理,(暂未实现)
                     case 2:
-                        return false;
+                        throw new AssertionError("断言失败:暂时不支持返回值类型ti.iResponseType=2的断言逻辑,请联系很容易平台管理员!");
                     default:
-                        log.error("actualType:" + actualType + ",仅支持1-json,2-map");
-                        return false;
+                        throw new AssertionError("断言失败:当断言类型为3:key-value时,暂时只支持返回值类型ti.iResponseType=1的断言逻辑,请联系很容易平台管理员!");
                 }
                 //以上情况都未匹配
             default:
-                return false;
+                throw new AssertionError("断言失败:断言类型未指定,无法提供断言!!!");
         }
     }
 
-    public static Boolean supperAssert(String actual, Tcase tcase) {
+    public static void supperAssert(String actual, Tcase tcase) {
         TiService tiService = SpringContextHolder.getBean(TiService.class);
         Ti ti = tiService.selectOne(tcase.getIid());
-        return supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
+        supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());
     }
 
-    public static Boolean supperAssert(String actual, HryTest test) {
-        return supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
+    public static void supperAssert(String actual, HryTest test) {
+        supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
     }
 
     public static Boolean isMatch(JSONObject actual, Map<String, Object> expected) {
