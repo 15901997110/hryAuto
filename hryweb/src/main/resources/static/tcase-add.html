@@ -40,7 +40,8 @@
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;" id="ti-span">
-                    <select class="select" prevalue="helloworld" size="1" name="ti" id="ti" onchange="tiChange(getCasename(),this.getAttribute('prevalue'))">
+                    <select class="select" prevalue="" size="1" name="ti" id="ti"
+                            onchange="tiChange(getCasename(),this.getAttribute('prevalue'))">
                     </select>
 				</span>
             </div>
@@ -206,9 +207,10 @@
         return service;
     }
 
-    function getCasename(){
+    function getCasename() {
         return $("#caseName").val();
     }
+
     function getTenvList() {
         var env = null;
         $.ajaxSetup({async: false});
@@ -477,6 +479,7 @@
         var selectedAssertType = null;
         var selectedRequestparam = null;
         var selectedTestclass = null;
+        var selectedCaseName = false;
 
         /*        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
                     var cells = getParameter('cellArr').split(",");
@@ -496,8 +499,9 @@
             //debugger;
             var tcase = getTcaseById(getParameter('id'));
             $("#caseName").val(tcase.casename);
+            selectedCaseName = true;
             $("#remark").val(tcase.remark);
-            $("#requestParam").val(tcase.requestparam);
+            /*$("#requestParam").val(tcase.requestparam);*/
 
             $("#expected").val(tcase.expected);
 
@@ -505,7 +509,7 @@
             selectedService = tcase.serviceid;
             selectedTi = tcase.iid;
             selectedAssertType = tcase.asserttype;
-            selectedRequestparam = true;
+            selectedRequestparam = tcase.requestparam;
             selectedTestclass = tcase.testclass;
         }
         var tenv = "";
@@ -548,27 +552,44 @@
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
                 var rowHtml;
-                if (row.id == selectedTi) {
-                    rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\" >" + row.iuri + "(" + row.remark + ")</option>";
+                if (selectedTi == null && j == 0) {
+                    rowHtml = "<option value=\"" + row.id + "\" selected>" + row.iuri + "(" + row.remark + ")</option>";
                 } else {
                     rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
-
                 }
                 tis = tis + rowHtml;
             }
             $("#ti").append(tis);
             $("#ti").select2();
-            if (selectedRequestparam == null) {
-                var tId = $("#ti").val();
-                var iparamsample = getOneTi(tId).iparamsample;
-                //var iparamtype = getTitype(tId);
-                var iparamtype = getOneTi(tId).iparamtype;
+            if (selectedTi != null) {//如果是复制用例,这里选中
+                $("#ti").val(selectedTi);
+            }
+            var tiSelectedText = $("#ti").find("option:selected").text();
+            var prevalue = tiSelectedText.substring(tiSelectedText.indexOf('(') + 1, tiSelectedText.lastIndexOf(')'));
+            document.getElementById("ti").setAttribute("prevalue", prevalue);
+
+
+            /**
+             * 设置参数值
+             */
+            var tId = $("#ti").val();
+            var iparamsample = getOneTi(tId).iparamsample;
+            var iparamtype = getOneTi(tId).iparamtype;
+            if (selectedRequestparam == null) {//如果不是复制用例,则使用接口的示例参数填充
                 if (iparamsample.length > 0 && iparamtype == 1) {
                     var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                     $("#requestParam").val(requestJson);
                 } else {
                     $("#requestParam").val(iparamsample);
                 }
+            } else if (iparamtype == 1 && $.trim(selectedRequestparam) != "") {//如果是复制用例,并且接口的参数类型是Json,则设置格式化的复制的参数
+                $("#requestParam").val(JSON.stringify(JSON.parse(selectedRequestparam), null, 2));
+            } else {//否则 ,使用复制的参数直接填充
+                $("#requestParam").val(selectedRequestparam);
+            }
+
+            if (!selectedCaseName) {
+                $("#caseName").val(prevalue);//如果不用复制用例,则这里设置为prevalue的值(即默认接口名称)
             }
         }
 
@@ -578,14 +599,13 @@
         var selectedServiceKey = $("#service").find("option:selected").text();
         var testclassList = getTestclass(selectedServiceKey);
         var testclassHtml = "";
-        for (i = 0; i < testclassList.length; i++) {
-            if (selectedTestclass != null && selectedTestclass == testclassList[i]) {
-                testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\" selected>" + testclassList[i] + "</option>";
-            } else {
-                testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
-            }
+        for (var i = 0; i < testclassList.length; i++) {
+            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
         }
         $("#testclass").append(testclassHtml);
+        if (selectedTestclass != null) {
+            $("#testclass").val(selectedTestclass);
+        }
 
 
         var assertTypes = "";
@@ -612,13 +632,16 @@
     }
 
     //接口改变处理
-    function tiChange(cName,prevalue) {
-        console.log(cName);
-        console.log(prevalue);
+    function tiChange(cName, prevalue) {
+        /*        console.log(cName);
+                console.log(prevalue);*/
         var tId = $("#ti").val();
         var t = getOneTi(tId);
         var remark = t.remark;
-        $("#caseName").val(remark);
+        if ($.trim(cName) == $.trim(prevalue) || $.trim(cName) == "") {//如果prevalue==cName,证明用户并没有编辑caseName,此时接口变更时,将会填充新的值
+            $("#caseName").val(remark);
+        }
+        document.getElementById("ti").setAttribute("prevalue", remark);//设置新的自定义属性-prevalue,为下次change准备
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
