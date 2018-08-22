@@ -173,19 +173,31 @@ public class TcaseController {
         return this.runCaseOne(tcase);
     }
 
+    /**
+     * 用例新增和编辑页面运行单条用例(新)
+     * @param tcase-用例
+     * @param userId-用户id
+     * @return 测试报告页面地址
+     */
     @PostMapping("/runCase")
-    public Result runcase(Tcase tcase, Integer userId, String testClassName) {
+    public Result runcase(Tcase tcase, Integer userId) {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || tcase.getEnvid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行单条Case时,必须指定运行的环境");
         }
-        return ResultUtil.success(tcaseService.runOne(tcase, userId, testClassName));
+        return ResultUtil.success(tcaseService.runOne(tcase, userId));
     }
 
+    /**
+     * 用例列表页面运行单条用例(新)
+     * @param id-tcase.id
+     * @param userId-user.id
+     * @return 测试报告页面地址
+     */
     @PostMapping("/runCaseById")
-    public Result runcase(Integer id, Integer userId, String testClassName) {
+    public Result runcase(Integer id, Integer userId) {
         Tcase tcase = tcaseService.selectOne(id);
-        return this.runcase(tcase, userId, testClassName);
+        return this.runcase(tcase, userId);
     }
 
 

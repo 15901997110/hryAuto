@@ -277,7 +277,8 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
     @Override
-    public String runOne(Tcase tcase, Integer userId, String testClassName) {
+    public String runOne(Tcase tcase, Integer userId) {
+        String testClassName=tcase.getTestclass();
         Ti ti = tiService.selectOne(tcase.getIid());
         Tservice tservice = tserviceService.selectOne(ti.getServiceid());
         Tenv tenv = tenvService.selectOne(tcase.getEnvid());
@@ -336,9 +337,9 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
     @Override
-    public String runOne(Integer caseId, Integer userId, String testClassName) {
+    public String runOne(Integer caseId, Integer userId) {
         Tcase tcase = this.selectOne(caseId);
-        return this.runOne(tcase, userId, testClassName);
+        return this.runOne(tcase, userId);
     }
 
 
