@@ -2,7 +2,7 @@ package com.haier.testng.test;
 
 import com.haier.po.HryTest;
 import com.haier.testng.base.RmpBase;
-import com.haier.util.AssertUtil;
+import static com.haier.util.AssertUtil.supperAssert;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -14,9 +14,8 @@ import java.lang.reflect.Method;
 /**
  * @Description: RmpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/17 14:34:00
+ * @Date: 2018/08/22 17:47:20
  */
-@SuppressWarnings("Duplicates")
 @Slf4j
 public class RmpDefaultTest extends RmpBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
@@ -33,13 +32,13 @@ public class RmpDefaultTest extends RmpBase{
     @Test(testName = "/riskManagementFacade/apply", dataProvider = "provider", description = "提交风控申请")
     public void riskManagementFacade_apply(HryTest hryTest) {
         String actual = this._riskManagementFacade_apply(hryTest);
-        AssertUtil.supperAssert(actual, hryTest);
+        supperAssert(actual, hryTest);
     }
 
     @Test(testName = "/riskManagementFacade/query", dataProvider = "provider", description = "查询风控审核结果")
     public void riskManagementFacade_query(HryTest hryTest) {
         String actual = this._riskManagementFacade_query(hryTest);
-        AssertUtil.supperAssert(actual, hryTest);
+        supperAssert(actual, hryTest);
     }
 
 }

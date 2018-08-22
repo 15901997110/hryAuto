@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CdpBase
  * @Author: 自动生成
- * @Date: 2018/08/17 14:34:00
+ * @Date: 2018/08/22 16:04:42
  */
 @SKey("Cdp")
 public class CdpBase extends Base {
