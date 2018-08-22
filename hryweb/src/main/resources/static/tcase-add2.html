@@ -10,10 +10,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="/favicon.ico">
     <link rel="Shortcut Icon" href="/favicon.ico"/>
-    <!--[if lt IE 9]-->
-    <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
-    <![endif]-->
     <link rel="stylesheet" href="lib/select2/select2.min.css">
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
@@ -31,7 +28,7 @@
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
-                        <!--<option value="" selected>请选择服务</option>-->
+                        <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
@@ -40,7 +37,7 @@
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>接口：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;" id="ti-span">
-                    <select class="select" prevalue="helloworld" size="1" name="ti" id="ti" onchange="tiChange(getCasename(),this.getAttribute('prevalue'))">
+                    <select class="select" size="1" name="ti" id="ti" onchange="tiChange()">
                     </select>
 				</span>
             </div>
@@ -74,7 +71,7 @@
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:100%;">
                     <select class="select" size="1" name="testclass" id="testclass">
-                        <option value="" selected>请选择测试类</option>
+                        <option value="0" selected>请选择测试类</option>
                     </select>
 				</span>
             </div>
@@ -143,13 +140,13 @@
         var previous=null;
         $("#ti").on('focus', function () {
             // Store the current value on focus and on change
-            previous = this.val().text;
+            previous = this.text;
         }).change(function () {
             // Do something with the previous value after the change
             alert(previous);
 
             // Make sure the previous value is updated
-            previous = this.val().text;
+            previous = this.text;
             alert(previous);
         });
     })();
@@ -206,9 +203,6 @@
         return service;
     }
 
-    function getCasename(){
-        return $("#caseName").val();
-    }
     function getTenvList() {
         var env = null;
         $.ajaxSetup({async: false});
@@ -433,36 +427,6 @@
         return tcase;
     }
 
-    /*function getTitype(tId) {
-        var titype;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "post",
-            url: "/ti/selectOne",
-            data: {
-                id: tId
-            },
-            dataType: "json",
-            success: function (data) {
-                titype = data.data.iparamtype;
-                layer.close(layerIndex);
-            },
-            fail: function (data) {
-                layer.alert(JSON.stringify(data), {
-                    icon: 0,
-                    skin: 'layer-ext-moon'
-                });
-            },
-            error: function (xhr) {
-                layer.alert('Error' + JSON.stringify(xhr), {
-                    icon: 2,
-                    skin: 'layer-ext-moon'
-                });
-            }
-        });
-        return titype;
-
-    }*/
 
     $(document).ready(function () {
         //$("#iparamsample").hide();
@@ -506,7 +470,6 @@
             selectedTi = tcase.iid;
             selectedAssertType = tcase.asserttype;
             selectedRequestparam = true;
-            selectedTestclass = tcase.testclass;
         }
         var tenv = "";
         for (k = 0; k < env.length; k++) {
@@ -523,7 +486,6 @@
 
 
         var services = "";
-
         for (i = 0; i < serviceList.length; i++) {
             var row = serviceList[i];
             var rowHtml;
@@ -535,7 +497,6 @@
             services = services + rowHtml;
         }
         $("#service").append(services);
-
 
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
@@ -572,21 +533,13 @@
             }
         }
 
-        /**
-         * 构造testclass
-         */
-        var selectedServiceKey = $("#service").find("option:selected").text();
+        var selectedServiceKey=$("#service").text()
         var testclassList = getTestclass(selectedServiceKey);
         var testclassHtml = "";
         for (i = 0; i < testclassList.length; i++) {
-            if (selectedTestclass != null && selectedTestclass == testclassList[i]) {
-                testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\" selected>" + testclassList[i] + "</option>";
-            } else {
-                testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
-            }
+            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
         }
         $("#testclass").append(testclassHtml);
-
 
         var assertTypes = "";
         for (var m = 0; m < assertTypeList.length; m++) {
@@ -612,9 +565,7 @@
     }
 
     //接口改变处理
-    function tiChange(cName,prevalue) {
-        console.log(cName);
-        console.log(prevalue);
+    function tiChange() {
         var tId = $("#ti").val();
         var t = getOneTi(tId);
         var remark = t.remark;
@@ -634,7 +585,6 @@
         }
         //$("#requestParam").empty();
     }
-
 
     //服务改变处理
     function serviceChange() {
