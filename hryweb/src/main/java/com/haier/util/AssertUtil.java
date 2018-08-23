@@ -51,7 +51,20 @@ public class AssertUtil {
                     //actualType=json,对于实际返回值类型为json的处理
                     case 1:
                         JSONObject actualJsonObj = JSONUtil.str2JsonObj(actual);
+                        if (actualJsonObj == null) {
+                            Reporter.log("实际值尝试转换为JSON对象时失败,系统视实际值为null");
+                        }
                         JSONObject expectJsonObj = JSONUtil.str2JsonObj(expected);
+                        if (expectJsonObj == null) {
+                            Reporter.log("期望值尝试转换为JSON对象时失败,系统视期望值为null");
+                        }
+                        if (actualJsonObj == null || expectJsonObj == null) {
+                            if (actualJsonObj == null && expectJsonObj == null) {
+                                return;
+                            } else {
+                                throw new AssertionError("断言失败:实际值与期望值一个为null,一个非null");
+                            }
+                        }
                         if (!isMatch(actualJsonObj, expectJsonObj)) {
                             throw new AssertionError("断言失败:实际值中未找到期望值中的key,或者实际值中找到了期望值中的key,"
                                     + "但是对应key中实际值的value与期望值value不相等,忽略大小写比较仍不相等,去除空字符比较([ \\t\\n\\x0B\\f\\r])仍不相等,实际值包含期望值比较仍不相等,"
