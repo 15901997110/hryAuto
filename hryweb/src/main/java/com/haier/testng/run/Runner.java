@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description: 异步运行测试,测试运行完成后,更新测试报告的状态
+ * @Description: 异步运行测试, 测试运行完成后, 更新测试报告的状态
  * @Author: luqiwei
  * @Date: 2018/6/29 15:11
  */
@@ -92,7 +92,7 @@ public class Runner {
         suite.setTests(xmlTests);
 
         testNG.setXmlSuites(Arrays.asList(suite));
-        ITestNGListener reporter = new HryReporter(reportPath, reportName);
+        ITestNGListener reporter = new HryReporter(reportPath, reportName, "单一Case验证");
         testNG.addListener(reporter);
         testNG.run();
 
