@@ -747,7 +747,8 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 .w-980{width:980px}
 .w-300{width:300px}
 .w-200{width:200px}
-/*@media (max-width: 1000px) {
+/* 这里idea 会报错,不爽,不知道干毛用的注释掉   luqiwei-20180823
+@media (max-width: 1000px) {
 	.Hui-wraper,.wp,{ width:auto!important;padding:0 15px!important}
 }*/
 @media print{
