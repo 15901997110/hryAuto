@@ -78,7 +78,7 @@ public class BeforeUtil {
     }
 
     /**
-     * @description: 将字符串base中的关键字<<                                                                                                                               <                                                                                                                               var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
+     * @description: 将字符串base中的关键字<<                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               var:requestNo>>> 替换成调用者对象中字段名为requestNo的值
      * @params: [base-需要替换的字符串, entity-调用此方法的实体对象]
      * @return: java.lang.String
      * @author: luqiwei
@@ -92,18 +92,14 @@ public class BeforeUtil {
             String fieldValue = "";
             if (entity != null) {
                 try {
-                    Field declaredField = entity.getClass().getDeclaredField(varName);
-                    declaredField.setAccessible(true);
-                    try {
-                        Object o = declaredField.get(entity);
-                        fieldValue = o.toString();
-                    } catch (IllegalAccessException e) {
-                        log.error("获取对象字段值时权限异常:", e.getMessage());
-
-                    }
+                    Field field = entity.getClass().getField(varName);
+                    Object o = field.get(entity);
+                    fieldValue = o.toString();
                 } catch (NoSuchFieldException e) {
                     log.error("需要替换的字段(" + varName + ")在对象" + entity.toString() + "未找到", e.getMessage());
-                    fieldValue = "需要替换的字段(" + varName + ")在对象" + entity.toString() + "未找到";
+                    fieldValue = "需要替换的表达式(＜＜＜：ｖａｒ" + varName + "＞＞＞)在对象" + entity.toString() + "中未找到";
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             } else {
                 log.error("未传入entity");

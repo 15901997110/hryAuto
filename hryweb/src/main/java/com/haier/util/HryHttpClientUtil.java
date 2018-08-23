@@ -108,12 +108,12 @@ public class HryHttpClientUtil {
             }
         }
 
-        if(entity!=null){
+        if (entity != null) {
             try {
                 try {
                     Object cookieStore = entity.getClass().getField("cookieStore").get(entity);
-                    if(cookieStore!=null){
-                        HttpClientContext context=new HttpClientContext();
+                    if (cookieStore != null) {
+                        HttpClientContext context = new HttpClientContext();
                         context.setCookieStore((CookieStore) cookieStore);
                         config.context(context);
                     }
@@ -194,7 +194,9 @@ public class HryHttpClientUtil {
 
     public static <T extends Base> String send(HryTest test, T entity) {
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
+        //参数替换
         String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
+
         return send(url, test.getTi().getIrequestmethod(), test.getTi().getIcontenttype(),
                 test.getTi().getIparamtype(), param, entity);
     }
