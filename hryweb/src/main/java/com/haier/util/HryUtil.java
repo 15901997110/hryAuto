@@ -30,11 +30,10 @@ public class HryUtil {
      * @date: 2018-06-29
      */
     public static Integer[] convert(String arrayStr) {
-        if (arrayStr == null || "".equals(arrayStr.trim())) {
+        if (StringUtils.isBlank(arrayStr)) {
             return null;
         }
         Integer[] ret;
-        List<Integer> list = new ArrayList<>();
         if (arrayStr.contains(",")) {
             String[] split = arrayStr.split(",");
             ret = new Integer[split.length];
@@ -106,7 +105,8 @@ public class HryUtil {
                     test.setTservice(tservice);
                     test.setTservicedetail(tservicedetail);
                     test.setTi(ti);
-                    test.setTcase((Tcase) zdyCaseArray.get(i));
+                    test.setTcase(zdyCaseArray.getJSONObject(i).toJavaObject(Tcase.class));
+                    ret[i] = test;
                 }
                 return ret;
             }
