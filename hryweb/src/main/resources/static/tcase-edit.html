@@ -179,6 +179,7 @@
                     var casename = tcase.casename;
                     var remark = tcase.remark;
                     var iid = tcase.iid;
+                    tiId = iid;
 
                     var requestparam = "";
                     if (tcase.requestparam != null) {
@@ -304,8 +305,6 @@
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
-        //var ti = $("#ti").val();
-        // var ti = tiId;
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
@@ -375,15 +374,14 @@
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
-        // var service = $("#service").val();
-        var ti = tiId;
+        var service = $("#service").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var testClass = $("#testclass").val();
         var userId = $.cookie('uidCookie');
 
-        if (ti == null || ti == "") {
+        if (tiId == null || tiId == "") {
             layer.alert("请选择接口！");
             return;
         } else if (assertType == null || assertType == "") {
@@ -396,7 +394,8 @@
                 data: {
                     casename: caseName,
                     remark: remark,
-                    iid: ti,
+                    serviceid: service,
+                    iid: tiId,
                     envid: env,
                     requestparam: requestParam,
                     asserttype: assertType,
@@ -406,7 +405,7 @@
                 },
                 dataType: "json",
                 success: function (data) {
-                    var url = data;
+                    var url = data.data;
                     var status = data.status;
                     var msg = data.msg;
                     if (status == 0) {
