@@ -193,4 +193,12 @@ public class TserviceServiceImpl implements TserviceService {
         List<String> strings = testClasses.get(sKey);
         return strings == null ? new ArrayList<>() : strings;
     }
+
+    @Override
+    public List<String> getTestClasses(Integer sId) {
+        return this.getTestClasses(this.selectOne(sId).getServicekey());
+
+    }
+
+
 }
