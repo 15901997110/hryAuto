@@ -65,8 +65,7 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="service" id="service" onchange="serviceChange()">
-                        <!--<option value="" selected>请选择服务</option>-->
+                    <select class="select" size="1" name="service" id="service">
                     </select>
 				</span>
             </div>
@@ -85,7 +84,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">请求参数：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid" placeholder="请输入请求参数..."></textarea>
+                <textarea id="requestParam" name="requestParam" cols="" rows="" class="textarea valid"
+                          placeholder="请输入请求参数..."></textarea>
                 <!--<pre id="requestParam"></pre>-->
             </div>
         </div>
@@ -102,7 +102,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">期望结果：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="expected" name="expected" cols="" rows="" class="textarea valid" placeholder=""></textarea>
+                <textarea id="expected" name="expected" cols="" rows="" class="textarea valid"
+                          placeholder=""></textarea>
             </div>
         </div>
         <div class="row cl">
@@ -135,9 +136,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                layerIndex = layer.load(1, {shade: [1.01, '#fff']});
                 $('#admin-role-save').val("正在提交请稍等...")
             },
             error: function () { //报错时执行
@@ -155,10 +156,11 @@
     $(document).ready(function () {
         var id = getParameter('id');
         $("#id").val(id);
-        var serviceList=getServiceList();
-        var envList=getTenvList();
-        var tiList=getTiList();
-        var assertTypeList=getAssertType();
+        /*var serviceList=getServiceByServiceId()
+
+        var tiList=getTiList();*/
+        var assertTypeList = getAssertType();
+        var envList = getTenvList();
 
         $.ajax({
             type: "post",
@@ -168,126 +170,102 @@
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
+                var status = data.status;
+                var msg = data.msg;
+                var tcase = data.data;
                 console.log(data);
 
-                if(status == 0){
-                    var casename = list.casename;
-                    var remark = list.remark;
-                    var iid=list.iid;
-                    var envid=list.envid;
+                if (status == 0) {
+                    var casename = tcase.casename;
+                    var remark = tcase.remark;
+                    var iid = tcase.iid;
 
-                    var requestparam="";
-                    if(list.requestparam != null){
-                        requestparam=list.requestparam;
+                    var requestparam = "";
+                    if (tcase.requestparam != null) {
+                        requestparam = tcase.requestparam;
                     }
-                    var asserttype=list.asserttype;
-                    var expected="";
-                    if(list.expected != null){
-                        expected=list.expected;
+                    var asserttype = tcase.asserttype;
+                    var expected = "";
+                    if (tcase.expected != null) {
+                        expected = tcase.expected;
                     }
-                    var author=list.author;
-                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase("+id+")\"><i class=\"icon-ok\"></i> 确定</button>" +
+                    var author = tcase.author;
+                    var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase(" + id + ")\"><i class=\"icon-ok\"></i> 确定</button>" +
                         "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"test\" name=\"admin-role-save\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>";
                     $("#submit").append(submit);
 
-                    var envs="";
-                    for(var k=0;k<envList.length;k++){
-                        var rowEnv=envList[k];
-                        if( rowEnv.id == envid){
-                            var envHtml="<option value=\""+rowEnv.id+"\" selected>"+rowEnv.envkey+"</option>";
-                        }else{
-                            var envHtml="<option value=\""+rowEnv.id+"\">"+rowEnv.envkey+"</option>";
-                        }
-                        envs=envs+envHtml;
+
+                    var envHtml = "";
+                    for (var k = 0; k < envList.length; k++) {
+                        envHtml += "<option value=\"" + envList[k].id + "\">" + envList[k].envkey + "</option>";
                     }
-                    $("#env").append(envs);
-
-                    var services="";
-                    for(i=0;i<serviceList.length;i++){
-                        var row=serviceList[i];
-                        var rowHtml="<option value=\""+row.id+"\">"+row.servicename+"</option>";
-                        services=services+rowHtml;
-                    }
-                    $("#service").append(services);
-
-
-                    for(var k=0;k<tiList.length;k++){
-                        var rowTi=tiList[k];
-                        if( rowTi.id == iid){
-                            tiId=iid;
-                            $("#ti").val(rowTi.iuri+"("+rowTi.remark+")");
-                            break;
-                        }
-
+                    $("#env").append(envHtml);
+                    if (tcase.envid != null && tcase.envid != 0) {
+                        $(".env").val(tcase.envid);
                     }
 
-                    /*var tis="";
-                    for(var k=0;k<tiList.length;k++){
-                        var rowTi=tiList[k];
-                        if( rowTi.id == iid){
-                            var tiHtml="<option value=\""+rowTi.id+"\" selected>"+rowTi.iuri+"</option>";
-                        }else{
-                            var tiHtml="<option value=\""+rowTi.id+"\">"+rowTi.iuri+"</option>";
-                        }
-                        tis=tis+tiHtml;
-                    }
-                    $("#ti").append(tis);
-                    $('#ti').attr("disabled","desabled");*/
+
+                    var service = getServiceByServiceId(tcase.serviceid);
+                    $("#service").append("<option value=\"" + service.id + "\" selected>" + service.servicekey + "</option>");
+
+
+                    var ti = getTiById(tcase.iid);
+                    $("#ti").val(ti.iuri + "(" + ti.remark + ")");
+
 
                     /**
                      * 构造testclass
                      */
-                    var selectedServiceKey = $("#service").find("option:selected").text();
-                    var testclassList = getTClassListByServiceKey(selectedServiceKey);
+                    var testclassList = getClassesBySId(tcase.serviceid);
                     var testclassHtml = "";
                     for (var i = 0; i < testclassList.length; i++) {
-                        testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
+                        if (tcase.testclass != null && tcase.testclass != "" && tcase.testclass == testclassList[i]) {
+                            testclassHtml += "<option value=\"" + testclassList[i] + "\" selected>" + testclassList[i] + "</option>"
+                        } else {
+                            testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
+                        }
                     }
                     $("#testclass").append(testclassHtml);
 
-                    var assertTypes="";
-                    for(var k=0;k<assertTypeList.length;k++){
-                        var rowAssertType=assertTypeList[k];
-                        if( rowAssertType.id == asserttype){
-                            var assertHtml="<option value=\""+rowAssertType.id+"\" selected>"+rowAssertType.value+"</option>";
-                        }else{
-                            var assertHtml="<option value=\""+rowAssertType.id+"\">"+rowAssertType.value+"</option>";
+                    var assertTypeHtml = "";
+                    for (var k = 0; k < assertTypeList.length; k++) {
+                        var rowAssertType = assertTypeList[k];
+                        if (rowAssertType.id == asserttype) {
+                            assertTypeHtml += "<option value=\"" + rowAssertType.id + "\" selected>" + rowAssertType.value + "</option>";
+                        } else {
+                            assertTypeHtml += "<option value=\"" + rowAssertType.id + "\">" + rowAssertType.value + "</option>";
                         }
-                        assertTypes=assertTypes+assertHtml;
                     }
-                    $("#assertType").append(assertTypes);
+                    $("#assertType").append(assertTypeHtml);
                     $("#caseName").val(casename);
                     $("#remark").val(remark);
-                    $("#service").val();
+
                     var iparamtype = getTitype(iid);
-                    if(requestparam.length >0 && iparamtype ==1){
+                    if (requestparam.length > 0 && iparamtype == 1) {
                         try {
                             var requestparamJson = JSON.stringify(JSON.parse(requestparam), null, 2);
                             $("#requestParam").val(requestparamJson);
-                        }catch (e) {
+                        } catch (e) {
                             $("#requestParam").val(requestparam);
                         }
-                    }else {
+                    } else {
                         $("#requestParam").val(requestparam);
                     }
 
-                    if(asserttype == 3){
+                    if (asserttype == 3) {
                         try {
                             var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
                             $("#expected").val(requestJson);
-                        }catch (e) {
+                        } catch (e) {
                             $("#expected").val(expected);
                         }
-                    }else {
+                    } else {
                         $("#expected").val(expected);
                     }
                     $("#author").val(author);
                     layer.close(layerIndex);
 
-                }else{
+                } else {
                     layer.close(layerIndex);
                     layer.alert(msg, {
                         icon: 0,
@@ -302,18 +280,18 @@
     });
 
     //断言类型改变处理
-    function assertTypeChage(){
-        var assertType=$("#assertType").val();
-        var assertTypeList=getAssertType();
-        var placeholder="";
-        for(var i=0;i<assertTypeList.length;i++){
-            var row=assertTypeList[i];
-            if(row.id == assertType){
-                placeholder=row.desc;
-                $("#expected").prop("placeholder",placeholder);
+    function assertTypeChage() {
+        var assertType = $("#assertType").val();
+        var assertTypeList = getAssertType();
+        var placeholder = "";
+        for (var i = 0; i < assertTypeList.length; i++) {
+            var row = assertTypeList[i];
+            if (row.id == assertType) {
+                placeholder = row.desc;
+                $("#expected").prop("placeholder", placeholder);
                 break;
-            }else{
-                $("#expected").prop("placeholder","");
+            } else {
+                $("#expected").prop("placeholder", "");
             }
         }
 
@@ -321,57 +299,57 @@
     }
 
     //编辑用例
-    function editTcase(id){
+    function editTcase(id) {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
         var service = $("#service").val();
         //var ti = $("#ti").val();
-        var ti=tiId;
+        // var ti = tiId;
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var author = $("#author").val();
         var testclass = $("#testclass").val()
 
-        if(caseName == null || caseName == ""){
+        if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
             return;
-        }else if(ti == null || ti == ""){
+        } /*else if (ti == null || ti == "") {
             layer.alert("请选择接口！");
             return;
-        }else if(assertType == null || assertType == ""){
+        }*/ else if (assertType == null || assertType == "") {
             layer.alert("请选择断言类型！");
             return;
-        }else{
+        } else {
             $.ajax({
                 type: 'POST',
                 url: '/tcase/updateOne',
-                data:{
-                    id:id,
-                    casename:caseName,
-                    remark:remark,
-                    serviceid:service,
-                    iid:ti,
-                    envid:env,
+                data: {
+                    id: id,
+                    casename: caseName,
+                    remark: remark,
+                    serviceid: service,
+                    // iid: ti,//ti不必传,页面不可编辑,传了也是原值
+                    envid: env,
                     testclass: testclass,
-                    requestparam:requestParam,
-                    asserttype:assertType,
-                    expected:expected,
-                    author:author,
-                    status:1
+                    requestparam: requestParam,
+                    asserttype: assertType,
+                    expected: expected,
+                    author: author,
+                    // status: 1  //状态不必传,所有的状态,都是通过操作改变,不可通过定义改变
                 },
                 dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    var list=data.data;
+                success: function (data) {
+                    var status = data.status;
+                    var msg = data.msg;
+                    var list = data.data;
 
-                    if(status == 0){
+                    if (status == 0) {
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                    }else{
+                    } else {
                         layer.close(layerIndex);
                         layer.alert(msg, {
                             icon: 0,
@@ -380,7 +358,7 @@
                     }
 
                 },
-                error:function(xhr) {
+                error: function (xhr) {
                     layer.close(layerIndex);
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
@@ -393,62 +371,62 @@
     }
 
     //运行用例
-    function runTcase(){
+    function runTcase() {
         var caseName = $("#caseName").val();
         var remark = $("#remark").val();
         var env = $("#env").val();
-       // var service = $("#service").val();
+        // var service = $("#service").val();
         var ti = tiId;
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
-        var testClass=$("#testclass").val();
-        var userId=$.cookie('uidCookie');
+        var testClass = $("#testclass").val();
+        var userId = $.cookie('uidCookie');
 
-        if(ti == null || ti == ""){
+        if (ti == null || ti == "") {
             layer.alert("请选择接口！");
             return;
-        }else if(assertType == null || assertType == ""){
+        } else if (assertType == null || assertType == "") {
             layer.alert("请选择断言类型！");
             return;
-        }else{
+        } else {
             $.ajax({
                 type: "post",
                 url: "/tcase/runCase",
                 data: {
-                    casename:caseName,
-                    remark:remark,
-                    iid:ti,
-                    envid:env,
-                    requestparam:requestParam,
-                    asserttype:assertType,
-                    expected:expected,
-                    testclass:testClass,
-                    userId:userId
+                    casename: caseName,
+                    remark: remark,
+                    iid: ti,
+                    envid: env,
+                    requestparam: requestParam,
+                    asserttype: assertType,
+                    expected: expected,
+                    testclass: testClass,
+                    userId: userId
                 },
                 dataType: "json",
                 success: function (data) {
-                    var url=data;
-                    var status=data.status;
-                    var msg=data.msg;
-                    if(status == 0){
+                    var url = data;
+                    var status = data.status;
+                    var msg = data.msg;
+                    if (status == 0) {
                         layer.close(layerIndex);
-                        var tiName=$("#ti").val();
-                        url=encodeURI("../report-loading.html?reportname="+url+"&customname="+tiName);
+                        var tiName = $("#ti").val();
+                        url = encodeURI("../report-loading.html?reportname=" + url + "&customname=" + tiName);
                         window.open(url);
 
-                       /* var domain = "http://"+window.location.host;
-                        var myPopup = window.open("test-result.html");//.postMessage(list,domain);
-                        //周期性的发送消息
-                        setTimeout(function(){
-                            myPopup.postMessage(list,domain);
-                        },1000);*/
+                        /* var domain = "http://"+window.location.host;
+                         var myPopup = window.open("test-result.html");//.postMessage(list,domain);
+                         //周期性的发送消息
+                         setTimeout(function(){
+                             myPopup.postMessage(list,domain);
+                         },1000);*/
 
-                       /* layer.alert(msg);
-                        parent.window.location.reload();
-                        var index = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);*/
-                    }else{
+                        /* layer.alert(msg);
+                         parent.window.location.reload();
+                         var index = parent.layer.getFrameIndex(window.name);
+                         parent.layer.close(index);*/
+                    } else {
                         layer.close(layerIndex);
                         layer.alert(msg, {
                             icon: 0,
@@ -457,14 +435,14 @@
                     }
 
                 },
-                fail:function (data) {
+                fail: function (data) {
                     layer.close(layerIndex);
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     layer.close(layerIndex);
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
