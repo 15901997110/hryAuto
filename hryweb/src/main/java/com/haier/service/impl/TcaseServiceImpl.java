@@ -337,6 +337,9 @@ public class TcaseServiceImpl implements TcaseService {
         treport.setCustomname("simple:" + tcase.getCasename());
         Integer reportId = treportService.insertOne(treport);
 
+        log.info("即将运行单条用例的测试:");
+        log.info("启动测试类:" + PackageEnum.TEST.getPackageName() + "." + tcase.getTestclass());
+        log.info("传给测试类的参数:" + initParam);
 
         runner.run(null, reportId, reportName, Arrays.asList(xmlClass));
         return resourcePathPattern + reportName;
