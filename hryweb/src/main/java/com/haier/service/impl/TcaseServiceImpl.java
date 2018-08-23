@@ -1,6 +1,7 @@
 package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.*;
@@ -321,7 +322,9 @@ public class TcaseServiceImpl implements TcaseService {
 
         //构造测试报告
         Treport treport = new Treport();
-        treport.setServicenames(JSON.toJSONString(Arrays.asList(tservice.getServicekey()).toString()));
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(tservice.getServicekey());
+        treport.setServicenames(jsonArray.toJSONString());
         treport.setStatus(StatusEnum.FIVE.getId());
         treport.setServiceids(JSON.toJSONString(Arrays.asList(tservice.getId())));
         treport.setReportpath(reportPath);
