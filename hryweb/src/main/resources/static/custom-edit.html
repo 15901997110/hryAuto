@@ -171,14 +171,6 @@
                             $("#serviceBox-"+serviceId+"").prop("checked", true);
                             var tClass=ser.classname;
                             $("#tClass-"+serviceId+"").children("option").each(function(){
-                  /*  var list = data.data.tcustomdetails;
-                    for (var j = 0; j < list.length; j++) {
-                        var ser = list[j];
-                        if (ser.clientlevel == 1) {
-                            var serviceId = ser.clientid;
-                            $("#serviceBox-" + serviceId + "").prop("checked", true);
-                            var tClass = ser.classname;
-                            $("#tClass-" + serviceId + "").children("option").each(function () {*/
                                 var temp_value = $(this).val();
                                 if (temp_value == tClass) {
                                     $(this).attr("selected", "selected");
@@ -186,14 +178,8 @@
                             });
 
                         }else if(ser.clientlevel == 2){
-                            //var serviceId=ser.parentclientid;
                             var tiId=ser.clientid;
                             $("#tiBox-"+tiId+"").prop("checked", true);
-                       /* } else if (ser.clientlevel == 2) {
-                            var serviceId = ser.parentclientid;
-                            var tiId = ser.clientid;
-                            spread(serviceId);
-                            $("#tiBox-" + tiId + "").prop("checked", true);*/
 
                         } else if (ser.clientlevel == 3) {
                             var caseId = ser.clientid;
