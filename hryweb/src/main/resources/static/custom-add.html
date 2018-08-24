@@ -297,7 +297,9 @@
                 var s=new Object();
                 s.clientlevel=1;
                 s.clientid=value;
-                s.clientname=getServiceKey(value);
+                /*s.clientname=getServiceKey(value);*/
+                var innerText = document.getElementById("serviceBox-" + value).parentNode.innerText;
+                s.clientname=innerText;
                 s.classname=tClass;
                 s.parentclientid=0;
                 var obj=$("#service-"+value+" :checkbox:checked");
@@ -309,12 +311,22 @@
                 service[i] = s;
 
             }else if(name.match("ti")){
-                var ti=getTiById(value);
+                //var ti=getTiById(value);
                 var s=new Object();
                 s.clientlevel=2;
                 s.clientid=value;
-                s.clientname=ti.iuri;
-                s.parentclientid=ti.serviceid;
+                // s.clientname=ti.iuri;
+                // s.parentclientid=ti.serviceid;
+                var tiLabel = document.getElementById("tiBox-" + value);
+                var tiInnerText = tiLabel.parentNode.innerText;
+                var clientName=tiInnerText.substring(0, tiInnerText.indexOf("("));
+                s.clientname=clientName;
+
+                var tiDl = document.getElementById("ti-" + value);
+                var tserviceIDAttr = tiDl.parentNode.parentNode.getAttribute("id");
+                var sid = tserviceIDAttr.substring(tserviceIDAttr.indexOf("-") + 1);
+                s.parentclientid=sid;
+
                 var obj=$("#ti-"+value+" :checkbox:checked");
                 if(obj.length>1){
                     s.haschild=true;
@@ -324,12 +336,20 @@
                 service[i] = s;
 
             }else if(name.match("tcase")){
-                var tcase=getTcaseById(value);
+                // var tcase=getTcaseById(value);
                 var s=new Object();
                 s.clientlevel=3;
                 s.clientid=value;
-                s.clientname=tcase.casename;
-                s.parentclientid=tcase.iid;
+                // s.clientname=tcase.casename;
+                // s.parentclientid=tcase.iid;
+                var tcaseLabel = document.getElementById("caseBox-" + value);
+                var tcaseInnerText = tcaseLabel.parentNode.innerText;
+                var tcaseclientname=tcaseInnerText.substring(0, tcaseInnerText.indexOf("("));
+                s.clientname=tcaseclientname;
+                var tcaseDl = document.getElementById("case-" + value);
+                var tiIDAttr = tcaseDl.parentNode.parentNode.getAttribute("id");
+                var iid = tiIDAttr.substring(tiIDAttr.indexOf("-") + 1);
+                s.parentclientid=iid;
                 s.haschild=false;
                 service[i] = s;
 

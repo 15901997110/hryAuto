@@ -158,28 +158,28 @@
                     }
                     $("#services").append(services);
 
-                    var list=data.data.tcustomdetails;
-                    for(var j=0;j<list.length;j++){
-                        var ser=list[j];
-                        if(ser.clientlevel == 1){
-                            var serviceId=ser.clientid;
-                            var haschild=ser.haschild;
-                            if(haschild){
+                    var list = data.data.tcustomdetails;
+                    for (var j = 0; j < list.length; j++) {
+                        var ser = list[j];
+                        if (ser.clientlevel == 1) {
+                            var serviceId = ser.clientid;
+                            var haschild = ser.haschild;
+                            if (haschild) {
                                 spread(serviceId);
                             }
 
-                            $("#serviceBox-"+serviceId+"").prop("checked", true);
-                            var tClass=ser.classname;
-                            $("#tClass-"+serviceId+"").children("option").each(function(){
+                            $("#serviceBox-" + serviceId + "").prop("checked", true);
+                            var tClass = ser.classname;
+                            $("#tClass-" + serviceId + "").children("option").each(function () {
                                 var temp_value = $(this).val();
                                 if (temp_value == tClass) {
                                     $(this).attr("selected", "selected");
                                 }
                             });
 
-                        }else if(ser.clientlevel == 2){
-                            var tiId=ser.clientid;
-                            $("#tiBox-"+tiId+"").prop("checked", true);
+                        } else if (ser.clientlevel == 2) {
+                            var tiId = ser.clientid;
+                            $("#tiBox-" + tiId + "").prop("checked", true);
 
                         } else if (ser.clientlevel == 3) {
                             var caseId = ser.clientid;
@@ -351,6 +351,8 @@
 
     //编辑定制测试提交
     function editCustom(id) {
+        var jsStart = new Date();
+        console.log("js-start:" + jsStart)
         var customname = $("#customname").val();
         var env = $("#env").val();
         var strategy = $("#strategy").val();
@@ -389,19 +391,19 @@
                 var s = new Object();
                 s.clientlevel = 2;
                 s.clientid = value;
-/*                var ti = getTiById(value);
-                s.parentclientid = ti.serviceid;
-                s.clientname =ti.iuri;*/
+                /*                var ti = getTiById(value);
+                                s.parentclientid = ti.serviceid;
+                                s.clientname =ti.iuri;*/
 
                 var tiLabel = document.getElementById("tiBox-" + value);
                 var tiInnerText = tiLabel.parentNode.innerText;
-                var clientName=tiInnerText.substring(0, tiInnerText.indexOf("("));
-                s.clientname=clientName;
+                var clientName = tiInnerText.substring(0, tiInnerText.indexOf("("));
+                s.clientname = clientName;
 
                 var tiDl = document.getElementById("ti-" + value);
                 var tserviceIDAttr = tiDl.parentNode.parentNode.getAttribute("id");
                 var sid = tserviceIDAttr.substring(tserviceIDAttr.indexOf("-") + 1);
-                s.parentclientid=sid;
+                s.parentclientid = sid;
 
                 var obj = $("#ti-" + value + " :checkbox:checked");
                 if (obj.length > 1) {
@@ -415,17 +417,17 @@
                 var s = new Object();
                 s.clientlevel = 3;
                 s.clientid = value;
-/*                var tcase = getTcaseById(value);
-                s.clientname =tcase.casename;
-                s.parentclientid = tcase.iid;*/
+                /*                var tcase = getTcaseById(value);
+                                s.clientname =tcase.casename;
+                                s.parentclientid = tcase.iid;*/
                 var tcaseLabel = document.getElementById("caseBox-" + value);
                 var tcaseInnerText = tcaseLabel.parentNode.innerText;
-                var tcaseclientname=tcaseInnerText.substring(0, tcaseInnerText.indexOf("("));
-                s.clientname=tcaseclientname;
+                var tcaseclientname = tcaseInnerText.substring(0, tcaseInnerText.indexOf("("));
+                s.clientname = tcaseclientname;
                 var tcaseDl = document.getElementById("case-" + value);
                 var tiIDAttr = tcaseDl.parentNode.parentNode.getAttribute("id");
                 var iid = tiIDAttr.substring(tiIDAttr.indexOf("-") + 1);
-                s.parentclientid=iid;
+                s.parentclientid = iid;
 
                 s.haschild = false;
                 service[i] = s;
@@ -454,8 +456,12 @@
             obj.strategy = strategy;
             obj.tcustomdetails = service;
             var json = JSON.stringify(obj)
-            console.log(json)
+            //console.log(json);
+            var jsEnd = new Date();
+            console.log("js-end:" + jsEnd);
+            console.log("jsEnd-jsStart=" + (jsEnd - jsStart) + "ms");
 
+            console.log("ajax-start:" + jsEnd);
             $.ajax({
                 type: 'POST',
                 url: '/tcustom/updateOne',
@@ -466,7 +472,9 @@
                     layer.close(layerIndex);
                     var status = data.status;
                     var msg = data.msg;
-
+                    var ajaxEnd = new Date();
+                    console.log("ajax-end:" + ajaxEnd);
+                    console.log("ajaxEnd-ajaxStart=" + (ajaxEnd - jsEnd) + "ms");
                     if (status == 0) {
                         //alert("更新成功！");
                         parent.window.location.reload();
@@ -487,7 +495,8 @@
                         skin: 'layer-ext-moon'
                     })
                 },
-            });
+            })
+
         }
 
     }
