@@ -162,6 +162,11 @@
                         var ser=list[j];
                         if(ser.clientlevel == 1){
                             var serviceId=ser.clientid;
+                            var haschild=ser.haschild;
+                            if(haschild){
+                                spread(serviceId);
+                            }
+
                             $("#serviceBox-"+serviceId+"").prop("checked", true);
                             var tClass=ser.classname;
                             $("#tClass-"+serviceId+"").children("option").each(function(){
@@ -172,9 +177,8 @@
                             });
 
                         }else if(ser.clientlevel == 2){
-                            var serviceId=ser.parentclientid;
+                            //var serviceId=ser.parentclientid;
                             var tiId=ser.clientid;
-                            spread(serviceId);
                             $("#tiBox-"+tiId+"").prop("checked", true);
 
                         }else if(ser.clientlevel == 3){
