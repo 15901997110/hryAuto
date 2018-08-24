@@ -25,7 +25,7 @@ public class PgwProcessTest extends PgwBase {
         return provider(method);
     }
 
-    private String requestNo;
+    public String requestNo;
 
     @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(HryTest test) {

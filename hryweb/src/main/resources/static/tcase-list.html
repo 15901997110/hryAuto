@@ -4,28 +4,32 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="lib/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>用例列表</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的用例 <span class="c-gray en">&gt;</span>用例列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 我的用例 <span
+        class="c-gray en">&gt;</span>用例列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                             href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div >
+    <div>
         <div style="margin-left:30px;margin-top:20px;">
             <!--<label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" serviceKey或serviceName" style="width:12%" class="input-text">-->
             <label style="margin-left:65px;">服务：</label>
@@ -40,10 +44,14 @@
                     <option value="" selected>请选择</option>
                 </select>
             </span>
-            <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl" placeholder=" 接口地址或接口描述" style="width:12%" class="input-text">
+            <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl"
+                                                               placeholder=" 接口地址或接口描述" style="width:12%"
+                                                               class="input-text">
         </div>
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:33px;">用例名称：</label><input type="text" name="caseName" id="caseName" placeholder=" 用例名称" style="width:12%" class="input-text">
+            <label style="margin-left:33px;">用例名称：</label><input type="text" name="caseName" id="caseName"
+                                                                 placeholder=" 用例名称" style="width:12%"
+                                                                 class="input-text">
             <label style="margin-left:23px;">断言类型：</label>
             <span class="select-box" style="width:12%">
                 <select class="select" size="1" name="assertType" id="assertType">
@@ -57,13 +65,19 @@
                     <option value="" selected>请选择</option>
                 </select>
             </span>
-            <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button" onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-            <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
+            <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button"
+                    onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜索
+            </button>
+            <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button"
+                    onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空
+            </button>
         </div>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
-        <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tCase_add('添加用例','tcase-add.html','800','700')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
+        <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
+                class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a class="btn btn-primary radius" onclick="tCase_add('添加用例','tcase-add.html','1000','800')"
+               href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -113,9 +127,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
+                layerIndex = layer.load(1, {shade: [0.01, '#fff']});
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -127,7 +141,7 @@
         });
     });
 
-    function empty(){
+    function empty() {
         // $("#servicekey").val("");
         $("#serviceKey option:first").prop("selected", 'selected');
         $("#tiUrl").val("");
@@ -145,20 +159,20 @@
         var html = "";
         for (i = 0; i < list.length; i++) {
             var row = list[i];
-            var rowHtml = "<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+            var rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>";
             html = html + rowHtml;
         }
         $("#serviceKey").append(html);
 
-        var author=$.cookie('realnameCookie');
+        var author = $.cookie('realnameCookie');
         var dev = getUserList();
         var htmldev = "";
         for (var k = 0; k < dev.length; k++) {
             var rowHtml = "";
             var row = dev[k];
-            if(row.realname == author){
-                rowHtml="<option value=\""+row.realname+"\" selected>"+row.realname+"</option>";
-            }else {
+            if (row.realname == author) {
+                rowHtml = "<option value=\"" + row.realname + "\" selected>" + row.realname + "</option>";
+            } else {
                 rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
             }
             htmldev = htmldev + rowHtml;
@@ -169,21 +183,21 @@
         // var realName=$.cookie('realnameCookie');
         // $("#author").val(realName);
 
-        var list=getEnvList();
-        var html="";
-        for(i=0;i<list.length;i++){
-            var row=list[i];
-            var rowHtml="<option value=\""+row.id+"\">"+row.envkey+"</option>";
-            html=html+rowHtml;
+        var list = getEnvList();
+        var html = "";
+        for (i = 0; i < list.length; i++) {
+            var row = list[i];
+            var rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
+            html = html + rowHtml;
         }
         $("#envKey").append(html);
 
-        var assertList=getAssertType();
-        var asserts="";
-        for(k=0;k<assertList.length;k++){
-            var one=assertList[k];
-            var rowHtml="<option value=\""+one.id+"\">"+one.value+"</option>";
-            asserts=asserts+rowHtml;
+        var assertList = getAssertType();
+        var asserts = "";
+        for (k = 0; k < assertList.length; k++) {
+            var one = assertList[k];
+            var rowHtml = "<option value=\"" + one.id + "\">" + one.value + "</option>";
+            asserts = asserts + rowHtml;
         }
         $("#assertType").append(asserts);
 
@@ -192,8 +206,8 @@
     });
 
     //分页查询
-    function pageSkip(index){
-        if(index==0){
+    function pageSkip(index) {
+        if (index == 0) {
             return;
         }
         var serviceKey = $("#serviceKey").val();
@@ -207,96 +221,96 @@
             type: "post",
             url: "/tcase/selectByCondition",
             data: {
-                serviceid:serviceKey,
-                envid:envKey,
-                iuri:tiUrl,
-                casename:caseName,
-                author:author,
-                asserttype:assertType,
-                status:1,
-                pageNum:index,
-                pageSize:10
+                serviceid: serviceKey,
+                envid: envKey,
+                iuri: tiUrl,
+                casename: caseName,
+                author: author,
+                asserttype: assertType,
+                status: 1,
+                pageNum: index,
+                pageSize: 10
             },
             dataType: "json",
 
             success: function (data) {
 
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data.list;
                 console.log(data);
                 var html = "";
 
-                if(status == 0){
+                if (status == 0) {
 
                     $("#tcaseList").html("");
-                    var assertList=getAssertType();
-                    var assertName="";
-                    var envList=getEnvList();
-                    var envKey="";
+                    var assertList = getAssertType();
+                    var assertName = "";
+                    var envList = getEnvList();
+                    var envKey = "";
 
-                    for(var i=0;i<list.length;i++){
+                    for (var i = 0; i < list.length; i++) {
                         var row = list[i];
 
-                        var remark="";
-                        if(row.remark != null){
-                            remark=row.remark;
+                        var remark = "";
+                        if (row.remark != null) {
+                            remark = row.remark;
                         }
 
-                        for(var k=0;k<assertList.length;k++){
-                            var one=assertList[k];
-                            if(one.id == row.asserttype){
-                                assertName=one.value;
+                        for (var k = 0; k < assertList.length; k++) {
+                            var one = assertList[k];
+                            if (one.id == row.asserttype) {
+                                assertName = one.value;
                             }
                         }
 
 
-                        for(var j=0;j<envList.length;j++){
-                            var two=envList[j];
-                            if(two.id == row.envid){
-                                envKey=two.envkey;
+                        for (var j = 0; j < envList.length; j++) {
+                            var two = envList[j];
+                            if (two.id == row.envid) {
+                                envKey = two.envkey;
                             }
                         }
 
-                        var expected=row.expected;
-                        if(row.expected == null){
-                            expected="";
+                        var expected = row.expected;
+                        if (row.expected == null) {
+                            expected = "";
                             //assertName ="";
-                        }else {
-                            if (assertName == "key-value"){
+                        } else {
+                            if (assertName == "key-value") {
                                 try {
                                     var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
                                     expected = requestJson;
-                                }catch (e) {
-                                    expected =expected;
+                                } catch (e) {
+                                    expected = expected;
                                 }
-                            }else {
-                                expected =expected;
+                            } else {
+                                expected = expected;
                             }
                         }
 
-                        var tiName=row.iuri+""+row.iremark;
+                        var tiName = row.iuri + "(" + row.iremark + ")";
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.casename+"</td>\n" +
-                            "<td>"+remark+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td>"+envKey+"</td>\n" +
-                            "<td>"+row.iremark+"</td>\n" +
-                            "<td style=\"text-align:left\">"+row.iuri+"</td>\n" +
-                            "<td>"+assertName+"</td>\n" +
-                            "<td><pre style='text-align: left;border: 0px'>"+expected+"</pre></td>\n" +
-                            "<td>"+row.author+"</td>\n" +
-                            "<td style=\"display:none\">"+
-                            "<textarea>"+row.requestparam+"</textarea></td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
+                            "<td>" + row.id + "</td>\n" +
+                            "<td>" + row.casename + "</td>\n" +
+                            "<td>" + remark + "</td>\n" +
+                            "<td>" + row.servicekey + "</td>\n" +
+                            "<td>" + envKey + "</td>\n" +
+                            "<td>" + row.iremark + "</td>\n" +
+                            "<td style=\"text-align:left\">" + row.iuri + "</td>\n" +
+                            "<td>" + assertName + "</td>\n" +
+                            "<td><pre style='text-align: left;border: 0px'>" + expected + "</pre></td>\n" +
+                            "<td>" + row.author + "</td>\n" +
+                            "<td style=\"display:none\">" +
+                            "<textarea>" + row.requestparam + "</textarea></td>\n" +
+                            "<td>" + row.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run("+row.id+",'"+tiName+"')\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run(" + row.id + ",'" + tiName + "')\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
                             "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','800','700'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html',"+row.id+",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html'," + row.id + ",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
                         html = html + rowHtml;
@@ -306,7 +320,7 @@
                     pagination(data);
                     layer.close(layerIndex);
 
-                }else{
+                } else {
                     layer.close(layerIndex);
                     alert(msg);
                 }
@@ -319,23 +333,23 @@
     }
 
     //用例运行
-    function tcase_run(caseId,tiName){
-        var userId=$.cookie('uidCookie');
+    function tcase_run(caseId, tiName) {
+        var userId = $.cookie('uidCookie');
         $.ajax({
             type: "post",
             url: "/tcase/runCaseById",
             data: {
-                id:caseId,
-                userId:userId
+                id: caseId,
+                userId: userId
             },
             dataType: "json",
             success: function (data) {
-                var url = data;
+                var url = data.data;
                 var status = data.status;
                 var msg = data.msg;
                 if (status == 0) {
                     layer.close(layerIndex);
-                    url=encodeURI("../report-loading.html?reportname="+url+"&customname="+tiName);
+                    url = encodeURI("../report-loading.html?reportname=" + url + "&customname=" + tiName);
                     window.open(url);
                     /*var domain = "http://" + window.location.host;
                     var myPopup = window.open("test-result.html");//.postMessage(list,domain);
@@ -372,66 +386,63 @@
 
     }
 
-    function userGroup(){
-        var usergroup=null;
-        $.ajaxSetup({async : false});
+    function userGroup() {
+        var usergroup = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "get",
             url: "/enum/groupEnum",
-            data: {
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                usergroup=data;
+                usergroup = data;
             },
-            fail:function (data) {
+            fail: function (data) {
                 alert(JSON.stringify(data));
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert('error:' + JSON.stringify(xhr));
             }
         });
         return usergroup;
     }
 
-    function selectByGroupId(){
-        var users=null;
-        $.ajaxSetup({async : false});
+    function selectByGroupId() {
+        var users = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
             url: "/user/selectByGroupId",
-            data: {
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                users=data;
+                users = data;
             },
-            fail:function (data) {
+            fail: function (data) {
                 alert(JSON.stringify(data));
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert('error:' + JSON.stringify(xhr));
             }
         });
         return users;
     }
 
-    function getAssertType(){
-        var assertType=null;
-        $.ajaxSetup({async : false});
+    function getAssertType() {
+        var assertType = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "get",
             url: "/enum/assertTypeEnum",
-            data: {
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                assertType=data;
+                assertType = data;
             },
-            fail:function (data) {
+            fail: function (data) {
                 alert(JSON.stringify(data));
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert('error:' + JSON.stringify(xhr));
             }
         });
@@ -439,43 +450,43 @@
     }
 
     /*用例-添加*/
-    function tCase_add(title,url,w,h){
-        layer_show(title,url,w,h);
+    function tCase_add(title, url, w, h) {
+        layer_show(title, url, w, h);
 
     }
 
     /*用例-编辑*/
-    function tcase_edit(title,url,id,w,h){
-        url= url + "?id="+id;
-        layer_show(title,url,w,h);
+    function tcase_edit(title, url, id, w, h) {
+        url = url + "?id=" + id;
+        layer_show(title, url, w, h);
     }
 
     /*用例-复制*/
-    function tcase_copy(title,url,w,h,num){
-        var cells = $("#table")[0].rows[num+1].cells;
+    function tcase_copy(title, url, w, h, num) {
+        var cells = $("#table")[0].rows[num + 1].cells;
         var cellArr = [];
         var requestparam = cells[11].innerText;
         var expected = cells[9].innerText;
-        for (var i=2; i < cells.length-3; i++) {
+        for (var i = 2; i < cells.length - 3; i++) {
             cellArr.push(cells[i].innerText)
         }
-        url= encodeURI(url + "?cellArr="+cellArr+"&requestparam="+requestparam+"&expected="+expected);
-        layer_show(title,url,w,h);
+        url = encodeURI(url + "?cellArr=" + cellArr + "&requestparam=" + requestparam + "&expected=" + expected);
+        layer_show(title, url, w, h);
     }
 
     /**
      * 用例复制
      * by luqiwei 20180726
      */
-    function tcase_copy2(title,url,w,h,sourceCaseId) {
-        url=encodeURI(url+"?id="+sourceCaseId);
-        layer_show(title,url,w,h);
+    function tcase_copy2(title, url, w, h, sourceCaseId) {
+        url = encodeURI(url + "?id=" + sourceCaseId);
+        layer_show(title, url, w, h);
     }
 
     /*用例-删除*/
-    function tcase_del(obj,id){
-        var ms="用例删除需谨慎，请确认是否删除！";
-        del(obj,id,"/tcase/deleteOne",ms);
+    function tcase_del(obj, id) {
+        var ms = "用例删除需谨慎，请确认是否删除！";
+        del(obj, id, "/tcase/deleteOne", ms);
     }
 
 </script>

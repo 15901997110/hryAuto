@@ -65,7 +65,6 @@ public class TserviceController {
     @PostMapping(value = "/selectOne")
     public Result selectOne(Integer tserviceId) {
         Tservice tservice = tserviceService.selectOne(tserviceId);
-        log.info("查询单条服务id=" + tserviceId);
         return ResultUtil.success(tservice);
     }
 
@@ -118,7 +117,7 @@ public class TserviceController {
             List<Tservice> tservices = this.selectList(condition);
             if (tservices.size() > 0) {
                 for (Tservice s : tservices) {
-                    if (tservice.getServicekey().equals(s.getServicekey())&&!tservice.getId().equals(s.getId())) {//id不相同,但是servicekey相同
+                    if (tservice.getServicekey().equals(s.getServicekey()) && !tservice.getId().equals(s.getId())) {//id不相同,但是servicekey相同
                         throw new HryException(StatusCodeEnum.EXIST_RECORD, "serviceKey与serviceId=" + s.getId() + "的重复");
                     }
                 }
@@ -136,7 +135,7 @@ public class TserviceController {
     }
 
     /**
-     * 获取所有服务对应的测试类
+     * 获取本系统中所有服务对应的测试类(扫描包名为PackageEnum.TEST)
      */
     @PostMapping("/getTestClasses")
     public Result getTestClasses() {
@@ -144,10 +143,26 @@ public class TserviceController {
     }
 
     /**
-     * 根据ServiceKey获取所有测试类
+     * 根据serviceKey查询此服务下的测试类
+     *
+     * @param sKey
+     * @return
      */
     @PostMapping("/getTestClassesBySKey")
     public Result getTestClassesBySKey(String sKey) {
         return ResultUtil.success(tserviceService.getTestClasses(sKey));
     }
+
+    /**
+     * 根据serviceId查询此服务下的测试类
+     *
+     * @param sId
+     * @return
+     */
+    @PostMapping("/getTestClassesBySId")
+    public Result getTestClassesBySId(Integer sId) {
+        return ResultUtil.success(tserviceService.getTestClasses(sId));
+    }
+
+
 }

@@ -30,4 +30,6 @@ public interface TserviceService {
     Map<String,List<String>>  getTestClasses();
 
     List<String> getTestClasses(String sKey);
+
+    List<String> getTestClasses(Integer sId);
 }
