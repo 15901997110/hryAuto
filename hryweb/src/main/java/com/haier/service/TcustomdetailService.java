@@ -13,11 +13,17 @@ public interface TcustomdetailService {
 
     Integer insertOne(Tcustomdetail tcustomdetail);
 
+    Integer insertBatch(List<Tcustomdetail> tcustomdetails);
+
     Integer updateOne(Tcustomdetail tcustomDetail);
 
     Integer deleteOne(Integer id);
 
+    Integer physicalDeleteOne(Integer id);
+
     Integer deleteByCondition(Tcustomdetail tcustomdetail);
+
+    Integer physicalDeleteByCondition(Tcustomdetail tcustomdetail);
 
     List<Tcustomdetail> selectByCondition(Tcustomdetail tcustomdetail);
 

@@ -3,6 +3,7 @@ package com.haier.service.impl;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
+import com.haier.mapper.TcustomdetailBatchMapper;
 import com.haier.mapper.TcustomdetailMapper;
 import com.haier.po.Tcustomdetail;
 import com.haier.po.TcustomdetailExample;
@@ -27,10 +28,24 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
     @Autowired
     TcustomdetailMapper mapper;
 
+    @Autowired
+    TcustomdetailBatchMapper batchMapper;
+
     @Override
     public Integer insertOne(Tcustomdetail tcustomdetail) {
         mapper.insertSelective(tcustomdetail);
         return tcustomdetail.getId();
+    }
+
+    @Override
+    public Integer insertBatch(List<Tcustomdetail> tcustomdetails) {
+        //注意,很多时候,为了校验页面值 ,会将0转换为null,但是插入数据时,此项值 不可为null,又要再转换为0
+        for (Tcustomdetail tcustomdetail : tcustomdetails) {
+            if (tcustomdetail.getParentclientid() == null) {
+                tcustomdetail.setParentclientid(0);
+            }
+        }
+        return batchMapper.insertBatch(tcustomdetails);
     }
 
     @Override
@@ -54,6 +69,12 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
     }
 
     @Override
+    public Integer physicalDeleteOne(Integer id) {
+        return mapper.deleteByPrimaryKey(id);
+
+    }
+
+    @Override
     public Integer deleteByCondition(Tcustomdetail tcustomdetail) {
         ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
         if (tcustomdetail == null) {
@@ -74,6 +95,18 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
             }
         }
         return mapper.updateByExampleSelective(model, example);
+    }
+
+    @Override
+    public Integer physicalDeleteByCondition(Tcustomdetail tcustomdetail) {
+        TcustomdetailExample example = new TcustomdetailExample();
+        TcustomdetailExample.Criteria criteria = example.createCriteria();
+        if (tcustomdetail != null && tcustomdetail.getCustomid() != null) {
+            criteria.andCustomidEqualTo(tcustomdetail.getCustomid());
+        } else {
+            return 0;
+        }
+        return mapper.deleteByExample(example);
     }
 
     @Override

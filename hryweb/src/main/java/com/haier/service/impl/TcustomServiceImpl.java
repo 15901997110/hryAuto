@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.haier.enums.*;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
+import com.haier.mapper.TcustomdetailMapper;
 import com.haier.po.*;
 import com.haier.testng.run.Runner;
 import com.haier.vo.CustomVO;
@@ -63,12 +64,13 @@ public class TcustomServiceImpl implements TcustomService {
     public Integer insertOne(Tcustom tcustom, List<Tcustomdetail> tcustomdetails) {
         tcustomMapper.insertSelective(tcustom);
         Integer customId = tcustom.getId();//获取插入的自增Id
-        if (tcustomdetails != null && tcustomdetails.size() > 0) {
-            for (Tcustomdetail tcustomdetail : tcustomdetails) {
-                tcustomdetail.setCustomid(customId);
-                tcustomdetailService.insertOne(tcustomdetail);
+        for (Tcustomdetail tcustomdetail : tcustomdetails) {
+            tcustomdetail.setCustomid(customId);
+            if (tcustomdetail.getParentclientid() == null) {
+                tcustomdetail.setParentclientid(0);
             }
         }
+        tcustomdetailService.insertBatch(tcustomdetails);
         return customId;
     }
 
@@ -82,11 +84,6 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer updateOne(Tcustom tcustom) {
-        ReflectUtil.setInvalidFieldToNull(tcustom, false);
-        if (tcustom == null || tcustom.getId() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填!");
-        }
-
         return tcustomMapper.updateByPrimaryKeySelective(tcustom);
     }
 
@@ -104,14 +101,15 @@ public class TcustomServiceImpl implements TcustomService {
         //先删除历史保存的tcustomdetail记录
         Tcustomdetail condition = new Tcustomdetail();
         condition.setCustomid(tcustom.getId());
-        tcustomdetailService.deleteByCondition(condition);
+        tcustomdetailService.physicalDeleteByCondition(condition);
 
         //插入本次编辑的tcustomdetail记录
         List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
             tcustomdetail.setCustomid(tcustom.getId());
-            tcustomdetailService.insertOne(tcustomdetail);
+            //tcustomdetailService.insertOne(tcustomdetail);//为提升效率 ,改用下面一句代码 ,批量插入
         }
+        tcustomdetailService.insertBatch(tcustomdetails);
         return tcustom.getId();
     }
 
@@ -129,7 +127,8 @@ public class TcustomServiceImpl implements TcustomService {
          */
         Tcustomdetail tcustomdetail = new Tcustomdetail();
         tcustomdetail.setCustomid(id);
-        tcustomdetailService.deleteByCondition(tcustomdetail);
+        //物理删除tcustomdetail表的记录
+        tcustomdetailService.physicalDeleteByCondition(tcustomdetail);
         return id;
     }
 
@@ -151,10 +150,8 @@ public class TcustomServiceImpl implements TcustomService {
         TcustomExample tcustomExample = new TcustomExample();
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
         criteria.andStatusGreaterThan(0);
-        if (tcustom != null) {
-            if (tcustom.getUserid() != null) {
-                criteria.andUseridEqualTo(tcustom.getUserid());
-            }
+        if (tcustom != null && tcustom.getUserid() != null) {
+            criteria.andUseridEqualTo(tcustom.getUserid());
         }
         return tcustomMapper.selectByExample(tcustomExample);
     }
