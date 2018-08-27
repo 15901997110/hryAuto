@@ -149,6 +149,7 @@ public class TcustomServiceImpl implements TcustomService {
     public List<Tcustom> selectByCondition(Tcustom tcustom) {
         TcustomExample tcustomExample = new TcustomExample();
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
+        tcustomExample.setOrderByClause(SortEnum.UPDATETIME.getValue());
         criteria.andStatusGreaterThan(0);
         if (tcustom != null && tcustom.getUserid() != null) {
             criteria.andUseridEqualTo(tcustom.getUserid());
