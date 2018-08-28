@@ -216,6 +216,15 @@
                     var irequestmethod = list.irequestmethod;
                     var icontenttype = list.icontenttype;
                     var iparamtype = list.iparamtype;
+
+                    var iheadersample=list.iheadersample;
+                    if(iheadersample!= null){
+                        var requestHeaderJson = JSON.stringify(JSON.parse(iheadersample), null, 2);
+                        iheadersample = requestHeaderJson;
+                    }else{
+                        iheadersample="";
+                    }
+
                     var iparamsample = list.iparamsample;
                     if(iparamsample!= null && iparamtype ==1){
                         try {
@@ -357,6 +366,12 @@
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
+                        "            <label class=\"form-label col-xs-4 col-sm-3\">示例Header：</label>\n" +
+                        "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
+                        "                <textarea id=\"iheadersample\" name=\"iheadersample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例Header...\">"+iheadersample+"</textarea>\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\">请求参数类型：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "                <span class=\"select-box\">\n" +
@@ -423,6 +438,7 @@
         var iuri = $("#iuri").val();
         var remark = $("#remark").val();
         var irequestmethod = $("#irequestmethod").val();
+        var iheadersample= $("#iheadersample").val();
         var icontenttype = $("#icontenttype").val();
         var iparamtype = $("#iparamtype").val();
         var iparamsample = $("#iparamsample").val();
@@ -448,6 +464,7 @@
                     iuri: iuri,
                     remark: remark,
                     irequestmethod: irequestmethod,
+                    iheadersample:iheadersample,
                     icontenttype: icontenttype,
                     iparamtype: iparamtype,
                     iparamsample: iparamsample,
@@ -467,7 +484,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
                         });

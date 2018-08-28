@@ -81,6 +81,12 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">示例Header：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea id="iheadersample" name="iheadersample" cols="" rows="" class="textarea valid" placeholder="请输入示例Header..."></textarea>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">请求参数类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
@@ -312,11 +318,13 @@
         var iuri = $("#iuri").val();
         var remark = $("#remark").val();
         var irequestmethod = $("#irequestmethod").val();
+        var iheadersample= $("#iheadersample").val();
         var icontenttype = $("#icontenttype").val();
         var iparamtype = $("#iparamtype").val();
         var iparamsample = $("#iparamsample").val();
         var iresponsetype = $("#iresponsetype").val();
         var idev = $("#idev").val();
+
 
         if(serviceid == null || serviceid == ""){
             layer.msg("请选择服务！");
@@ -336,6 +344,7 @@
                     iuri:iuri,
                     remark:remark,
                     irequestmethod:irequestmethod,
+                    iheadersample:iheadersample,
                     icontenttype:icontenttype,
                     iparamtype:iparamtype,
                     iparamsample:iparamsample,
@@ -352,7 +361,7 @@
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
-                        layer.alert(JSON.stringify(data), {
+                        layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
