@@ -108,14 +108,14 @@ public class TserviceServiceImpl implements TserviceService {
     @Override
     public Integer updateOne(Tservice tservice) {
         if (StringUtils.isNotBlank(tservice.getServicekey()))
-            tservice.setClassname(tservice.getServicekey() + "TestDefault");
+            tservice.setClassname(tservice.getServicekey() + "DefaultTest");
         return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 
     @Override
     public Integer insertOne(Tservice tservice) {
-        //默认测试类=服务Key+"TestDefault"
-        tservice.setClassname(tservice.getServicekey() + "TestDefault");
+        //默认测试类=服务Key+"DefaultTest"
+        tservice.setClassname(tservice.getServicekey() + "DefaultTest");
         tserviceMapper.insertSelective(tservice);
         return tservice.getId();
     }
