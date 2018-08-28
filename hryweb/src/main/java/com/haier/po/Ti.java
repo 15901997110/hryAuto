@@ -15,6 +15,8 @@ public class Ti {
 
     private Integer icontenttype;
 
+    private String iheadersample;
+
     private Integer iparamtype;
 
     private String iparamsample;
@@ -73,6 +75,14 @@ public class Ti {
 
     public void setIcontenttype(Integer icontenttype) {
         this.icontenttype = icontenttype;
+    }
+
+    public String getIheadersample() {
+        return iheadersample;
+    }
+
+    public void setIheadersample(String iheadersample) {
+        this.iheadersample = iheadersample == null ? null : iheadersample.trim();
     }
 
     public Integer getIparamtype() {

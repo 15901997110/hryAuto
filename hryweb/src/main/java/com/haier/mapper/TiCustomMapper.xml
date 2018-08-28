@@ -10,6 +10,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="iRequestMethod" jdbcType="SMALLINT" property="irequestmethod"/>
         <result column="iContentType" jdbcType="SMALLINT" property="icontenttype"/>
+        <result column="iHeaderSample" jdbcType="VARCHAR" property="iheadersample"/>
         <result column="iParamType" jdbcType="SMALLINT" property="iparamtype"/>
         <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample"/>
         <result column="iResponseType" jdbcType="SMALLINT" property="iresponsetype"/>

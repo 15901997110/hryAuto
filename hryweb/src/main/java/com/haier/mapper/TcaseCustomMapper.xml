@@ -19,6 +19,7 @@
         <result column="status" jdbcType="SMALLINT" property="status"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
+        <result column="requestHeader" jdbcType="VARCHAR" property="requestheader"/>
     </resultMap>
     <select id="selectByCondition" parameterType="com.haier.po.TcaseCustom" resultMap="BaseResultMapTcaseCustom">
         SELECT tservice.`serviceKey`,tservice.`serviceName`,

@@ -17,6 +17,8 @@ public class Tcase {
 
     private String testclass;
 
+    private String requestheader;
+
     private String requestparam;
 
     private Integer asserttype;
@@ -83,6 +85,14 @@ public class Tcase {
 
     public void setTestclass(String testclass) {
         this.testclass = testclass == null ? null : testclass.trim();
+    }
+
+    public String getRequestheader() {
+        return requestheader;
+    }
+
+    public void setRequestheader(String requestheader) {
+        this.requestheader = requestheader == null ? null : requestheader.trim();
     }
 
     public String getRequestparam() {
