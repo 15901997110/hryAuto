@@ -6,6 +6,7 @@ import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
 import com.haier.po.TiExample;
+import com.haier.util.JSONUtil;
 import com.haier.vo.TiWithCaseVO;
 import com.haier.response.Result;
 import com.haier.service.TiService;
@@ -41,6 +42,7 @@ public class TiController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "服务ID,iUri必填");
         }
 
+        verifyHeader(ti);
         //数据重复性校验
         Ti condition = new Ti();
         condition.setIuri(ti.getIuri());
@@ -143,6 +145,7 @@ public class TiController {
                 condition.setIuri(ti.getIuri());
             }
         }
+        verifyHeader(ti);
         if (condition != null) {
             List<Ti> tis = tiService.selectByCondition(condition);
             Ti self = tiService.selectOne(ti.getId());
@@ -160,6 +163,17 @@ public class TiController {
         return ResultUtil.success(tiService.updateOne(ti));
     }
 
+    public void verifyHeader(Ti ti) {
+        if (ti.getIheadersample() != null) {
+            String formatedHeader = JSONUtil.verify(ti.getIheadersample());
+            if (formatedHeader != null) {
+                ti.setIheadersample(formatedHeader);
+            } else {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "示例Header只可填写JSON格式");
+            }
+        }
+    }
+
 
     //删
 
@@ -172,7 +186,7 @@ public class TiController {
      */
     @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
-        if(id==null||id==0){
+        if (id == null || id == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
         }
         return ResultUtil.success(tiService.deleteOne(id));

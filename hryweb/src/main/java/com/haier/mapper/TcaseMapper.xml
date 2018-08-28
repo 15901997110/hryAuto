@@ -9,6 +9,7 @@
     <result column="iId" jdbcType="INTEGER" property="iid" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
     <result column="testClass" jdbcType="VARCHAR" property="testclass" />
+    <result column="requestHeader" jdbcType="VARCHAR" property="requestheader" />
     <result column="requestParam" jdbcType="VARCHAR" property="requestparam" />
     <result column="assertType" jdbcType="INTEGER" property="asserttype" />
     <result column="expected" jdbcType="VARCHAR" property="expected" />
@@ -75,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, caseName, remark, serviceId, iId, envId, testClass, requestParam, assertType, 
-    expected, status, author, updateTime
+    id, caseName, remark, serviceId, iId, envId, testClass, requestHeader, requestParam, 
+    assertType, expected, status, author, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcaseExample" resultMap="BaseResultMap">
     select
@@ -114,14 +115,14 @@
     </selectKey>
     insert into tcase (caseName, remark, serviceId, 
       iId, envId, testClass, 
-      requestParam, assertType, expected, 
-      status, author, updateTime
-      )
+      requestHeader, requestParam, assertType, 
+      expected, status, author, 
+      updateTime)
     values (#{casename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{serviceid,jdbcType=INTEGER}, 
       #{iid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{testclass,jdbcType=VARCHAR}, 
-      #{requestparam,jdbcType=VARCHAR}, #{asserttype,jdbcType=INTEGER}, #{expected,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{requestheader,jdbcType=VARCHAR}, #{requestparam,jdbcType=VARCHAR}, #{asserttype,jdbcType=INTEGER}, 
+      #{expected,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcase">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -146,6 +147,9 @@
       </if>
       <if test="testclass != null">
         testClass,
+      </if>
+      <if test="requestheader != null">
+        requestHeader,
       </if>
       <if test="requestparam != null">
         requestParam,
@@ -184,6 +188,9 @@
       </if>
       <if test="testclass != null">
         #{testclass,jdbcType=VARCHAR},
+      </if>
+      <if test="requestheader != null">
+        #{requestheader,jdbcType=VARCHAR},
       </if>
       <if test="requestparam != null">
         #{requestparam,jdbcType=VARCHAR},
@@ -235,6 +242,9 @@
       <if test="record.testclass != null">
         testClass = #{record.testclass,jdbcType=VARCHAR},
       </if>
+      <if test="record.requestheader != null">
+        requestHeader = #{record.requestheader,jdbcType=VARCHAR},
+      </if>
       <if test="record.requestparam != null">
         requestParam = #{record.requestparam,jdbcType=VARCHAR},
       </if>
@@ -267,6 +277,7 @@
       iId = #{record.iid,jdbcType=INTEGER},
       envId = #{record.envid,jdbcType=INTEGER},
       testClass = #{record.testclass,jdbcType=VARCHAR},
+      requestHeader = #{record.requestheader,jdbcType=VARCHAR},
       requestParam = #{record.requestparam,jdbcType=VARCHAR},
       assertType = #{record.asserttype,jdbcType=INTEGER},
       expected = #{record.expected,jdbcType=VARCHAR},
@@ -298,6 +309,9 @@
       <if test="testclass != null">
         testClass = #{testclass,jdbcType=VARCHAR},
       </if>
+      <if test="requestheader != null">
+        requestHeader = #{requestheader,jdbcType=VARCHAR},
+      </if>
       <if test="requestparam != null">
         requestParam = #{requestparam,jdbcType=VARCHAR},
       </if>
@@ -327,6 +341,7 @@
       iId = #{iid,jdbcType=INTEGER},
       envId = #{envid,jdbcType=INTEGER},
       testClass = #{testclass,jdbcType=VARCHAR},
+      requestHeader = #{requestheader,jdbcType=VARCHAR},
       requestParam = #{requestparam,jdbcType=VARCHAR},
       assertType = #{asserttype,jdbcType=INTEGER},
       expected = #{expected,jdbcType=VARCHAR},

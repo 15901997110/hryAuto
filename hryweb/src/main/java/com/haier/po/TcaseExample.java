@@ -555,6 +555,76 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andRequestheaderIsNull() {
+            addCriterion("requestHeader is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderIsNotNull() {
+            addCriterion("requestHeader is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderEqualTo(String value) {
+            addCriterion("requestHeader =", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderNotEqualTo(String value) {
+            addCriterion("requestHeader <>", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderGreaterThan(String value) {
+            addCriterion("requestHeader >", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderGreaterThanOrEqualTo(String value) {
+            addCriterion("requestHeader >=", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderLessThan(String value) {
+            addCriterion("requestHeader <", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderLessThanOrEqualTo(String value) {
+            addCriterion("requestHeader <=", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderLike(String value) {
+            addCriterion("requestHeader like", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderNotLike(String value) {
+            addCriterion("requestHeader not like", value, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderIn(List<String> values) {
+            addCriterion("requestHeader in", values, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderNotIn(List<String> values) {
+            addCriterion("requestHeader not in", values, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderBetween(String value1, String value2) {
+            addCriterion("requestHeader between", value1, value2, "requestheader");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestheaderNotBetween(String value1, String value2) {
+            addCriterion("requestHeader not between", value1, value2, "requestheader");
+            return (Criteria) this;
+        }
+
         public Criteria andRequestparamIsNull() {
             addCriterion("requestParam is null");
             return (Criteria) this;

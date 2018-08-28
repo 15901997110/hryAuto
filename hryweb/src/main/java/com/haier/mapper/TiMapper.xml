@@ -8,6 +8,7 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="iRequestMethod" jdbcType="INTEGER" property="irequestmethod" />
     <result column="iContentType" jdbcType="INTEGER" property="icontenttype" />
+    <result column="iHeaderSample" jdbcType="VARCHAR" property="iheadersample" />
     <result column="iParamType" jdbcType="INTEGER" property="iparamtype" />
     <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample" />
     <result column="iResponseType" jdbcType="INTEGER" property="iresponsetype" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, serviceId, iUri, remark, iRequestMethod, iContentType, iParamType, iParamSample, 
-    iResponseType, iDev, iStatus, updateTime
+    id, serviceId, iUri, remark, iRequestMethod, iContentType, iHeaderSample, iParamType, 
+    iParamSample, iResponseType, iDev, iStatus, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TiExample" resultMap="BaseResultMap">
     select
@@ -107,24 +108,27 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
-    insert into ti (id, serviceId, iUri, 
-      remark, iRequestMethod, iContentType, 
+  <insert id="insert" parameterType="com.haier.po.Ti">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ti (serviceId, iUri, remark, 
+      iRequestMethod, iContentType, iHeaderSample, 
       iParamType, iParamSample, iResponseType, 
       iDev, iStatus, updateTime
       )
-    values (#{id,jdbcType=INTEGER}, #{serviceid,jdbcType=INTEGER}, #{iuri,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{irequestmethod,jdbcType=INTEGER}, #{icontenttype,jdbcType=INTEGER}, 
+    values (#{serviceid,jdbcType=INTEGER}, #{iuri,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{irequestmethod,jdbcType=INTEGER}, #{icontenttype,jdbcType=INTEGER}, #{iheadersample,jdbcType=VARCHAR}, 
       #{iparamtype,jdbcType=INTEGER}, #{iparamsample,jdbcType=VARCHAR}, #{iresponsetype,jdbcType=INTEGER}, 
       #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Ti" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.haier.po.Ti">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into ti
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="serviceid != null">
         serviceId,
       </if>
@@ -139,6 +143,9 @@
       </if>
       <if test="icontenttype != null">
         iContentType,
+      </if>
+      <if test="iheadersample != null">
+        iHeaderSample,
       </if>
       <if test="iparamtype != null">
         iParamType,
@@ -160,9 +167,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="serviceid != null">
         #{serviceid,jdbcType=INTEGER},
       </if>
@@ -177,6 +181,9 @@
       </if>
       <if test="icontenttype != null">
         #{icontenttype,jdbcType=INTEGER},
+      </if>
+      <if test="iheadersample != null">
+        #{iheadersample,jdbcType=VARCHAR},
       </if>
       <if test="iparamtype != null">
         #{iparamtype,jdbcType=INTEGER},
@@ -225,6 +232,9 @@
       <if test="record.icontenttype != null">
         iContentType = #{record.icontenttype,jdbcType=INTEGER},
       </if>
+      <if test="record.iheadersample != null">
+        iHeaderSample = #{record.iheadersample,jdbcType=VARCHAR},
+      </if>
       <if test="record.iparamtype != null">
         iParamType = #{record.iparamtype,jdbcType=INTEGER},
       </if>
@@ -256,6 +266,7 @@
       remark = #{record.remark,jdbcType=VARCHAR},
       iRequestMethod = #{record.irequestmethod,jdbcType=INTEGER},
       iContentType = #{record.icontenttype,jdbcType=INTEGER},
+      iHeaderSample = #{record.iheadersample,jdbcType=VARCHAR},
       iParamType = #{record.iparamtype,jdbcType=INTEGER},
       iParamSample = #{record.iparamsample,jdbcType=VARCHAR},
       iResponseType = #{record.iresponsetype,jdbcType=INTEGER},
@@ -283,6 +294,9 @@
       </if>
       <if test="icontenttype != null">
         iContentType = #{icontenttype,jdbcType=INTEGER},
+      </if>
+      <if test="iheadersample != null">
+        iHeaderSample = #{iheadersample,jdbcType=VARCHAR},
       </if>
       <if test="iparamtype != null">
         iParamType = #{iparamtype,jdbcType=INTEGER},
@@ -312,6 +326,7 @@
       remark = #{remark,jdbcType=VARCHAR},
       iRequestMethod = #{irequestmethod,jdbcType=INTEGER},
       iContentType = #{icontenttype,jdbcType=INTEGER},
+      iHeaderSample = #{iheadersample,jdbcType=VARCHAR},
       iParamType = #{iparamtype,jdbcType=INTEGER},
       iParamSample = #{iparamsample,jdbcType=VARCHAR},
       iResponseType = #{iresponsetype,jdbcType=INTEGER},
