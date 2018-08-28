@@ -80,6 +80,16 @@ public class BeforeUtil {
         }
 
         /**
+         * 匹配到随机规则,则生成随机字符替换
+         */
+        if (base.matches(".*" + BeforeRegexEnum.RANDOM_I.getPattern() + ".*")) {
+            base = replaceRandomI(base);
+        }
+        if (base.matches(".*" + BeforeRegexEnum.RANDOM_F.getPattern() + ".*")) {
+            base = replaceRandomF(base);
+        }
+
+        /**
          * 匹配到<<<var:xxx>>>,将此处替换成调用者对象中的字段值,如果调用者中此字段不存在 ,则替换为字符串"{对象名}中不存在此字段"
          */
         if (base.matches(".*" + BeforeRegexEnum.VAR.getPattern() + ".*")) {
@@ -217,7 +227,7 @@ public class BeforeUtil {
     }
 
     /**
-     *
+     * 将"<<<randomI(10,100)>>>"替换,随机生成一个[10,100)区间内的整数
      */
     public static String replaceRandomI(String base) {
         Pattern pattern = Pattern.compile(BeforeRegexEnum.RANDOM_I.getPattern());
