@@ -76,7 +76,7 @@
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
                 class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" onclick="tCase_add('添加用例','tcase-add.html','100%','100%')"
+            <a class="btn btn-primary radius" onclick="tCase_add('添加用例','tcase-add.html','1000','800')"
                href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
@@ -308,8 +308,8 @@
                             "<td>" + row.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run(" + row.id + ",'" + tiName + "')\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
-                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','100%','100%'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html'," + row.id + ",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','800','700'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html'," + row.id + ",'800','700')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
@@ -451,14 +451,14 @@
 
     /*用例-添加*/
     function tCase_add(title, url, w, h) {
-        layer_show1(title, url, w, h);
+        layer_show(title, url, w, h);
 
     }
 
     /*用例-编辑*/
     function tcase_edit(title, url, id, w, h) {
         url = url + "?id=" + id;
-        layer_show1(title, url, w, h);
+        layer_show(title, url, w, h);
     }
 
     /*用例-复制*/
@@ -480,7 +480,7 @@
      */
     function tcase_copy2(title, url, w, h, sourceCaseId) {
         url = encodeURI(url + "?id=" + sourceCaseId);
-        layer_show1(title, url, w, h);
+        layer_show(title, url, w, h);
     }
 
     /*用例-删除*/
