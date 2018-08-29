@@ -46,15 +46,15 @@
 				</span>
             </div>
         </div>
-       <!-- <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">测试类：</label>
-            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
-                <span class="select-box" style="width:100%;" id="tClass-span">
-                    <select class="select" size="1" name="tClass" id="tClass">
-                    </select>
-				</span>
-            </div>
-        </div>-->
+        <!-- <div class="row cl">
+             <label class="form-label col-xs-4 col-sm-3" style="width:20%;">测试类：</label>
+             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                 <span class="select-box" style="width:100%;" id="tClass-span">
+                     <select class="select" size="1" name="tClass" id="tClass">
+                     </select>
+                 </span>
+             </div>
+         </div>-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3" style="width:20%;"><span class="c-red">*</span>用例名称：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">环境：</label>
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">运行环境：</label>
             <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
                 <span class="select-box" style="width:80%;">
                     <select class="select" size="1" name="env" id="env">
@@ -87,6 +87,13 @@
                         <option value="" selected>请选择测试类</option>
                     </select>
 				</span>
+            </div>
+        </div>
+        <div class="row cl" id="headerDiv" name="headerDiv" style="display: none">
+            <label class="form-label col-xs-4 col-sm-3" style="width:20%;">请求Headers：</label>
+            <div class="formControls col-xs-8 col-sm-9" style="width:80%;">
+                <textarea id="headerText" name="headerText" cols="" rows="" class="textarea valid"
+                          placeholder="" style="width:80%;"></textarea>
             </div>
         </div>
         <div class="row cl">
@@ -190,154 +197,82 @@
     }
 
     $(document).ready(function () {
-        //$("#iparamsample").hide();
+        /*debugger;*/
         var realName = $.cookie('realnameCookie');
         $("#author").val(realName);
         var serviceList = getServiceList();
-        var env = getTenvList();
+        var tenvList = getTenvList();
         var assertTypeList = getAssertType();
-        var selectedEnv = null;
-        var selectedService = null;
+
         var selectedTi = null;
-        var selectedAssertType = null;
-        var selectedRequestparam = null;
-        var selectedTestclass = null;
-        var selectedCaseName = false;
+        var selectedTiId = null;
 
-        /*        if (getParameter('cellArr') != null && getParameter('cellArr') != "") {
-                    var cells = getParameter('cellArr').split(",");
-                    selectedRequestparam = getParameter('requestparam');
-                    selectedExpected = getParameter('expected');
-                    $("#caseName").val(cells[0]);
-                    $("#remark").val(cells[1]);
-                    $("#requestParam").val(selectedRequestparam);
-                    $("#expected").val(selectedExpected);
-
-                    selectedEnv = cells[3];
-                    selectedService = cells[2];
-                    selectedTi = cells[5];
-                    selectedAssertType = cells[6];
-                }*/
-        if (getParameter('id') != null && getParameter('id') != "") {
-            //debugger;
-            var tcase = getTcaseById(getParameter('id'));
-            $("#caseName").val(tcase.casename);
-            selectedCaseName = true;
-            $("#remark").val(tcase.remark);
-            /*$("#requestParam").val(tcase.requestparam);*/
-
-            $("#expected").val(tcase.expected);
-
-            selectedEnv = tcase.envid;
-            selectedService = tcase.serviceid;
-            selectedTi = tcase.iid;
-            selectedAssertType = tcase.asserttype;
-            selectedRequestparam = tcase.requestparam;
-            selectedTestclass = tcase.testclass;
+        var copyFlag = false;
+        var copyTcase = null;
+        if (getParameter("id") != null && getParameter("id") != "") {
+            copyFlag = true;
+            copyTcase = getTcaseById(getParameter("id"));
         }
-        var tenv = "";
-        for (k = 0; k < env.length; k++) {
-            var row = env[k];
-            var rowHtml;
-            if (row.id == selectedEnv) {
-                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.envkey + "</option>";
-            } else {
-                rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
-            }
-            tenv = tenv + rowHtml;
+
+        //服务字段
+        var serviceHtml = "";
+        for (var i = 0; i < serviceList.length; i++) {
+            serviceHtml += "<option value=\"" + serviceList[i].id + "\">" + serviceList[i].servicekey + "</option>"
         }
-        $("#env").append(tenv);
-
-
-        var services = "";
-
-        for (i = 0; i < serviceList.length; i++) {
-            var row = serviceList[i];
-            var rowHtml;
-            if (row.id == selectedService) {
-                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.servicekey + "</option>"
-            } else {
-                rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>"
-            }
-            services = services + rowHtml;
+        $("#service").append(serviceHtml);
+        if (copyFlag) {
+            $("#service").val(copyTcase.serviceid);
         }
-        $("#service").append(services);
+        var selectedServiceId = $("#service").val();
 
 
-        var serviceId = $("#service").val();
-        var tiList = getTiList(serviceId);
-        var tis = "";
+        //接口字段
+        var tiList = getTiList(selectedServiceId);
+        var tiHtml = "";
         if (tiList.length == 0) {
             $("#ti").empty();
-            tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
-            $("#ti").append(tis);
+            tiHtml = "<option value=\"\" style='color:red'>该服务下无接口</option>";
+            $("#ti").append(tiHtml);
         } else {
             for (var j = 0; j < tiList.length; j++) {
-                var row = tiList[j];
-                var rowHtml;
-                if (selectedTi == null && j == 0) {
-                    rowHtml = "<option value=\"" + row.id + "\" selected>" + row.iuri + "(" + row.remark + ")</option>";
-                } else {
-                    rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
-                }
-                tis = tis + rowHtml;
+                tiHtml += "<option value=\"" + tiList[j].id + "\">" + tiList[j].iuri + "(" + tiList[j].remark + ")</option>";
             }
-            $("#ti").append(tis);
+            $("#ti").append(tiHtml);
             $("#ti").select2();
 
-           /* var serviceKey=$("#service option:selected").text();
-            var tClassList=getTClassListByServiceKey(serviceKey);
-            var tClassHtml="";
-            for(var m=0;m<tClassList.length;m++){
-                var tClass=tClassList[m];
-                var tClassOption="<option>"+tClass+"</option>";
-                tClassHtml=tClassHtml+tClassOption;
-
+            if (copyFlag) {//如果是复制用例,这里选中
+                $("#ti").val(copyTcase.iid);
             }
-            $("#tClass").append(tClassHtml);
-
-            if (selectedRequestparam == null) {
-                var tId = $("#ti").val();
-                var iparamsample = getOneTi(tId).iparamsample;
-                //var iparamtype = getTitype(tId);
-                var iparamtype = getOneTi(tId).iparamtype;*/
-
-            if (selectedTi != null) {//如果是复制用例,这里选中
-                $("#ti").val(selectedTi);
-            }
-            var tiSelectedText = $("#ti").find("option:selected").text();
-            var prevalue = tiSelectedText.substring(tiSelectedText.indexOf('(') + 1, tiSelectedText.lastIndexOf(')'));
-            document.getElementById("ti").setAttribute("prevalue", prevalue);
+            selectedTiId = $("#ti").val();
+            selectedTi = getTiById(selectedTiId);
+        }
 
 
-            /**
-             * 设置参数值
-             */
-            var tId = $("#ti").val();
-            var iparamsample = getTiById(tId).iparamsample;
-            var iparamtype = getTiById(tId).iparamtype;
-            if (selectedRequestparam == null) {//如果不是复制用例,则使用接口的示例参数填充
+        //设置用例名称及prevalue
+        if (copyFlag) {
+            $("#caseName").val(copyTcase.casename);
+        } else {
+            $("#caseName").val(selectedTi.remark);
+        }
+        document.getElementById("ti").setAttribute("prevalue", $("#caseName").val());
 
-                if (iparamsample.length > 0 && iparamtype == 1) {
-                    var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-                    $("#requestParam").val(requestJson);
-                } else {
-                    $("#requestParam").val(iparamsample);
-                }
-            } else if (iparamtype == 1 && $.trim(selectedRequestparam) != "") {//如果是复制用例,并且接口的参数类型是Json,则设置格式化的复制的参数
-                $("#requestParam").val(JSON.stringify(JSON.parse(selectedRequestparam), null, 2));
-            } else {//否则 ,使用复制的参数直接填充
-                $("#requestParam").val(selectedRequestparam);
-            }
-
-            if (!selectedCaseName) {
-                $("#caseName").val(prevalue);//如果不用复制用例,则这里设置为prevalue的值(即默认接口名称)
+        //设置用例描述
+        if (copyFlag) {
+            if (copyTcase.remark != null) {
+                $("#remark").val(copyTcase.remark);
             }
         }
 
-        /**
-         * 构造testclass
-         */
+        //设置环境字段
+        var tenvHtml = "";
+        for (var i = 0; i < tenvList.length; i++) {
+            tenvHtml += "<option value=\"" + tenvList[i].id + "\">" + tenvList[i].envkey + "</option>";
+        }
+        $("#env").append(tenvHtml);
+        if (copyFlag) {
+            $("#env").val(copyTcase.envid);
+        }
+        //设置测试类字段
         var selectedServiceKey = $("#service").find("option:selected").text();
         var testclassList = getTClassListByServiceKey(selectedServiceKey);
         var testclassHtml = "";
@@ -345,26 +280,65 @@
             testclassHtml = testclassHtml + "<option value=\"" + testclassList[i] + "\">" + testclassList[i] + "</option>";
         }
         $("#testclass").append(testclassHtml);
-        if (selectedTestclass != null) {
-            $("#testclass").val(selectedTestclass);
+        if (copyFlag && copyTcase.testclass != null && copyTcase.testclass != "") {
+            $("#testclass").val(copyTcase.testclass);
         }
 
+        //设置请求Headers
+        var iheader = selectedTi.iheadersample;
+        if (copyFlag && copyTcase.requestheader != null && copyTcase.requestheader != "") {
+            $("#headerDiv").show();
+            $("#headerText").val(JSON.stringify(JSON.parse(copyTcase.requestheader), null, 2));
+        } else if (iheader != null && iheader != "") {
+            $("#headerDiv").show();
+            var headerJson = JSON.stringify(JSON.parse(iheader), null, 2);
+            $("#headerText").val(headerJson);
+        }
 
-        var assertTypes = "";
-        for (var m = 0; m < assertTypeList.length; m++) {
-            var row = assertTypeList[m];
-            var rowHtml;
-            if (row.id == selectedAssertType) {
-                rowHtml = "<option selected = \"selected\" value=\"" + row.id + "\">" + row.value + "</option>";
-            } else {
-                rowHtml = "<option value=\"" + row.id + "\">" + row.value + "</option>";
+        //设置请求参数
+        var iparamsample = selectedTi.iparamsample;
+        var iparamtype = selectedTi.iparamtype;
+        if (copyFlag) {//复制
+            if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
+                $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+            } else {//否则直接填充
+                $("#requestParam").val(copyTcase.requestparam);
             }
-            assertTypes = assertTypes + rowHtml;
+        } else if (iparamtype == 1) {//不是复制 ,请求参数类型为json
+            try {
+                $("#requestParam").val(JSON.stringify(JSON.parse(iparamsample), null, 2));
+            } catch (e) {
+                $("#requestParam").val(iparamsample);
+            }
+        } else if (iparamsample != null) {//不是复制 ,请求参数类型不为json
+            $("#requestParam").val(iparamsample)
         }
-        $("#assertType").append(assertTypes);
+
+        //设置断言类型
+        var assertTypeHtml = "";
+        for (var m = 0; m < assertTypeList.length; m++) {
+            assertTypeHtml += "<option value=\"" + assertTypeList[m].id + "\">" + assertTypeList[m].value + "</option>";
+        }
+        $("#assertType").append(assertTypeHtml);
+        if (copyFlag) {
+            $("#assertType").val(copyTcase.asserttype);
+        }
+
+        //设置期望结果
+        if (copyFlag) {
+            if ($("#assertType").val() == 3 && copyTcase.expected != null && copyTcase.expected != "") {
+                try {
+                    $("#expected").val(JSON.stringify(JSON.parse(copyTcase.expected), null, 2));
+                } catch (e) {
+                    $("#expected").val(copyTcase.expected);
+                }
+            }
+        }
+
         layer.close(layerIndex);
 
-    });
+    })
+    ;
 
     function getParameter(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -384,10 +358,25 @@
             $("#caseName").val(remark);
         }
         document.getElementById("ti").setAttribute("prevalue", remark);//设置新的自定义属性-prevalue,为下次change准备
+
+        /**
+         * 接口变更时,示例headers联动
+         */
+        var iHeader = t.iheadersample;
+        if (iHeader != null && iHeader != "") {
+            $("#headerDiv").show();
+            var headerJson = JSON.stringify(JSON.parse(iHeader), null, 2)
+            $("#headerText").val(headerJson);
+        } else {
+            $("#headerDiv").hide();
+            $("#headerText").val("")
+        }
+
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
-        if (iparamsample.length > 0 && iparamtype == 1) {
+        debugger;
+        if (iparamsample != null && iparamsample.length > 0 && iparamtype == 1) {
             try {
                 var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                 $("#requestParam").val(requestJson);
@@ -398,6 +387,8 @@
             $("#requestParam").val(iparamsample);
         }
         //$("#requestParam").empty();
+
+
     }
 
 
@@ -405,22 +396,24 @@
     function serviceChange() {
         var serviceId = $("#service").val();
         var tiList = getTiList(serviceId);
-        var tis = "";
+        var tiHtml = "";
         if (tiList.length == 0) {
             $("#ti").empty();
-            tis = "<option value=\"\" style='color:red'>该服务下无接口</option>";
-            $("#ti").append(tis);
+            tiHtml = "<option value=\"\" style='color:red'>该服务下无接口</option>";
+            $("#ti").append(tiHtml);
             $("#caseName").val("");
             $("#requestParam").val("");
+            $("#headerDiv").hide();
+            $("#headerText").val("");
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 var row = tiList[j];
                 var rowHtml = "<option value=\"" + row.id + "\">" + row.iuri + "(" + row.remark + ")</option>";
-                tis = tis + rowHtml;
+                tiHtml = tiHtml + rowHtml;
             }
             //$("#ti").find("option:selected").text("");
             $("#ti").empty();
-            $("#ti").append(tis);
+            $("#ti").append(tiHtml);
             $("#ti").select2();
             tiChange();
 
@@ -435,14 +428,14 @@
         $("#testclass").empty();
         $("#testclass").append(testclassHtml);
 
-        var serviceKey=$("#service option:selected").text();
-        var tClassList=getTClassListByServiceKey(serviceKey);
+        var serviceKey = $("#service option:selected").text();
+        var tClassList = getTClassListByServiceKey(serviceKey);
         $("#tClass").empty();
-        var tClassHtml="";
-        for(var m=0;m<tClassList.length;m++){
-            var tClass=tClassList[m];
-            var tClassOption="<option>"+tClass+"</option>";
-            tClassHtml=tClassHtml+tClassOption;
+        var tClassHtml = "";
+        for (var m = 0; m < tClassList.length; m++) {
+            var tClass = tClassList[m];
+            var tClassOption = "<option>" + tClass + "</option>";
+            tClassHtml = tClassHtml + tClassOption;
 
         }
         $("#tClass").append(tClassHtml);
@@ -477,12 +470,13 @@
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
-        //var tClass=$("#tClass").val();
+        var requestHeader = $("#headerText").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
         var author = $("#author").val();
-        var testclass = $("#testclass").val()
+        var testclass = $("#testclass").val();
+
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
@@ -503,11 +497,13 @@
                     serviceid: service,
                     iid: ti,
                     envid: env,
+                    requestheader: requestHeader,
                     requestparam: requestParam,
                     asserttype: assertType,
                     expected: expected,
                     author: author,
                     testclass: testclass
+
                 },
                 dataType: "json",
                 success: function (data) {
@@ -552,11 +548,12 @@
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
+        var requestHeader=$("#headerText").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
-        var testClass=$("#testclass").val();
-        var userId=$.cookie('uidCookie');
+        var testClass = $("#testclass").val();
+        var userId = $.cookie('uidCookie');
 
         if (ti == null || ti == "") {
             layer.alert("请选择接口！");
@@ -574,11 +571,12 @@
                     iid: ti,
                     envid: env,
                     serviceid: service,
+                    requestheader: requestHeader,
                     requestparam: requestParam,
-                    testclass:testClass,
+                    testclass: testClass,
                     asserttype: assertType,
                     expected: expected,
-                    userId:userId
+                    userId: userId
                 },
                 dataType: "json",
                 success: function (data) {
@@ -587,8 +585,8 @@
                     var msg = data.msg;
                     if (status == 0) {
                         layer.close(layerIndex);
-                        var tiName=$("#ti").find("option:selected").text();
-                        url=encodeURI("../report-loading.html?reportname="+url+"&customname="+tiName);
+                        var tiName = $("#ti").find("option:selected").text();
+                        url = encodeURI("../report-loading.html?reportname=" + url + "&customname=" + tiName);
                         window.open(url);
                         /*var domain = "http://" + window.location.host;
                         var myPopup = window.open("test-result.html");//.postMessage(list,domain);
