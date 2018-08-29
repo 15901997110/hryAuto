@@ -2,6 +2,7 @@ package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
@@ -120,6 +121,14 @@ public class ImportServiceImpl implements ImportService {
                 ti.setRemark(summary);
                 ti.setIdev(iDev);
                 //ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
+                //ti.setIcontenttype：如果contentTypeEnum存在就获取id，不存在则是-1
+                List consumes = (List) postJsonObject.get("consumes");
+                String consumesType = consumes.get(0).toString();
+                if (ContentTypeEnum.getId(consumesType)!=null) {
+                    ti.setIcontenttype(ContentTypeEnum.getId(consumesType));
+                }else{
+                    ti.setIcontenttype(-1);
+                }
                 //解析Json，设置Iparamsample
                 List parameJsonObject = postJsonObject.getJSONArray("parameters");
                 //如果parameJsonObject为空，则直接赋值为空
