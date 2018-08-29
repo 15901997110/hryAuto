@@ -51,7 +51,8 @@ public class TcaseController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
         }
 
-        //校验参数和断言类型是否符合JSON格式
+        //校验参数和断言类型是否符合JSON格式,
+        //校验请求头是否符合JSON格式
         verifyJSON(tcase);
         return ResultUtil.success(tcaseService.insertOne(tcase));
     }
@@ -107,6 +108,14 @@ public class TcaseController {
                 } else {
                     throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "接口参数类型为JSON时,请求参数必须是JSON格式");
                 }
+            }
+        }
+        if (tcase.getRequestheader() != null) {
+            String formattedHeader = JSONUtil.verify(tcase.getRequestheader());
+            if (formattedHeader != null) {
+                tcase.setRequestheader(formattedHeader);
+            } else {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "请求Header必须是JSON格式");
             }
         }
         //断言类型JSON格式校验
@@ -175,6 +184,7 @@ public class TcaseController {
 
     /**
      * 用例新增和编辑页面运行单条用例(新)
+     *
      * @param tcase-用例
      * @param userId-用户id
      * @return 测试报告页面地址
@@ -190,6 +200,7 @@ public class TcaseController {
 
     /**
      * 用例列表页面运行单条用例(新)
+     *
      * @param id-tcase.id
      * @param userId-user.id
      * @return 测试报告页面地址

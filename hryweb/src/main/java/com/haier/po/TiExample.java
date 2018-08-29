@@ -485,6 +485,76 @@ public class TiExample {
             return (Criteria) this;
         }
 
+        public Criteria andIheadersampleIsNull() {
+            addCriterion("iHeaderSample is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleIsNotNull() {
+            addCriterion("iHeaderSample is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleEqualTo(String value) {
+            addCriterion("iHeaderSample =", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleNotEqualTo(String value) {
+            addCriterion("iHeaderSample <>", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleGreaterThan(String value) {
+            addCriterion("iHeaderSample >", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleGreaterThanOrEqualTo(String value) {
+            addCriterion("iHeaderSample >=", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleLessThan(String value) {
+            addCriterion("iHeaderSample <", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleLessThanOrEqualTo(String value) {
+            addCriterion("iHeaderSample <=", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleLike(String value) {
+            addCriterion("iHeaderSample like", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleNotLike(String value) {
+            addCriterion("iHeaderSample not like", value, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleIn(List<String> values) {
+            addCriterion("iHeaderSample in", values, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleNotIn(List<String> values) {
+            addCriterion("iHeaderSample not in", values, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleBetween(String value1, String value2) {
+            addCriterion("iHeaderSample between", value1, value2, "iheadersample");
+            return (Criteria) this;
+        }
+
+        public Criteria andIheadersampleNotBetween(String value1, String value2) {
+            addCriterion("iHeaderSample not between", value1, value2, "iheadersample");
+            return (Criteria) this;
+        }
+
         public Criteria andIparamtypeIsNull() {
             addCriterion("iParamType is null");
             return (Criteria) this;
