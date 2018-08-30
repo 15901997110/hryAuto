@@ -236,7 +236,6 @@
                     } else {
                         $("#requestParam").val(requestparam);
                     }
-
                     //断言类型
                     var assertTypeHtml = "";
                     for (var k = 0; k < assertTypeList.length; k++) {
@@ -245,18 +244,23 @@
                     $("#assertType").append(assertTypeHtml);
                     $("#assertType").val(tcase.asserttype);
 
+
                     //期望结果
+                    var expected = tcase.expected;
+                    if (expected == null) {
+                        expected = "";
+                    }
                     if (tcase.asserttype == 3) {
                         try {
-                            var requestJson = JSON.stringify(JSON.parse(tcase.expected), null, 2);
+                            var requestJson = JSON.stringify(JSON.parse(expected), null, 2);
                             $("#expected").val(requestJson);
                         } catch (e) {
-                            $("#expected").val(tcase.expected);
+                            console.log("异常走到Catch了")
+                            $("#expected").val(expected);
                         }
                     } else {
-                        $("#expected").val(tcase.expected);
+                        $("#expected").val(expected);
                     }
-
                     //用例设计人
                     $("#author").val(tcase.author);
 
@@ -308,8 +312,9 @@
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
-        var author = $("#author").val();
-        var testclass = $("#testclass").val()
+        //var author = $("#author").val();
+        var author = $.cookie("realnameCookie");
+        var testclass = $("#testclass").val();
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
