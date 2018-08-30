@@ -27,17 +27,22 @@ import java.util.Set;
 @Slf4j
 public class JSONUtil {
 
-    public static JSONObject str2JsonObj(String json) {
+    public static JSONObject str2JSONObj(String json) {
+        if (json == null) {
+            return null;
+        }
         try {
-            return JSON.parseObject(json);
+            return JSON.parseObject(json, Feature.OrderedField);
         } catch (Exception e) {
-
             log.error(json, e);
             return null;
         }
     }
 
-    public static JSONArray str2JsonArr(String json) {
+    public static JSONArray str2JSONArr(String json) {
+        if (json == null) {
+            return null;
+        }
         try {
             return JSON.parseArray(json);
         } catch (Exception e) {
@@ -47,11 +52,11 @@ public class JSONUtil {
     }
 
     /**
-     *@description: 校验字符串是否符合JSON格式,如果符合,返回JSON格式化后的字符串,否则,返回null
-     *@params: 待校验的json字符串
-     *@return: JSON格式化后的字符串
-     *@author: luqiwei
-     *@date: 2018-08-21
+     * @description: 校验字符串是否符合JSON格式, 如果符合, 返回JSON格式化后的字符串, 否则, 返回null
+     * @params: 待校验的json字符串
+     * @return: JSON格式化后的字符串
+     * @author: luqiwei
+     * @date: 2018-08-21
      */
     public static String verify(String json) {
         try {
