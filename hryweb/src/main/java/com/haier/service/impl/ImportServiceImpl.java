@@ -92,7 +92,7 @@ public class ImportServiceImpl implements ImportService {
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
         criteria.andServiceidEqualTo(serviceId);//筛选serviceId
-        criteria.andIstatusNotEqualTo( -1);//筛选状态!=-1(非删除的数据)
+        criteria.andIstatusNotEqualTo(-1);//筛选状态!=-1(非删除的数据)
         List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
         List<String> existIuri = new ArrayList<String>();
         Map<String, Integer> existIuriId = new HashMap<String, Integer>();//后续更新记录时会用到primaryKey
@@ -124,9 +124,9 @@ public class ImportServiceImpl implements ImportService {
                 //ti.setIcontenttype：如果contentTypeEnum存在就获取id，不存在则是-1
                 List consumes = (List) postJsonObject.get("consumes");
                 String consumesType = consumes.get(0).toString();
-                if (ContentTypeEnum.getId(consumesType)!=null) {
+                if (ContentTypeEnum.getId(consumesType) != null) {
                     ti.setIcontenttype(ContentTypeEnum.getId(consumesType));
-                }else{
+                } else {
                     ti.setIcontenttype(-1);
                 }
                 //解析Json，设置Iparamsample
