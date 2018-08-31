@@ -23,7 +23,7 @@ import java.util.Objects;
 @Slf4j
 public class AssertUtil {
     public static void supperAssert(Integer assertType, String expected, String actual, Integer actualType) {
-        Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType) + "(" + assertType + ")");
+        Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType));
         Reporter.log("期望结果 :" + expected);
         Reporter.log("实际结果 :" + actual);
 

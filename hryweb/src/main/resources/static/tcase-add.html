@@ -365,8 +365,13 @@
         var iHeader = t.iheadersample;
         if (iHeader != null && iHeader != "") {
             $("#headerDiv").show();
-            var headerJson = JSON.stringify(JSON.parse(iHeader), null, 2)
-            $("#headerText").val(headerJson);
+            try {
+                var headerJson = JSON.stringify(JSON.parse(iHeader), null, 2)
+                $("#headerText").val(headerJson);
+            }
+            catch (e) {
+                $("#headerText").val(iHeader);
+            }
         } else {
             $("#headerDiv").hide();
             $("#headerText").val("")
@@ -548,7 +553,7 @@
         var env = $("#env").val();
         var service = $("#service").val();
         var ti = $("#ti").val();
-        var requestHeader=$("#headerText").val();
+        var requestHeader = $("#headerText").val();
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();

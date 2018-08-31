@@ -1,8 +1,8 @@
 package com.haier.testng.base;
 
 import com.alibaba.fastjson.JSONObject;
-import com.haier.Application;
-import com.haier.anno.Cookie;
+import com.haier.anno.HryCookie;
+import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
 import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
@@ -11,7 +11,7 @@ import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.CookieStore;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.apache.http.entity.mime.Header;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 import java.lang.reflect.Method;
@@ -39,8 +39,11 @@ public class Base extends AbstractTestNGSpringContextTests {
     public Tservicedetail tservicedetail;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
 
-    @Cookie
+    @HryCookie
     public CookieStore cookieStore;
+
+    @HryHeader
+    public Header[] headers;
 
     public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         this.serviceId = serviceId;

@@ -50,7 +50,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
     public void login() throws HttpProcessException {
         String url = "http://10.25" + envId + ".104.1:8211/hry-uni-login/login";
         Header headerContentType = new BasicHeader("Content-Type", "application/x-www-form-urlencoded");
-        Header headerCookie = new BasicHeader("Cookie", "__login_name=supper2; __login_expied=7; __login_sys=cbp");
+        Header headerCookie = new BasicHeader("HryCookie", "__login_name=supper2; __login_expied=7; __login_sys=cbp");
         String requestId = UUID.randomUUID().toString().replaceAll("-", "");
         Map<String, Object> map = new HashMap<>();
         map.put("loginName", "supper2");
@@ -68,7 +68,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
 
         Header[] resHeaders = config.headers();
         for (Header header : resHeaders) {
-            if (header.getName().equals("Set-Cookie")) {
+            if (header.getName().equals("Set-HryCookie")) {
                 HeaderElement[] elements = header.getElements();
 //                NameValuePair[] nameValuePairs = elements[0].getParameters();
                 String name = elements[0].getName();

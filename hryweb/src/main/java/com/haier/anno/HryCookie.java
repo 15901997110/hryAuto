@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 @Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 @Inherited
-public @interface Cookie {
+public @interface HryCookie {
 }

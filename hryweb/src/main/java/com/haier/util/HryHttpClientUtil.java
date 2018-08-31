@@ -6,15 +6,11 @@ import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
-import com.haier.config.SpringContextHolder;
+import com.haier.anno.HryCookie;
+import com.haier.anno.HryHeader;
 import com.haier.enums.*;
 import com.haier.exception.HryException;
 import com.haier.po.HryTest;
-import com.haier.po.Params;
-import com.haier.po.Tcase;
-import com.haier.po.Ti;
-import com.haier.service.TcaseService;
-import com.haier.service.TiService;
 import com.haier.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,11 +18,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
 
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @Description: 封装httpClientUtil
@@ -35,6 +32,129 @@ import java.util.Objects;
  */
 @Slf4j
 public class HryHttpClientUtil {
+    /**
+     * 最底层的封装方法
+     *
+     * @return
+     */
+    public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, Header[] headers, CookieStore cookieStore) {
+        //请求方式,现在仅支持Post/Get
+        HttpMethods methodType;
+        if (requestMethodType == null) {
+            methodType = HttpMethods.GET;
+        } else if (requestMethodType.equals(RequestMethodTypeEnum.GET.getId())) {
+            methodType = HttpMethods.GET;
+        } else {
+            methodType = HttpMethods.POST;
+        }
+
+        //请求Header
+        Header header;
+        if (requestMethodType == null) {
+            header = new BasicHeader("Content-Type", ContentTypeEnum.JSON.getValue());
+        } else {
+            header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
+        }
+        Header[] requestHeaders = ArrayUtils.add(headers, header);
+
+        //HryCookie
+        HttpClientContext context = null;
+        if (cookieStore != null) {
+            context = new HttpClientContext();
+            context.setCookieStore(cookieStore);
+        }
+
+
+        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(requestHeaders);
+        if (context != null) {
+            config.context(context);
+        }
+        //设置请求参数
+        if (StringUtils.isNotBlank(param)) {
+            if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
+                config.json(param);
+            } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
+                Map map = JSON.parseObject(param).toJavaObject(Map.class);
+                config.map(map);
+            } else {
+                log.info("没有请求参数,或者请求参数类型不为JSON或MAP,httpCLientUtil将不带参发送请求");
+            }
+        }
+
+        //发送请求
+        String responseEntity;
+        try {
+            responseEntity = HttpClientUtil.send(config);
+        } catch (HttpProcessException e) {
+            log.error("", e);
+            responseEntity = e.getMessage();
+        }
+
+        //打印日志
+        log.info("--------------------start----------------------------------------");
+        Reporter.log("实际请求参数:" + param);
+        log.info("请求参数:" + param);
+        log.info("请求Url:" + config.url());
+        Reporter.log("请求Url:" + config.url());
+        log.info("请求方式:" + config.method().getName());
+        Reporter.log("请求方式:" + config.method().getName());
+
+        if (headers.length > 0) {
+            log.info("请求Headers:");
+            Reporter.log("请求Headers:");
+            for (Header h : headers) {
+                log.info("  " + h.getName() + ":" + h.getValue());
+                Reporter.log("  " + h.getName() + ":" + h.getValue());
+            }
+        }
+        log.info("响应实体:" + responseEntity);
+        log.info("---------------------end-----------------------------------------");
+        return responseEntity;
+    }
+
+    public static <T extends Base> String send(HryTest test, T entity) {
+        String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
+
+        //请求Header
+        Header[] headers = null;
+        String headerStr = test.getTcase().getRequestheader();
+        if (StringUtils.isNotBlank(headerStr)) {
+            JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
+            if (headerJSON != null) {
+                for (String key : headerJSON.keySet()) {//获取测试用例中的header,如果Header的值 为空,则忽略
+                    String value = headerJSON.getString(key);
+                    if (StringUtils.isNotBlank(value)) {
+                        headers = ArrayUtils.add(headers, new BasicHeader(key, value));
+                    }
+                }
+            }
+        }
+
+        //获取测试对象中的Header和Cookie
+        Header[] entityHeader;
+        CookieStore entityCookieStore = null;
+        if (entity != null) {
+            entityHeader = ReflectUtil.getFirstPublicFieldValueByAnnoAndFieldType(entity, HryHeader.class, Header[].class);
+            if (entityHeader != null) {
+                headers = ArrayUtils.addAll(headers, entityHeader);
+            }
+            entityCookieStore = ReflectUtil.getFirstPublicFieldValueByAnnoAndFieldType(entity, HryCookie.class, CookieStore.class);
+        }
+
+
+        //参数替换
+        String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
+
+        return send(
+                url,
+                test.getTi().getIrequestmethod(),
+                test.getTi().getIcontenttype(),
+                test.getTi().getIparamtype(),
+                param,
+                headers,
+                entityCookieStore
+        );
+    }
 
     public static <T> String send(String url, Integer requestMethod, T param) throws HttpProcessException {
 
@@ -67,155 +187,12 @@ public class HryHttpClientUtil {
         return send(url, requestMethodType, contentType, requestParamType, param, null, null);
     }
 
-
-    public static <T extends Base> String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, T entity, Header[] requestHeaders) {
-
-        //请求方式,现在仅支持Post/Get
-        HttpMethods methodType;
-        if (requestMethodType.equals(RequestMethodTypeEnum.POST.getId())) {
-            methodType = HttpMethods.POST;
-        } else if (requestMethodType.equals(RequestMethodTypeEnum.GET.getId())) {
-            methodType = HttpMethods.GET;
-        } else {
-            methodType = HttpMethods.POST;
-        }
-        //设置请求Header
-        Header header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
-        Header[] headers = ArrayUtils.add(requestHeaders, header);
-        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(headers);
-
-        //设置请求参数
-        if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
-            if (param != null) {
-                config.json(param);
-            }
-        } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
-            if (param != null) {
-                Map map = JSON.parseObject(param).toJavaObject(Map.class);
-                config.map(map);
-            }
-        }
-
-        if (entity != null) {
-            try {
-                try {
-                    Object cookieStore = entity.getClass().getField("cookieStore").get(entity);
-                    if (cookieStore != null) {
-                        HttpClientContext context = new HttpClientContext();
-                        context.setCookieStore((CookieStore) cookieStore);
-                        config.context(context);
-                    }
-
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //发送请求
-        String responseEntity;
-        try {
-            responseEntity = HttpClientUtil.send(config);
-        } catch (HttpProcessException e) {
-            log.error("", e);
-            responseEntity = e.getMessage();
-        }
-
-        //打印日志
-        log.info("--------------------start----------------------------------------");
-        log.info("请求Url:" + config.url());
-        log.info("请求方式:" + config.method().getName());
-        log.info("请求Headers:");
-        for (Header h : headers) {
-            log.info("  " + h.getName() + ":" + h.getValue());
-        }
-        log.info("请求参数:" + param);
-        log.info("响应实体:" + responseEntity);
-        log.info("---------------------end-----------------------------------------");
-
-
-        return responseEntity;
-
-    }
-
-    public static String send(String baseUrl, String dbInfo, Integer caseId) {
-        TcaseService caseService = SpringContextHolder.getBean(TcaseService.class);
-        TiService iService = SpringContextHolder.getBean(TiService.class);
-        Tcase tcase = caseService.selectOne(caseId);
-        Ti ti = iService.selectOne(tcase.getIid());
-        Params params = new Params();
-        params.setTi(ti);
-        params.setTcase(tcase);
-        return send(baseUrl, dbInfo, params);
-    }
-
-    /**
-     * @description: 接收请求参数, 处理过的参数封装到Params.Tcase.Requestparam中
-     * @params:
-     * @return:
-     * @author: luqiwei
-     * @date: 2018-08-03
-     */
-    public static String send(String baseUrl, String dbInfo, Params params) {
-        return send(baseUrl, dbInfo, params, null);
-    }
-
-    public static <T extends Base> String send(String baseUrl, String dbInfo, Params params, T entity) {
-        Ti ti = params.getTi();
-        Tcase tcase = params.getTcase();
-        Integer requestMethodType = ti.getIrequestmethod().intValue();
-        Integer requestParamType = ti.getIparamtype().intValue();
-        Integer contentType = ti.getIcontenttype().intValue();
-        String param = tcase.getRequestparam();
-        Reporter.log("用例id:" + tcase.getId());
-        param = replaceParam(param, dbInfo, entity);
-        return send(baseUrl + ti.getIuri(), requestMethodType, contentType, requestParamType, param);
-    }
-
-    public static <T extends Base> String send(String baseUrl, String dbInfo, Tcase tcase, T entity) {
-        TiService bean = SpringContextHolder.getBean(TiService.class);
-        Ti ti = bean.selectOne(tcase.getIid());
-        Params p = new Params();
-        p.setTi(ti);
-        p.setTcase(tcase);
-        return send(baseUrl, dbInfo, p, entity);
-    }
-
-    public static <T extends Base> String send(HryTest test, T entity) {
-        String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
-
-        //请求Header
-        String headerStr = test.getTcase().getRequestheader();
-        JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
-        Header[] headers = null;
-        if (headerJSON != null) {
-            for (Map.Entry entry : headerJSON.entrySet()) {
-                headers = ArrayUtils.add(headers, new BasicHeader((String) entry.getKey(), (String) entry.getValue()));
-            }
-        }
-
-        //参数替换
-        String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
-
-        return send(
-                url,
-                test.getTi().getIrequestmethod(),
-                test.getTi().getIcontenttype(),
-                test.getTi().getIparamtype(),
-                param,
-                entity,
-                headers == null ? null : headers
-        );
-    }
-
     private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {
-        Reporter.log("用例设计参数:" + param.replaceAll("<", "＜").replaceAll(">", "＞"));
         if (StringUtils.isNotBlank(param)) {
+            Reporter.log("用例设计参数:" + param.replaceAll("<", "＜").replaceAll(">", "＞"));
             param = BeforeUtil.replace(param, dbInfo, entity);
-            Reporter.log("实际请求参数:" + param);
+        } else {
+            Reporter.log("用例设计参数:null");
         }
         return param;
     }

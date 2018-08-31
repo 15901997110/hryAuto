@@ -2,7 +2,9 @@ package com.haier.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -160,5 +162,32 @@ public class ReflectUtil {
                 log.warn(e.toString());
             }
         }
+    }
+
+    /**
+     *@description: 根据注解类型,字段类型获取对象中符合条件的第一个字段的值,
+     *@params: [po, annotationClass, fieldType]
+     *@return: M
+     *@author: luqiwei
+     *@date: 2018-08-31
+     */
+    public static <T, K extends Annotation, M> M getFirstPublicFieldValueByAnnoAndFieldType(T po, Class<K> annotationClass, Class<M> fieldType) {
+        Field[] fields = po.getClass().getFields();
+        for (Field field : fields) {
+            K annotation = field.getAnnotation(annotationClass);
+            if (annotation != null) {
+                try {
+                    Class<?> type = field.getType();
+                    if (type.equals(fieldType)) {
+                        M o = (M) field.get(po);
+                        return o;
+                    }
+                } catch (IllegalAccessException e) {
+                    return null;
+                }
+
+            }
+        }
+        return null;
     }
 }
