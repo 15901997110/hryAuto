@@ -4,26 +4,30 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="lib/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>接口管理</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span class="c-gray en">&gt;</span> 接口列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span
+        class="c-gray en">&gt;</span> 接口列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div>
         <!--<label style="margin-left:30px">服务：</label><input type="text" name="serviceid" id="serviceid" placeholder=" 服务标识/服务描述" style="width:12%" class="input-text">-->
@@ -33,8 +37,10 @@
                 <option value="">请选择</option>
             </select>
             </span>
-        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述" style="width:10%" class="input-text">
-        <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址" style="width:15%" class="input-text">
+        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述"
+                                                            style="width:10%" class="input-text">
+        <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址"
+                                                            style="width:15%" class="input-text">
         <!--<label style="margin-left:30px">开发者：</label><input type="text" name="idev" id="idev" placeholder=" 开发者" style="width:10%" class="input-text">-->
         <label style="margin-left:30px;">接口开发人员：</label>
         <span class="select-box" style="width:16%">
@@ -42,19 +48,24 @@
                 <option value="" selected>请选择</option>
             </select>
         </span>
-        <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button" onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜接口</button>
-        <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button" onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空</button>
+        <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button"
+                onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜接口
+        </button>
+        <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button"
+                onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空
+        </button>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
             <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <a href="javascript:;" onclick="interface_add('添加接口','ti-add.html','800','650')" class="btn btn-primary radius">
+            <a href="javascript:;" onclick="interface_add('添加接口','ti-add.html','800','650')"
+               class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加接口
             </a>
         </span>
-        <span class="r">共有数据：<strong id="total"></strong> 条</span> </div>
+        <span class="r">共有数据：<strong id="total"></strong> 条</span></div>
     <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
         <table class="table table-border table-bordered table-hover table-bg table-sort">
             <thead>
@@ -99,9 +110,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, { shade: [0.01, '#fff'] });
+                layerIndex = layer.load(1, {shade: [0.01, '#fff']});
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -112,7 +123,7 @@
         });
     });
 
-    function empty(){
+    function empty() {
         //$("#serviceid").val("");
         $("#serviceKey option:first").prop("selected", 'selected');
         $("#remark").val("");
@@ -127,7 +138,7 @@
         var html = "";
         for (i = 0; i < list.length; i++) {
             var row = list[i];
-            var rowHtml = "<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+            var rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>";
             html = html + rowHtml;
         }
         $("#serviceKey").append(html);
@@ -146,92 +157,92 @@
     });
 
     //分页查询
-    function pageSkip(index){
-        if(index==0){
+    function pageSkip(index) {
+        if (index == 0) {
             return;
         }
         var serviceKey = $("#serviceKey").val();
         var remark = $("#remark").val();
         var iuri = $("#iuri").val();
         var idev = $("#idev").val();
-        var allEnum=getAllEnum();
-        var ContentTypeEnum=allEnum.ContentTypeEnum;
-        var ResponseTypeEnum=allEnum.ResponseTypeEnum;
+        var allEnum = getAllEnum();
+        var ContentTypeEnum = allEnum.ContentTypeEnum;
+        var ResponseTypeEnum = allEnum.ResponseTypeEnum;
 
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition",
             data: {
-                iuri:iuri,
-                idev:idev,
-                serviceid:serviceKey,
-                remark:remark,
-                pageNum:index,
-                pageSize:10
+                iuri: iuri,
+                idev: idev,
+                serviceid: serviceKey,
+                remark: remark,
+                pageNum: index,
+                pageSize: 10
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data.list;
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data.list;
                 console.log(data);
                 var html = "";
 
-                if(status == 0){
+                if (status == 0) {
                     $("#interfaceList").html("");
 
-                    for(var i=0;i<list.length;i++){
+                    for (var i = 0; i < list.length; i++) {
                         var row = list[i];
-                        var irequestmethod="";
-                        if(row.irequestmethod == 1){
-                            irequestmethod="post";
-                        }else if(row.irequestmethod == 2){
-                            irequestmethod="get";
+                        var irequestmethod = "";
+                        if (row.irequestmethod == 1) {
+                            irequestmethod = "post";
+                        } else if (row.irequestmethod == 2) {
+                            irequestmethod = "get";
                         }
 
-                        var remark="";
-                        if(row.remark != null){
-                            remark=row.remark;
+                        var remark = "";
+                        if (row.remark != null) {
+                            remark = row.remark;
                         }
 
-                        var iContentType="";
-                        for(var m=0;m<ContentTypeEnum.length;m++){
-                            var row1=ContentTypeEnum[m];
-                            if(row.icontenttype == row1.id){
-                                iContentType=row1.value;
+                        var iContentType = "";
+                        for (var m = 0; m < ContentTypeEnum.length; m++) {
+                            var row1 = ContentTypeEnum[m];
+                            if (row.icontenttype == row1.id) {
+                                iContentType = row1.value;
                             }
                         }
 
-                        var iParamType="";
-                        for(var n=0;n<ResponseTypeEnum.length;n++){
-                            var row2=ResponseTypeEnum[n];
-                            if(row.iparamtype == row2.id){
-                                iParamType=row2.value;
+                        var iParamType = "";
+                        for (var n = 0; n < ResponseTypeEnum.length; n++) {
+                            var row2 = ResponseTypeEnum[n];
+                            if (row.iparamtype == row2.id) {
+                                iParamType = row2.value;
                             }
                         }
 
-                        var iResponseType="";
-                        for(var k=0;k<ResponseTypeEnum.length;k++){
-                            var row3=ResponseTypeEnum[k];
-                            if(row.iresponsetype == row3.id){
-                                iResponseType=row3.value;
+                        var iResponseType = "";
+                        for (var k = 0; k < ResponseTypeEnum.length; k++) {
+                            var row3 = ResponseTypeEnum[k];
+                            if (row.iresponsetype == row3.id) {
+                                iResponseType = row3.value;
                             }
                         }
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>"+row.id+"</td>\n" +
-                            "<td>"+row.servicekey+"</td>\n" +
-                            "<td style=\"text-align:left;\">"+row.iuri+"</td>\n" +
-                            "<td >"+remark+"</td>\n" +
-                            "<td >"+irequestmethod+"</td>\n" +
-                            "<td>"+iContentType+"</td>\n" +
-                            "<td>"+iParamType+"</td>\n" +
-                            "<td>"+iResponseType+"</td>\n" +
-                            "<td>"+row.idev+"</td>\n" +
-                            "<td>"+row.updatetime+"</td>\n" +
-                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html',"+row.id+",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this,"+row.id+")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
+                            "<td>" + row.id + "</td>\n" +
+                            "<td>" + row.servicekey + "</td>\n" +
+                            "<td style=\"text-align:left;\">" + row.iuri + "</td>\n" +
+                            "<td >" + remark + "</td>\n" +
+                            "<td >" + irequestmethod + "</td>\n" +
+                            "<td>" + iContentType + "</td>\n" +
+                            "<td>" + iParamType + "</td>\n" +
+                            "<td>" + iResponseType + "</td>\n" +
+                            "<td>" + (row.idev == null ? "" : row.idev) + "</td>\n" +
+                            "<td>" + row.updatetime + "</td>\n" +
+                            "<td class=\"f-14\"><a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html'," + row.id + ",'800','650')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a></td>\n" +
                             "</tr>";
                         html = html + rowHtml;
                     }
@@ -239,35 +250,33 @@
                     pagination(data);
                     layer.close(layerIndex);
 
-                }else{
+                } else {
                     layer.close(layerIndex);
                     layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
                 }
             }
         });
     }
 
     //添加接口
-    function interface_add(title,url,w,h){
-        layer_show(title,url,w,h);
+    function interface_add(title, url, w, h) {
+        layer_show(title, url, w, h);
     }
 
     //编辑接口
-    function ti_edit(title,url,id,w,h){
-        url= url + "?id="+id;
-        layer_show(title,url,w,h);
+    function ti_edit(title, url, id, w, h) {
+        url = url + "?id=" + id;
+        layer_show(title, url, w, h);
     }
 
     //删除接口
-    function ti_del(obj,id){
-        var ms="请确认是否要删除id="+id+"的接口数据";
-        del(obj,id,"/ti/deleteOne",ms);
+    function ti_del(obj, id) {
+        var ms = "请确认是否要删除id=" + id + "的接口数据";
+        del(obj, id, "/ti/deleteOne", ms);
     }
-
-
 
 
 </script>

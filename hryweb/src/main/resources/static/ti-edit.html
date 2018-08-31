@@ -152,7 +152,7 @@
         $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
-            url: "/user/selectByGroupId",
+            url: "/user/selectDever",
             data: {
                 groupId: groupId
             },
@@ -168,7 +168,6 @@
                         skin: 'layer-ext-moon'
                     })
                 }
-
             },
             fail: function (data) {
                 layer.alert(JSON.stringify(data), {
@@ -210,31 +209,33 @@
                     var serviceid = list.serviceid;
                     var iuri = list.iuri;
                     var remark = "";
-                    if(list.remark != null){
-                        remark=list.remark;
+                    if (list.remark != null) {
+                        remark = list.remark;
                     }
                     var irequestmethod = list.irequestmethod;
                     var icontenttype = list.icontenttype;
                     var iparamtype = list.iparamtype;
 
-                    var iheadersample=list.iheadersample;
-                    if(iheadersample!= null){
+                    var iheadersample = list.iheadersample;
+                    if (iheadersample != null) {
                         var requestHeaderJson = JSON.stringify(JSON.parse(iheadersample), null, 2);
                         iheadersample = requestHeaderJson;
-                    }else{
-                        iheadersample="";
+                    } else {
+                        iheadersample = "";
                     }
 
                     var iparamsample = list.iparamsample;
-                    if(iparamsample!= null && iparamtype ==1){
-                        try {
-                            var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
-                            iparamsample = requestJson;
-                        }catch (e) {
-                            iparamsample = iparamsample;
+                    if (iparamsample == null) {
+                        iparamsample = "";
+                    } else {
+                        if (iparamtype == 1) {
+                            try {
+                                var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
+                                iparamsample = requestJson;
+                            } catch (e) {
+                                iparamsample = iparamsample;
+                            }
                         }
-                    }else {
-                        iparamsample =iparamsample;
                     }
                     var iresponsetype = list.iresponsetype;
                     var idev = list.idev;
@@ -304,22 +305,14 @@
                         responseType = responseType + option;
                     }
 
-                    var existIdev = false;
                     var devhtml = "";
                     var dev = devGroup();
                     for (var i = 0; i < dev.length; i++) {
-                        var option = "";
-                        var row5 = dev[i];
-                        if (idev == row5.realname) {
-                            existIdev = true;
-                            option = "<option value=\"" + row5.realname + "\" selected>" + row5.realname + "</option>";
+                        if (idev == dev[i].realname) {
+                            devhtml += "<option value=\"" + dev[i].realname + "\" selected>" + dev[i].realname + "</option>";
                         } else {
-                            option = "<option value=\"" + row5.realname + "\">" + row5.realname + "</option>";
+                            devhtml += "<option value=\"" + dev[i].realname + "\">" + dev[i].realname + "</option>";
                         }
-                        devhtml = devhtml + option;
-                    }
-                    if (!existIdev) {
-                        devhtml += "<option value=\"" + idev + "\" selected>" + idev + "</option>";
                     }
 
 
@@ -368,7 +361,7 @@
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\">示例Header：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <textarea id=\"iheadersample\" name=\"iheadersample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例Header...\">"+iheadersample+"</textarea>\n" +
+                        "                <textarea id=\"iheadersample\" name=\"iheadersample\" cols=\"\" rows=\"\" class=\"textarea valid\" placeholder=\"请输入示例Header...\">" + iheadersample + "</textarea>\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
@@ -402,6 +395,7 @@
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
                         "               <span class=\"select-box\">\n" +
                         "                    <select class=\"select\" size=\"1\" name=\"idev\" id=\"idev\">\n" +
+                        "                    <option value=\"\">请选择</option>\n" +
                         "                        " + devhtml + "\n" +
                         "                    </select>\n" +
                         "               </span>\n" +
@@ -438,7 +432,7 @@
         var iuri = $("#iuri").val();
         var remark = $("#remark").val();
         var irequestmethod = $("#irequestmethod").val();
-        var iheadersample= $("#iheadersample").val();
+        var iheadersample = $("#iheadersample").val();
         var icontenttype = $("#icontenttype").val();
         var iparamtype = $("#iparamtype").val();
         var iparamsample = $("#iparamsample").val();
@@ -464,13 +458,12 @@
                     iuri: iuri,
                     remark: remark,
                     irequestmethod: irequestmethod,
-                    iheadersample:iheadersample,
+                    iheadersample: iheadersample,
                     icontenttype: icontenttype,
                     iparamtype: iparamtype,
                     iparamsample: iparamsample,
                     iresponsetype: iresponsetype,
                     idev: idev,
-                    istatus: 1
                 },
                 dataType: 'json',
                 success: function (data) {
