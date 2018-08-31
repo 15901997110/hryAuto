@@ -2,7 +2,9 @@ package com.haier.service.impl;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.google.gson.JsonObject;
 import com.haier.enums.ContentTypeEnum;
@@ -12,6 +14,7 @@ import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.ImportService;
 import com.haier.util.HryHttpClientUtil;
+import com.haier.util.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Lists;
@@ -135,35 +138,56 @@ public class ImportServiceImpl implements ImportService {
                     ti.setIcontenttype(-1);
                 }
                 //解析Json，设置Iparamsample和Iheadersample
-                List parameJsonObject = postJsonObject.getJSONArray("parameters");
-                if (parameJsonObject.size() == 0) {
-                    ti.setIparamsample("");
-                    ti.setIheadersample("");
-                    continue;
-                }
-                //如果parameJsonObject为空，则直接赋值为空
-                Map<String, Object> headermap = Maps.newHashMap();
-                for (Object jsonObj : parameJsonObject) {
-                    JSONObject object = JSONObject.parseObject(String.valueOf(jsonObj));
-                    if ("header".equals(object.get("in"))) {
-                        headermap.put(String.valueOf(object.get("name")), object.get("default"));
-                        ti.setIheadersample(JSONUtils.toJSONString(headermap));
-                    }
-                    if("body".equals(object.get("in"))){
-                        Map<String, Object> parametersMap = (Map<String, Object>) jsonObj;
-                        //设置特殊的iparamsample字段
-                        Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
-                        //如果schema不为空且in的值不为header
-                        if (Objects.isNull(schema)&&!("header").equals(object.get("in"))) {
-                            Map<String, Object> paramsamplemap = Maps.newHashMap();
-                            paramsamplemap.put(String.valueOf(object.get("name")), object.get("type"));
-                            ti.setIparamsample(JSONUtils.toJSONString(paramsamplemap));
-                        } else {
-                            //判断schema下的ref是否存在，存在
-                            if (Objects.nonNull(schema.get("$ref"))) {
-                                String ref = schema.get("$ref").toString();
+                JSONArray parameJsonObject = postJsonObject.getJSONArray("parameters");
+
+                if (parameJsonObject != null && parameJsonObject.size() > 0) {
+                    Map<String, Object> headermap = new LinkedHashMap<>();
+
+                    for (Object jsonObj : parameJsonObject) {
+                        JSONObject jsonObject1 = (JSONObject) jsonObj;
+                        //JSONObject object = JSONObject.parseObject(String.valueOf(jsonObj));
+                        if ("header".equals(jsonObject1.getString("in"))) {
+                            headermap.put((jsonObject1.getString("name")), jsonObject1.get("default"));
+                            //ti.setIheadersample(JSONUtils.toJSONString(headermap));
+                        }
+                        if ("body".equals(jsonObject1.get("in"))) {
+
+                            //设置特殊的iparamsample字段
+                            // Map<String, Object> schema = object.getJSONObject("schema");
+                            JSONObject schema = jsonObject1.getJSONObject("schema");
+                            //如果schema为空
+                            if (Objects.isNull(schema)) {
+                                log.info("parameter中in=body,但是Schema获取不到值 -----" + iUri);
+/*                            Map<String, Object> paramsamplemap = new LinkedHashMap<>();
+                            paramsamplemap.put(object.getString("name"), object.get("type"));
+                            ti.setIparamsample(JSONUtils.toJSONString(paramsamplemap));*/
+                            } else {
+                                //判断schema下的ref是否存在，存在
+                                String ref = schema.getString("$ref");
                                 StringBuilder paramsamples = new StringBuilder();
-                                parseRef(ref, ti, definitions, paramsamples);
+                                parseRef(ref, definitions, paramsamples);
+
+                                String paramSmapleJSON = JSONUtil.verify(paramsamples.toString());
+                                if (paramSmapleJSON != null) {
+                                    if (paramSmapleJSON.length() > 5000) {
+                                        String params = paramsamples.substring(0, 4999);
+                                        ti.setIparamsample(params);
+                                        log.error("长度超过限制了，请注意！数据为：======" + paramsamples);
+                                    } else {
+                                        ti.setIparamsample(paramSmapleJSON);
+                                    }
+                                } else {
+                                    if (paramsamples != null) {
+                                        if (paramsamples.length() > 5000) {
+                                            ti.setIparamsample(paramsamples.substring(0, 4999));
+                                        } else {
+                                            ti.setIparamsample(paramsamples.toString());
+                                        }
+                                    }
+                                }
+
+                           /* if (Objects.nonNull(schema.get("$ref"))) {
+
                             } else {//不存在
                                 StringBuilder params = new StringBuilder();
                                 params.append("{");
@@ -177,10 +201,15 @@ public class ImportServiceImpl implements ImportService {
                                 }
                                 params.append("}");
                                 ti.setIparamsample(params.toString());
+                            }*/
                             }
                         }
                     }
+                    if (headermap.size() > 0) {
+                        ti.setIheadersample(JSONUtils.toJSONString(headermap));
+                    }
                 }
+
 
                 if (Objects.isNull(existIuri) || !existIuri.contains(iUri)) {//如果existIurl==null,说明此serviceId没有对应
                     // 的接口记录,以下则可放心插入,
@@ -224,78 +253,73 @@ public class ImportServiceImpl implements ImportService {
     }
 
     //ref内层嵌套json解析
-    private static void parseRef(String ref, Ti ti, Map<String, Object> definitions, StringBuilder paramsamples) {
-        if (StringUtils.isNotBlank(ref) && ref.contains("/")) {
-            //ref值的/之后的最后一段字英文字符
-            String defKey = ref.substring(ref.lastIndexOf("/") + 1, ref.length());
-            Map<String, Object> definitionsMap = (Map<String, Object>) definitions.get(defKey);
-            Map<String, Object> properties = (Map<String, Object>) definitionsMap.get("properties");
-            if (Objects.nonNull(properties)) {
-                paramsamples.append("{");
-                for (String propertieKey : properties.keySet()) {
-                    paramsamples.append("\"").append(propertieKey).append("\":");
-                    Map<String, Object> propertiesValue = (Map<String, Object>) properties.get(propertieKey);
-                    for (String k : propertiesValue.keySet()) {
-                        Object v = propertiesValue.get(k);
-                        if ("array".equals(v)) {
-                            Map<String, Object> items = (Map<String, Object>) propertiesValue.get("items");
-                            if (Objects.nonNull(items.get("$ref"))) {
-                                ref = items.get("$ref").toString();
-                                paramsamples.append("[");
-                                parseRef(ref, ti, definitions, paramsamples);
-                                paramsamples.append("]");
-                                paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
-                            } else {
-                                String samples = items.get("type").toString();
-                                if ("integer".equals(samples)) {
-                                    paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
-                                } else if ("string".equals(samples)) {
-                                    paramsamples.append("[\"").append(samples.replace("string", "")).append("\"],");
-                                } else if ("number".equals(samples)) {
-                                    paramsamples.append("[").append(samples.replace("number", "0")).append("],");
-                                } else {
-                                    paramsamples.append("[").append(samples).append("],");
-                                }
-                                //paramsamples.append("[").append(items.get("type").toString().replace("array", "L")).append("],");
-                            }
-                        } else if ("integer".equals(v)) {
-                            //paramsamples.append("\"").append(v.toString().replace("integer","0")).append("\",");
-                            paramsamples.append(v.toString().replace("integer", "0")).append(",");
-                        } else if ("string".equals(v)) {
-                            paramsamples.append("\"").append(v.toString().replace("string", "")).append("\",");
-                        } else if ("number".equals(v)) {
-                            //paramsamples.append("\"").append(v.toString().replace("number","0")).append("\",");
-                            paramsamples.append(v.toString().replace("number", "0")).append(",");
-                        } else if (Objects.nonNull(v)) {
-                            if ("type".equals(k) && (!"string".equals(v)) && (!"integer".equals(v)) && (!"array".equals(v))) {
-                                paramsamples.append("\"").append(v.toString()).append("\",");
-                            } else if ("$ref".equals(k)) {
-                                parseRef(v.toString().replace("#", ""), ti, definitions, paramsamples);
-                                paramsamples.append(",");
-                                //paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
-                            }
+    private static void parseRef(String ref, JSONObject definitions, StringBuilder paramsamples) {
+        if (ref == null || ref.length() == 0) {
+            return;
+        }
+        //ref值的/之后的最后一段字英文字符
+        String refKey = ref.substring(ref.lastIndexOf("/") + 1);
+        JSONObject refValue = definitions.getJSONObject(refKey);
+
+        JSONObject propertiesJSONObject = refValue.getJSONObject("properties");
+        if (Objects.nonNull(propertiesJSONObject)) {
+            paramsamples.append("{");
+
+            for (String paramName : propertiesJSONObject.keySet()) {
+                paramsamples.append("\"").append(paramName).append("\":");
+
+                JSONObject paramValueJSONObject = propertiesJSONObject.getJSONObject(paramName);
+
+                String paramValueType = paramValueJSONObject.getString("type");
+                if ("array".equals(paramValueType)) {
+                    JSONObject itemsJSONObject = paramValueJSONObject.getJSONObject("items");
+                    String ref1 = itemsJSONObject.getString("$ref");
+                    if (StringUtils.isNotBlank(ref1)) {
+                        paramsamples.append("[");
+                        parseRef(ref1, definitions, paramsamples);
+                        paramsamples.append("]");
+                        paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
+                    } else {
+                        log.info("array 中的item为null");
+                        /*String samples = itemsJSONObject.get("type").toString();
+                        if ("integer".equals(samples)) {
+                            paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
+                        } else if ("string".equals(samples)) {
+                            paramsamples.append("[\"").append(samples.replace("string", "")).append("\"],");
+                        } else if ("number".equals(samples)) {
+                            paramsamples.append("[").append(samples.replace("number", "0")).append("],");
                         } else {
-                            ti.setIparamsample(null);
-                        }
+                            paramsamples.append("[").append(samples).append("],");
+                        }*/
+                        //paramsamples.append("[").append(items.get("type").toString().replace("array", "L")).append("],");
                     }
+                } else if ("integer".equals(paramValueType) || "number".equals(paramValueType)) {
+                    paramsamples.append("0,");
+                } else if ("string".equals(paramValueType)) {
+                    paramsamples.append("\"").append("\",");
+                } else if ("boolean".equals(paramValueType)) {
+                    paramsamples.append("true,");
                 }
-                if (paramsamples.lastIndexOf(",") >= 0) {
-                    paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
-                    paramsamples.append("}");
-                }
-                //log.info("解析结果为：======" + paramsamples);
-                //字符长度超过5000时，截取5000个字符
-                if (paramsamples.length() > 5000) {
-                    String params = paramsamples.substring(0, 5000);
-                    ti.setIparamsample(params.replaceAll("\"0\"", "0"));
-                    log.error("长度超过限制了，请注意！数据为：======" + paramsamples);
-                } else {
-                    //ti.setIparamsample(paramsamples.toString().replaceAll("\"0\"", "0"));
-                    ti.setIparamsample(paramsamples.toString());
-                }
+                /*else if ("number".equals(paramValueType)) {
+                    paramsamples.append(paramValueType.toString().replace("number", "0")).append(",");
+                }*/ /*else if (Objects.nonNull(paramValueType)) {
+                    if ("type".equals(paramValueObjectKey) && (!"string".equals(v)) && (!"integer".equals(v)) && (!"array".equals(v))) {
+                        paramsamples.append("\"").append(v.toString()).append("\",");
+                    } else if ("$ref".equals(paramValueObjectKey)) {
+                        parseRef(v.toString().replace("#", ""), ti, refValue, paramsamples);
+                        paramsamples.append(",");
+                        //paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                    }
+                }*/
+               /* else {
+                    ti.setIparamsample(null);
+                }*/
+
             }
-        } else {
-            ti.setIparamsample(null);
+            if (paramsamples.lastIndexOf(",") >= 0) {
+                paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                paramsamples.append("}");
+            }
         }
     }
 }
