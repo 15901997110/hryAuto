@@ -174,8 +174,12 @@
 
         });
 
-        setInterval(selectReport,5000,reportname);//每5秒钟主动查询一次测试报告的状态
+        var startTime=new Date();
+        var interval=setInterval(selectReport,1000,reportname);//每1秒钟主动查询一次测试报告的状态
         function selectReport(reportname) {
+            if(new Date()-startTime>30*60*1000){//超过半小时 ,将停止查询数据库
+                clearInterval(interval);
+            }
             if(reportname==null||reportname==""){
                 return;
             }
