@@ -166,8 +166,8 @@ public class ReflectUtil {
 
     /**
      *@description: 根据注解类型,字段类型获取对象中符合条件的第一个字段的值,
-     *@params: [po, annotationClass, fieldType]
-     *@return: M
+     *@params: [po-对象, annotationClass-注解类型, fieldType-字段类型]
+     *@return: 对应字段的值,如果未正常获取到,则返回null
      *@author: luqiwei
      *@date: 2018-08-31
      */
