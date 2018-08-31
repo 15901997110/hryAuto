@@ -1,7 +1,10 @@
 package com.haier.service.impl;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.google.gson.JsonObject;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.mapper.TiMapper;
@@ -11,8 +14,10 @@ import com.haier.service.ImportService;
 import com.haier.util.HryHttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.testng.collections.Maps;
 
 import java.util.*;
 
@@ -129,54 +134,50 @@ public class ImportServiceImpl implements ImportService {
                 } else {
                     ti.setIcontenttype(-1);
                 }
-                //解析Json，设置Iparamsample
+                //解析Json，设置Iparamsample和Iheadersample
                 List parameJsonObject = postJsonObject.getJSONArray("parameters");
-                //如果parameJsonObject为空，则直接赋值为空
                 if (parameJsonObject.size() == 0) {
                     ti.setIparamsample("");
-                } else {
-                    Map<String, Object> parametersMap = (Map<String, Object>) parameJsonObject.get(0);
-                    Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
-                    if (Objects.isNull(schema)) {
-                        StringBuilder paramsample = new StringBuilder();
-                        paramsample.append("{");
-                        for (int i = 0; i < parameJsonObject.size(); i++) {
-                            Map<String, Object> Mapparameters = (Map<String, Object>) parameJsonObject.get(i);
-                            for (String listkey : Mapparameters.keySet()) {
-                                Object listvalue = Mapparameters.get(listkey);
-                                if (Objects.nonNull(listkey)) {
-                                    if ("name".equals(listkey)) {
-                                        paramsample.append(listvalue.toString()).append("=");
-                                    } else if ("type".equals(listkey)) {
-                                        paramsample.append(listvalue.toString()).append("&");
-                                    }
+                    ti.setIheadersample("");
+                    continue;
+                }
+                //如果parameJsonObject为空，则直接赋值为空
+                Map<String, Object> headermap = Maps.newHashMap();
+                for (Object jsonObj : parameJsonObject) {
+                    JSONObject object = JSONObject.parseObject(String.valueOf(jsonObj));
+                    if ("header".equals(object.get("in"))) {
+                        headermap.put(String.valueOf(object.get("name")), object.get("default"));
+                        ti.setIheadersample(JSONUtils.toJSONString(headermap));
+                    }
+                    if("body".equals(object.get("in"))){
+                        Map<String, Object> parametersMap = (Map<String, Object>) jsonObj;
+                        //设置特殊的iparamsample字段
+                        Map<String, Object> schema = (Map<String, Object>) parametersMap.get("schema");
+                        //如果schema不为空且in的值不为header
+                        if (Objects.isNull(schema)&&!("header").equals(object.get("in"))) {
+                            Map<String, Object> paramsamplemap = Maps.newHashMap();
+                            paramsamplemap.put(String.valueOf(object.get("name")), object.get("type"));
+                            ti.setIparamsample(JSONUtils.toJSONString(paramsamplemap));
+                        } else {
+                            //判断schema下的ref是否存在，存在
+                            if (Objects.nonNull(schema.get("$ref"))) {
+                                String ref = schema.get("$ref").toString();
+                                StringBuilder paramsamples = new StringBuilder();
+                                parseRef(ref, ti, definitions, paramsamples);
+                            } else {//不存在
+                                StringBuilder params = new StringBuilder();
+                                params.append("{");
+                                String mps = schema.get("type").toString();
+                                if ("string".equals(mps)) {
+                                    params.append("\"").append(schema.get("type").toString().replace("string", "")).append("\"");
+                                } else if ("integer".equals(mps)) {
+                                    params.append(schema.get("type").toString().replace("integer", "0"));
+                                } else {
+                                    params.append("\"").append(schema.get("type").toString()).append("\"");
                                 }
+                                params.append("}");
+                                ti.setIparamsample(params.toString());
                             }
-                        }
-                        paramsample.append("}");
-                        if (paramsample.lastIndexOf("&") >= 0) {
-                            paramsample.replace(paramsample.lastIndexOf("&"), paramsample.lastIndexOf("&") + 1, "");
-                        }
-                        ti.setIparamsample(paramsample.toString());
-                    } else {
-                        //判断schema下的ref是否存在，存在
-                        if (Objects.nonNull(schema.get("$ref"))) {
-                            String ref = schema.get("$ref").toString();
-                            StringBuilder paramsamples = new StringBuilder();
-                            parseRef(ref, ti, definitions, paramsamples);
-                        } else {//不存在
-                            StringBuilder params = new StringBuilder();
-                            params.append("{");
-                            String mps = schema.get("type").toString();
-                            if ("string".equals(mps)) {
-                                params.append("\"").append(schema.get("type").toString().replace("string", "")).append("\"");
-                            } else if ("integer".equals(mps)) {
-                                params.append(schema.get("type").toString().replace("integer", "0"));
-                            } else {
-                                params.append("\"").append(schema.get("type").toString()).append("\"");
-                            }
-                            params.append("}");
-                            ti.setIparamsample(params.toString());
                         }
                     }
                 }
