@@ -375,7 +375,7 @@
         var iparamsample = t.iparamsample;
         //var iparamtype = getTitype(tId);
         var iparamtype = t.iparamtype;
-        debugger;
+
         if (iparamsample != null && iparamsample.length > 0 && iparamtype == 1) {
             try {
                 var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
@@ -384,7 +384,7 @@
                 $("#requestParam").val(iparamsample);
             }
         } else {
-            $("#requestParam").val(iparamsample);
+            $("#requestParam").val("");
         }
         //$("#requestParam").empty();
 

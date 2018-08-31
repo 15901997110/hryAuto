@@ -47,7 +47,7 @@ public class ImportUtil {
         if (result == null) {
             return;
         }
-        JSONObject jsonObject = JSONUtil.str2JsonObj(result);
+        JSONObject jsonObject = JSONUtil.str2JSONObj(result);
         serviceName = jsonObject.getJSONObject("info").getString("description");
         log.debug("服务描述:{}", serviceName);
 

@@ -3,11 +3,9 @@ package com.haier.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
-import com.haier.anno.Cookie;
 import com.haier.config.SpringContextHolder;
 import com.haier.enums.*;
 import com.haier.exception.HryException;
@@ -19,23 +17,14 @@ import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 import org.testng.Reporter;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 
@@ -75,11 +64,11 @@ public class HryHttpClientUtil {
     }
 
     public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param) {
-        return send(url, requestMethodType, contentType, requestParamType, param, null);
+        return send(url, requestMethodType, contentType, requestParamType, param, null, null);
     }
 
 
-    public static <T extends Base> String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, T entity) {
+    public static <T extends Base> String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, T entity, Header[] requestHeaders) {
 
         //请求方式,现在仅支持Post/Get
         HttpMethods methodType;
@@ -90,11 +79,10 @@ public class HryHttpClientUtil {
         } else {
             methodType = HttpMethods.POST;
         }
-
-        //Content-Type
+        //设置请求Header
         Header header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
-
-        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(new Header[]{header});
+        Header[] headers = ArrayUtils.add(requestHeaders, header);
+        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(headers);
 
         //设置请求参数
         if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
@@ -140,6 +128,10 @@ public class HryHttpClientUtil {
         log.info("--------------------start----------------------------------------");
         log.info("请求Url:" + config.url());
         log.info("请求方式:" + config.method().getName());
+        log.info("请求Headers:");
+        for (Header h : headers) {
+            log.info("  " + h.getName() + ":" + h.getValue());
+        }
         log.info("请求参数:" + param);
         log.info("响应实体:" + responseEntity);
         log.info("---------------------end-----------------------------------------");
@@ -194,11 +186,29 @@ public class HryHttpClientUtil {
 
     public static <T extends Base> String send(HryTest test, T entity) {
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
+
+        //请求Header
+        String headerStr = test.getTcase().getRequestheader();
+        JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
+        Header[] headers = null;
+        if (headerJSON != null) {
+            for (Map.Entry entry : headerJSON.entrySet()) {
+                headers = ArrayUtils.add(headers, new BasicHeader((String) entry.getKey(), (String) entry.getValue()));
+            }
+        }
+
         //参数替换
         String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
 
-        return send(url, test.getTi().getIrequestmethod(), test.getTi().getIcontenttype(),
-                test.getTi().getIparamtype(), param, entity);
+        return send(
+                url,
+                test.getTi().getIrequestmethod(),
+                test.getTi().getIcontenttype(),
+                test.getTi().getIparamtype(),
+                param,
+                entity,
+                headers == null ? null : headers
+        );
     }
 
     private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {

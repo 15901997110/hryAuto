@@ -50,11 +50,11 @@ public class AssertUtil {
                 switch (actualType) {
                     //actualType=json,对于实际返回值类型为json的处理
                     case 1:
-                        JSONObject actualJsonObj = JSONUtil.str2JsonObj(actual);
+                        JSONObject actualJsonObj = JSONUtil.str2JSONObj(actual);
                         if (actualJsonObj == null) {
                             Reporter.log("实际值尝试转换为JSON对象时失败,系统视实际值为null");
                         }
-                        JSONObject expectJsonObj = JSONUtil.str2JsonObj(expected);
+                        JSONObject expectJsonObj = JSONUtil.str2JSONObj(expected);
                         if (expectJsonObj == null) {
                             Reporter.log("期望值尝试转换为JSON对象时失败,系统视期望值为null");
                         }
