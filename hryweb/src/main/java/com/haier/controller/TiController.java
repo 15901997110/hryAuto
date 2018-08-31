@@ -5,7 +5,6 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
-import com.haier.po.TiExample;
 import com.haier.util.JSONUtil;
 import com.haier.vo.TiWithCaseVO;
 import com.haier.response.Result;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Ref;
 import java.util.List;
 
 /**
@@ -42,7 +40,7 @@ public class TiController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "服务ID,iUri必填");
         }
 
-        verifyHeader(ti);
+        verifyIHeaderAndIParam(ti);
         //数据重复性校验
         Ti condition = new Ti();
         condition.setIuri(ti.getIuri());
@@ -145,7 +143,7 @@ public class TiController {
                 condition.setIuri(ti.getIuri());
             }
         }
-        verifyHeader(ti);
+        verifyIHeaderAndIParam(ti);
         if (condition != null) {
             List<Ti> tis = tiService.selectByCondition(condition);
             Ti self = tiService.selectOne(ti.getId());
@@ -163,13 +161,21 @@ public class TiController {
         return ResultUtil.success(tiService.updateOne(ti));
     }
 
-    public void verifyHeader(Ti ti) {
+    public void verifyIHeaderAndIParam(Ti ti) {
         if (ti.getIheadersample() != null) {
             String formatedHeader = JSONUtil.verify(ti.getIheadersample());
             if (formatedHeader != null) {
                 ti.setIheadersample(formatedHeader);
             } else {
                 throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "示例Header只可填写JSON格式");
+            }
+        }
+        if (ti.getIparamtype() == 1 && ti.getIparamsample() != null) {
+            String formatedSample = JSONUtil.verify(ti.getIparamsample());
+            if (formatedSample != null) {
+                ti.setIparamsample(formatedSample);
+            } else {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "当请求参数类型为JSON时,请求参数示例必须符合JSON格式");
             }
         }
     }
