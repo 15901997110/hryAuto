@@ -65,7 +65,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">swagger地址：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl" name="swaggerUrl">
+                <input type="text" class="input-text" value="" placeholder="对应的swagger地址" id="swaggerUrl"
+                       name="swaggerUrl">
             </div>
         </div>
         <!--<div class="row cl">
@@ -96,9 +97,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                layerIndex = layer.load(1, {shade: [1.01, '#fff']});
                 $('#admin-role-save').val("正在提交请稍等...")
             },
             error: function () { //报错时执行
@@ -117,22 +118,20 @@
         return null;
     }
 
-    function getServiceList(){
-        var service=null;
-        $.ajaxSetup({async : false});
+    function getServiceList() {
+        var service = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
             url: "/tservice/selectByConditionSimple",
-            data: {
-
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    service=data.data;
-                }else{
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    service = data.data;
+                } else {
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -140,13 +139,13 @@
                 }
 
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -156,22 +155,20 @@
         return service;
     }
 
-    function getTenvList(){
-        var env=null;
-        $.ajaxSetup({async : false});
+    function getTenvList() {
+        var env = null;
+        $.ajaxSetup({async: false});
         $.ajax({
             type: "post",
             url: "/tenv/selectAll",
-            data: {
-
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    env=data.data;
-                }else{
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    env = data.data;
+                } else {
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -179,13 +176,13 @@
                 }
 
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -208,59 +205,63 @@
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data;
                 console.log(data);
 
-                if(status == 0){
+                if (status == 0) {
                     var serviceid = list.serviceid;
                     var envid = list.envid;
-                    var hostinfo=list.hostinfo;
-                    var dbinfo=list.dbinfo;
-                    var swaggerurl=list.swaggerurl;
+                    var hostinfo = list.hostinfo;
+                    var dbinfo = list.dbinfo;
+                    var swaggerurl = list.swaggerurl;
                     /*var clazz=list.clazz;*/
 
-                    var submit="<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTenvDetail("+id+")\"><i class=\"icon-ok\"></i> 提交</button>";
+                    var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTenvDetail(" + id + ")\"><i class=\"icon-ok\"></i> 提交</button>";
                     $("#submit").append(submit);
                     var html = "";
-                    var services=getServiceList();
-                    for(var i=0;i<services.length;i++){
-                        var row=services[i];
-                        if( row.id == serviceid){
-                            var rowHtml="<option value=\""+row.id+"\" selected>"+row.servicekey+"</option>";
-                        }else{
-                            var rowHtml="<option value=\""+row.id+"\">"+row.servicekey+"</option>";
+                    var services = getServiceList();
+                    for (var i = 0; i < services.length; i++) {
+                        var row = services[i];
+                        if (row.id == serviceid) {
+                            var rowHtml = "<option value=\"" + row.id + "\" selected>" + row.servicekey + "</option>";
+                        } else {
+                            var rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>";
                         }
-                        html=html+rowHtml;
+                        html = html + rowHtml;
                     }
 
-                    var envs="";
-                    var env=getTenvList();
-                    for(var k=0;k<env.length;k++){
-                        var rowEnv=env[k];
-                        if( rowEnv.id == envid){
-                            var envHtml="<option value=\""+rowEnv.id+"\" selected>"+rowEnv.envkey+"</option>";
-                        }else{
-                            var envHtml="<option value=\""+rowEnv.id+"\">"+rowEnv.envkey+"</option>";
+                    var envs = "";
+                    var env = getTenvList();
+                    for (var k = 0; k < env.length; k++) {
+                        var rowEnv = env[k];
+                        if (rowEnv.id == envid) {
+                            var envHtml = "<option value=\"" + rowEnv.id + "\" selected>" + rowEnv.envkey + "</option>";
+                        } else {
+                            var envHtml = "<option value=\"" + rowEnv.id + "\">" + rowEnv.envkey + "</option>";
                         }
-                        envs=envs+envHtml;
+                        envs = envs + envHtml;
                     }
 
                     $("#service").append(html);
                     $("#env").append(envs);
                     $("#hostInfo").val(hostinfo);
-                    if(dbinfo!= null){
-                        var dbInfoJson = JSON.stringify(JSON.parse(dbinfo), null, 2);
-                        $("#dbInfo").val(dbInfoJson);
-                    }else {
-                        $("#dbInfo").val(dbinfo);
+                    if (dbinfo != null) {
+                        try {
+                            var dbInfoJson = JSON.stringify(JSON.parse(dbinfo), null, 2);
+                            $("#dbInfo").val(dbInfoJson);
+                        } catch (e) {
+                            $("#dbInfo").val(dbinfo);
+                        }
+                    } else {
+                        $("#dbInfo").val("");
                     }
                     $("#swaggerUrl").val(swaggerurl);
                     /*$("#clazz").val(clazz);*/
                     layer.close(layerIndex);
 
-                }else{
+                } else {
                     layer.close(layerIndex);
                     layer.alert(msg, {
                         icon: 0,
@@ -275,7 +276,7 @@
     });
 
     //编辑服务与环境绑定关系
-    function editTenvDetail(id){
+    function editTenvDetail(id) {
         var service = $("#service").val();
         var env = $("#env").val();
         var hostInfo = $("#hostInfo").val();
@@ -283,41 +284,42 @@
         var swaggerUrl = $("#swaggerUrl").val();
         /*var clazz = $("#clazz").val();*/
 
-        if(service == null || service == ""){
+        if (service == null || service == "") {
             layer.msg("请选择服务！");
             return;
-        }else if(env == null || env == ""){
+        } else if (env == null || env == "") {
             layer.msg("请选择环境！");
             return;
-        }else if(hostInfo == null || hostInfo == ""){
+        } else if (hostInfo == null || hostInfo == "") {
             layer.msg("host不能为空！");
             return;
-        }else{
+        } else {
             $.ajax({
                 type: 'POST',
                 url: '/tservicedetail/updateOne',
-                data:{
-                    id:id,
-                    serviceid:service,
-                    envid:env,
-                    hostinfo:hostInfo,
-                    dbinfo:dbInfo,
-                    swaggerurl:swaggerUrl,
-                   /* clazz:clazz,*/
-                    status:1
+                data: {
+                    id: id,
+                    serviceid: service,
+                    envid: env,
+                    hostinfo: hostInfo,
+                    dbinfo: dbInfo,
+                    swaggerurl: swaggerUrl,
+                    /* clazz:clazz,*/
+                    status: 1
                 },
                 dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    var list=data.data;
+                success: function (data) {
+                    var status = data.status;
+                    var msg = data.msg;
+                    var list = data.data;
 
-                    if(status == 0){
+                    if (status == 0) {
                         //alert("更新成功！");
                         parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                    }else{
+                    } else {
+                        layer.close(layerIndex);
                         layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -325,7 +327,7 @@
                     }
 
                 },
-                error:function(xhr) {
+                error: function (xhr) {
                     layer.close(layerIndex);
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,

@@ -7,9 +7,11 @@ import com.haier.po.TservicedetailCustom;
 import com.haier.po.TservicedetailExample;
 import com.haier.response.Result;
 import com.haier.service.TservicedetailService;
+import com.haier.util.JSONUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +40,9 @@ public class TservicedetailController {
                 || tservicedetail.getEnvid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "serviceId,envId,hostInfo必填");
         }
+        dbInfoVerify(tservicedetail);
         //数据校验
-        Tservicedetail condition=new Tservicedetail();
+        Tservicedetail condition = new Tservicedetail();
         condition.setServiceid(tservicedetail.getServiceid());
         condition.setEnvid(tservicedetail.getEnvid());
         List<Tservicedetail> tservicedetailList = this.selectList(condition);
@@ -63,9 +66,10 @@ public class TservicedetailController {
         if (tservicedetail == null || tservicedetail.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
         }
+        dbInfoVerify(tservicedetail);
         //数据重复性校验
         if (tservicedetail.getServiceid() != null && tservicedetail.getEnvid() != null) {
-            Tservicedetail condition=new Tservicedetail();
+            Tservicedetail condition = new Tservicedetail();
             condition.setServiceid(tservicedetail.getServiceid());
             condition.setEnvid(tservicedetail.getEnvid());
             List<Tservicedetail> tservicedetailList = this.selectList(condition);
@@ -79,6 +83,17 @@ public class TservicedetailController {
         }
 
         return ResultUtil.success(tservicedetailService.updateOne(tservicedetail));
+    }
+
+    public void dbInfoVerify(Tservicedetail tservicedetail) {
+        if (StringUtils.isNotBlank(tservicedetail.getDbinfo())) {
+            String verify = JSONUtil.verify(tservicedetail.getDbinfo());
+            if (verify == null) {
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "数据库信息必须是JSON格式,且必须指明driver,url,username,password");
+            } else {
+                tservicedetail.setDbinfo(verify);
+            }
+        }
     }
 
     //根据id查一条
@@ -103,7 +118,7 @@ public class TservicedetailController {
 
     //返回纯List
     @PostMapping("/selectList")
-    public List<Tservicedetail> selectList(Tservicedetail tservicedetail){
+    public List<Tservicedetail> selectList(Tservicedetail tservicedetail) {
         return tservicedetailService.selectByCondition(tservicedetail);
     }
 
