@@ -10,6 +10,7 @@ import com.haier.po.Tservicedetail;
 import com.haier.response.Result;
 import com.haier.service.ImportService;
 import com.haier.service.TservicedetailService;
+import com.haier.util.HryHttpClientUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -36,70 +37,30 @@ public class ImportController {
     TservicedetailService tservicedetailService;
 
     @PostMapping("/interfaceImport")
-    public Result interfaceImport(
-            @RequestParam("serviceId") Integer serviceId,//服务id,必填
-            @RequestParam("envId") Integer envId,//环境id,必填
-            Boolean overwrite,//是否覆盖已经存在的记录
-            //String sEditor,//服务维护者,传测试人员realName或者当前登录人realName
-            String iDev//此服务下接口开发人员的realName
-    ) {
-        if (serviceId == null || envId == null || serviceId == 0 || envId == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "serviceId,envId必填");
+    public Result interfaceImport(Integer serviceDetailId, Boolean overwrite, String iDev) {
+        if (serviceDetailId == null || serviceDetailId == 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "tserviceDetail.id必传");
         }
         if (overwrite == null) {
             overwrite = false;
         }
-        /**
-         * 现在选择服务 ,已经不需要服务维护者参数
-         */
-/*        if(sEditor==null||"".equals(sEditor.trim())){
-            sEditor="自动导入";
-        }else{
-            sEditor=sEditor.trim();
-        }*/
-        if (StringUtils.isBlank(iDev)) {
-            iDev = "自动导入";
-        } else {
-            iDev = iDev.trim();
+        //1.找到swaggerUrl
+        Tservicedetail tservicedetail = tservicedetailService.selectOne(serviceDetailId);
+        if (tservicedetail == null || tservicedetail.getSwaggerurl() == null) {
+            throw new HryException(StatusCodeEnum.LOGICAL_ERROR, "服务与环境映射中未找到记录,或者找到记录的swaggerUrl不存在,serviceDetailId=" + serviceDetailId);
         }
 
-
-        //1.通过serviceId和envId找到swaggerUrl
-        Tservicedetail tservicedetail = new Tservicedetail();
-        tservicedetail.setServiceid(serviceId);
-        tservicedetail.setEnvid(envId);
-        String swaggerUrl = null;
-        List<Tservicedetail> tservicedetailList = tservicedetailService.selectByCondition(tservicedetail);
-        if (tservicedetailList != null && tservicedetailList.size() > 0) {
-            //查询到记录,应该有且只有一条记录,否则就是脏数据
-            swaggerUrl = tservicedetailList.get(0).getSwaggerurl();
-            if (swaggerUrl == null || "".equals(swaggerUrl.trim())) {
-                throw new HryException(38, "serviceId=" + serviceId + ",envId=" + envId + "对应的swagger地址为空,请先维护tservicedetail信息");
-            } else {
-                swaggerUrl = swaggerUrl.trim();
-            }
-        } else {
-            //未查询到记录
-            throw new HryException(StatusCodeEnum.NOT_FOUND, "tservicedetail表查询serviceId=" + serviceId + ",envId=" + envId);
-        }
         //2.通过url发送get请求,得到返回json
-        String responseJson = importService.sendGet(swaggerUrl);
-        if (responseJson == null) {
-            throw new HryException(StatusCodeEnum.HTTP_ERROR, "请求地址为:" + swaggerUrl);
-        }
+        String responseJson = HryHttpClientUtil.get(tservicedetail.getSwaggerurl());
         JSONObject jsonObject;
         try {
-            //DisableCircularReferenceDetect禁止引用传递,(fastJson在此处对$ref对象处理不好,故这里直接禁用)
             jsonObject = JSON.parseObject(responseJson, Feature.DisableCircularReferenceDetect);
         } catch (Exception e) {
-            log.info("swaggerUrl:" + swaggerUrl);
-            log.info("get swaggerUrl返回的内容:" + responseJson);
-            log.error("swagger json序列化为JSONObject时出现异常:", e);
-            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR);
+            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "请求结果转换为JSON异常,请求地址=" + tservicedetail.getSwaggerurl());
         }
 
         //3.解析json,插入数据到ti表
-        ImportInterfaceResult importInterfaceResult = importService.importInterface(serviceId, jsonObject, overwrite, iDev);
+        ImportInterfaceResult importInterfaceResult = importService.importInterface(tservicedetail.getServiceid(), jsonObject, overwrite, iDev);
         return ResultUtil.success(importInterfaceResult);
     }
 }
