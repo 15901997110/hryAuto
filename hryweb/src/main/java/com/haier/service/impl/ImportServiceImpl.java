@@ -162,7 +162,7 @@ public class ImportServiceImpl implements ImportService {
                         updateList.add(iUri);
                         existIuri.remove(iUri);
                     } else {//如果overwrite==false,则不覆盖记录,直接忽略这条ti记录
-                        failList.add(iUri + ":存在重复的记录");
+                        failList.add(iUri + "(已存在)");
                         existIuri.remove(iUri);
                     }
                 }
