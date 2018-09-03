@@ -21,4 +21,7 @@ public class ImportInterfaceResult {
     private List<String> updateList;
     private Integer failCount;//失败总数
     private List<String> failList;//失败接口uri集合
+    private Integer deleteCount;
+    private List<String> deleteList;
+
 }

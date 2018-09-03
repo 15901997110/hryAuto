@@ -13,6 +13,7 @@ import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.ImportService;
+import com.haier.service.TiService;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -37,79 +38,36 @@ public class ImportServiceImpl implements ImportService {
     TserviceMapper tserviceMapper;
 
     @Autowired
-    TiMapper tiMapper;
+    TiService tiService;
 
     private TserviceExample tserviceExample = new TserviceExample();
 
     private Tservice tservice = new Tservice();
 
     @Override
-    public String sendGet(String url) {
-        String jsonResponse;
-        try {
-            jsonResponse = HryHttpClientUtil.send(url, RequestMethodTypeEnum.GET.getId(), null);
-        } catch (HttpProcessException e) {
-            log.info("请求地址为:" + url);
-            log.error("请求swaggerUrl时发生异常", e);
-            return null;
-        }
-        return jsonResponse;
-    }
-
-    /**
-     * @description: 根据serviceKey查询返回serviceId, 如果不存在, 则根据此serviceKey创建一
-     * 条新记录并返回serviceId
-     * @params: [serviceKey, serviceName]
-     * @return: java.lang.Integer
-     * @author: luqiwei
-     * @date: 2018-05-21
-     */
-    @Override
-    public Integer findServiceId(String serviceKey, String serviceName, String realName) {
-        TserviceExample.Criteria criteria = tserviceExample.createCriteria();
-        criteria.andServicekeyEqualTo(serviceKey).andIsdelEqualTo(0);
-        List<Tservice> tservices = tserviceMapper.selectByExample(tserviceExample);
-
-        if (tservices != null && tservices.size() > 0) {//有记录,则取出第一条记录的ID
-            return tservices.get(0).getId();
-
-        } else {//无记录,则插入一条记录,返回插入serviceId
-            tservice.setServicekey(serviceKey);
-            tservice.setServicename(serviceName);
-            tservice.setEditor(realName);
-            tserviceMapper.insertSelective(tservice);
-            return tservice.getId();
-        }
-    }
-
-    @Override
     public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite, String iDev) {
-        String serviceKey = jsonObject.getJSONObject("info").getString("title").trim();
-        String serviceName = jsonObject.getJSONObject("info").getString("description").trim();
+        String serviceKey = jsonObject.getJSONObject("info").getString("title");
+        String serviceName = jsonObject.getJSONObject("info").getString("description");
 
         ImportInterfaceResult result = new ImportInterfaceResult();
         result.setServiceId(serviceId);
         result.setServiceKey(serviceKey);
         result.setServiceName(serviceName);
-        List<String> insertList = new ArrayList<String>();
-        List<String> updateList = new ArrayList<String>();
-        List<String> failList = new ArrayList<String>();
-
+        List<String> insertList = new ArrayList<>();
+        List<String> updateList = new ArrayList<>();
+        List<String> failList = new ArrayList<>();
 
         //获取接口表(ti)已经存在的记录,by serviceId
-        TiExample tiExample = new TiExample();
-        TiExample.Criteria criteria = tiExample.createCriteria();
-        criteria.andServiceidEqualTo(serviceId);//筛选serviceId
-        criteria.andIstatusNotEqualTo(-1);//筛选状态!=-1(非删除的数据)
-        List<Ti> tis = tiMapper.selectByExample(tiExample);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
-        List<String> existIuri = new ArrayList<String>();
-        Map<String, Integer> existIuriId = new HashMap<String, Integer>();//后续更新记录时会用到primaryKey
-        if (tis != null) {
-            for (Ti i : tis) {
-                existIuri.add(i.getIuri());
-                existIuriId.put(i.getIuri(), i.getId());
-            }
+        Ti condition = new Ti();
+        condition.setServiceid(serviceId);
+        List<Ti> tis = tiService.selectByCondition(condition);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
+        List<String> existIuri = new ArrayList<>();
+        Map<String, Integer> existIuriId = new HashMap<>();//后续更新记录时会用到primaryKey
+        for (Ti i : tis) {
+            existIuri.add(i.getIuri());
+            existIuriId.put(i.getIuri(), i.getId());
         }
+
 
         JSONObject paths = jsonObject.getJSONObject("paths");//获取path:
         //definitions主要用于获取示例参数,这里暂时忽略,获取示例参数将改由Selenium从页面抓取
@@ -128,51 +86,48 @@ public class ImportServiceImpl implements ImportService {
                 ti.setIuri(iUri);
                 ti.setRemark(summary);
                 ti.setIdev(iDev);
-                //ti.setUpdatetime(new Date());modify by luqiwei:此字段mysql会自动更新,无需设置
-                //ti.setIcontenttype：如果contentTypeEnum存在就获取id，不存在则是-1
-                List consumes = (List) postJsonObject.get("consumes");
-                String consumesType = consumes.get(0).toString();
+
+                JSONArray consumes = postJsonObject.getJSONArray("consumes");
+                String consumesType = consumes.getString(0);
                 if (ContentTypeEnum.getId(consumesType) != null) {
                     ti.setIcontenttype(ContentTypeEnum.getId(consumesType));
                 } else {
                     ti.setIcontenttype(-1);
                 }
                 //解析Json，设置Iparamsample和Iheadersample
-                JSONArray parameJsonObject = postJsonObject.getJSONArray("parameters");
+                JSONArray parametersJSONArr = postJsonObject.getJSONArray("parameters");
 
-                if (parameJsonObject != null && parameJsonObject.size() > 0) {
+                if (parametersJSONArr != null && parametersJSONArr.size() > 0) {
                     Map<String, Object> headermap = new LinkedHashMap<>();
-
-                    for (Object jsonObj : parameJsonObject) {
-                        JSONObject jsonObject1 = (JSONObject) jsonObj;
-                        //JSONObject object = JSONObject.parseObject(String.valueOf(jsonObj));
-                        if ("header".equals(jsonObject1.getString("in"))) {
-                            headermap.put((jsonObject1.getString("name")), jsonObject1.get("default"));
-                            //ti.setIheadersample(JSONUtils.toJSONString(headermap));
+                    for (Object obj : parametersJSONArr) {
+                        JSONObject someoneParameterJSONObj;
+                        if (obj instanceof JSONObject) {
+                            someoneParameterJSONObj = (JSONObject) obj;
+                        } else {
+                            continue;
                         }
-                        if ("body".equals(jsonObject1.get("in"))) {
 
+                        if ("header".equals(someoneParameterJSONObj.getString("in"))) {
+                            headermap.put((someoneParameterJSONObj.getString("name")), someoneParameterJSONObj.get("default"));
+                        }
+                        if ("body".equals(someoneParameterJSONObj.get("in")) && ti.getIparamsample() == null) {//ti.iparamsample如果存在值,则不执行这里的逻辑
                             //设置特殊的iparamsample字段
-                            // Map<String, Object> schema = object.getJSONObject("schema");
-                            JSONObject schema = jsonObject1.getJSONObject("schema");
+                            JSONObject schema = someoneParameterJSONObj.getJSONObject("schema");
                             //如果schema为空
                             if (Objects.isNull(schema)) {
                                 log.info("parameter中in=body,但是Schema获取不到值 -----" + iUri);
-/*                            Map<String, Object> paramsamplemap = new LinkedHashMap<>();
-                            paramsamplemap.put(object.getString("name"), object.get("type"));
-                            ti.setIparamsample(JSONUtils.toJSONString(paramsamplemap));*/
                             } else {
-                                //判断schema下的ref是否存在，存在
+                                //判断schema下的ref是否存在
                                 String ref = schema.getString("$ref");
                                 StringBuilder paramsamples = new StringBuilder();
                                 parseRef(ref, definitions, paramsamples);
 
+                                //设置paramsample
                                 String paramSmapleJSON = JSONUtil.verify(paramsamples.toString());
                                 if (paramSmapleJSON != null) {
                                     if (paramSmapleJSON.length() > 5000) {
                                         String params = paramsamples.substring(0, 4999);
                                         ti.setIparamsample(params);
-                                        log.error("长度超过限制了，请注意！数据为：======" + paramsamples);
                                     } else {
                                         ti.setIparamsample(paramSmapleJSON);
                                     }
@@ -185,60 +140,44 @@ public class ImportServiceImpl implements ImportService {
                                         }
                                     }
                                 }
-
-                           /* if (Objects.nonNull(schema.get("$ref"))) {
-
-                            } else {//不存在
-                                StringBuilder params = new StringBuilder();
-                                params.append("{");
-                                String mps = schema.get("type").toString();
-                                if ("string".equals(mps)) {
-                                    params.append("\"").append(schema.get("type").toString().replace("string", "")).append("\"");
-                                } else if ("integer".equals(mps)) {
-                                    params.append(schema.get("type").toString().replace("integer", "0"));
-                                } else {
-                                    params.append("\"").append(schema.get("type").toString()).append("\"");
-                                }
-                                params.append("}");
-                                ti.setIparamsample(params.toString());
-                            }*/
                             }
                         }
                     }
                     if (headermap.size() > 0) {
+                        //设置headersmaple
                         ti.setIheadersample(JSONUtils.toJSONString(headermap));
                     }
                 }
 
 
-                if (Objects.isNull(existIuri) || !existIuri.contains(iUri)) {//如果existIurl==null,说明此serviceId没有对应
-                    // 的接口记录,以下则可放心插入,
-                    //或者existIuri虽然不为null,但是并不包含此条需要插入的ti记录,此情况也可以直接插入
-                    try {
-                        tiMapper.insertSelective(ti);
-                        insertList.add(iUri);
-                    } catch (Exception e) {
-                        log.error("插入接口数据失败", e);
-                        failList.add(iUri + ":插入数据失败");//记录失败的iUri
-                    }
+                //如果此服务下不存在接口,或者虽然存在接口,但是不包含当前这条接口记录
+                if (existIuri.size() == 0 || !existIuri.contains(iUri)) {
+                    tiService.insertOne(ti);
+                    insertList.add(iUri);
                 } else {//existIuri不是null&&existIuri包含当前要插入的记录
+
                     if (overwrite) {//如果overwrite==true,则覆盖存在的记录,将数据更新
                         ti.setId(existIuriId.get(iUri));
-                        try {
-                            tiMapper.updateByPrimaryKeySelective(ti);
-                            updateList.add(iUri);
-                        } catch (Exception e) {
-                            log.error("更新接口数据失败", e);
-                            failList.add(iUri + ":更新数据失败");
-                        }
+                        tiService.updateOne(ti);
+                        updateList.add(iUri);
+                        existIuri.remove(iUri);
                     } else {//如果overwrite==false,则不覆盖记录,直接忽略这条ti记录
-                        failList.add(iUri + ":存在重复的记录");
+                        failList.add(iUri + "(已存在)");
+                        existIuri.remove(iUri);
                     }
                 }
             } catch (Exception e) {
                 log.error(iUri + "解析json错误", e);
             }
         }
+        List<String> deleteList=new ArrayList<>();
+        //如果existIuri没有被remove,则说明这些Iuri没有存在于最新的swagger文档中,此时,将删除这些接口
+        for (int i = 0; i < existIuri.size(); i++) {
+            Integer deleteId = existIuriId.get(existIuri.get(i));
+            tiService.deleteOne(deleteId);
+            deleteList.add(existIuri.get(i));
+        }
+
 
         //构建返回信息
         result.setTotalCount(paths.size());
@@ -248,6 +187,8 @@ public class ImportServiceImpl implements ImportService {
         result.setUpdateList(updateList);
         result.setFailCount(failList.size());
         result.setFailList(failList);
+        result.setDeleteCount(deleteList.size());
+        result.setDeleteList(deleteList);
 
         return result;
     }

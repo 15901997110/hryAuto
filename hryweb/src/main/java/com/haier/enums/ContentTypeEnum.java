@@ -10,19 +10,19 @@ public enum ContentTypeEnum {
     FORM_DATA(7, "multipart/form-data"),
     IMAGE_PNG(8, "image/png");
 
-    private int id;
+    private Integer id;
     private String value;
 
-    ContentTypeEnum(int id, String value) {
+    ContentTypeEnum(Integer id, String value) {
         this.id = id;
         this.value = value;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,9 +34,9 @@ public enum ContentTypeEnum {
         this.value = value;
     }
 
-    public static String getValue(int id) {
+    public static String getValue(Integer id) {
         for (ContentTypeEnum e : ContentTypeEnum.values()) {
-            if (e.getId() == id) {
+            if (e.getId().equals(id)) {
                 return e.getValue();
             }
         }

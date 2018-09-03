@@ -76,17 +76,11 @@ public class TservicedetailServiceImpl implements TservicedetailService {
 
     @Override
     public Tservicedetail selectOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
         return tservicedetailMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public Tservicedetail selectOne(Integer serviceId, Integer envId) {
-        if (serviceId == null || envId == null) {
-            return null;
-        }
         Tservicedetail tservicedetail = new Tservicedetail();
         tservicedetail.setServiceid(serviceId);
         tservicedetail.setEnvid(envId);

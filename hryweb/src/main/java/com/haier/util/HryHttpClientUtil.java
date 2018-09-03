@@ -40,20 +40,22 @@ public class HryHttpClientUtil {
     public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param, Header[] headers, CookieStore cookieStore) {
         //请求方式,现在仅支持Post/Get
         HttpMethods methodType;
-        if (requestMethodType == null) {
+        if (RequestMethodTypeEnum.getValue(requestMethodType) != null) {
+            if (requestMethodType.equals(RequestMethodTypeEnum.POST.getId())) {
+                methodType = HttpMethods.POST;
+            } else {
+                methodType = HttpMethods.GET;
+            }
+        } else {//缺省时,请求方式为GET
             methodType = HttpMethods.GET;
-        } else if (requestMethodType.equals(RequestMethodTypeEnum.GET.getId())) {
-            methodType = HttpMethods.GET;
-        } else {
-            methodType = HttpMethods.POST;
         }
 
         //请求Header
         Header header;
-        if (requestMethodType == null) {
-            header = new BasicHeader("Content-Type", ContentTypeEnum.JSON.getValue());
-        } else {
+        if (ContentTypeEnum.getValue(contentType) != null) {
             header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
+        } else {//如果不指明ContentType类型,默认按照浏览器请求处理
+            header = new BasicHeader("Content-Type", ContentTypeEnum.X_WWW_FORM_URLENCODED.getValue());
         }
         Header[] requestHeaders = ArrayUtils.add(headers, header);
 
@@ -70,15 +72,14 @@ public class HryHttpClientUtil {
             config.context(context);
         }
         //设置请求参数
-        if (StringUtils.isNotBlank(param)) {
+        if (StringUtils.isNotBlank(param) && requestParamType != null) {
             if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
                 config.json(param);
             } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
                 Map map = JSON.parseObject(param).toJavaObject(Map.class);
                 config.map(map);
-            } else {
-                log.info("没有请求参数,或者请求参数类型不为JSON或MAP,httpCLientUtil将不带参发送请求");
             }
+
         }
 
         //发送请求
@@ -99,7 +100,7 @@ public class HryHttpClientUtil {
         log.info("请求方式:" + config.method().getName());
         Reporter.log("请求方式:" + config.method().getName());
 
-        if (headers.length > 0) {
+        if (headers != null && headers.length > 0) {
             log.info("请求Headers:");
             Reporter.log("请求Headers:");
             for (Header h : headers) {
@@ -185,6 +186,10 @@ public class HryHttpClientUtil {
 
     public static String send(String url, Integer requestMethodType, Integer contentType, Integer requestParamType, String param) {
         return send(url, requestMethodType, contentType, requestParamType, param, null, null);
+    }
+
+    public static String get(String url) {
+        return send(url, RequestMethodTypeEnum.GET.getId(), null, null, null);
     }
 
     private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {

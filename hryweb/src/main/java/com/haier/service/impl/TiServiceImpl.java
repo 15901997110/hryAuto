@@ -121,7 +121,6 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public List<Ti> selectByCondition(Ti ti) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(ti, false);
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
         criteria.andIstatusGreaterThan(0);
