@@ -284,19 +284,20 @@
                 if(status == 0){
                     var dev=data.data;
                     var htmldev = "";
-                    seditorSet.forEach(function (element) {
-                        var rowHtml = "<option value=\"" + element + "\">" + element + "</option>";
+                    for(var index in seditorSet){
+                        var currentValue = seditorSet[index];
+                        var rowHtml = "<option value=\"" + currentValue + "\">" + currentValue + "</option>";
                         htmldev = htmldev + rowHtml;
-                    });
+                    }
                     for (var i = 0; i < dev.length; i++) {
                         var row = dev[i];
                         var isExist = false;
-                        seditorSet.forEach(function (element) {
-                            if (row.realname == element) {
+                        for(var index in seditorSet) {
+                            if (row.realname == seditorSet[index]) {
                                 isExist = true;
                                 return;
                             }
-                        });
+                        }
                         if (!isExist) {
                             var rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
                             htmldev = htmldev + rowHtml;
