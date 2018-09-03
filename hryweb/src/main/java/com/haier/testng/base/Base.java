@@ -10,8 +10,8 @@ import com.haier.service.RunService;
 import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
-import org.apache.http.entity.mime.Header;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 import java.lang.reflect.Method;
