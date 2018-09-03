@@ -40,10 +40,6 @@ public class ImportServiceImpl implements ImportService {
     @Autowired
     TiService tiService;
 
-    private TserviceExample tserviceExample = new TserviceExample();
-
-    private Tservice tservice = new Tservice();
-
     @Override
     public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite, String iDev) {
         String serviceKey = jsonObject.getJSONObject("info").getString("title");
@@ -170,7 +166,7 @@ public class ImportServiceImpl implements ImportService {
                 log.error(iUri + "解析json错误", e);
             }
         }
-        List<String> deleteList=new ArrayList<>();
+        List<String> deleteList = new ArrayList<>();
         //如果existIuri没有被remove,则说明这些Iuri没有存在于最新的swagger文档中,此时,将删除这些接口
         for (int i = 0; i < existIuri.size(); i++) {
             Integer deleteId = existIuriId.get(existIuri.get(i));
