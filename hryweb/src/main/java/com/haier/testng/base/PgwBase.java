@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: PgwBase
  * @Author: 自动生成
- * @Date: 2018/08/22 16:04:42
+ * @Date: 2018/09/03 20:16:25
  */
 @SKey("Pgw")
 public class PgwBase extends Base {

@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: P2pDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/22 17:47:20
+ * @Date: 2018/09/03 20:16:25
  */
 @Slf4j
 public class P2pDefaultTest extends P2pBase{
@@ -428,12 +428,6 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/frontEndFacade/queryNoviceBidList", dataProvider = "provider", description = "查询首页新手标的,app专用")
     public void frontEndFacade_queryNoviceBidList(HryTest hryTest) {
         String actual = this._frontEndFacade_queryNoviceBidList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/getFundRate", dataProvider = "provider", description = "收益率信息查询")
-    public void fundFacade_getFundRate(HryTest hryTest) {
-        String actual = this._fundFacade_getFundRate(hryTest);
         supperAssert(actual, hryTest);
     }
 

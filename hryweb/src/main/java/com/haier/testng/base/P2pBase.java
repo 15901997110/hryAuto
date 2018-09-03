@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/08/22 16:04:42
+ * @Date: 2018/09/03 20:16:25
  */
 @SKey("P2p")
 public class P2pBase extends Base {
@@ -344,11 +344,6 @@ public class P2pBase extends Base {
 
     @Uri(value = "/frontEndFacade/queryNoviceBidList", desc = "查询首页新手标的,app专用")
     public String _frontEndFacade_queryNoviceBidList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/getFundRate", desc = "收益率信息查询")
-    public String _fundFacade_getFundRate(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
