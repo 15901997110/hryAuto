@@ -5,24 +5,25 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="Bookmark" href="/favicon.ico" >
-    <link rel="Shortcut Icon" href="/favicon.ico" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="Bookmark" href="/favicon.ico">
+    <link rel="Shortcut Icon" href="/favicon.ico"/>
     <!--[if lt IE 9]-->
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="lib/select2/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://cdn.amazeui.org/amazeui/2.7.2/css/amazeui.css"/>
 
     <!--[if IE 6]-->
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <!--/meta 作为公共模版分离出去-->
@@ -30,14 +31,18 @@
 
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span class="c-gray en">&gt;</span> 一键导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span
+        class="c-gray en">&gt;</span> 一键导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <form  method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form method="post" class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="serviceid" id="serviceid" onchange="setMatchValue()">
+                    <select class="select" size="1" tiserviceDetailId="" name="serviceid" id="serviceid"
+                            onchange="setMatchValue()">
                         <option value="" selected>请选择服务</option>
                     </select>
 				</span>
@@ -46,7 +51,8 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>swaggerUrl：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" readonly id="swaggerUrl" name="swaggerUrl" style="background-color: #DEDEDE;">
+                <input type="text" class="input-text" value="" readonly id="swaggerUrl" name="swaggerUrl"
+                       style="background-color: #DEDEDE;">
             </div>
         </div>
         <div class="row cl">
@@ -73,36 +79,45 @@
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save" onclick="importInterfaces()"><i class="icon-ok"></i> 导入</button>
-                <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel" onclick=""><i class="icon-ok"></i> 取消</button>
+                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
+                        onclick="importInterfaces()"><i class="icon-ok"></i> 导入
+                </button>
+                <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel"
+                        onclick=""><i class="icon-ok"></i> 取消
+                </button>
             </div>
         </div>
     </form>
 </div>
 
-<div class="page-container"  id="importResult" style="display: none">
-    <form  method="" class="form form-horizontal">
+<div class="page-container" id="importResult" style="display: none">
+    <form method="" class="form form-horizontal">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><a  href="javascript:;" class="btn btn-primary radius ">导入成功！</a></label>
+            <label class="form-label col-xs-4 col-sm-3"><a href="javascript:;" class="btn btn-primary radius ">导入成功！</a></label>
         </div>
         <div class="row cl">
-        <label class="form-label col-xs-4 col-sm-3">服务ID：</label><p id="serviceIdResult"></p>
+            <label class="form-label col-xs-4 col-sm-3">服务ID：</label>
+            <p id="serviceIdResult"></p>
         </div>
         <div class="row cl">
-        <label class="form-label col-xs-4 col-sm-3">服务名：</label><p id="serviceNameResult"></p>
+            <label class="form-label col-xs-4 col-sm-3">服务名：</label>
+            <p id="serviceNameResult"></p>
         </div>
         <div class="row cl">
-        <label class="form-label col-xs-4 col-sm-3">总接口数：</label><p id="iCountResult"></p>
+            <label class="form-label col-xs-4 col-sm-3">总接口数：</label>
+            <p id="iCountResult"></p>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">导入明细：</label>
-            <div style="width: 75%;margin-left: 15%;" id="DataTables_Table_0_wrapper" class="dataTables_wrapper no-footer">
+            <div style="width: 75%;margin-left: 15%;" id="DataTables_Table_0_wrapper"
+                 class="dataTables_wrapper no-footer">
                 <table class="table table-border table-bordered table-hover table-bg table-sort">
                     <thead>
                     <tr class="text-c">
-                        <th width="30%" id="insertCount">新增接口</th>
-                        <th width="30%" id="updateCount">更新接口</th>
-                        <th width="30%" id="failCount">失败接口</th>
+                        <th width="25%" id="insertCount">新增接口</th>
+                        <th width="25%" id="updateCount">更新接口</th>
+                        <th width="25%" id="failCount">失败接口</th>
+                        <th width="25%" id="deleteCount">删除接口</th>
                     </tr>
                     </thead>
                     <tbody id="importList">
@@ -129,49 +144,51 @@
 <script type="text/javascript">
 
     var seditorSet = null;
+    var id;
 
-    function setMatchValue(){
+    function setMatchValue() {
         var ele = $("#serviceid").select2('data')[0].element;
         var url = $(ele).data('url');
+        id = $(ele).data('id');
         $("#swaggerUrl").val(url);
         var editor = $(ele).data('editor');
-        set_select_checked("idev",editor);
+        set_select_checked("idev", editor);
     }
 
-    function set_select_checked(selectId, checkValue){
-        var select = $("#"+ selectId).select2();    //获取selectid
+    function set_select_checked(selectId, checkValue) {
+        var select = $("#" + selectId).select2();    //获取selectid
         select.val(checkValue).trigger("change");    //设置 value 为four的 option 为选中状态
         select.change();//告诉select2代码已经更新，需要重载  默认选择有值得第一个
     }
 
-    function importInterfaces(){
+    function importInterfaces() {
         clearResult();
         var serviceId = $("#serviceid").val().split("&")[0];
         var envId = $("#serviceid").val().split("&")[1];
         var overwrite = $('input[name="cover"]:checked').val();
         var iDev = $("#idev").val();
+        var serviceDetailId = document.getElementById("serviceid").getAttribute("tiserviceDetailId");
 
-        if(serviceId == null || serviceId == ""){
+        if (serviceId == null || serviceId == "") {
             layer.msg("请选择服务！");
             return;
-        }else{
-            var layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+        } else {
+            var layerIndex = layer.load(1, {shade: [1.01, '#fff']});
             $.ajax({
                 type: "post",
                 url: "/import/interfaceImport",
                 data: {
-                    serviceId:serviceId,
-                    envId:envId,
-                    overwrite:overwrite,
-                    iDev:iDev
+                    serviceDetailId: id,
+                    overwrite: overwrite,
+                    iDev: iDev
                 },
                 dataType: "json",
                 success: function (data) {
                     layer.close(layerIndex); //完成加载后关闭loading
-                    var status=data.status;
-                    if(status == 0){
+                    var status = data.status;
+                    if (status == 0) {
                         displayResult(data.data);
-                    }else{
+                    } else {
                         layer.alert(data.msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -179,14 +196,14 @@
                     }
 
                 },
-                fail:function (data) {
+                fail: function (data) {
                     layer.close(layerIndex); //完成加载后关闭loading
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     // report error
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
@@ -205,31 +222,38 @@
         $("#iCountResult").text("");
         $("#importList").html("");
     }
+
     function displayResult(data) {
         $("#importResult").show();
         $("#serviceIdResult").text(data.serviceId);
         $("#serviceNameResult").text(data.serviceName);
         $("#iCountResult").text(data.totalCount);
-        $("#insertCount").text("新增接口("+ data.insertCount +")");
-        $("#updateCount").text("更新接口("+ data.updateCount +")");
-        $("#failCount").text("失败接口("+ data.failCount +")");
+        $("#insertCount").text("新增接口(" + data.insertCount + ")");
+        $("#updateCount").text("更新接口(" + data.updateCount + ")");
+        $("#failCount").text("失败接口(" + data.failCount + ")");
+        $("#deleteCount").text("删除接口(" + data.deleteCount + ")");
+
         var maxRow = 0;
         var html = "";
         maxRow = data.insertCount > data.updateCount ? data.insertCount : data.updateCount;
         maxRow = maxRow > data.failCount ? maxRow : data.failCount;
-         for (var i = 0; i < maxRow; i++) {
-             var insertItem = data.insertList[i] == undefined ? "" : data.insertList[i];
-             var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
-             var failItem = data.failList[i] == undefined ? "" : data.failList[i];
-             var rowHtml = "<tr class=\"text-c\">\n" +
-                 "<td style=\"text-align:left;\">"+ insertItem +"</td>\n" +
-                 "<td style=\"text-align:left;\">"+updateItem +"</td>\n" +
-                 "<td style=\"text-align:left;\">"+failItem+"</td>\n" +
-                 "</tr>";
-             html = html + rowHtml;
-         }
-         $("#importList").append(html);
+        maxRow = maxRow > data.deleteCount ? maxRow : data.deleteCount;
+        for (var i = 0; i < maxRow; i++) {
+            var insertItem = data.insertList[i] == undefined ? "" : data.insertList[i];
+            var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
+            var failItem = data.failList[i] == undefined ? "" : data.failList[i];
+            var deleteItem = data.deleteList[i] == undefined ? "" : data.deleteList[i];
+            var rowHtml = "<tr class=\"text-c\">\n" +
+                "<td style=\"text-align:left;\">" + insertItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + updateItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + failItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + deleteItem + "</td>\n" +
+                "</tr>";
+            html = html + rowHtml;
+        }
+        $("#importList").append(html);
     }
+
     $(document).ready(function () {
         //获取服务环境列表
         $.ajax({
@@ -237,33 +261,33 @@
             url: "/tservicedetail/selectTservicedetailCustomListByCondition",
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var arrayList=data.data;
-                if(status == 0){
-                    var html="";
-                    seditorSet=new Set();
+                var status = data.status;
+                var arrayList = data.data;
+                if (status == 0) {
+                    var html = "";
+                    seditorSet = new Set();
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
-                        var rowHtml="<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " >" +row.servicekey+ "(" + row.envkey + ")</option>";
-                        html=html+rowHtml;
+                        var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        html = html + rowHtml;
                     }
                     $("#serviceid").append(html);
                     $("#serviceid").select2();
-                }else{
+                } else {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 }
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -279,12 +303,12 @@
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    var dev=data.data;
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    var dev = data.data;
                     var htmldev = "";
-                    for(var index in seditorSet){
+                    for (var index in seditorSet) {
                         var currentValue = seditorSet[index];
                         var rowHtml = "<option value=\"" + currentValue + "\">" + currentValue + "</option>";
                         htmldev = htmldev + rowHtml;
@@ -292,7 +316,7 @@
                     for (var i = 0; i < dev.length; i++) {
                         var row = dev[i];
                         var isExist = false;
-                        for(var index in seditorSet) {
+                        for (var index in seditorSet) {
                             if (row.realname == seditorSet[index]) {
                                 isExist = true;
                                 return;
@@ -305,20 +329,20 @@
                     }
                     $("#idev").append(htmldev);
                     $("#idev").select2();
-                }else{
+                } else {
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     })
                 }
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
