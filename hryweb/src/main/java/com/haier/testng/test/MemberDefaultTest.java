@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: MemberDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/22 17:47:20
+ * @Date: 2018/09/03 20:16:25
  */
 @Slf4j
 public class MemberDefaultTest extends MemberBase{
@@ -842,6 +842,12 @@ public class MemberDefaultTest extends MemberBase{
     @Test(testName = "/sessionFacade/initUser", dataProvider = "provider", description = "初始化用户信息")
     public void sessionFacade_initUser(HryTest hryTest) {
         String actual = this._sessionFacade_initUser(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/sessionFacade/initUserByUserInfo", dataProvider = "provider", description = "初始化用户信息")
+    public void sessionFacade_initUserByUserInfo(HryTest hryTest) {
+        String actual = this._sessionFacade_initUserByUserInfo(hryTest);
         supperAssert(actual, hryTest);
     }
 

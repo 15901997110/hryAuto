@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/08/28 17:11:27
+ * @Date: 2018/09/03 20:16:25
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {

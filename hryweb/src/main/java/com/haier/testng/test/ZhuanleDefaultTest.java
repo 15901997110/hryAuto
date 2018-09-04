@@ -2,7 +2,10 @@ package com.haier.testng.test;
 
 import com.haier.po.HryTest;
 import com.haier.testng.base.ZhuanleBase;
+
 import static com.haier.util.AssertUtil.supperAssert;
+
+import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -14,14 +17,15 @@ import java.lang.reflect.Method;
 /**
  * @Description: ZhuanleDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/28 17:11:27
+ * @Date: 2018/09/03 20:16:25
  */
 @Slf4j
-public class ZhuanleDefaultTest extends ZhuanleBase{
+public class ZhuanleDefaultTest extends ZhuanleBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+        LoginUtil.zhuanleLogin(tservice, tservicedetail, "/sign-in", this);
     }
 
     @DataProvider(name = "provider")
