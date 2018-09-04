@@ -1,6 +1,7 @@
 package com.haier.controller;
 
 
+import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
@@ -38,6 +39,9 @@ public class TiController {
         //简单参数校验
         if (ti == null || ti.getServiceid() == null || ti.getIuri() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "服务ID,iUri必填");
+        }
+        if (!ti.getIuri().matches(RegexEnum.NOTBLANK.getRegex())) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口地址不可包含空字符(空格,tab,回车符,换行符)");
         }
 
         verifyIHeaderAndIParam(ti);
@@ -129,8 +133,12 @@ public class TiController {
     @PostMapping("updateOne")
     public Result updateOne(Ti ti) {
         ReflectUtil.setInvalidFieldToNull(ti, false);
-        if (ti.getId() == null) {
+        if (ti == null || ti.getId() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新或者删除接口时,ti必填");
+        }
+        //接口地址非空校验
+        if (ti.getIuri() != null && !ti.getIuri().matches(RegexEnum.NOTBLANK.getRegex())) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口地址不可包含空字符(空格,tab,回车符,换行符)");
         }
         //数据重复性校验
         Ti condition = null;

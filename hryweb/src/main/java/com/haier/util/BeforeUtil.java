@@ -1,13 +1,11 @@
 package com.haier.util;
 
-import com.alibaba.druid.sql.ast.statement.SQLForeignKeyImpl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.BeforeRegexEnum;
 import com.haier.enums.DBInfoKeyEnum;
 import com.haier.enums.RegexEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -29,10 +27,6 @@ import java.util.regex.Pattern;
 public class BeforeUtil {
     /**
      * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
-     *
-     * @param param
-     * @param dbinfo
-     * @return
      */
     public static <T> String replace(String param, String dbinfo, T entity) {
 
