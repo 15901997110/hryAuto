@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: MemberDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @Slf4j
 public class MemberDefaultTest extends MemberBase{
@@ -368,6 +368,12 @@ public class MemberDefaultTest extends MemberBase{
     @Test(testName = "/customerFacade/uploadBase64Image", dataProvider = "provider", description = "上传图片")
     public void customerFacade_uploadBase64Image(HryTest hryTest) {
         String actual = this._customerFacade_uploadBase64Image(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/customerFacade/userRegister", dataProvider = "provider", description = "渠道用户注册")
+    public void customerFacade_userRegister(HryTest hryTest) {
+        String actual = this._customerFacade_userRegister(hryTest);
         supperAssert(actual, hryTest);
     }
 

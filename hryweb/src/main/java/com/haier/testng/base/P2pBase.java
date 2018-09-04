@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @SKey("P2p")
 public class P2pBase extends Base {

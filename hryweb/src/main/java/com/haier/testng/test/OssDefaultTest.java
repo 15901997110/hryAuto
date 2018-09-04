@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: OssDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @Slf4j
 public class OssDefaultTest extends OssBase{
@@ -188,72 +188,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/compensateFacade/addReservationCompensateRecord", dataProvider = "provider", description = "预约补偿")
     public void compensateFacade_addReservationCompensateRecord(HryTest hryTest) {
         String actual = this._compensateFacade_addReservationCompensateRecord(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleBirthFacade/deleteByBatchNo", dataProvider = "provider", description = "删除活动活动规则")
-    public void consoleBirthFacade_deleteByBatchNo(HryTest hryTest) {
-        String actual = this._consoleBirthFacade_deleteByBatchNo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleBirthFacade/getBirthRuleByBatchNo", dataProvider = "provider", description = "根据批次号查询生日特权规则")
-    public void consoleBirthFacade_getBirthRuleByBatchNo(HryTest hryTest) {
-        String actual = this._consoleBirthFacade_getBirthRuleByBatchNo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleBirthFacade/getBirthRuleByPromotionActivityId", dataProvider = "provider", description = "根据活动ID查询生日特权规则")
-    public void consoleBirthFacade_getBirthRuleByPromotionActivityId(HryTest hryTest) {
-        String actual = this._consoleBirthFacade_getBirthRuleByPromotionActivityId(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleBirthFacade/saveActivityRule", dataProvider = "provider", description = "保存活动规则配置")
-    public void consoleBirthFacade_saveActivityRule(HryTest hryTest) {
-        String actual = this._consoleBirthFacade_saveActivityRule(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/addMemberInvestRule", dataProvider = "provider", description = "新增投资奖励权益规则")
-    public void consoleMemberLevelFacade_addMemberInvestRule(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_addMemberInvestRule(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/deleteMemberInvestRule", dataProvider = "provider", description = "删除投资奖励权益规则")
-    public void consoleMemberLevelFacade_deleteMemberInvestRule(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_deleteMemberInvestRule(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/getMemberLevelList", dataProvider = "provider", description = "查询会员等级规则列表")
-    public void consoleMemberLevelFacade_getMemberLevelList(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_getMemberLevelList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/queryMemberInvestActivityRuleInfo", dataProvider = "provider", description = "查询投资奖励权益活动和规则信息")
-    public void consoleMemberLevelFacade_queryMemberInvestActivityRuleInfo(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_queryMemberInvestActivityRuleInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/queryMemberInvestRule", dataProvider = "provider", description = "查询投资奖励权益规则")
-    public void consoleMemberLevelFacade_queryMemberInvestRule(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_queryMemberInvestRule(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/setMemberLevelList", dataProvider = "provider", description = "设置会员等级规则")
-    public void consoleMemberLevelFacade_setMemberLevelList(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_setMemberLevelList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consoleMemberLevelFacade/updateMemberInvestRule", dataProvider = "provider", description = "更新投资奖励权益规则")
-    public void consoleMemberLevelFacade_updateMemberInvestRule(HryTest hryTest) {
-        String actual = this._consoleMemberLevelFacade_updateMemberInvestRule(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -434,12 +368,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/couponFacade/getAvailableCouponList", dataProvider = "provider", description = "查询当前产品可用券列表")
     public void couponFacade_getAvailableCouponList(HryTest hryTest) {
         String actual = this._couponFacade_getAvailableCouponList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/couponFacade/getAvailableRewardsListForBid", dataProvider = "provider", description = "查询用户智能标的可用券")
-    public void couponFacade_getAvailableRewardsListForBid(HryTest hryTest) {
-        String actual = this._couponFacade_getAvailableRewardsListForBid(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -833,12 +761,6 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/memberLevelFacade/getCheckInSeriesInfo", dataProvider = "provider", description = "获取会员连续签到信息")
-    public void memberLevelFacade_getCheckInSeriesInfo(HryTest hryTest) {
-        String actual = this._memberLevelFacade_getCheckInSeriesInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/memberLevelFacade/getCheckInState", dataProvider = "provider", description = "查看用户某日是否签到")
     public void memberLevelFacade_getCheckInState(HryTest hryTest) {
         String actual = this._memberLevelFacade_getCheckInState(hryTest);
@@ -887,18 +809,6 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/memberLevelFacade/getMemberLevelPointHistory", dataProvider = "provider", description = "获取会员历史积分变动")
-    public void memberLevelFacade_getMemberLevelPointHistory(HryTest hryTest) {
-        String actual = this._memberLevelFacade_getMemberLevelPointHistory(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/memberLevelFacade/getMemberLevelPointTrend", dataProvider = "provider", description = "获取会员积分趋势")
-    public void memberLevelFacade_getMemberLevelPointTrend(HryTest hryTest) {
-        String actual = this._memberLevelFacade_getMemberLevelPointTrend(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/memberLevelFacade/getMemberMonthlyCouponActivityInfo", dataProvider = "provider", description = "查看会员签到活动信息")
     public void memberLevelFacade_getMemberMonthlyCouponActivityInfo(HryTest hryTest) {
         String actual = this._memberLevelFacade_getMemberMonthlyCouponActivityInfo(hryTest);
@@ -908,12 +818,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/memberLevelFacade/getMemberMonthlyCouponRuleList", dataProvider = "provider", description = "查看会员规则列表")
     public void memberLevelFacade_getMemberMonthlyCouponRuleList(HryTest hryTest) {
         String actual = this._memberLevelFacade_getMemberMonthlyCouponRuleList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/memberLevelFacade/getMemberPrivilege", dataProvider = "provider", description = "查看当前用户等级参与活动规则信息")
-    public void memberLevelFacade_getMemberPrivilege(HryTest hryTest) {
-        String actual = this._memberLevelFacade_getMemberPrivilege(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -944,12 +848,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/memberLevelFacade/queryCheckInRewardsValue", dataProvider = "provider", description = "查询指定时间段累计签到金")
     public void memberLevelFacade_queryCheckInRewardsValue(HryTest hryTest) {
         String actual = this._memberLevelFacade_queryCheckInRewardsValue(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/memberLevelFacade/queryMemberLevelRewards", dataProvider = "provider", description = "查询会员权益奖励信息")
-    public void memberLevelFacade_queryMemberLevelRewards(HryTest hryTest) {
-        String actual = this._memberLevelFacade_queryMemberLevelRewards(hryTest);
         supperAssert(actual, hryTest);
     }
 

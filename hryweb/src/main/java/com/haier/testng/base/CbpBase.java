@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CbpBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @SKey("Cbp")
 public class CbpBase extends Base {
