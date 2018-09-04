@@ -230,8 +230,8 @@ public class BeforeUtil {
             String params = re.substring(re.indexOf("(") + 1, re.lastIndexOf(")")).replaceAll("\\s", "");
             if (params.contains(",")) {
                 try {
-                    int start = Integer.parseInt(re.substring(0, params.indexOf(",")));
-                    int end = Integer.parseInt(re.substring(params.indexOf(",") + 1));
+                    int start = Integer.parseInt(params.substring(0, params.indexOf(",")));
+                    int end = Integer.parseInt(params.substring(params.indexOf(",") + 1));
                     base = matcher.replaceFirst(RandomUtils.nextInt(start, end) + "");
                 } catch (RuntimeException e) {
                     base = matcher.replaceFirst(RandomUtils.nextInt(0, 100) + "");
