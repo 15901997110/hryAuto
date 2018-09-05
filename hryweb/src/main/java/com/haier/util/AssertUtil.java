@@ -14,6 +14,7 @@ import org.testng.Reporter;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * @Description: 实际结果与期望结果比较器
@@ -26,7 +27,13 @@ public class AssertUtil {
         Reporter.log("断言类型 : " + AssertTypeEnum.getValue(assertType));
         Reporter.log("期望结果 :" + expected);
         Reporter.log("实际结果 :" + actual);
-
+        if (expected == null || actual == null) {
+            if (expected == null && actual == null) {
+                return;
+            } else {
+                throw new AssertionError("断言失败:期望值与实际值一个null,一个非null!");
+            }
+        }
         switch (assertType) {
             //1.assertType=equal,完全相等
             case 1:
@@ -34,10 +41,9 @@ public class AssertUtil {
                     throw new AssertionError("断言失败:忽略大小写比较不相等!");
                 }
                 break;
-            //2.assertType=contain,实际值中包含期望值,或者实际值能够匹配到期望的正则表达式
+            //2.assertType=contain,实际值中包含期望值
             case 2:
-                if (!(StringUtils.containsIgnoreCase(actual, expected)
-                        || StringUtils.countMatches(actual, expected) > 0)) {
+                if (!StringUtils.containsIgnoreCase(actual, expected)) {
                     throw new AssertionError("断言失败:实际值中不包含期望值(忽略大小写)并且实际值中匹配不到期望值的正则");
                 }
                 break;
@@ -77,6 +83,17 @@ public class AssertUtil {
                         throw new AssertionError("断言失败:当断言类型为3:key-value时,暂时只支持返回值类型ti.iResponseType=1的断言逻辑,请联系很容易平台管理员!");
                 }
                 break;
+            //assert-type=match
+            case 4:
+                try {
+                    if (!actual.matches(expected)) {
+                        throw new AssertionError("断言失败:实际值中未匹配到期望的正则表达式");
+                    }
+                } catch (PatternSyntaxException e) {
+                    throw new AssertionError("期望值中的正则表达式填写错误", e);
+                }
+                break;
+
             //以上情况都未匹配
             default:
                 throw new AssertionError("断言失败:断言类型未指定,无法提供断言!!!");
