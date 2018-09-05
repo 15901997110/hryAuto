@@ -6,6 +6,7 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.po.HryTest;
 import com.haier.testng.base.XindaiyyBase;
 import com.haier.util.AssertUtil;
+import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -35,11 +36,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-        try {
-            login();
-        } catch (HttpProcessException e) {
-            e.printStackTrace();
-        }
+        LoginUtil.unionLogin(envId, this, null);
     }
 
     @DataProvider(name = "provider")
@@ -47,42 +44,6 @@ public class XindaiyyProcessTest extends XindaiyyBase {
         return provider(method);
     }
 
-    public void login() throws HttpProcessException {
-        String url = "http://10.25" + envId + ".104.1:8211/hry-uni-login/login";
-        Header headerContentType = new BasicHeader("Content-Type", "application/x-www-form-urlencoded");
-        Header headerCookie = new BasicHeader("HryCookie", "__login_name=supper2; __login_expied=7; __login_sys=cbp");
-        String requestId = UUID.randomUUID().toString().replaceAll("-", "");
-        Map<String, Object> map = new HashMap<>();
-        map.put("loginName", "supper2");
-        map.put("password", "kjt123");
-        map.put("dynamicCode", "");
-        map.put("requestId", requestId);
-        map.put("sysCode", "cbp");
-        Header[] headers = new Header[]{headerContentType, headerCookie};
-
-        HttpConfig config = HttpConfig.custom().url(url).headers(headers, true).map(map).encoding("utf-8");
-
-        String post = HttpClientUtil.post(config);
-        log.info("登录响应结果:" + post);
-        log.info("login执行完成!!!");
-
-        Header[] resHeaders = config.headers();
-        for (Header header : resHeaders) {
-            if (header.getName().equals("Set-HryCookie")) {
-                HeaderElement[] elements = header.getElements();
-//                NameValuePair[] nameValuePairs = elements[0].getParameters();
-                String name = elements[0].getName();
-                String value = elements[0].getValue();
-                SetCookie cookie = new BasicClientCookie(name, value);
-                NameValuePair domain = elements[0].getParameterByName("Domain");
-                cookie.setDomain(domain.getValue());
-                cookie.setPath("/");
-                cookieStore = new BasicCookieStore();
-                cookieStore.addCookie(cookie);
-                break;
-            }
-        }
-    }
 
     @Test(testName = "/cbp-web/book/addBookInfo.json", dataProvider = "provider", description = "新建预约")
     public void cbp_web_book_addBookInfo_json(HryTest hryTest) {

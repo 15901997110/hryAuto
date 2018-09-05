@@ -165,11 +165,11 @@ public class ReflectUtil {
     }
 
     /**
-     *@description: 根据注解类型,字段类型获取对象中符合条件的第一个字段的值,
-     *@params: [po-对象, annotationClass-注解类型, fieldType-字段类型]
-     *@return: 对应字段的值,如果未正常获取到,则返回null
-     *@author: luqiwei
-     *@date: 2018-08-31
+     * @description: 根据注解类型, 字段类型获取对象中符合条件的第一个字段的值,
+     * @params: [po-对象, annotationClass-注解类型, fieldType-字段类型]
+     * @return: 对应字段的值, 如果未正常获取到, 则返回null
+     * @author: luqiwei
+     * @date: 2018-08-31
      */
     public static <T, K extends Annotation, M> M getFirstPublicFieldValueByAnnoAndFieldType(T po, Class<K> annotationClass, Class<M> fieldType) {
         Field[] fields = po.getClass().getFields();
@@ -189,5 +189,29 @@ public class ReflectUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 根据注解类型,设置对象中被此注解标记的第一个公共字段的值
+     *
+     * @param po
+     * @param annotationClass
+     * @param value
+     * @param <T>
+     * @param <K>
+     */
+    public static <T, K extends Annotation> void setFirstPublicFieldValueByAnno(T po, Class<K> annotationClass, Object value) {
+        Field[] fields = po.getClass().getFields();
+        for (Field field : fields) {
+            K annotation = field.getAnnotation(annotationClass);
+            if (annotation != null) {
+                try {
+                    field.set(po, value);
+                } catch (IllegalAccessException e) {
+                    break;
+                }
+                break;
+            }
+        }
     }
 }
