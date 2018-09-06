@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MemberBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @SKey("Member")
 public class MemberBase extends Base {
@@ -294,6 +294,11 @@ public class MemberBase extends Base {
 
     @Uri(value = "/customerFacade/uploadBase64Image", desc = "上传图片")
     public String _customerFacade_uploadBase64Image(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/customerFacade/userRegister", desc = "渠道用户注册")
+    public String _customerFacade_userRegister(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

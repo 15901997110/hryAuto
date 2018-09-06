@@ -7,9 +7,9 @@ package com.haier.enums;
  */
 public enum AssertTypeEnum {
     EQUAL(1, "equal", "实际值与期望值完全相等"),//完全相等
-    CONTAIN(2, "contain", "实际值包含期望值,期望值可以填写正则表达式"),
-    KEY_VALUE(3, "key-value", "实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则");
-
+    CONTAIN(2, "contain", "实际值包含期望值(忽略大小写)"),
+    KEY_VALUE(3, "key-value", "实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则"),
+    MATCH(4,"match","实际值中匹配到期望的正则表达式");
     AssertTypeEnum(int id, String value, String desc) {
         this.id = id;
         this.value = value;

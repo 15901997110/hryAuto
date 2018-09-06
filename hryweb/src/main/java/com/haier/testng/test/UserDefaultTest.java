@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: UserDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @Slf4j
 public class UserDefaultTest extends UserBase{
@@ -80,6 +80,12 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/accountFacade/recheckAccount", dataProvider = "provider", description = "手动发起重新对账")
     public void accountFacade_recheckAccount(HryTest hryTest) {
         String actual = this._accountFacade_recheckAccount(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/accountFacade/reorderAccoutFlow", dataProvider = "provider", description = "账单排序")
+    public void accountFacade_reorderAccoutFlow(HryTest hryTest) {
+        String actual = this._accountFacade_reorderAccoutFlow(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -308,6 +314,18 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/nonInvestorFacade/setSubRoleByLoginName", dataProvider = "provider", description = "根据用户名设置二级角色")
     public void nonInvestorFacade_setSubRoleByLoginName(HryTest hryTest) {
         String actual = this._nonInvestorFacade_setSubRoleByLoginName(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/oauthFacade/decryptUserId", dataProvider = "provider", description = "userId解密")
+    public void oauthFacade_decryptUserId(HryTest hryTest) {
+        String actual = this._oauthFacade_decryptUserId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/oauthFacade/encryptUserId", dataProvider = "provider", description = "userId加密")
+    public void oauthFacade_encryptUserId(HryTest hryTest) {
+        String actual = this._oauthFacade_encryptUserId(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -563,6 +581,12 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/userFacade/getUserActionInfoByLoginName", dataProvider = "provider", description = "根据用户名获取用户行为信息")
+    public void userFacade_getUserActionInfoByLoginName(HryTest hryTest) {
+        String actual = this._userFacade_getUserActionInfoByLoginName(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/userFacade/getUserExtraInfo", dataProvider = "provider", description = "获取借款人附加信息")
     public void userFacade_getUserExtraInfo(HryTest hryTest) {
         String actual = this._userFacade_getUserExtraInfo(hryTest);
@@ -593,15 +617,15 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/userFacade/getZDEnterpriseState", dataProvider = "provider", description = "根据登陆名和银行卡号查询企业状态(适用于显性开户)")
-    public void userFacade_getZDEnterpriseState(HryTest hryTest) {
-        String actual = this._userFacade_getZDEnterpriseState(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/userFacade/getZDPersonalState", dataProvider = "provider", description = "根据用户证件号+银行卡号+渠道标识查询个人状态(适用于显性开户)")
     public void userFacade_getZDPersonalState(HryTest hryTest) {
         String actual = this._userFacade_getZDPersonalState(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/userFacade/getZDUserState", dataProvider = "provider", description = "根据登陆名和银行卡号查询用户状态(适用于显性开户)")
+    public void userFacade_getZDUserState(HryTest hryTest) {
+        String actual = this._userFacade_getZDUserState(hryTest);
         supperAssert(actual, hryTest);
     }
 

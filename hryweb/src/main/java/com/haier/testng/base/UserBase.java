@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: UserBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:16:25
+ * @Date: 2018/09/03 20:54:08
  */
 @SKey("User")
 public class UserBase extends Base {
@@ -54,6 +54,11 @@ public class UserBase extends Base {
 
     @Uri(value = "/accountFacade/recheckAccount", desc = "手动发起重新对账")
     public String _accountFacade_recheckAccount(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/accountFacade/reorderAccoutFlow", desc = "账单排序")
+    public String _accountFacade_reorderAccoutFlow(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -244,6 +249,16 @@ public class UserBase extends Base {
 
     @Uri(value = "/nonInvestorFacade/setSubRoleByLoginName", desc = "根据用户名设置二级角色")
     public String _nonInvestorFacade_setSubRoleByLoginName(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/oauthFacade/decryptUserId", desc = "userId解密")
+    public String _oauthFacade_decryptUserId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/oauthFacade/encryptUserId", desc = "userId加密")
+    public String _oauthFacade_encryptUserId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -457,6 +472,11 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/userFacade/getUserActionInfoByLoginName", desc = "根据用户名获取用户行为信息")
+    public String _userFacade_getUserActionInfoByLoginName(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/userFacade/getUserExtraInfo", desc = "获取借款人附加信息")
     public String _userFacade_getUserExtraInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -482,13 +502,13 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userFacade/getZDEnterpriseState", desc = "根据登陆名和银行卡号查询企业状态(适用于显性开户)")
-    public String _userFacade_getZDEnterpriseState(HryTest test) {
+    @Uri(value = "/userFacade/getZDPersonalState", desc = "根据用户证件号+银行卡号+渠道标识查询个人状态(适用于显性开户)")
+    public String _userFacade_getZDPersonalState(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userFacade/getZDPersonalState", desc = "根据用户证件号+银行卡号+渠道标识查询个人状态(适用于显性开户)")
-    public String _userFacade_getZDPersonalState(HryTest test) {
+    @Uri(value = "/userFacade/getZDUserState", desc = "根据登陆名和银行卡号查询用户状态(适用于显性开户)")
+    public String _userFacade_getZDUserState(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
