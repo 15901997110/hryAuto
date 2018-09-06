@@ -31,7 +31,7 @@ public class BeforeUtil {
     public static <T> String replace(String param, String dbinfo, T entity) {
 
         if (StringUtils.isNotBlank(param)) {
-            param = param.replaceAll("\\n", "");
+            param = param.replaceAll("\\n", " ");//所有的换行替换成空格
             while (isNeedReplace(param)) {
                 param = replaceAll(param, dbinfo, entity);
             }
