@@ -283,7 +283,11 @@
         var iparamtype = selectedTi.iparamtype;
         if (copyFlag) {//复制
             if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
-                $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+                try {
+                    $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+                } catch (e) {
+                    $("#requestParam").val(copyTcase.requestparam);
+                }
             } else {//否则直接填充
                 $("#requestParam").val(copyTcase.requestparam);
             }
