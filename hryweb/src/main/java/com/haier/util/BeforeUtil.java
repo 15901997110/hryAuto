@@ -83,6 +83,9 @@ public class BeforeUtil {
             base = replaceRandomF(base);
         }
 
+        if (base.matches(".*" + BeforeRegexEnum.SOURCE.getPattern() + ".*")) {
+            base = replaceRef(base);
+        }
         /**
          * 匹配到<var(requestNo)>,将此处替换成调用者对象中的字段值,如果调用者中此字段不存在 ,则替换为字符串"{对象名}中不存在此字段"
          */
@@ -119,6 +122,7 @@ public class BeforeUtil {
                 }
             }
             base = matcher.replaceFirst(fieldValue == null ? "null" : fieldValue);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -146,6 +150,7 @@ public class BeforeUtil {
             }
             //替换原字符串中
             base = matcher.replaceFirst(date);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -174,6 +179,7 @@ public class BeforeUtil {
             }
             //替换原字符串中的<<<date:xxx>>>
             base = matcher.replaceFirst(date);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -202,6 +208,7 @@ public class BeforeUtil {
             }
             //替换原字符串
             base = matcher.replaceFirst(date);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -213,8 +220,44 @@ public class BeforeUtil {
         Pattern pattern = Pattern.compile(BeforeRegexEnum.UUID.getPattern());
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
+            String uuidRegex = matcher.group();
+            int cutLength = 0;
+            if (uuidRegex.contains("(") && uuidRegex.contains(")")) {
+                String cutNum = uuidRegex.substring(uuidRegex.indexOf("(") + 1, uuidRegex.lastIndexOf(")"));
+                try {
+                    cutLength = Integer.parseInt(cutNum);
+                } catch (RuntimeException e) {
+                }
+            }
+
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-            base = base.replaceFirst(BeforeRegexEnum.UUID.getPattern(), uuid);
+            if (cutLength > 0) {
+                uuid = uuid.substring(0, cutLength);
+            }
+            base = matcher.replaceFirst(uuid);
+            matcher.reset(base);//重置匹配器
+        }
+        return base;
+    }
+
+    /**
+     * 使用"<$10(xxx)" 替换"<ref(10)>"
+     */
+    public static String replaceRef(String base) {
+        Pattern pattern = Pattern.compile(BeforeRegexEnum.SOURCE.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            //首先处理<$1(xxx)>
+            String sourceRegex = matcher.group();
+            String sourceIndex = sourceRegex.substring(sourceRegex.indexOf("$") + 1, sourceRegex.indexOf("("));
+            String sourceValue = sourceRegex.substring(sourceRegex.indexOf("(") + 1, sourceRegex.lastIndexOf(")"));
+            base = matcher.replaceFirst(sourceValue);
+            Pattern refPattern = Pattern.compile("<ref\\(" + sourceIndex + "\\)");
+            Matcher refMatcher = refPattern.matcher(base);
+            if (refMatcher.find()) {
+                base = refMatcher.replaceAll(sourceValue);
+            }
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -239,6 +282,7 @@ public class BeforeUtil {
             } else {
                 base = matcher.replaceFirst(RandomUtils.nextInt(0, 100) + "");
             }
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -269,6 +313,7 @@ public class BeforeUtil {
             }
             String replacedStr = String.format("%." + pointLong + "f", f);//%.3f  %.:表示小数点前任意数,3:3位小数,f:浮点数
             base = matcher.replaceFirst(replacedStr);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
@@ -321,6 +366,7 @@ public class BeforeUtil {
             }
 
             base = matcher.replaceFirst(queryResult == null ? "null" : queryResult);
+            matcher.reset(base);//重置匹配器
         }
         return base;
     }
