@@ -348,6 +348,7 @@ public class BeforeUtil {
             if (dbinfoJsonObject == null || jdbcTemplate == null) {
                 queryResult = "［异常:数据库连接异］,dbInfo=" + dbinfo;
                 base = matcher.replaceFirst(queryResult);
+                matcher.reset(base);
                 continue;
             }
             try {

@@ -18,11 +18,11 @@ public enum RegexEnum {
 
     INVALID_CHAR_REGEX("/|-|\\.", "匹配字符串中的'/'或者'-'或者'.'字符,iUri转测试方法时 需要将这类字符串替换成下划线"),
 
-    SELECT_REGEX("^(?i)select.+", "查询语句(以select开头)"),
+    SELECT_REGEX("^(?i)\\s*select.+", "查询语句(以select开头)"),
 
-    INSERT_REGEX("^(?i)insert.+", "新增语句(以insert开头)"),
+    INSERT_REGEX("^(?i)\\s*insert.+", "新增语句(以insert开头)"),
 
-    UPDATE_REGEX("^(?i)update.+", "更新语句(以update开头)"),
+    UPDATE_REGEX("^(?i)\\s*update.+", "更新语句(以update开头)"),
 
     NOTBLANK("[^\\s]*", "非空校验,校验不包含非空字符");
 
