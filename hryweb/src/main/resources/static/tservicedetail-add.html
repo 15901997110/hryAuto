@@ -253,7 +253,7 @@
                     var status=data.status;
                     var msg=data.msg;
                     if(status == 0){
-                        parent.window.location.reload();
+                        window.parent.pageSkip(1);;
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{

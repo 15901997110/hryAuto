@@ -155,23 +155,6 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<!--完善用例名称自动赋值功能,by luqiwei-->
-<!--<script type="text/javascript">
-    (function () {
-        var previous=null;
-        $("#ti").on('focus', function () {
-            // Store the current value on focus and on change
-            previous = this.val().text;
-        }).change(function () {
-            // Do something with the previous value after the change
-            alert(previous);
-
-            // Make sure the previous value is updated
-            previous = this.val().text;
-            alert(previous);
-        });
-    })();
-</script>-->
 
 <script type="text/javascript">
     //loading
@@ -513,7 +496,8 @@
                     var status = data.status;
                     var msg = data.msg;
                     if (status == 0) {
-                        parent.window.location.reload();
+                        //parent.window.location.reload();
+                        window.parent.pageSkip(1);
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {
