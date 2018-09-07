@@ -104,12 +104,12 @@ public class LoginUtil {
     /**
      * 联合登录 ,如果未传入sysCode,默认登录cbp-信贷系统
      */
-    public static <T extends Base> void unionLogin(Integer envId, T entity, String sysCode) {
+    public static <T extends Base> void unionLogin(Tservicedetail tservicedetail, T entity, String sysCode) {
         Reporter.log(unionLoginConfig.toString());
         List<LoginInfoDetail> loginInfoDetails = unionLoginConfig.getLoginInfoDetails();
         LoginInfoDetail lid = null;
         for (LoginInfoDetail loginInfoDetail : loginInfoDetails) {
-            if (envId.equals(loginInfoDetail.getEnvId())) {
+            if (tservicedetail.getEnvid().equals(loginInfoDetail.getEnvId())) {
                 lid = loginInfoDetail;
                 break;
             }
@@ -136,6 +136,16 @@ public class LoginUtil {
             e.printStackTrace();
         }
 
+        String hostinfo=tservicedetail.getHostinfo();
+        String domain;
+
+        if(hostinfo.contains(":")){
+            domain=hostinfo.substring(0,hostinfo.indexOf(":"));
+        }else if(hostinfo.contains("/")){
+            domain=hostinfo.substring(0,hostinfo.indexOf("/"));
+        }else{
+            domain=hostinfo;
+        }
         CookieStore cookieStore = null;
         Header[] resHeaders = config.headers();
         for (Header header : resHeaders) {
@@ -144,8 +154,8 @@ public class LoginUtil {
                 String name = elements[0].getName();
                 String value = elements[0].getValue();
                 SetCookie cookie = new BasicClientCookie(name, value);
-                NameValuePair domain = elements[0].getParameterByName("Domain");
-                cookie.setDomain(domain.getValue());
+//                NameValuePair domain = elements[0].getParameterByName("Domain");
+                cookie.setDomain(domain);
                 cookie.setPath("/");
 
                 cookieStore = new BasicCookieStore();
@@ -158,6 +168,8 @@ public class LoginUtil {
             log.error("联合登录失败");
             return;
         }
+
+
 
         ReflectUtil.setFirstPublicFieldValueByAnno(entity, HryCookie.class, cookieStore);
     }

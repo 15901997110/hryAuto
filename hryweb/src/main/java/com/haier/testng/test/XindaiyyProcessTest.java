@@ -1,29 +1,16 @@
 package com.haier.testng.test;
 
-import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.po.HryTest;
 import com.haier.testng.base.XindaiyyBase;
 import com.haier.util.AssertUtil;
 import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.cookie.SetCookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.cookie.BasicClientCookie;
-import org.apache.http.message.BasicHeader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
-import java.util.*;
 
 /**
  * @Description: XindaiyyDefaultTest
@@ -36,7 +23,7 @@ public class XindaiyyProcessTest extends XindaiyyBase {
     @BeforeClass
     public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-        LoginUtil.unionLogin(envId, this, null);
+        LoginUtil.unionLogin(tservicedetail, this, null);
     }
 
     @DataProvider(name = "provider")
