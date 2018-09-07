@@ -33,7 +33,7 @@
 					<h4> 很容易自动化测试平台</h4>
 				</span>
             </nav>
-            <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+                <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl" style="font-size:16px;">
                     <li>当前用户：</li>
                     <li class="dropDown dropDown_hover">
@@ -53,6 +53,7 @@
                             <li><a href="javascript:;" data-val="orange" title="橙色">橙色</a></li>
                         </ul>
                     </li>
+                    <li id="helpMean"><a target="_blank"  href="../help.html"><i class="Hui-iconfont" style="font-size:18px">&#xe633;</i></a></li>
                 </ul>
             </nav>
         </div>
@@ -110,6 +111,14 @@
                 <ul>
                     <li id="userList"><a data-href="tuser-list.html" data-title="用户列表" href="javascript:;">用户列表</a></li>
                     <li id="updatePassword"><a data-href="tuser-updatePassword.html" data-title="修改密码" href="javascript:;">修改密码</a></li>
+                </ul>
+            </dd>
+        </dl>
+        <dl id="menu-help">
+            <dt><i class="Hui-iconfont">&#xe633;</i> 帮助<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li id="helpList"><a target="_blank"  href="../help.html">帮助</a></li>
                 </ul>
             </dd>
         </dl>
@@ -279,6 +288,10 @@
             }
         });
 
+
+    }
+    function win_open() {
+        window.open("../help.html");
 
     }
 

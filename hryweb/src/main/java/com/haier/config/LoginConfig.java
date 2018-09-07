@@ -34,5 +34,6 @@ public class LoginConfig implements WebMvcConfigurer {
         interceptorRegistration.excludePathPatterns("/test-output/**");//测试报告可以不用登录就能访问
         interceptorRegistration.excludePathPatterns("/report-loading.html");
         interceptorRegistration.excludePathPatterns("/report/getStatus");
+        interceptorRegistration.excludePathPatterns("/help.html");
     }
 }
