@@ -77,7 +77,7 @@ public enum BeforeRegexEnum {
     VAR("(?i)<var\\([^<>]+\\)>"),
 
     /**
-     * <$index(xxx)> 将请求参数中此匹配项括号中的内容赋值给<ref(index)
+     * <$index(xxx)> 将请求参数中此匹配项括号中的内容赋值给<ref(index)>
      * 参数:index-必填,index必须是整数,标记引用源
      * 例:
      * <$1(abc)> 将abc赋值到所有<ref(1)>的位置,并且<$1(abc)>自动替换为abc

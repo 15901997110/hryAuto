@@ -155,23 +155,6 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<!--完善用例名称自动赋值功能,by luqiwei-->
-<!--<script type="text/javascript">
-    (function () {
-        var previous=null;
-        $("#ti").on('focus', function () {
-            // Store the current value on focus and on change
-            previous = this.val().text;
-        }).change(function () {
-            // Do something with the previous value after the change
-            alert(previous);
-
-            // Make sure the previous value is updated
-            previous = this.val().text;
-            alert(previous);
-        });
-    })();
-</script>-->
 
 <script type="text/javascript">
     //loading
@@ -300,7 +283,11 @@
         var iparamtype = selectedTi.iparamtype;
         if (copyFlag) {//复制
             if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
-                $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+                try {
+                    $("#requestParam").val(JSON.stringify(JSON.parse(copyTcase.requestparam), null, 2));
+                } catch (e) {
+                    $("#requestParam").val(copyTcase.requestparam);
+                }
             } else {//否则直接填充
                 $("#requestParam").val(copyTcase.requestparam);
             }
@@ -513,7 +500,8 @@
                     var status = data.status;
                     var msg = data.msg;
                     if (status == 0) {
-                        parent.window.location.reload();
+                        //parent.window.location.reload();
+                        window.parent.pageSkip(1);
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {

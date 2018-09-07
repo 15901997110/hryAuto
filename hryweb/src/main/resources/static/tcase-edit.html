@@ -27,7 +27,7 @@
     <title>用例编辑</title>
 </head>
 <body>
-<article class="page-container">
+<article class="page-container" style="margin-top:5%">
     <form method="post" class="form form-horizontal" id="form">
         <div class="row cl" style="display:none">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
@@ -334,7 +334,7 @@
                     casename: caseName,
                     remark: remark,
                     serviceid: service,
-                    // iid: ti,//ti不必传,页面不可编辑,传了也是原值
+                    iid: iId,
                     envid: env,
                     testclass: testclass,
                     requestheader: requestHeader,
@@ -350,7 +350,8 @@
                     var msg = data.msg;
 
                     if (status == 0) {
-                        parent.window.location.reload();
+                        //parent.window.location.reload();
+                        window.parent.pageSkip(1);
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {
