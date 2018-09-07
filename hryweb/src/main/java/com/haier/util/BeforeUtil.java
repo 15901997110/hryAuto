@@ -252,7 +252,7 @@ public class BeforeUtil {
             String sourceIndex = sourceRegex.substring(sourceRegex.indexOf("$") + 1, sourceRegex.indexOf("("));
             String sourceValue = sourceRegex.substring(sourceRegex.indexOf("(") + 1, sourceRegex.lastIndexOf(")"));
             base = matcher.replaceFirst(sourceValue);
-            Pattern refPattern = Pattern.compile("<ref\\(" + sourceIndex + "\\)");
+            Pattern refPattern = Pattern.compile("<ref\\(" + sourceIndex + "\\)>");
             Matcher refMatcher = refPattern.matcher(base);
             if (refMatcher.find()) {
                 base = refMatcher.replaceAll(sourceValue);
