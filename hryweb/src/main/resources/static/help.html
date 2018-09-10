@@ -21,7 +21,7 @@
     <![endif]-->
     <title>帮助</title>
 </head>
-<body>
+<body style="padding-left: 50px">
 <h2 >帮助一览列表</h2>
 <div id="table-of-contents">
     <a href="#AssertType">1 - AssertType</a>
@@ -44,15 +44,17 @@
     </tr>
     <tr class="text-l">
         <th width="10%">contain</th>
-        <th width="30%" align="left">实际值包含期望值,期望值可以填写正则表达式</th>
+        <th width="30%" align="left">实际值包含期望值(忽略大小写)</th>
     </tr>
     <tr class="text-l">
         <th width="10%">key-value</th>
-        <th width="30%" align="left">实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则</th>
+        <th width="30%" align="left">实际值与相对应key的期望中的值相等,或忽略大小写比较相等,
+            <br>或忽略空字符比较相等,或包含期望值,或匹配期望值的正则形式,
+            <br>所有的key-value对比较都为true,断言通过</th>
     </tr>
     <tr class="text-l">
         <th width="10%">match</th>
-        <th width="30%" align="left">实际值中匹配到期望的正则表达式</th>
+        <th width="30%" align="left">实际值中匹配到期望值的正则表达式</th>
     </tr>
     </tbody>
 </table>
@@ -89,14 +91,14 @@
         <th width="10%">(?i)&lt;datetime\(-?\d*\)&gt;</th>
         <th width="30%" align="left"> &lt;datetime(num)&gt;生成一个datetime,格式"yyyy-MM-dd HH:mm:ss"
             <br>参数:num-非必填,指定datetime按小时的偏移量</th>
-        <th width="30%" align="left">
+        <th width="30%" align="left">同上
         </th>
     </tr>
     <tr class="text-1">
         <th width="10%">(?i)&lt;time\(-?\d*\)</th>
         <th width="30%" align="left"> &lt;time(num)&gt;生成一个时间,格式"HH:mm:ss"
             <br>参数:num-非必填,指定时间按分钟的偏移量</th>
-        <th width="30%" align="left">
+        <th width="30%" align="left">同上
         </th>
     </tr>
     <tr class="text-1">
@@ -105,7 +107,7 @@
             <br>参数:min-非必填,指定随机范围的下限(包含)
             <br>参数:max-非必填,指定随机范围的上限(不包含)</th>
         <th width="30%" align="left">&lt;randomI()&gt;:不填写任何参数,将随机一个[0,100)中的整数
-            <br><&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
+            <br>&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
         </th>
     </tr>
     <tr class="text-1">
@@ -119,7 +121,7 @@
     </tr>
     <tr class="text-1">
         <th width="10%">(?i)&lt;sql:[^<>]*&gt;</th>
-        <th width="30%" align="left"> &lt;ql:xxx&gt;执行sql并且使用执行结果替换此匹配项
+        <th width="30%" align="left"> &lt;sql:xxx&gt;执行sql并且使用执行结果替换此匹配项
             <br>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句</th>
         <th width="30%" align="left">&lt;sql:select id from table&gt;:执行查询语句,并使用查询结果替换此处,结果:1
             <br>&lt;sql:update table t set t.status=-1 where t.id=1&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
