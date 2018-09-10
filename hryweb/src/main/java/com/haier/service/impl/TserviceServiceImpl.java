@@ -5,23 +5,24 @@ import com.github.pagehelper.PageInfo;
 import com.haier.anno.SKey;
 import com.haier.enums.PackageEnum;
 import com.haier.enums.SortEnum;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
-import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
-import com.haier.po.*;
-import com.haier.service.TservicedetailService;
+import com.haier.po.Ti;
+import com.haier.po.Tservice;
+import com.haier.po.TserviceExample;
+import com.haier.po.Tservicedetail;
 import com.haier.service.TiService;
 import com.haier.service.TserviceService;
+import com.haier.service.TservicedetailService;
 import com.haier.util.ClassUtil;
-import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: TserviceService实现类
@@ -37,9 +38,6 @@ public class TserviceServiceImpl implements TserviceService {
     TserviceMapper tserviceMapper;
 
     @Autowired
-    TiMapper tiMapper;
-
-    @Autowired
     TiService tiService;
 
     @Autowired
@@ -52,13 +50,11 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public Tservice selectOne(String className) {
-        if (className == null)
-            return null;
-        Tservice tservice = new Tservice();
-        tservice.setClassname(className);
-        List<Tservice> tservices = this.selectByCondition(tservice);
-        if (tservices != null && tservices.size() > 0) {
-            return tservices.get(0);
+        List<Tservice> tservices = this.selectByCondition(null);
+        for (Tservice tservice : tservices) {
+            if (StringUtils.isNoneBlank(tservice.getClassname(), className) && tservice.getClassname().equals(className)) {
+                return tservice;
+            }
         }
         return null;
     }
@@ -73,48 +69,46 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public List<Tservice> selectByCondition(Tservice tservice) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tservice, false);
         TserviceExample tserviceExample = new TserviceExample();
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andIsdelNotEqualTo(1);
         if (tservice != null) {
             if (tservice.getId() != null)
                 criteria.andIdEqualTo(tservice.getId());
-            if (tservice.getServicekey() != null) {
-                criteria.andServicekeyLike(tservice.getServicekey());
-
+            if (StringUtils.isNotBlank(tservice.getServicekey())) {
+                criteria.andServicekeyLike("%" + tservice.getServicekey() + "%");
                 //构建一个criteria查询servicename
                 TserviceExample.Criteria criteriaServicename = tserviceExample.createCriteria();
                 criteriaServicename.andIsdelNotEqualTo(1);
-                criteriaServicename.andServicenameLike(tservice.getServicekey());
+                criteriaServicename.andServicenameLike("%" + tservice.getServicekey() + "%");
                 if (tservice.getId() != null)
                     criteriaServicename.andIdEqualTo(tservice.getId());
-                if (tservice.getEditor() != null)
-                    criteriaServicename.andEditorLike(tservice.getEditor());
-                if (tservice.getClassname() != null)
-                    criteriaServicename.andClassnameEqualTo(tservice.getClassname().replaceAll("%", ""));
-
+                if (StringUtils.isNotBlank(tservice.getServicename()))
+                    criteriaServicename.andServicenameLike("%" + tservice.getServicename() + "%");
+                if (StringUtils.isNotBlank(tservice.getEditor()))
+                    criteriaServicename.andEditorLike("%" + tservice.getEditor() + "%");
+                if (StringUtils.isNotBlank(tservice.getClassname()))
+                    criteriaServicename.andClassnameEqualTo(tservice.getClassname());
                 tserviceExample.or(criteriaServicename);
             }
-            if (tservice.getEditor() != null)
-                criteria.andEditorLike(tservice.getEditor());
-            if (tservice.getClassname() != null)
-                criteria.andClassnameEqualTo(tservice.getClassname().replaceAll("%", ""));
+            if (StringUtils.isNotBlank(tservice.getServicename()))
+                criteria.andServicenameLike("%" + tservice.getServicename() + "%");
+            if (StringUtils.isNotBlank(tservice.getEditor()))
+                criteria.andEditorLike("%" + tservice.getEditor() + "%");
+            if (StringUtils.isNotBlank(tservice.getClassname()))
+                criteria.andClassnameEqualTo(tservice.getClassname());
         }
-
         return tserviceMapper.selectByExample(tserviceExample);
     }
 
     @Override
     public Integer updateOne(Tservice tservice) {
-        if (StringUtils.isNotBlank(tservice.getServicekey()))
-            tservice.setClassname(tservice.getServicekey() + "DefaultTest");
+        tservice.setClassname(tservice.getServicekey() + "DefaultTest");
         return tserviceMapper.updateByPrimaryKeySelective(tservice);
     }
 
     @Override
     public Integer insertOne(Tservice tservice) {
-        //默认测试类=服务Key+"DefaultTest"
         tservice.setClassname(tservice.getServicekey() + "DefaultTest");
         tserviceMapper.insertSelective(tservice);
         return tservice.getId();
@@ -122,8 +116,8 @@ public class TserviceServiceImpl implements TserviceService {
 
     @Override
     public Integer deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
+        if (id == null) {
+            return null;
         }
         //删除ti表中的记录
         Ti ti = new Ti();

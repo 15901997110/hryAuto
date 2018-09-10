@@ -13,6 +13,7 @@ import com.haier.po.TservicedetailExample;
 import com.haier.service.TservicedetailService;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,12 +59,11 @@ public class TservicedetailServiceImpl implements TservicedetailService {
      */
     @Override
     public Integer deleteByCondition(Tservicedetail tservicedetail) {
-        ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
-        if (tservicedetail == null || (tservicedetail.getServiceid() == null && tservicedetail.getEnvid() == null)) {
-            throw new HryException(StatusCodeEnum.DANGER_OPERATION, "暂时只支持根据serviceid和envid删除tservicedetail记录");
+        if (tservicedetail == null || !ObjectUtils.anyNotNull(tservicedetail.getServiceid(), tservicedetail.getEnvid())) {
+            return null;
         }
-        TservicedetailExample tservicedetailExample = new TservicedetailExample();
-        TservicedetailExample.Criteria criteria = tservicedetailExample.createCriteria();
+        TservicedetailExample example = new TservicedetailExample();
+        TservicedetailExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
         if (tservicedetail.getServiceid() != null)
             criteria.andServiceidEqualTo(tservicedetail.getServiceid());
@@ -71,7 +71,7 @@ public class TservicedetailServiceImpl implements TservicedetailService {
             criteria.andEnvidEqualTo(tservicedetail.getEnvid());
         Tservicedetail t = new Tservicedetail();
         t.setStatus(-1);
-        return tservicedetailMapper.updateByExampleSelective(t, tservicedetailExample);
+        return tservicedetailMapper.updateByExampleSelective(t, example);
     }
 
     @Override

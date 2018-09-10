@@ -8,8 +8,9 @@ package com.haier.enums;
 public enum AssertTypeEnum {
     EQUAL(1, "equal", "实际值与期望值完全相等"),//完全相等
     CONTAIN(2, "contain", "实际值包含期望值(忽略大小写)"),
-    KEY_VALUE(3, "key-value", "实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则"),
-    MATCH(4,"match","实际值中匹配到期望的正则表达式");
+    KEY_VALUE(3, "key-value", "实际值与相对应key的期望中的值相等,或忽略大小写比较相等,或忽略空字符比较相等,或包含期望值,或匹配期望值的正则形式,所有的key-value对比较都为true,断言通过"),
+    MATCH(4, "match", "实际值中匹配到期望值的正则表达式");
+
     AssertTypeEnum(int id, String value, String desc) {
         this.id = id;
         this.value = value;

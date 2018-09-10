@@ -1,13 +1,18 @@
 package com.haier.controller;
 
 
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.po.Tenv;
 import com.haier.response.Result;
 import com.haier.service.TenvService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -22,44 +27,45 @@ public class TenvController {
     @Autowired
     TenvService tenvService;
 
-    /**
-     * 查询全部环境列表处理
-     */
     @PostMapping(value = "/selectAll")
     public Result selectAll() {
         return ResultUtil.success(tenvService.selectAll());
     }
-
-    /**
-     * 查询单个环境信息
-     * update by lish 2018-05-18 17:41
-     */
 
     @PostMapping(value = "/selectOne")
     public Result selectOne(Integer id) {
         return ResultUtil.success(tenvService.selectOne(id));
     }
 
-    /**
-     * 新增环境处理
-     * update by lish 2018-05-18 17:41
-     */
     @PostMapping(value = "/insertOne")
-    public Result insertOne(Tenv tenv) {
+    public Result insertOne(@Validated Tenv tenv) {
+        List<Tenv> tenvs = tenvService.selectAll();
+        if (tenvs.size() > 0) {
+            for (Tenv t : tenvs) {
+                if (tenv.getEnvkey().equals(t.getEnvkey())) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "环境标识envkey必须唯一");
+                }
+            }
+        }
         return ResultUtil.success(tenvService.insertOne(tenv));
-
     }
-
 
     @PostMapping(value = "/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(tenvService.deleteOne(id));
     }
 
-
     @PostMapping(value = "/updateOne")
-    public Result updateOne(Tenv tenv) {
-        return ResultUtil.success(tenvService.updateOne(tenv.getId(), tenv));
+    public Result updateOne(@Validated Tenv tenv) {
+        List<Tenv> tenvs = tenvService.selectAll();
+        if (tenvs.size() > 0) {
+            for (Tenv t : tenvs) {
+                if (tenv.getId() != null && t.getEnvkey().equals(tenv.getEnvkey()) && !t.getId().equals(tenv.getId())) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "环境标识envkey必须唯一");
+                }
+            }
+        }
+        return ResultUtil.success(tenvService.updateOne(tenv));
     }
 
 
