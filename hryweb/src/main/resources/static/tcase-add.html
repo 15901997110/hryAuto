@@ -202,16 +202,13 @@
         var sId=$.cookie('serviceid');
         var serviceHtml = "";
         for (var i = 0; i < serviceList.length; i++) {
-            if(sId != null && serviceList[i].id == sId){
-                serviceHtml += "<option value=\"" + serviceList[i].id + "\" selected>" + serviceList[i].servicekey + "</option>"
-            }else{
                 serviceHtml += "<option value=\"" + serviceList[i].id + "\">" + serviceList[i].servicekey + "</option>"
-            }
-
         }
         $("#service").append(serviceHtml);
         if (copyFlag) {
             $("#service").val(copyTcase.serviceid);
+        }else if(sId!=null){
+            $("#service").val(sId);
         }
         var selectedServiceId = $("#service").val();
 
@@ -226,11 +223,7 @@
             $("#ti").append(tiHtml);
         } else {
             for (var j = 0; j < tiList.length; j++) {
-                if(tId != null && tId == tiList[j].id){
-                    tiHtml += "<option value=\"" + tiList[j].id + "\" selected>" + tiList[j].iuri + "(" + tiList[j].remark + ")</option>";
-                }else{
-                    tiHtml += "<option value=\"" + tiList[j].id + "\">" + tiList[j].iuri + "(" + tiList[j].remark + ")</option>";
-                }
+                tiHtml += "<option value=\"" + tiList[j].id + "\">" + tiList[j].iuri + "(" + tiList[j].remark + ")</option>";
 
             }
             $("#ti").append(tiHtml);
@@ -239,6 +232,8 @@
 
             if (copyFlag) {//如果是复制用例,这里选中
                 $("#ti").select2().val(copyTcase.iid).trigger("change");//注意,select2的选中与select并不相同
+            }else if(tId != null){
+                $("#ti").val(tId);
             }
             selectedTiId = $("#ti").val();
             selectedTi = getTiById(selectedTiId);
