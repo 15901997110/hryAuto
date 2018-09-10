@@ -15,6 +15,7 @@ import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +76,7 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public Integer deleteByCondition(Ti ti) {
-        if (ti.getServiceid() == null) {
+        if (!ObjectUtils.allNotNull(ti, ti.getServiceid())) {
             return null;
         }
         //先删除tcase表中的记录
