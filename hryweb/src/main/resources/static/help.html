@@ -44,15 +44,17 @@
     </tr>
     <tr class="text-l">
         <th width="10%">contain</th>
-        <th width="30%" align="left">实际值包含期望值,期望值可以填写正则表达式</th>
+        <th width="30%" align="left">实际值包含期望值(忽略大小写)</th>
     </tr>
     <tr class="text-l">
         <th width="10%">key-value</th>
-        <th width="30%" align="left">实际值中解析出来的key-value与期望值中一致,期望值的格式必须是JSON,支持正则</th>
+        <th width="30%" align="left">实际值与相对应key的期望中的值相等,或忽略大小写比较相等,
+            <br>或忽略空字符比较相等,或包含期望值,或匹配期望值的正则形式,
+            <br>所有的key-value对比较都为true,断言通过</th>
     </tr>
     <tr class="text-l">
         <th width="10%">match</th>
-        <th width="30%" align="left">实际值中匹配到期望的正则表达式</th>
+        <th width="30%" align="left">实际值中匹配到期望值的正则表达式</th>
     </tr>
     </tbody>
 </table>
@@ -105,7 +107,7 @@
             <br>参数:min-非必填,指定随机范围的下限(包含)
             <br>参数:max-非必填,指定随机范围的上限(不包含)</th>
         <th width="30%" align="left">&lt;randomI()&gt;:不填写任何参数,将随机一个[0,100)中的整数
-            <br><&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
+            <br>&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
         </th>
     </tr>
     <tr class="text-1">
