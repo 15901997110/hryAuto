@@ -73,18 +73,26 @@ public class TserviceServiceImpl implements TserviceService {
         TserviceExample.Criteria criteria = tserviceExample.createCriteria();
         criteria.andIsdelNotEqualTo(1);
         if (tservice != null) {
+            if (tservice.getId() != null)
+                criteria.andIdEqualTo(tservice.getId());
             if (StringUtils.isNotBlank(tservice.getServicekey())) {
                 criteria.andServicekeyLike("%" + tservice.getServicekey() + "%");
                 //构建一个criteria查询servicename
                 TserviceExample.Criteria criteriaServicename = tserviceExample.createCriteria();
                 criteriaServicename.andIsdelNotEqualTo(1);
                 criteriaServicename.andServicenameLike("%" + tservice.getServicekey() + "%");
+                if (tservice.getId() != null)
+                    criteriaServicename.andIdEqualTo(tservice.getId());
+                if (StringUtils.isNotBlank(tservice.getServicename()))
+                    criteriaServicename.andServicenameLike("%" + tservice.getServicename() + "%");
                 if (StringUtils.isNotBlank(tservice.getEditor()))
                     criteriaServicename.andEditorLike("%" + tservice.getEditor() + "%");
                 if (StringUtils.isNotBlank(tservice.getClassname()))
                     criteriaServicename.andClassnameEqualTo(tservice.getClassname());
                 tserviceExample.or(criteriaServicename);
             }
+            if (StringUtils.isNotBlank(tservice.getServicename()))
+                criteria.andServicenameLike("%" + tservice.getServicename() + "%");
             if (StringUtils.isNotBlank(tservice.getEditor()))
                 criteria.andEditorLike("%" + tservice.getEditor() + "%");
             if (StringUtils.isNotBlank(tservice.getClassname()))
