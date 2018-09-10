@@ -21,10 +21,10 @@ import java.util.List;
  * @Author: luqiwei
  * @Date: 2018/5/9 9:31
  */
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class TenvServiceImpl implements TenvService {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     TenvMapper tenvMapper;
 
@@ -46,35 +46,17 @@ public class TenvServiceImpl implements TenvService {
     }
 
     @Override
-    public Integer updateOne(Integer id, Tenv tenv) {
-        if (id == null || tenv == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
-        tenv.setId(id);
+    public Integer updateOne(Tenv tenv) {
         return tenvMapper.updateByPrimaryKeySelective(tenv);
     }
 
     @Override
     public Integer insertOne(Tenv tenv) {
-        ReflectUtil.setInvalidFieldToNull(tenv, false);
-        if (tenv == null || tenv.getEnvkey() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "envkey必填");
-        }
-        //先判断数据是否存在
-        TenvExample example = new TenvExample();
-        example.createCriteria().andEnvkeyEqualTo(tenv.getEnvkey());
-        List<Tenv> tenvList = tenvMapper.selectByExample(example);
-        if (tenvList != null && tenvList.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD, "envkey=" + tenv.getEnvkey() + "的记录已经存在");//抛出异常:记录存在
-        }
         return tenvMapper.insertSelective(tenv);
     }
 
     @Override
     public Integer deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
         //先删除tservicedetail表中的记录
         Tservicedetail tservicedetail = new Tservicedetail();
         tservicedetail.setEnvid(id);

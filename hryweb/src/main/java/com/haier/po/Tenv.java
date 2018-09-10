@@ -1,8 +1,11 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
+
 public class Tenv {
     private Integer id;
 
+    @NotBlank(message = "环境标识不可为空")
     private String envkey;
 
     private String remark;
