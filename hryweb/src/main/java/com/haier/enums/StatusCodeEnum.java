@@ -17,7 +17,7 @@ public enum StatusCodeEnum {
     PRIMARYKEY_NULL(8, "主键不可为空"),
     REGEX_ERROR_PWD(9, "密码不符合规范"),
     DANGER_OPERATION(10, "危险操作不被允许"),
-    REGEX_ERROR(11,"正则不匹配"),
+    REGEX_ERROR(11, "正则不匹配"),
     HTTP_ERROR(100, "发送http请求时异常"),
     PARSE_JSON_ERROR(101, "JSON转换异常"),
 
@@ -27,6 +27,9 @@ public enum StatusCodeEnum {
     PHONE_EMPTY(1004, "手机号码为空"),
     PHONE_FORMAT_ERROR(1008, "手机号格式不对"),
     PARAMS_FORMAT_ERROR(1009, "模板参数格式不对"),
+
+    BIND_ERROR(1999, "Spring参数绑定异常"),
+
     DB_ERROR(9001, "数据库错误！"),
     PARSE_DATE_ERROR(9002, "时间转换出错！"),
     SYSTEM_MAINTAIN(9990, "第三方系统维护中！"),
