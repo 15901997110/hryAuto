@@ -57,13 +57,10 @@ public class TenvController {
 
     @PostMapping(value = "/updateOne")
     public Result updateOne(@Validated Tenv tenv) {
-        if (tenv.getId() == null) {
-            throw new HryException(StatusCodeEnum.PRIMARYKEY_NULL);
-        }
         List<Tenv> tenvs = tenvService.selectAll();
         if (tenvs.size() > 0) {
             for (Tenv t : tenvs) {
-                if (tenv.getEnvkey().equals(t.getEnvkey()) && !tenv.getId().equals(t.getEnvkey())) {
+                if (tenv.getId() != null && t.getEnvkey().equals(tenv.getEnvkey()) && !t.getId().equals(tenv.getId())) {
                     throw new HryException(StatusCodeEnum.EXIST_RECORD, "环境标识envkey必须唯一");
                 }
             }
