@@ -745,7 +745,52 @@ function getUserList() {
 }
 
 
+/**
+ *根据接口id查询该接口下用例数量
+ */
+//根据用例id查询用例信息
+function getTcaseNumByTiId(tiId,envId) {
+    var num = 0;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/tcase/selectByConditionSimple",
+        data: {
+            iid: tiId,
+            envid:envId
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                num = data.data.length;
+            } else {
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
 
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return num;
+}
 
 
 
