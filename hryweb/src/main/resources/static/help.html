@@ -21,7 +21,7 @@
     <![endif]-->
     <title>帮助</title>
 </head>
-<body>
+<body style="padding-left: 50px">
 <h2 >帮助一览列表</h2>
 <div id="table-of-contents">
     <a href="#AssertType">1 - AssertType</a>
@@ -89,14 +89,14 @@
         <th width="10%">(?i)&lt;datetime\(-?\d*\)&gt;</th>
         <th width="30%" align="left"> &lt;datetime(num)&gt;生成一个datetime,格式"yyyy-MM-dd HH:mm:ss"
             <br>参数:num-非必填,指定datetime按小时的偏移量</th>
-        <th width="30%" align="left">
+        <th width="30%" align="left">同上
         </th>
     </tr>
     <tr class="text-1">
         <th width="10%">(?i)&lt;time\(-?\d*\)</th>
         <th width="30%" align="left"> &lt;time(num)&gt;生成一个时间,格式"HH:mm:ss"
             <br>参数:num-非必填,指定时间按分钟的偏移量</th>
-        <th width="30%" align="left">
+        <th width="30%" align="left">同上
         </th>
     </tr>
     <tr class="text-1">
@@ -119,7 +119,7 @@
     </tr>
     <tr class="text-1">
         <th width="10%">(?i)&lt;sql:[^<>]*&gt;</th>
-        <th width="30%" align="left"> &lt;ql:xxx&gt;执行sql并且使用执行结果替换此匹配项
+        <th width="30%" align="left"> &lt;sql:xxx&gt;执行sql并且使用执行结果替换此匹配项
             <br>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句</th>
         <th width="30%" align="left">&lt;sql:select id from table&gt;:执行查询语句,并使用查询结果替换此处,结果:1
             <br>&lt;sql:update table t set t.status=-1 where t.id=1&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
