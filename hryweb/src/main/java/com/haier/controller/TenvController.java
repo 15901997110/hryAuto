@@ -1,6 +1,8 @@
 package com.haier.controller;
 
 
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.po.Tenv;
 import com.haier.response.Result;
 import com.haier.service.TenvService;
@@ -9,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -35,8 +39,15 @@ public class TenvController {
 
     @PostMapping(value = "/insertOne")
     public Result insertOne(@Validated Tenv tenv) {
+        List<Tenv> tenvs = tenvService.selectAll();
+        if (tenvs.size() > 0) {
+            for (Tenv t : tenvs) {
+                if (tenv.getEnvkey().equals(t.getEnvkey())) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "环境标识envkey必须唯一");
+                }
+            }
+        }
         return ResultUtil.success(tenvService.insertOne(tenv));
-
     }
 
     @PostMapping(value = "/deleteOne")
@@ -46,6 +57,17 @@ public class TenvController {
 
     @PostMapping(value = "/updateOne")
     public Result updateOne(@Validated Tenv tenv) {
+        if (tenv.getId() == null) {
+            throw new HryException(StatusCodeEnum.PRIMARYKEY_NULL);
+        }
+        List<Tenv> tenvs = tenvService.selectAll();
+        if (tenvs.size() > 0) {
+            for (Tenv t : tenvs) {
+                if (tenv.getEnvkey().equals(t.getEnvkey()) && !tenv.getId().equals(t.getEnvkey())) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "环境标识envkey必须唯一");
+                }
+            }
+        }
         return ResultUtil.success(tenvService.updateOne(tenv));
     }
 
