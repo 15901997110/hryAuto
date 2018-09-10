@@ -1,10 +1,12 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 public class Tservice {
     private Integer id;
 
+    @NotBlank(message = "服务标识不可为空")
     private String servicekey;
 
     private String servicename;
