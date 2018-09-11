@@ -47,11 +47,6 @@ public class PgwBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/t4444   /l8888", desc = "uyui7")
-    public String _t4444   _l8888(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tradeQueryFacade/tradeQuery", desc = "交易查询")
     public String _tradeQueryFacade_tradeQuery(HryTest test) {
         return HryHttpClientUtil.send(test, this);

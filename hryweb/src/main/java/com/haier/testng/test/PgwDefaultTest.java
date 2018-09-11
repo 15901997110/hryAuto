@@ -71,12 +71,6 @@ public class PgwDefaultTest extends PgwBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/t4444   /l8888", dataProvider = "provider", description = "uyui7")
-    public void t4444   _l8888(HryTest hryTest) {
-        String actual = this._t4444   _l8888(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询")
     public void tradeQueryFacade_tradeQuery(HryTest hryTest) {
         String actual = this._tradeQueryFacade_tradeQuery(hryTest);
