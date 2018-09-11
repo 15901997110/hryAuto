@@ -13,6 +13,7 @@ import com.haier.service.*;
 import com.haier.testng.run.Runner;
 import com.haier.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,6 +84,9 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer deleteByCondition(Tcase tcase) {
+        if (tcase == null|| !ObjectUtils.anyNotNull(tcase.getIid(),tcase.getEnvid(),tcase.getServiceid())) {
+            return null;
+        }
         TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
         criteria.andStatusGreaterThan(0);

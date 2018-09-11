@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.SortEnum;
 import com.haier.enums.StatusCodeEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.exception.HryException;
 import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
@@ -16,6 +17,7 @@ import com.haier.util.ReflectUtil;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,15 +64,21 @@ public class TiServiceImpl implements TiService {
      */
     @Override
     public Integer deleteOne(Integer id) {
-        //1.先删除tcase表中的记录
-        Tcase tcase = new Tcase();
-        tcase.setIid(id);
-        tcaseService.deleteByCondition(tcase);
+        return this.setStatus(id, StatusEnum._ONE);
+    }
 
-        //2.再删除ti表中的记录
+    @Override
+    public Integer invalidInterface(Integer id) {
+        return this.setStatus(id, StatusEnum._TWO);
+    }
+
+    public Integer setStatus(Integer iId, StatusEnum statusEnum) {
+        Tcase tcase = new Tcase();
+        tcase.setIid(iId);
+        tcaseService.deleteByCondition(tcase);
         Ti ti = new Ti();
-        ti.setId(id);
-        ti.setIstatus(-1);
+        ti.setId(iId);
+        ti.setIstatus(statusEnum.getId());
         return tiMapper.updateByPrimaryKeySelective(ti);
     }
 
@@ -122,24 +130,35 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public List<Ti> selectByCondition(Ti ti) {
+        return this.selectByCondition(ti, false);
+    }
+
+    @Override
+    public List<Ti> selectAllStatusByCondition(Ti ti) {
+        return this.selectByCondition(ti, true);
+    }
+
+    public List<Ti> selectByCondition(Ti ti, Boolean selectAllStatus) {
+        if (selectAllStatus == null) {
+            selectAllStatus = false;
+        }
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
-        criteria.andIstatusGreaterThan(0);
+        if (!selectAllStatus) {
+            criteria.andIstatusGreaterThan(0);
+        }
         if (ti != null) {
             if (ti.getServiceid() != null) {
                 criteria.andServiceidEqualTo(ti.getServiceid());
             }
-            if (ti.getIuri() != null) {
-                criteria.andIuriEqualTo(ti.getIuri().replaceAll("%", ""));//iUri精确查询
+            if (StringUtils.isNotBlank(ti.getIuri())) {
+                criteria.andIuriLike("%" + ti.getIuri() + "%");//iUri精确查询
             }
-            if (ti.getRemark() != null) {
-                criteria.andRemarkLike(ti.getRemark());
+            if (StringUtils.isNotBlank(ti.getRemark())) {
+                criteria.andRemarkLike("%" + ti.getRemark() + "%");
             }
-            if (ti.getIdev() != null) {
-                criteria.andIdevLike(ti.getIdev());
-            }
-            if (ti.getIparamsample() != null) {
-                criteria.andIparamsampleLike(ti.getIparamsample());
+            if (StringUtils.isNotBlank(ti.getIdev())) {
+                criteria.andIdevLike("%" + ti.getIdev() + "%");
             }
         }
         return tiMapper.selectByExample(tiExample);

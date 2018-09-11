@@ -200,10 +200,12 @@ public class TiController {
      */
     @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR);
-        }
         return ResultUtil.success(tiService.deleteOne(id));
+    }
+
+    @PostMapping("/invalidInterface")
+    public Result invalidInterface(Integer id){
+        return ResultUtil.success(tiService.invalidInterface(id));
     }
 
     /**
