@@ -13,17 +13,17 @@ function pagination(data) {
     var nextPage = data.data.nextPage;
 
     var pagesHtml = "";
-    var pageStart = "<a class=\"paginate_button previous disabled\" href='javascript:void(0)' onclick='pageSkip(" + beforePage + ")' id=\"table_previous\">上一页</a>\n" +
+    var pageStart = "<a class=\"paginate_button previous disabled\" onclick='pageSkip(" + beforePage + ")' id=\"table_previous\">上一页</a>\n" +
         "            <span id=\"pages\">";
     var pageEnd = "</span>\n" +
-        "            <a class=\"paginate_button next disabled\" href='javacript:void(0)' onclick='pageSkip(" + nextPage + ")' id=\"table_next\">下一页</a>";
+        "            <a class=\"paginate_button next disabled\" onclick='pageSkip(" + nextPage + ")' id=\"table_next\">下一页</a>";
 
     if (pages < 5) {
         for (var k = 0; k < pages; k++) {
             if ((k + 1) == now) {
-                var pageHtml = "<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
+                var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
             } else {
-                var pageHtml = "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
+                var pageHtml = "<a class=\"paginate_button \" onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
             }
 
             pagesHtml = pagesHtml + pageHtml;
@@ -31,28 +31,28 @@ function pagination(data) {
 
     } else {
         if (now > 4 && now < (pages - 3)) {
-            var pagesHtml = "<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+            var pagesHtml = "<a class=\"paginate_button\" onclick='pageSkip(1)'>1</a>" +
                 "<span> …</span>";
             for (i = (now - 1); i < now + 2; i++) {
                 if (i == now) {
-                    var pageHtml = "<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
                 } else {
-                    var pageHtml = "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button \" onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
                 }
                 pagesHtml = pagesHtml + pageHtml;
             }
             pagesHtml = pagesHtml + "<span> …</span>\n" +
-                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + pages + ")'>" + pages + "</a>";
+                "<a class=\"paginate_button \" onclick='pageSkip(" + pages + ")'>" + pages + "</a>";
 
 
         } else if (now > (pages - 4) && now <= pages) {
-            var pagesHtml = "<a class=\"paginate_button\" href='javascript:void(0)' onclick='pageSkip(1)'>1</a>" +
+            var pagesHtml = "<a class=\"paginate_button\" onclick='pageSkip(1)'>1</a>" +
                 "<span> …</span>";
             for (i = (pages - 4); i <= pages; i++) {
                 if (i == now) {
-                    var pageHtml = "<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
                 } else {
-                    var pageHtml = "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button \" onclick='pageSkip(" + (i) + ")'>" + (i) + "</a>";
                 }
                 pagesHtml = pagesHtml + pageHtml;
 
@@ -62,15 +62,15 @@ function pagination(data) {
 
             for (var i = 0; i <= 4; i++) {
                 if ((i + 1) == now) {
-                    var pageHtml = "<a class=\"paginate_button current\" href='javascript:void(0)' onclick='pageSkip(" + (i + 1) + ")'>" + (i + 1) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (i + 1) + ")'>" + (i + 1) + "</a>";
                 } else {
-                    var pageHtml = "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + (i + 1) + ")'>" + (i + 1) + "</a>";
+                    var pageHtml = "<a class=\"paginate_button \" onclick='pageSkip(" + (i + 1) + ")'>" + (i + 1) + "</a>";
                 }
 
                 pagesHtml = pagesHtml + pageHtml;
             }
             pagesHtml = pagesHtml + "<span> …</span>\n" +
-                "<a class=\"paginate_button \" href='javascript:void(0)' onclick='pageSkip(" + pages + ")'>" + pages + "</a>";
+                "<a class=\"paginate_button \" onclick='pageSkip(" + pages + ")'>" + pages + "</a>";
         }
 
     }
