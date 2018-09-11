@@ -217,8 +217,12 @@
 
                     var iheadersample = list.iheadersample;
                     if (iheadersample != null) {
-                        var requestHeaderJson = JSON.stringify(JSON.parse(iheadersample), null, 2);
-                        iheadersample = requestHeaderJson;
+                        try {
+                            var requestHeaderJson = JSON.stringify(JSON.parse(iheadersample), null, 2);
+                            iheadersample = requestHeaderJson;
+                        } catch (e) {
+
+                        }
                     } else {
                         iheadersample = "";
                     }
@@ -232,7 +236,6 @@
                                 var requestJson = JSON.stringify(JSON.parse(iparamsample), null, 2);
                                 iparamsample = requestJson;
                             } catch (e) {
-                                iparamsample = iparamsample;
                             }
                         }
                     }

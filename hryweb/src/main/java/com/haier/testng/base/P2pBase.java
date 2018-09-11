@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @SKey("P2p")
 public class P2pBase extends Base {
@@ -92,21 +92,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/assistFacade/updateBidInfoById", desc = "更改标的信息")
-    public String _assistFacade_updateBidInfoById(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/assistFacade/updateEnclosureByBid", desc = "更新标的附件")
-    public String _assistFacade_updateEnclosureByBid(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/assistFacade/updateSystemVariable", desc = "更改配置")
-    public String _assistFacade_updateSystemVariable(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/bidFacade/getAggregatedBidDetail", desc = "查询聚合标的信息，包括标的基础信息、项目描述、借款方信息、风险措施、审核信息")
     public String _bidFacade_getAggregatedBidDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -119,6 +104,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/bidFacade/getBidDetailByIdList", desc = "根据List[Id]查询标的信息(不包含消金标的)")
     public String _bidFacade_getBidDetailByIdList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/bidFacade/getBidIsNoviceProperty", desc = "查询标的是否是新客专享类型")
+    public String _bidFacade_getBidIsNoviceProperty(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -172,6 +162,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/bidFacade/updateBidIsNoviceProperty", desc = "更新标的新客专享类型")
+    public String _bidFacade_updateBidIsNoviceProperty(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/bidFacade/updateBidRuleConfig", desc = "修改标的配置规则")
     public String _bidFacade_updateBidRuleConfig(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -182,7 +177,17 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/caculateCfRepayPlan", desc = "根据预约计划编号计算还款计划")
+    @Uri(value = "/calculateFacade/getAnnualRate", desc = "获取预期最低年化收益率")
+    public String _calculateFacade_getAnnualRate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cfFacade/addRpLabel", desc = "增加预约计划标签信息")
+    public String _cfFacade_addRpLabel(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cfFacade/caculateCfRepayPlan", desc = "根据优易智投编号计算还款计划")
     public String _cfFacade_caculateCfRepayPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -192,12 +197,12 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/examineOrAbandonCfPlan", desc = "审批／废弃 预约计划")
+    @Uri(value = "/cfFacade/examineOrAbandonCfPlan", desc = "审批／废弃 优易智投")
     public String _cfFacade_examineOrAbandonCfPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/generateCfReservationPlan", desc = "生成消金预约计划")
+    @Uri(value = "/cfFacade/generateCfReservationPlan", desc = "生成消金优易智投")
     public String _cfFacade_generateCfReservationPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -207,7 +212,7 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/getCfReservationPlan", desc = "查询消金预约计划")
+    @Uri(value = "/cfFacade/getCfReservationPlan", desc = "查询消金优易智投")
     public String _cfFacade_getCfReservationPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -237,7 +242,7 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/getMyInvestPlanRecord", desc = "我的投资-计划")
+    @Uri(value = "/cfFacade/getMyInvestPlanRecord", desc = "我的优易智投预约")
     public String _cfFacade_getMyInvestPlanRecord(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -277,37 +282,42 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryBiddingOrder", desc = "根据预约计划查询已购买标的")
+    @Uri(value = "/cfFacade/listCfBidBorrowDetail", desc = "根据标的Id获取借款详情")
+    public String _cfFacade_listCfBidBorrowDetail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cfFacade/queryBiddingOrder", desc = "根据优易智投查询已购买标的")
     public String _cfFacade_queryBiddingOrder(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryCfBidByCfPlan", desc = "根据预约计划查询标的信息（console 后台专用）")
+    @Uri(value = "/cfFacade/queryCfBidByCfPlan", desc = "根据优易智投查询标的信息（console 后台专用）")
     public String _cfFacade_queryCfBidByCfPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryCfOrderByCfPlan", desc = "根据预约计划查询预约记录（console 后台专用）")
+    @Uri(value = "/cfFacade/queryCfOrderByCfPlan", desc = "根据优易智投查询预约记录（console 后台专用）")
     public String _cfFacade_queryCfOrderByCfPlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryCfPlanByCondition", desc = "根据条件查询预约计划(console 后台专用)")
+    @Uri(value = "/cfFacade/queryCfPlanByCondition", desc = "根据条件查询优易智投(console 后台专用)")
     public String _cfFacade_queryCfPlanByCondition(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryCfPlanDetail", desc = "根据预约计划详情（console 后台专用）")
+    @Uri(value = "/cfFacade/queryCfPlanDetail", desc = "根据优易智投详情（console 后台专用）")
     public String _cfFacade_queryCfPlanDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryCouponReservationPlanByCond", desc = "根据条件查询预约计划（投资券筛选可预约计划）")
+    @Uri(value = "/cfFacade/queryCouponReservationPlanByCond", desc = "根据条件查询优易智投（投资券筛选可优易智投）")
     public String _cfFacade_queryCouponReservationPlanByCond(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryRepayRecord", desc = "根据预约计划查询回款明细")
+    @Uri(value = "/cfFacade/queryRepayRecord", desc = "根据优易智投查询回款明细")
     public String _cfFacade_queryRepayRecord(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -317,7 +327,7 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cfFacade/queryReservationPlanDetail", desc = "预约详情:根据预约计划编号查询详情")
+    @Uri(value = "/cfFacade/queryReservationPlanDetail", desc = "预约详情:根据优易智投编号查询详情")
     public String _cfFacade_queryReservationPlanDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -329,6 +339,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/cfFacade/queryUnfreezeOrders", desc = "解冻订单查询，后台管理专用")
     public String _cfFacade_queryUnfreezeOrders(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cfFacade/removeRpLabel", desc = "移除预约计划标签信息")
+    public String _cfFacade_removeRpLabel(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -467,6 +482,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/investFacade/intelligentInvest", desc = "智能投资")
+    public String _investFacade_intelligentInvest(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/investFacade/investCountStatistics", desc = "根据hryIdList统计用户投资笔数")
     public String _investFacade_investCountStatistics(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -592,6 +612,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/offlinePlanFacade/abandonInvest", desc = "【傲融】认购计划作废")
+    public String _offlinePlanFacade_abandonInvest(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/offlinePlanFacade/addBatchOfflinePlan", desc = "批量添加计划")
     public String _offlinePlanFacade_addBatchOfflinePlan(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -599,6 +624,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/offlinePlanFacade/addOfflinePlan", desc = "添加计划")
     public String _offlinePlanFacade_addOfflinePlan(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/offlinePlanFacade/crmInvest", desc = "【傲融】CRM客户认购计划,自营投资")
+    public String _offlinePlanFacade_crmInvest(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -667,12 +697,17 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/offlinePlanFacade/updateOfflineRepayDate", desc = "修改还款日")
+    public String _offlinePlanFacade_updateOfflineRepayDate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/offlinePlanFacade/updateUserInvestOrder", desc = "修改用户投资订单")
     public String _offlinePlanFacade_updateUserInvestOrder(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/offlinePlanFacade/userInvest", desc = "后台-用户预约")
+    @Uri(value = "/offlinePlanFacade/userInvest", desc = "后台-用户预约,外部合作投资")
     public String _offlinePlanFacade_userInvest(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -769,6 +804,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/queryTransferOfDebtFacade/listRepaymentDetails", desc = "获取回款债转列表")
     public String _queryTransferOfDebtFacade_listRepaymentDetails(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/realtimeStatisticsFacade/getBidAndCFRealtimeStatistics", desc = "实时查询募集统计（供console使用）")
+    public String _realtimeStatisticsFacade_getBidAndCFRealtimeStatistics(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -902,6 +942,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/repaymentFacade/getPrepaymentCompensationOrderDetail", desc = "根据提前还款补偿订单记录ID查询订单状态")
+    public String _repaymentFacade_getPrepaymentCompensationOrderDetail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/repaymentFacade/getRepayingDetail", desc = "查询最近一期还款详情")
     public String _repaymentFacade_getRepayingDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -934,6 +979,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/repaymentFacade/listInvestorRepaymentDetailsConsole", desc = "查询投资人收款明细（Console使用）")
     public String _repaymentFacade_listInvestorRepaymentDetailsConsole(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/repaymentFacade/listPrepaymentCompensationConsole", desc = "提前还款补偿查询记录明细（Console使用）")
+    public String _repaymentFacade_listPrepaymentCompensationConsole(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1014,6 +1064,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/repaymentFacade/rebuildInvestorRepaymentDetailsConsole", desc = "重发失败的还款确认明细（Console使用）")
     public String _repaymentFacade_rebuildInvestorRepaymentDetailsConsole(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/repaymentFacade/rebuildPrepaymentCompensationConsole", desc = "重发失败的提前还款补偿确认明细（Console使用）")
+    public String _repaymentFacade_rebuildPrepaymentCompensationConsole(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1259,6 +1314,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/tenderFacade/submitBidInfo", desc = "提交标的信息")
     public String _tenderFacade_submitBidInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/tenderFacade/syncBidEnclosureHistoryData", desc = "同步历史附件信息至新表")
+    public String _tenderFacade_syncBidEnclosureHistoryData(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

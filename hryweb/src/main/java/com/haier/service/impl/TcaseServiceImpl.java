@@ -11,7 +11,10 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
 import com.haier.service.*;
 import com.haier.testng.run.Runner;
-import com.haier.util.*;
+import com.haier.util.BeforeUtil;
+import com.haier.util.HryHttpClientUtil;
+import com.haier.util.HryUtil;
+import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -100,8 +103,6 @@ public class TcaseServiceImpl implements TcaseService {
             if (tcase.getServiceid() != null) {
                 criteria.andServiceidEqualTo(tcase.getServiceid());
             }
-        } else {
-            return null;
         }
         Tcase t = new Tcase();
         t.setStatus(StatusEnum._ONE.getId());
