@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: PgwDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @Slf4j
 public class PgwDefaultTest extends PgwBase{
@@ -68,6 +68,12 @@ public class PgwDefaultTest extends PgwBase{
     @Test(testName = "/payToCardFacade/payToCard", dataProvider = "provider", description = "付款到卡")
     public void payToCardFacade_payToCard(HryTest hryTest) {
         String actual = this._payToCardFacade_payToCard(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/t4444   /l8888", dataProvider = "provider", description = "uyui7")
+    public void t4444   _l8888(HryTest hryTest) {
+        String actual = this._t4444   _l8888(hryTest);
         supperAssert(actual, hryTest);
     }
 
