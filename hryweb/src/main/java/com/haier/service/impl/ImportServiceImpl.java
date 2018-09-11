@@ -9,6 +9,7 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.google.gson.JsonObject;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
@@ -56,12 +57,26 @@ public class ImportServiceImpl implements ImportService {
         //获取接口表(ti)已经存在的记录,by serviceId
         Ti condition = new Ti();
         condition.setServiceid(serviceId);
-        List<Ti> tis = tiService.selectByCondition(condition);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
+        List<Ti> tis = tiService.selectAllStatusByCondition(condition);//ti表中所有的此serviceId存在的记录的集合,包括删除与作废的
         List<String> existIuri = new ArrayList<>();
+        List<String> deleteIuri=new ArrayList<>();
+        List<String> invalidIuri=new ArrayList<>();
         Map<String, Integer> existIuriId = new HashMap<>();//后续更新记录时会用到primaryKey
+        Map<String, Integer> deleteIuriId = new HashMap<>();
+        Map<String, Integer> invalidIuriId = new HashMap<>();
         for (Ti i : tis) {
-            existIuri.add(i.getIuri());
-            existIuriId.put(i.getIuri(), i.getId());
+            if (i.getIstatus() > 0) {
+                existIuri.add(i.getIuri());
+                existIuriId.put(i.getIuri(), i.getId());
+            }
+            if(i.getIstatus().equals(StatusEnum._ONE.getId())){
+                deleteIuri.add(i.getIuri());
+                deleteIuriId.put(i.getIuri(),i.getId());
+            }
+            if(i.getIstatus().equals(StatusEnum._TWO.getId())){
+                invalidIuri.add(i.getIuri());
+                invalidIuriId.put(i.getIuri(),i.getId());
+            }
         }
 
 
