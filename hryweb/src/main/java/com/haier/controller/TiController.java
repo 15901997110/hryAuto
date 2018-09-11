@@ -12,6 +12,7 @@ import com.haier.util.JSONUtil;
 import com.haier.util.ResultUtil;
 import com.haier.vo.TiWithCaseVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -165,7 +166,7 @@ public class TiController {
     }
 
     public void verifyIHeaderAndIParam(Ti ti) {
-        if (ti.getIheadersample() != null) {
+        if (StringUtils.isNotBlank(ti.getIheadersample())) {
             String formatedHeader = JSONUtil.verify(ti.getIheadersample());
             if (formatedHeader != null) {
                 ti.setIheadersample(formatedHeader);
@@ -173,7 +174,7 @@ public class TiController {
                 throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "示例Header只可填写JSON格式");
             }
         }
-        if (ti.getIparamtype() == 1 && ti.getIparamsample() != null) {
+        if (ti.getIparamtype() != null && ti.getIparamtype() == 1 && StringUtils.isNotBlank(ti.getIparamsample())) {
             String formatedSample = JSONUtil.verify(ti.getIparamsample());
             if (formatedSample != null) {
                 ti.setIparamsample(formatedSample);
@@ -209,6 +210,7 @@ public class TiController {
     /**
      * 根据条件删除ti表中的记录,
      * 支持根据serviceid批量删除接口
+     *
      * @param ti
      * @return
      */

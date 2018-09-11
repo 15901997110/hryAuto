@@ -61,7 +61,9 @@ public class JSONUtil {
     public static String verify(String json) {
         try {
             JSONObject jsonObject = JSONObject.parseObject(json, Feature.OrderedField);
-            json = JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue);
+            if (jsonObject != null) {
+                json = JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue);
+            }
         } catch (RuntimeException e) {
             json = null;
         } finally {

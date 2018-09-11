@@ -2,17 +2,20 @@ package com.haier.po;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Ti {
     private Integer id;
 
+    @NotNull(message = "接口必须指定服务ID")
     @Min(value = 1, message = "接口必须指定服务ID")
     private Integer serviceid;
 
     @NotBlank(message = "接口地址必须")
     private String iuri;
 
+    @NotBlank(message = "接口说明必须")
     private String remark;
 
     private Integer irequestmethod;
