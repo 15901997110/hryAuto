@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: AceSaBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @SKey("AceSa")
 public class AceSaBase extends Base {

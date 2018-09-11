@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @SKey("Oss")
 public class OssBase extends Base {
@@ -144,6 +144,61 @@ public class OssBase extends Base {
 
     @Uri(value = "/compensateFacade/addReservationCompensateRecord", desc = "预约补偿")
     public String _compensateFacade_addReservationCompensateRecord(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleBirthFacade/deleteByBatchNo", desc = "删除活动活动规则")
+    public String _consoleBirthFacade_deleteByBatchNo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleBirthFacade/getBirthRuleByBatchNo", desc = "根据批次号查询生日特权规则")
+    public String _consoleBirthFacade_getBirthRuleByBatchNo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleBirthFacade/getBirthRuleByPromotionActivityId", desc = "根据活动ID查询生日特权规则")
+    public String _consoleBirthFacade_getBirthRuleByPromotionActivityId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleBirthFacade/saveActivityRule", desc = "保存活动规则配置")
+    public String _consoleBirthFacade_saveActivityRule(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/addMemberInvestRule", desc = "新增投资奖励权益规则")
+    public String _consoleMemberLevelFacade_addMemberInvestRule(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/deleteMemberInvestRule", desc = "删除投资奖励权益规则")
+    public String _consoleMemberLevelFacade_deleteMemberInvestRule(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/getMemberLevelList", desc = "查询会员等级规则列表")
+    public String _consoleMemberLevelFacade_getMemberLevelList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/queryMemberInvestActivityRuleInfo", desc = "查询投资奖励权益活动和规则信息")
+    public String _consoleMemberLevelFacade_queryMemberInvestActivityRuleInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/queryMemberInvestRule", desc = "查询投资奖励权益规则")
+    public String _consoleMemberLevelFacade_queryMemberInvestRule(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/setMemberLevelList", desc = "设置会员等级规则")
+    public String _consoleMemberLevelFacade_setMemberLevelList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consoleMemberLevelFacade/updateMemberInvestRule", desc = "更新投资奖励权益规则")
+    public String _consoleMemberLevelFacade_updateMemberInvestRule(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -294,6 +349,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/couponFacade/getAvailableCouponList", desc = "查询当前产品可用券列表")
     public String _couponFacade_getAvailableCouponList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/couponFacade/getAvailableRewardsListForBid", desc = "查询用户智能标的可用券")
+    public String _couponFacade_getAvailableRewardsListForBid(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -502,26 +562,6 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/customerFacade/getRegisteredUserBehaviorData", desc = "查询已注册用户行为数据")
-    public String _customerFacade_getRegisteredUserBehaviorData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/customerFacade/getUserType", desc = "查询是否属于客服可跟进用户")
-    public String _customerFacade_getUserType(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/customerFacade/queryChannelInfo", desc = "查询渠道数据总览")
-    public String _customerFacade_queryChannelInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/customerFacade/queryUserRegisterResult", desc = "查询用户注册结果")
-    public String _customerFacade_queryUserRegisterResult(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/juheFacade/getGasProductList", desc = "获取加油卡产品列表")
     public String _juheFacade_getGasProductList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -622,6 +662,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/memberLevelFacade/getCheckInSeriesInfo", desc = "获取会员连续签到信息")
+    public String _memberLevelFacade_getCheckInSeriesInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/memberLevelFacade/getCheckInState", desc = "查看用户某日是否签到")
     public String _memberLevelFacade_getCheckInState(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -662,13 +707,28 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/memberLevelFacade/getMemberMonthlyCouponActivityInfo", desc = "查看会员签到活动信息")
+    @Uri(value = "/memberLevelFacade/getMemberLevelPointHistory", desc = "获取会员历史积分变动")
+    public String _memberLevelFacade_getMemberLevelPointHistory(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/memberLevelFacade/getMemberLevelPointTrend", desc = "获取会员积分趋势")
+    public String _memberLevelFacade_getMemberLevelPointTrend(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/memberLevelFacade/getMemberMonthlyCouponActivityInfo", desc = "查看会员每月返券活动信息")
     public String _memberLevelFacade_getMemberMonthlyCouponActivityInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
     @Uri(value = "/memberLevelFacade/getMemberMonthlyCouponRuleList", desc = "查看会员规则列表")
     public String _memberLevelFacade_getMemberMonthlyCouponRuleList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/memberLevelFacade/getMemberPrivilege", desc = "查看当前用户等级参与活动规则信息")
+    public String _memberLevelFacade_getMemberPrivilege(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -682,7 +742,7 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/memberLevelFacade/getMemberUpGradeRuleList", desc = "查看会员规则列表")
+    @Uri(value = "/memberLevelFacade/getMemberUpGradeRuleList", desc = "查看会员升级规则列表")
     public String _memberLevelFacade_getMemberUpGradeRuleList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -694,6 +754,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/memberLevelFacade/queryCheckInRewardsValue", desc = "查询指定时间段累计签到金")
     public String _memberLevelFacade_queryCheckInRewardsValue(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/memberLevelFacade/queryMemberLevelRewards", desc = "查询会员权益奖励信息")
+    public String _memberLevelFacade_queryMemberLevelRewards(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

@@ -8,12 +8,62 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
     @Uri(value = "/arap/query-by-range", desc = "资金日历查询")
     public String _arap_query_by_range(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/config/historic-rate", desc = "获取参考历史年化区间")
+    public String _auto_bidding_config_historic_rate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/config/list", desc = "自动投标设置")
+    public String _auto_bidding_config_list(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/config/save", desc = "保存或修改自动投标设置并开启自动投标")
+    public String _auto_bidding_config_save(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/earn-list", desc = "赚钱明细")
+    public String _auto_bidding_earn_list(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/earn-list-dashboard", desc = "赚钱明细")
+    public String _auto_bidding_earn_list_dashboard(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/manual", desc = "自动投标指南")
+    public String _auto_bidding_manual(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/matching-list", desc = "快速匹配明细")
+    public String _auto_bidding_matching_list(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/statistics", desc = "智能投标主页")
+    public String _auto_bidding_statistics(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/update-status", desc = "暂停或恢复自动投标")
+    public String _auto_bidding_update_status(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/auto-bidding/user-config", desc = "获取自动投标设置")
+    public String _auto_bidding_user_config(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -62,7 +112,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/banner/startup-banner", desc = "loadStartupBanner")
+    @Uri(value = "/banner/startup-banner", desc = "app启动页广告")
     public String _banner_startup_banner(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -109,6 +159,11 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/bindPromotionCode", desc = "绑定推广码")
     public String _bindPromotionCode(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cash-flow/list", desc = "查询资金流水列表-v3.0.2")
+    public String _cash_flow_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -167,7 +222,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/consumer-finance/reservation/matched-bid-detail", desc = "查询匹配的标的详情")
+    @Uri(value = "/consumer-finance/reservation/matched-bid-detail", desc = "查询匹配的标的详情-v3.0.2")
     public String _consumer_finance_reservation_matched_bid_detail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -337,6 +392,11 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/depository/reserved-phone-change/prepare", desc = "准备发起更新手机请求-v3.0.2")
+    public String _depository_reserved_phone_change_prepare(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/depository/trade-details", desc = "存管交易记录详情查询")
     public String _depository_trade_details(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -494,6 +554,16 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/h5/investment/p2p-records", desc = "queryUserP2PInvestRecords")
     public String _h5_investment_p2p_records(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/haier/account/bind", desc = "海尔集团用户绑定")
+    public String _haier_account_bind(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/haier/sign-in", desc = "海尔集团用户登录")
+    public String _haier_sign_in(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -687,18 +757,13 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/acct-attrs", desc = "查询用户的账户属性信息")
+    @Uri(value = "/member/acct-attrs", desc = "查询用户的账户属性信息-v3.0.2")
     public String _member_acct_attrs(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
     @Uri(value = "/member/agreeNewUserLicense", desc = "agreeNewUserLicense")
     public String _member_agreeNewUserLicense(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/apps", desc = "queryUserApplications")
-    public String _member_apps(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -727,17 +792,27 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/app-list", desc = "我的应用列表")
+    @Uri(value = "/member/homepage/app-list", desc = "我的应用列表-V3.0.2")
     public String _member_homepage_app_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/brief-account-info", desc = "查询账户简要信息")
+    @Uri(value = "/member/homepage/app-list/v3", desc = "我的应用列表-V3.0.2")
+    public String _member_homepage_app_list_v3(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/member/homepage/asset-allocation", desc = "查询账户资产配置信息-v3.0.2")
+    public String _member_homepage_asset_allocation(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/member/homepage/brief-account-info", desc = "查询账户简要信息-v3.0.2")
     public String _member_homepage_brief_account_info(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/my-assets", desc = "我的总资产、累积收益、总负债")
+    @Uri(value = "/member/homepage/my-assets", desc = "我的总资产-v3.0.2")
     public String _member_homepage_my_assets(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -939,6 +1014,11 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/password/verify-password", desc = "verifyPassword")
     public String _password_verify_password(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/popup/list", desc = "查询弹窗广告入口")
+    public String _popup_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

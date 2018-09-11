@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: PgwBase
  * @Author: 自动生成
- * @Date: 2018/09/03 20:54:08
+ * @Date: 2018/09/11 10:34:39
  */
 @SKey("Pgw")
 public class PgwBase extends Base {
@@ -47,6 +47,10 @@ public class PgwBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/t4444   /l8888", desc = "uyui7")
+    public String _t4444   _l8888(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
 
     @Uri(value = "/tradeQueryFacade/tradeQuery", desc = "交易查询")
     public String _tradeQueryFacade_tradeQuery(HryTest test) {
