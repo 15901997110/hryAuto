@@ -32,7 +32,9 @@ public class TiController {
     @Autowired
     TiService tiService;
 
-    //增
+    /**
+     * 添加接口
+     */
     @PostMapping("/insertOne")
     public Result insertOne(Ti ti) {
         ReflectUtil.setInvalidFieldToNull(ti, false);
@@ -57,7 +59,7 @@ public class TiController {
     }
 
     /**
-     * 查询单个接口信息
+     * 查询单个接口信息,参数-接口id
      */
     @PostMapping("/selectOne")
     public Result selectOne(Integer id) {
@@ -65,16 +67,8 @@ public class TiController {
     }
 
 
-    //查所有
-
     /**
-     * @description: 根据条件查询ti表记录, 关联查询tservice
-     * 支持的查询条件有:ti.iuri(like) , ti.remark(like) , ti.idev(like) ,
-     * ti.serviceid(equal) , tservice.servicekey(like) , tservice.servicename
-     * @params: [tiCustom, pageNum, pageSize]
-     * @return: com.haier.response.Result
-     * @author: luqiwei
-     * @date: 2018-05-24
+     * 查询所有接口(status>0),返回接口包装对象(tiCustom)列表,带分页信息
      */
     @PostMapping("/selectByCondition")
     public Result selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
@@ -129,7 +123,12 @@ public class TiController {
         return tiService.selectTiWithCaseVO(ti);
     }
 
-    //改
+    /**
+     * 更新接口,接口id必填
+     *
+     * @param ti
+     * @return
+     */
     @PostMapping("updateOne")
     public Result updateOne(Ti ti) {
         ReflectUtil.setInvalidFieldToNull(ti, false);
@@ -189,22 +188,25 @@ public class TiController {
     }
 
 
-    //删
-
     /**
-     * @description: 根据serviceId删除service记录, 并且连带删除tcase表中的记录
-     * @params: [id]
-     * @return: com.haier.response.Result
-     * @author: luqiwei
-     * @date: 2018-05-24
+     * 删除接口,将接口状态设置为-1
+     *
+     * @param id
+     * @return
      */
     @PostMapping("/deleteOne")
     public Result deleteOne(Integer id) {
         return ResultUtil.success(tiService.deleteOne(id));
     }
 
+    /**
+     * 作废接口,将接口状态设置为-2
+     *
+     * @param id
+     * @return
+     */
     @PostMapping("/invalidInterface")
-    public Result invalidInterface(Integer id){
+    public Result invalidInterface(Integer id) {
         return ResultUtil.success(tiService.invalidInterface(id));
     }
 
