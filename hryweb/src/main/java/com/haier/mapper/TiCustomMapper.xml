@@ -22,24 +22,26 @@
         SELECT ti.*,tservice.serviceKey,tservice.serviceName
         FROM ti INNER JOIN tservice ON ti.`serviceId`=tservice.`id` AND ti.`iStatus`>0 AND tservice.`isDel`=0
         WHERE 1=1
-            <if test="_parameter != null">
-                <if test="iuri!=null and iuri!=''">
-                    AND ti.`iUri` LIKE #{iuri}
-                </if>
-                <if test="remark!=null and remark!=''">
-                    AND ti.`remark` LIKE #{remark}
-                </if>
-                <if test="idev!=null and idev!=''">
-                    AND ti.`iDev` LIKE #{idev}
-                </if>
-                <if test="serviceid!=null and serviceid!=0">
-                    AND ti.`serviceId`=#{serviceid}
-                </if>
-                <if test="servicekey!=null and servicekey!=''">
-                    AND (tservice.`serviceKey` LIKE #{servicekey}
-                    OR tservice.`serviceName` LIKE #{servicekey})
-                </if>
+        <if test="_parameter != null">
+            <if test="iuri!=null and iuri!=''">
+                AND ti.`iUri` LIKE #{iuri}
             </if>
+            <if test="remark!=null and remark!=''">
+                AND ti.`remark` LIKE #{remark}
+            </if>
+            <if test="idev!=null and idev!=''">
+                AND ti.`iDev` = #{idev}
+            </if>
+            <if test="serviceid!=null and serviceid!=0">
+                AND ti.`serviceId` = #{serviceid}
+            </if>
+            <if test="servicekey!=null and servicekey!=''">
+                AND tservice.`serviceKey` = #{servicekey}
+                /*由于搜索服务页面上的控件都换成了下拉,所以现在查询方式改成equal查询 luqiwei 2018/9/11*/
+                /*AND (tservice.`serviceKey` LIKE #{servicekey}
+                OR tservice.`serviceName` LIKE #{servicekey})*/
+            </if>
+        </if>
     </select>
 
 </mapper>

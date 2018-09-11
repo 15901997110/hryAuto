@@ -6,14 +6,15 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Ti;
 import com.haier.po.TiCustom;
-import com.haier.util.JSONUtil;
-import com.haier.vo.TiWithCaseVO;
 import com.haier.response.Result;
 import com.haier.service.TiService;
+import com.haier.util.JSONUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
+import com.haier.vo.TiWithCaseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +37,7 @@ public class TiController {
      * 添加接口
      */
     @PostMapping("/insertOne")
-    public Result insertOne(Ti ti) {
-        ReflectUtil.setInvalidFieldToNull(ti, false);
-        //简单参数校验
-        if (ti == null || ti.getServiceid() == null || ti.getIuri() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "服务ID,iUri必填");
-        }
+    public Result insertOne(@Validated Ti ti) {
         if (!ti.getIuri().matches(RegexEnum.NOTBLANK.getRegex())) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口地址不可包含空字符(空格,tab,回车符,换行符)");
         }
@@ -52,9 +48,12 @@ public class TiController {
         condition.setIuri(ti.getIuri());
         condition.setServiceid(ti.getServiceid());
         List<Ti> tis = tiService.selectByCondition(condition);
-        if (tis.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD, "存在重复记录!");
+        for (Ti t : tis) {
+            if (t.getServiceid().equals(ti.getServiceid()) && t.getIuri().equals(ti.getIuri())) {
+                throw new HryException(StatusCodeEnum.EXIST_RECORD);
+            }
         }
+
         return ResultUtil.success(tiService.insertOne(ti));
     }
 
@@ -72,6 +71,10 @@ public class TiController {
      */
     @PostMapping("/selectByCondition")
     public Result selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
         return ResultUtil.success(tiService.selectByCondition(tiCustom, pageNum, pageSize));
     }
 
@@ -116,7 +119,6 @@ public class TiController {
      */
     @PostMapping("/selectListTiWithCaseVO")
     public List<TiWithCaseVO> selectListTiWithTcaseVO(Ti ti) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(ti, false);
         if (ti == null || ti.getServiceid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "至少需要serviceid作为查询条件");
         }
@@ -130,15 +132,12 @@ public class TiController {
      * @return
      */
     @PostMapping("updateOne")
-    public Result updateOne(Ti ti) {
-        ReflectUtil.setInvalidFieldToNull(ti, false);
-        if (ti == null || ti.getId() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新或者删除接口时,ti必填");
-        }
-        //接口地址非空校验
-        if (ti.getIuri() != null && !ti.getIuri().matches(RegexEnum.NOTBLANK.getRegex())) {
+    public Result updateOne(@Validated Ti ti) {
+        if (!ti.getIuri().matches(RegexEnum.NOTBLANK.getRegex())) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "接口地址不可包含空字符(空格,tab,回车符,换行符)");
         }
+
+        verifyIHeaderAndIParam(ti);
         //数据重复性校验
         Ti condition = null;
         if (ti.getServiceid() != null || ti.getIuri() != null) {
@@ -150,20 +149,18 @@ public class TiController {
                 condition.setIuri(ti.getIuri());
             }
         }
-        verifyIHeaderAndIParam(ti);
         if (condition != null) {
             List<Ti> tis = tiService.selectByCondition(condition);
             Ti self = tiService.selectOne(ti.getId());
-            if (tis.size() > 0) {
-                for (Ti i : tis) {
-                    if (!i.getId().equals(self.getId())//id不相等
-                            && i.getServiceid().equals(ti.getServiceid() == null ? self.getServiceid() : ti.getServiceid())//服务相等
-                            && i.getIuri().equals(ti.getIuri() == null ? self.getIuri() : ti.getIuri())//iUri相等
-                            ) {
-                        throw new HryException(StatusCodeEnum.EXIST_RECORD, "重复记录id=" + i.getId());
-                    }
+            for (Ti i : tis) {
+                if (!i.getId().equals(self.getId())//id不相等
+                        && i.getServiceid().equals(ti.getServiceid() == null ? self.getServiceid() : ti.getServiceid())//服务相等
+                        && i.getIuri().equals(ti.getIuri() == null ? self.getIuri() : ti.getIuri())//iUri相等
+                        ) {
+                    throw new HryException(StatusCodeEnum.EXIST_RECORD, "重复记录id=" + i.getId());
                 }
             }
+
         }
         return ResultUtil.success(tiService.updateOne(ti));
     }
@@ -212,10 +209,7 @@ public class TiController {
 
     /**
      * 根据条件删除ti表中的记录,
-     * 注意:
-     * 1.现仅支持根据serviceId删除ti表中的记录(直接传serviceId不就可以了吗?为什么要装逼要传Ti?答:主要考虑后期扩展,比如新增某个删除条件)
-     * 2.删除ti表时,会连带删除与ti关联的tcase表中的记录,所以需要谨慎
-     *
+     * 支持根据serviceid批量删除接口
      * @param ti
      * @return
      */

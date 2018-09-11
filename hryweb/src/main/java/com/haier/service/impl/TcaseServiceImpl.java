@@ -100,8 +100,6 @@ public class TcaseServiceImpl implements TcaseService {
             if (tcase.getServiceid() != null) {
                 criteria.andServiceidEqualTo(tcase.getServiceid());
             }
-        } else {
-            return null;
         }
         Tcase t = new Tcase();
         t.setStatus(StatusEnum._ONE.getId());

@@ -3,18 +3,18 @@ package com.haier.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.SortEnum;
-import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
-import com.haier.exception.HryException;
 import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
-import com.haier.po.*;
-import com.haier.vo.TiWithCaseVO;
+import com.haier.po.Tcase;
+import com.haier.po.Ti;
+import com.haier.po.TiCustom;
+import com.haier.po.TiExample;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.util.ReflectUtil;
-import lombok.Builder;
+import com.haier.vo.TiWithCaseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Description:
@@ -39,8 +38,6 @@ public class TiServiceImpl implements TiService {
     TiMapper tiMapper;
     @Autowired
     TiCustomMapper tiCustomMapper;
-    @Autowired
-    TcaseMapper tcaseMapper;
     @Autowired
     TcaseService tcaseService;
 
@@ -57,10 +54,6 @@ public class TiServiceImpl implements TiService {
 
     /**
      * @description: 删除tservice表记录时, 会同时删除ti表的记录, 所以一定要谨慎
-     * @params: [id]
-     * @return: java.lang.Integer
-     * @author: luqiwei
-     * @date: 2018-05-24
      */
     @Override
     public Integer deleteOne(Integer id) {
@@ -88,16 +81,9 @@ public class TiServiceImpl implements TiService {
             return null;
         }
         //先删除tcase表中的记录
-        Ti t = new Ti();
-        t.setServiceid(ti.getServiceid());
-        List<Ti> tis = this.selectByCondition(t);
-        if (tis.size() > 0) {
-            for (Ti i : tis) {
-                Tcase tcase = new Tcase();
-                tcase.setIid(i.getId());
-                tcaseService.deleteByCondition(tcase);
-            }
-        }
+        Tcase tcase = new Tcase();
+        tcase.setServiceid(ti.getServiceid());
+        tcaseService.deleteByCondition(tcase);
 
         //再删除ti中的记录
         TiExample tiExample = new TiExample();
@@ -116,11 +102,13 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tiCustom, true);
-        //如果未传入分页信息,默认查询第一页总共10条数据
-        if (pageNum == null || pageSize == null) {
-            pageNum = 1;
-            pageSize = 10;
+        if (tiCustom != null) {
+            if (StringUtils.isNotBlank(tiCustom.getIuri())) {
+                tiCustom.setIuri("%" + tiCustom.getIuri() + "%");
+            }
+            if (StringUtils.isNotBlank(tiCustom.getRemark())) {
+                tiCustom.setRemark("%" + tiCustom.getRemark() + "%");
+            }
         }
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
@@ -152,13 +140,13 @@ public class TiServiceImpl implements TiService {
                 criteria.andServiceidEqualTo(ti.getServiceid());
             }
             if (StringUtils.isNotBlank(ti.getIuri())) {
-                criteria.andIuriLike("%" + ti.getIuri() + "%");//iUri精确查询
+                criteria.andIuriLike("%" + ti.getIuri() + "%");
             }
             if (StringUtils.isNotBlank(ti.getRemark())) {
                 criteria.andRemarkLike("%" + ti.getRemark() + "%");
             }
             if (StringUtils.isNotBlank(ti.getIdev())) {
-                criteria.andIdevLike("%" + ti.getIdev() + "%");
+                criteria.andIdevEqualTo(ti.getIdev());
             }
         }
         return tiMapper.selectByExample(tiExample);
@@ -166,6 +154,7 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public List<TiWithCaseVO> selectTiWithCaseVO(Ti ti) {
+
         List<TiWithCaseVO> list = new ArrayList<>();
         List<Ti> tis = this.selectByCondition(ti);
         Tcase condition = new Tcase();
