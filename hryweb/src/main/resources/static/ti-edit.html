@@ -34,6 +34,7 @@
 </article>
 
 <!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="static/hry-auto/util.js"></script>
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
@@ -46,17 +47,14 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-
+    var layerIndex;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex: -1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, {shade: [1.01, '#fff']});
+                layerIndex = layer.load(1, {shade: [1.01, '#fff']});
                 $('#admin-role-save').val("正在提交请稍等...")
-            },
-            complete: function () { //完成加载后执行
-                layer.close(this.layerIndex); //完成加载后关闭loading
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -199,6 +197,7 @@
             },
             dataType: "json",
             success: function (data) {
+
                 var status = data.status;
                 var msg = data.msg;
                 var list = data.data;
@@ -404,15 +403,18 @@
                         "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
                         "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTi(" + id + ")\"><i class=\"icon-ok\"></i> 提交</button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"cancel_ti(this," + id + ")\"><i class=\"icon-ok\"></i> 作废</button>\n" +
                         "            </div>\n" +
                         "        </div>";
 
                     $("#form").append(html);
                     $("#idev").select2();
+                    layer.close(layerIndex);
                     // if(idev == "自动导入"){
                     //     document.getElementById("autoReport").style.display = "block";
                     // }
                 } else {
+                    layer.close(layerIndex);
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -424,6 +426,20 @@
 
 
     });
+
+    //作废
+    function cancel_ti(obj,id){
+        layer.confirm('作废接口将会连带删除此接口关联的用例,并且一键导入时,也不会重新导入此接口,确认作废?', {
+            btn: ['作废','取消'] //按钮
+        }, function(){
+            cancelTi(id)
+            layer.msg('已作废', {icon: 1});
+            window.parent.pageSkip(1);
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.layer.close(index);
+
+        });
+    }
 
     //编辑接口
     function editTi(tiId) {
@@ -472,12 +488,14 @@
                     var list = data.data;
 
                     if (status == 0) {
+                        layer.close(layerIndex);
                         //alert("更新成功！");
                         //parent.window.location.reload();
                         window.parent.pageSkip(1);
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {
+                        layer.close(layerIndex);
                         layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
