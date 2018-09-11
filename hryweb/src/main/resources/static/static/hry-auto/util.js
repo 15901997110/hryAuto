@@ -86,11 +86,10 @@ function pagination(data) {
 
 //删除列表数据
 function del(obj, id, url, ms) {
-    if (ms == null || ms == "") {
+   /* if (ms == null || ms == "") {
         ms = "请确认是否要删除id=" + id + "的数据！";
-    }
+    }*/
     layer.confirm(ms, function (index) {
-        //alert("要删除的id="+id);
         $.ajax({
             type: 'POST',
             url: url,
@@ -746,9 +745,8 @@ function getUserList() {
 
 
 /**
- *根据接口id查询该接口下用例数量
+ *根据接口id和环境id查询用例数量
  */
-//根据用例id查询用例信息
 function getTcaseNumByTiId(tiId,envId) {
     var num = 0;
     $.ajaxSetup({async: false});
@@ -790,6 +788,50 @@ function getTcaseNumByTiId(tiId,envId) {
         }
     });
     return num;
+}
+
+/**
+ * 根据接口id作废接口
+ * */
+function cancelTi(tiId){
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/ti/invalidInterface",
+        data: {
+            id:tiId
+        },
+        dataType: "json",
+        success: function (data) {
+            layer.close(layerIndex);
+            var status = data.status;
+            var msg = data.msg;
+            if (status == 0) {
+                layer.msg('已作废!', {icon: 1, time: 1000});
+            } else {
+                layer.alert(msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            })
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+
 }
 
 
