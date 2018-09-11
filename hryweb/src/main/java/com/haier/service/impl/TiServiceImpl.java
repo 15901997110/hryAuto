@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.SortEnum;
 import com.haier.enums.StatusEnum;
-import com.haier.mapper.TcaseMapper;
 import com.haier.mapper.TiCustomMapper;
 import com.haier.mapper.TiMapper;
 import com.haier.po.Tcase;

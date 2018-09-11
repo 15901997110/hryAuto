@@ -9,7 +9,6 @@ import com.haier.po.TiCustom;
 import com.haier.response.Result;
 import com.haier.service.TiService;
 import com.haier.util.JSONUtil;
-import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import com.haier.vo.TiWithCaseVO;
 import lombok.extern.slf4j.Slf4j;

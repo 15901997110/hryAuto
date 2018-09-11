@@ -1,6 +1,5 @@
 package com.haier.mapper;
 
-import com.github.pagehelper.PageInfo;
 import com.haier.po.TiCustom;
 
 import java.util.List;
