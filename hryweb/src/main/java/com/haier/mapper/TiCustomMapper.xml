@@ -23,6 +23,9 @@
         FROM ti INNER JOIN tservice ON ti.`serviceId`=tservice.`id` AND ti.`iStatus`>0 AND tservice.`isDel`=0
         WHERE 1=1
         <if test="_parameter != null">
+            <if test="id!=null">
+                AND ti.`id`=#{id}
+            </if>
             <if test="iuri!=null and iuri!=''">
                 AND ti.`iUri` LIKE #{iuri}
             </if>

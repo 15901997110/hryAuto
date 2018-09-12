@@ -135,6 +135,9 @@ public class TiServiceImpl implements TiService {
             criteria.andIstatusGreaterThan(0);
         }
         if (ti != null) {
+            if (ti.getId() != null) {
+                criteria.andIdEqualTo(ti.getId());
+            }
             if (ti.getServiceid() != null) {
                 criteria.andServiceidEqualTo(ti.getServiceid());
             }
