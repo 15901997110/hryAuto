@@ -30,19 +30,20 @@
         WHERE tcase.`status`>0
         <if test="_parameter != null">
             <if test="servicekey !=null and servicekey !=''">
-                AND (tservice.`serviceKey` LIKE #{servicekey} OR tservice.`serviceName` LIKE #{servicekey})
+                AND tservice.`serviceKey` =#{servicekey}
             </if>
             <if test="serviceid!=null and serviceid!=0">
                 AND tcase.`serviceId` =#{serviceid}
             </if>
             <if test="iuri != null and iuri !=''">
-                AND (ti.`iUri` LIKE #{iuri} or ti.`remark` LIKE #{iuri})
+                AND (ti.`iUri` LIKE CONCAT('%',#{iuri},'%') or ti.`remark` LIKE CONCAT('%',#{iuri},'%'))
             </if>
             <if test="iremark != null and iremark !=''">
-                AND ti.`remark` LIKE #{iremark}
+                AND ti.`remark` LIKE CONCAT('%',#{iremark},'%')
             </if>
             <if test="casename != null and casename !=''">
-                AND (tcase.`caseName` LIKE #{casename} OR tcase.`remark` LIKE #{casename})
+                AND (tcase.`caseName` LIKE CONCAT('%',#{casename},'%') OR tcase.`remark` LIKE
+                CONCAT('%',#{casename},'%'))
             </if>
             <if test="testclass!=null and testclass!=''">
                 AND tcase.`testClass`=#{testclass}
@@ -57,7 +58,7 @@
                 AND tcase.`assertType`=#{asserttype}
             </if>
             <if test="author != null and author !=''">
-                AND tcase.`author` LIKE #{author}
+                AND tcase.`author`=#{author}
             </if>
         </if>
     </select>

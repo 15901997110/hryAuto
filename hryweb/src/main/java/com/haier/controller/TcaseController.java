@@ -15,7 +15,9 @@ import com.haier.util.JSONUtil;
 import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,14 +45,7 @@ public class TcaseController {
      * 新增Case
      */
     @PostMapping("/insertOne")
-    public Result insertOne(Tcase tcase) {
-        ReflectUtil.setInvalidFieldToNull(tcase, false);
-        //参数校验
-        if (tcase == null || tcase.getIid() == null || tcase.getCasename() == null
-                || tcase.getServiceid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "添加case时,serviceid,iid,casename必填!");
-        }
-
+    public Result insertOne(@Validated Tcase tcase) {
         //校验参数和断言类型是否符合JSON格式,
         //校验请求头是否符合JSON格式
         verifyJSON(tcase);
@@ -66,40 +61,26 @@ public class TcaseController {
     }
 
     /**
-     * 根据条件删除tcase记录,现在仅支持根据iId和envId删除tcase记录
-     *
-     * @param tcase
-     * @return
+     * 根据条件删除tcase记录,现在仅支持根据serviceId,iId或envId删除tcase记录
      */
     @PostMapping("/deleteByCondition")
     public Result deleteByCondition(Tcase tcase) {
         return ResultUtil.success(tcaseService.deleteByCondition(tcase));
     }
 
-    //改
+    /**
+     * 修改case
+     */
     @PostMapping("/updateOne")
-    public Result updateOne(Tcase tcase) {
-        //如果EnvId==0,表明可在任意环境运行测试用例,此时setInvalidFieldToNull工具会将0值置为null值
-        //所以先在这里打个标记,后面再赋值
-        Boolean flag = false;
-        if (tcase != null && tcase.getEnvid() == 0) {
-            flag = true;
-        }
-        ReflectUtil.setInvalidFieldToNull(tcase, false);
-        if (tcase == null || tcase.getId() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新case时,id必填!");
-        }
+    public Result updateOne(@Validated Tcase tcase) {
         //请求参数JSON格式校验
         verifyJSON(tcase);
-
-        if (flag) {
-            tcase.setEnvid(0);
-        }
         return ResultUtil.success(tcaseService.updateOne(tcase));
     }
 
     public void verifyJSON(Tcase tcase) {
-        if (tcase.getRequestparam() != null) {
+        //请求参数校验
+        if (StringUtils.isNotBlank(tcase.getRequestparam())) {
             Ti ti = tiService.selectOne(tcase.getIid());
             if (ti != null && ti.getIparamtype().equals(RequestParamTypeEnum.JSON.getId())) {
                 String requestParamJSONFormated = JSONUtil.verify(tcase.getRequestparam());
@@ -110,7 +91,8 @@ public class TcaseController {
                 }
             }
         }
-        if (tcase.getRequestheader() != null) {
+        //请求header校验
+        if (StringUtils.isNotBlank(tcase.getRequestheader())) {
             String formattedHeader = JSONUtil.verify(tcase.getRequestheader());
             if (formattedHeader != null) {
                 tcase.setRequestheader(formattedHeader);
@@ -119,7 +101,7 @@ public class TcaseController {
             }
         }
         //断言类型JSON格式校验
-        if (tcase.getExpected() != null && tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
+        if (StringUtils.isNotBlank(tcase.getExpected()) && tcase.getAsserttype().equals(AssertTypeEnum.KEY_VALUE.getId())) {
             String expectedJSONFormated = JSONUtil.verify(tcase.getExpected());
             if (expectedJSONFormated != null) {
                 tcase.setExpected(expectedJSONFormated);
@@ -130,19 +112,29 @@ public class TcaseController {
     }
 
 
-    //查-综合查询
+    /**
+     * 查-综合查询
+     */
     @PostMapping("/selectByCondition")
     public Result selectByCondition(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
         return ResultUtil.success(tcaseService.selectByContion(tcaseCustom, pageNum, pageSize));
     }
 
-    //查-返回List-带Result
+    /**
+     * 查-返回List-带Result
+     */
     @PostMapping("/selectByConditionSimple")
     public Result selectListByCondition(Tcase tcase) {
-        return ResultUtil.success(tcaseService.selectByCondition(tcase));
+        return ResultUtil.success(this.selectList(tcase));
     }
 
-    //查-仅返回List
+    /**
+     * 查-仅返回List
+     */
     @PostMapping("/selectList")
     public List<Tcase> selectList(Tcase tcase) {
         return tcaseService.selectByCondition(tcase);

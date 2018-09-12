@@ -1,16 +1,21 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Tcase {
     private Integer id;
 
+    @NotBlank(message = "用例名称必须")
     private String casename;
 
     private String remark;
 
+    @NotNull(message = "用例对应的服务必须")
     private Integer serviceid;
 
+    @NotNull(message = "用例所属的接口必须")
     private Integer iid;
 
     private Integer envid;

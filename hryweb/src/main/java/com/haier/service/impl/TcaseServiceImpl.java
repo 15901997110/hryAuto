@@ -14,7 +14,6 @@ import com.haier.testng.run.Runner;
 import com.haier.util.BeforeUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.HryUtil;
-import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -87,7 +86,7 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public Integer deleteByCondition(Tcase tcase) {
-        if (tcase == null|| !ObjectUtils.anyNotNull(tcase.getIid(),tcase.getEnvid(),tcase.getServiceid())) {
+        if (tcase == null || !ObjectUtils.anyNotNull(tcase.getIid(), tcase.getEnvid(), tcase.getServiceid())) {
             return null;
         }
         TcaseExample tcaseExample = new TcaseExample();
@@ -121,7 +120,6 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public List<Tcase> selectByCondition(Tcase tcase) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tcase, false);
         TcaseExample tcaseExample = new TcaseExample();
         TcaseExample.Criteria criteria = tcaseExample.createCriteria();
         TcaseExample.Criteria criteria2 = null;
@@ -141,26 +139,26 @@ public class TcaseServiceImpl implements TcaseService {
                 if (tcase.getIid() != null) {
                     criteria2.andIidEqualTo(tcase.getIid());
                 }
-                if (tcase.getRequestparam() != null) {
-                    criteria2.andRequestparamLike(tcase.getRequestparam());
+                if (StringUtils.isNotBlank(tcase.getRequestparam())) {
+                    criteria2.andRequestparamLike("%" + tcase.getRequestparam() + "%");
                 }
                 if (tcase.getId() != null) {
                     criteria2.andIdEqualTo(tcase.getId());
                 }
-                if (tcase.getCasename() != null) {
-                    criteria2.andCasenameLike(tcase.getCasename());
+                if (StringUtils.isNotBlank(tcase.getCasename())) {
+                    criteria2.andCasenameLike("%" + tcase.getCasename() + "%");
                 }
-                if (tcase.getTestclass() != null) {
-                    criteria2.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
+                if (StringUtils.isNotBlank(tcase.getTestclass())) {
+                    criteria2.andTestclassEqualTo(tcase.getTestclass());
                 }
-                if (tcase.getAuthor() != null) {
-                    criteria2.andAuthorLike(tcase.getAuthor());
+                if (StringUtils.isNotBlank(tcase.getAuthor())) {
+                    criteria2.andAuthorLike("%" + tcase.getAuthor() + "%");
                 }
-                if (tcase.getExpected() != null) {
-                    criteria2.andExpectedLike(tcase.getExpected());
+                if (StringUtils.isNotBlank(tcase.getExpected())) {
+                    criteria2.andExpectedLike("%" + tcase.getExpected() + "%");
                 }
-                if (tcase.getRemark() != null) {
-                    criteria2.andRemarkLike(tcase.getRemark());
+                if (StringUtils.isNotBlank(tcase.getRemark())) {
+                    criteria2.andRemarkLike("%" + tcase.getRemark() + "%");
                 }
                 if (tcase.getAsserttype() != null) {
                     criteria2.andAsserttypeEqualTo(tcase.getAsserttype());
@@ -172,26 +170,26 @@ public class TcaseServiceImpl implements TcaseService {
             if (tcase.getIid() != null) {
                 criteria.andIidEqualTo(tcase.getIid());
             }
-            if (tcase.getRequestparam() != null) {
-                criteria.andRequestparamLike(tcase.getRequestparam());
+            if (StringUtils.isNotBlank(tcase.getRequestparam())) {
+                criteria.andRequestparamLike("%" + tcase.getRequestparam() + "%");
             }
             if (tcase.getId() != null) {
                 criteria.andIdEqualTo(tcase.getId());
             }
-            if (tcase.getCasename() != null) {
-                criteria.andCasenameLike(tcase.getCasename());
+            if (StringUtils.isNotBlank(tcase.getCasename())) {
+                criteria.andCasenameLike("%" + tcase.getCasename() + "%");
             }
-            if (tcase.getTestclass() != null) {
-                criteria.andTestclassEqualTo(tcase.getTestclass().replaceAll("%", ""));
+            if (StringUtils.isNotBlank(tcase.getTestclass())) {
+                criteria.andTestclassEqualTo(tcase.getTestclass());
             }
-            if (tcase.getAuthor() != null) {
-                criteria.andAuthorLike(tcase.getAuthor());
+            if (StringUtils.isNotBlank(tcase.getAuthor())) {
+                criteria.andAuthorLike("%" + tcase.getAuthor() + "%");
             }
-            if (tcase.getExpected() != null) {
-                criteria.andExpectedLike(tcase.getExpected());
+            if (StringUtils.isNotBlank(tcase.getExpected())) {
+                criteria.andExpectedLike("%" + tcase.getExpected() + "%");
             }
-            if (tcase.getRemark() != null) {
-                criteria.andRemarkLike(tcase.getRemark());
+            if (StringUtils.isNotBlank(tcase.getRemark())) {
+                criteria.andRemarkLike("%" + tcase.getRemark() + "%");
             }
             if (tcase.getAsserttype() != null) {
                 criteria.andAsserttypeEqualTo(tcase.getAsserttype());
@@ -205,12 +203,6 @@ public class TcaseServiceImpl implements TcaseService {
 
     @Override
     public PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tcaseCustom, true);
-        if (tcaseCustom != null) {
-            if (tcaseCustom.getTestclass() != null) {
-                tcaseCustom.setTestclass(tcaseCustom.getTestclass().replaceAll("%", ""));//testclass只支持equal查询
-            }
-        }
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TcaseCustom> tcaseCustomList = tcaseCustomMapper.selectByCondition(tcaseCustom);
         PageInfo<TcaseCustom> pageInfo = new PageInfo<>(tcaseCustomList);
