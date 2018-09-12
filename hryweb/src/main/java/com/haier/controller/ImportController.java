@@ -52,7 +52,8 @@ public class ImportController {
         try {
             jsonObject = JSON.parseObject(responseJson, Feature.DisableCircularReferenceDetect);
         } catch (Exception e) {
-            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "请求结果转换为JSON异常,请求地址=" + tservicedetail.getSwaggerurl());
+            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "解析Swagger失败,swaggerUrl=" + tservicedetail.getSwaggerurl()
+                    + ", swagger内容为: " + responseJson);
         }
 
         //3.解析json,插入数据到ti表

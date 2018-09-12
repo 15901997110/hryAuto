@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: CdpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/08/22 17:47:20
+ * @Date: 2018/09/12 11:31:36
  */
 @Slf4j
 public class CdpDefaultTest extends CdpBase{
@@ -32,6 +32,12 @@ public class CdpDefaultTest extends CdpBase{
     @Test(testName = "/baiduFacade/queryBlackRiskLevel", dataProvider = "provider", description = "百度-磐石系统-黑名单风险等级")
     public void baiduFacade_queryBlackRiskLevel(HryTest hryTest) {
         String actual = this._baiduFacade_queryBlackRiskLevel(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/bairongFacade/riskStrategy", dataProvider = "provider", description = "百融-策略引擎-实名反欺诈")
+    public void bairongFacade_riskStrategy(HryTest hryTest) {
+        String actual = this._bairongFacade_riskStrategy(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -395,9 +401,9 @@ public class CdpDefaultTest extends CdpBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/worldunionFacade/getQueryPrice", dataProvider = "provider", description = "世联评估自动估价-获取地址拆分自动估价结果")
-    public void worldunionFacade_getQueryPrice(HryTest hryTest) {
-        String actual = this._worldunionFacade_getQueryPrice(hryTest);
+    @Test(testName = "/worldunionFacade/getQueryPriceData", dataProvider = "provider", description = "世联评估自动估价-获取地址拆分自动估价结果")
+    public void worldunionFacade_getQueryPriceData(HryTest hryTest) {
+        String actual = this._worldunionFacade_getQueryPriceData(hryTest);
         supperAssert(actual, hryTest);
     }
 
