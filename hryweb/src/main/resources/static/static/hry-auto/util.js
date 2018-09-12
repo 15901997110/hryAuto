@@ -834,6 +834,12 @@ function cancelTi(tiId){
 
 }
 
+/*关闭弹出框口*/
+function layer_close(){
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
+}
+
 
 
 
