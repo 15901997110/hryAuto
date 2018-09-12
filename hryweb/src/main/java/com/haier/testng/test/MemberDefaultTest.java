@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: MemberDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @Slf4j
 public class MemberDefaultTest extends MemberBase{
@@ -104,42 +104,6 @@ public class MemberDefaultTest extends MemberBase{
     @Test(testName = "/bankCardFacade/queryUserBindCards", dataProvider = "provider", description = "查询用户绑定的银行卡")
     public void bankCardFacade_queryUserBindCards(HryTest hryTest) {
         String actual = this._bankCardFacade_queryUserBindCards(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/checkConsumerFinanceStatus", dataProvider = "provider", description = "查询消费金融状态")
-    public void consumerFinanceFacade_checkConsumerFinanceStatus(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_checkConsumerFinanceStatus(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/getIdCardImages", dataProvider = "provider", description = "下载会员影印件")
-    public void consumerFinanceFacade_getIdCardImages(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_getIdCardImages(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/openConsumerFinance", dataProvider = "provider", description = "开通消费金融")
-    public void consumerFinanceFacade_openConsumerFinance(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_openConsumerFinance(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/queryUserBasicInfo", dataProvider = "provider", description = "查询用户基本信息")
-    public void consumerFinanceFacade_queryUserBasicInfo(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_queryUserBasicInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/queryUserCreditLimit", dataProvider = "provider", description = "查询用户贷款额度信息")
-    public void consumerFinanceFacade_queryUserCreditLimit(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_queryUserCreditLimit(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumerFinanceFacade/updateUserCreditLimit", dataProvider = "provider", description = "更新用户贷款额度信息")
-    public void consumerFinanceFacade_updateUserCreditLimit(HryTest hryTest) {
-        String actual = this._consumerFinanceFacade_updateUserCreditLimit(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -422,90 +386,6 @@ public class MemberDefaultTest extends MemberBase{
     @Test(testName = "/dealerFacade/getDealerByTaxNo", dataProvider = "provider", description = "根据税务登记证号获取经销商信息")
     public void dealerFacade_getDealerByTaxNo(HryTest hryTest) {
         String actual = this._dealerFacade_getDealerByTaxNo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/enterpriseFacade/getEnterpriseInfoByHryIdFromHry", dataProvider = "provider", description = "根据hryId获取企业用户信息")
-    public void enterpriseFacade_getEnterpriseInfoByHryIdFromHry(HryTest hryTest) {
-        String actual = this._enterpriseFacade_getEnterpriseInfoByHryIdFromHry(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/enterpriseFacade/getEnterpriseKjtAccountInfoByLoginName", dataProvider = "provider", description = "根据登录名查询Kjt账户信息")
-    public void enterpriseFacade_getEnterpriseKjtAccountInfoByLoginName(HryTest hryTest) {
-        String actual = this._enterpriseFacade_getEnterpriseKjtAccountInfoByLoginName(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/fundIn", dataProvider = "provider", description = "基金开户并转入")
-    public void fundFacade_fundIn(HryTest hryTest) {
-        String actual = this._fundFacade_fundIn(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/getUserStatisticsProfit", dataProvider = "provider", description = "历史收益查询")
-    public void fundFacade_getUserStatisticsProfit(HryTest hryTest) {
-        String actual = this._fundFacade_getUserStatisticsProfit(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/getWithdrawCode", dataProvider = "provider", description = "获取提现手机验证码")
-    public void fundFacade_getWithdrawCode(HryTest hryTest) {
-        String actual = this._fundFacade_getWithdrawCode(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/isOpenFund", dataProvider = "provider", description = "判断当前登录用户是否开通基金账户")
-    public void fundFacade_isOpenFund(HryTest hryTest) {
-        String actual = this._fundFacade_isOpenFund(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/openFundAccount", dataProvider = "provider", description = "基金开户")
-    public void fundFacade_openFundAccount(HryTest hryTest) {
-        String actual = this._fundFacade_openFundAccount(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryAllQuickBankAccount", dataProvider = "provider", description = "查询会员绑定的所有快捷卡信息")
-    public void fundFacade_queryAllQuickBankAccount(HryTest hryTest) {
-        String actual = this._fundFacade_queryAllQuickBankAccount(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryBankAccount", dataProvider = "provider", description = "查询会员绑定的银行卡信息")
-    public void fundFacade_queryBankAccount(HryTest hryTest) {
-        String actual = this._fundFacade_queryBankAccount(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryFundOrder", dataProvider = "provider", description = "查询基金交易订单")
-    public void fundFacade_queryFundOrder(HryTest hryTest) {
-        String actual = this._fundFacade_queryFundOrder(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryFundRates", dataProvider = "provider", description = "查询年化利率和万份收益信息")
-    public void fundFacade_queryFundRates(HryTest hryTest) {
-        String actual = this._fundFacade_queryFundRates(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryProfitDate", dataProvider = "provider", description = "本次转入后收益发放时间")
-    public void fundFacade_queryProfitDate(HryTest hryTest) {
-        String actual = this._fundFacade_queryProfitDate(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/queryWithdrawBankAccount", dataProvider = "provider", description = "查询会员可提现的银行卡信息")
-    public void fundFacade_queryWithdrawBankAccount(HryTest hryTest) {
-        String actual = this._fundFacade_queryWithdrawBankAccount(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/fundFacade/withdraw", dataProvider = "provider", description = "提现")
-    public void fundFacade_withdraw(HryTest hryTest) {
-        String actual = this._fundFacade_withdraw(hryTest);
         supperAssert(actual, hryTest);
     }
 
