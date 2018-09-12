@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: UserDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @Slf4j
 public class UserDefaultTest extends UserBase{
@@ -62,6 +62,12 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/accountFacade/queryAccountFlowByLoginNameListAndTime", dataProvider = "provider", description = "账单查询-根据登录名列表和账务开始、结束时间")
     public void accountFacade_queryAccountFlowByLoginNameListAndTime(HryTest hryTest) {
         String actual = this._accountFacade_queryAccountFlowByLoginNameListAndTime(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/accountFacade/queryAccountFlowForApp", dataProvider = "provider", description = "资金流水查询")
+    public void accountFacade_queryAccountFlowForApp(HryTest hryTest) {
+        String actual = this._accountFacade_queryAccountFlowForApp(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -317,12 +323,6 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/oauthFacade/decryptUserId", dataProvider = "provider", description = "userId解密")
-    public void oauthFacade_decryptUserId(HryTest hryTest) {
-        String actual = this._oauthFacade_decryptUserId(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/oauthFacade/encryptUserId", dataProvider = "provider", description = "userId加密")
     public void oauthFacade_encryptUserId(HryTest hryTest) {
         String actual = this._oauthFacade_encryptUserId(hryTest);
@@ -491,7 +491,7 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/userConsoleFacade/uploadImageFile", dataProvider = "provider", description = "no desc")
+    @Test(testName = "/userConsoleFacade/uploadImageFile", dataProvider = "provider", description = "")
     public void userConsoleFacade_uploadImageFile(HryTest hryTest) {
         String actual = this._userConsoleFacade_uploadImageFile(hryTest);
         supperAssert(actual, hryTest);

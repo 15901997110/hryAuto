@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: OssDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @Slf4j
 public class OssDefaultTest extends OssBase{
@@ -27,54 +27,6 @@ public class OssDefaultTest extends OssBase{
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);
-    }
-
-    @Test(testName = "/accelerationFacade/addAccelerationPlan", dataProvider = "provider", description = "用户参加收益加速活动")
-    public void accelerationFacade_addAccelerationPlan(HryTest hryTest) {
-        String actual = this._accelerationFacade_addAccelerationPlan(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getAccelerationPlanDetail", dataProvider = "provider", description = "获取收益加速计划详情")
-    public void accelerationFacade_getAccelerationPlanDetail(HryTest hryTest) {
-        String actual = this._accelerationFacade_getAccelerationPlanDetail(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getAccelerationProductInfo", dataProvider = "provider", description = "获取收益加速标的信息")
-    public void accelerationFacade_getAccelerationProductInfo(HryTest hryTest) {
-        String actual = this._accelerationFacade_getAccelerationProductInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getAccelerationRecord", dataProvider = "provider", description = "获取收益加速记录")
-    public void accelerationFacade_getAccelerationRecord(HryTest hryTest) {
-        String actual = this._accelerationFacade_getAccelerationRecord(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getAccelerationResult", dataProvider = "provider", description = "获取用户加速的结果")
-    public void accelerationFacade_getAccelerationResult(HryTest hryTest) {
-        String actual = this._accelerationFacade_getAccelerationResult(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getAcceleratorInfo", dataProvider = "provider", description = "获取收益加速好友信息")
-    public void accelerationFacade_getAcceleratorInfo(HryTest hryTest) {
-        String actual = this._accelerationFacade_getAcceleratorInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getDailyAccelerationInfo", dataProvider = "provider", description = "获取收益加速标的信息")
-    public void accelerationFacade_getDailyAccelerationInfo(HryTest hryTest) {
-        String actual = this._accelerationFacade_getDailyAccelerationInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/accelerationFacade/getOrderAccelerationInfo", dataProvider = "provider", description = "获取订单的加速信息")
-    public void accelerationFacade_getOrderAccelerationInfo(HryTest hryTest) {
-        String actual = this._accelerationFacade_getOrderAccelerationInfo(hryTest);
-        supperAssert(actual, hryTest);
     }
 
     @Test(testName = "/behaviorAnalysisFacade/addMarketingPushMessage", dataProvider = "provider", description = "推送消息")

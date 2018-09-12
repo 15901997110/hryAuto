@@ -199,22 +199,22 @@
         }
 
         //服务字段
-        var sId=$.cookie('serviceid');
+        var sId = $.cookie('serviceid');
         var serviceHtml = "";
         for (var i = 0; i < serviceList.length; i++) {
-                serviceHtml += "<option value=\"" + serviceList[i].id + "\">" + serviceList[i].servicekey + "</option>"
+            serviceHtml += "<option value=\"" + serviceList[i].id + "\">" + serviceList[i].servicekey + "</option>"
         }
         $("#service").append(serviceHtml);
         if (copyFlag) {
             $("#service").val(copyTcase.serviceid);
-        }else if(sId!=null){
+        } else if (sId != null) {
             $("#service").val(sId);
         }
         var selectedServiceId = $("#service").val();
 
 
         //接口字段
-        var tId=$.cookie('iid');
+        var tId = $.cookie('iid');
         var tiList = getTiList(selectedServiceId);
         var tiHtml = "";
         if (tiList.length == 0) {
@@ -224,16 +224,14 @@
         } else {
             for (var j = 0; j < tiList.length; j++) {
                 tiHtml += "<option value=\"" + tiList[j].id + "\">" + tiList[j].iuri + "(" + tiList[j].remark + ")</option>";
-
             }
             $("#ti").append(tiHtml);
             $("#ti").select2();
 
-
             if (copyFlag) {//如果是复制用例,这里选中
                 $("#ti").select2().val(copyTcase.iid).trigger("change");//注意,select2的选中与select并不相同
-            }else if(tId != null){
-                $("#ti").val(tId);
+            } else if (tId != null) {
+                $("#ti").select2().val(tId).trigger("change");
             }
             selectedTiId = $("#ti").val();
             selectedTi = getTiById(selectedTiId);
@@ -265,10 +263,10 @@
             $("#env").val(copyTcase.envid);
         }
 
-        var tiId=$("#ti").val();
-        var envId=$("#env").val();
-        var num=getTcaseNumByTiId(tiId,envId);
-        $("#caseNum").text("已有"+num+"条用例");
+        var tiId = $("#ti").val();
+        var envId = $("#env").val();
+        var num = getTcaseNumByTiId(tiId, envId);
+        $("#caseNum").text("已有" + num + "条用例");
 
         //设置测试类字段
         var selectedServiceKey = $("#service").find("option:selected").text();
@@ -359,9 +357,9 @@
         }
         document.getElementById("ti").setAttribute("prevalue", remark);//设置新的自定义属性-prevalue,为下次change准备
 
-        var envId=$("#env").val();
-        var num=getTcaseNumByTiId(tId,envId);
-        $("#caseNum").text("已有"+num+"条用例");
+        var envId = $("#env").val();
+        var num = getTcaseNumByTiId(tId, envId);
+        $("#caseNum").text("已有" + num + "条用例");
 
         /**
          * 接口变更时,示例headers联动
@@ -520,8 +518,8 @@
                     var status = data.status;
                     var msg = data.msg;
                     if (status == 0) {
-                        $.cookie("serviceid",service,{expires:3650});
-                        $.cookie("iid",ti,{expires:3650});
+                        $.cookie("serviceid", service, {expires: 3650});
+                        $.cookie("iid", ti, {expires: 3650});
                         //parent.window.location.reload();
                         window.parent.pageSkip(1);
                         var index = parent.layer.getFrameIndex(window.name);

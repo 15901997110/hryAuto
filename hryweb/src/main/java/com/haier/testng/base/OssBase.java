@@ -8,50 +8,10 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @SKey("Oss")
 public class OssBase extends Base {
-    @Uri(value = "/accelerationFacade/addAccelerationPlan", desc = "用户参加收益加速活动")
-    public String _accelerationFacade_addAccelerationPlan(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getAccelerationPlanDetail", desc = "获取收益加速计划详情")
-    public String _accelerationFacade_getAccelerationPlanDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getAccelerationProductInfo", desc = "获取收益加速标的信息")
-    public String _accelerationFacade_getAccelerationProductInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getAccelerationRecord", desc = "获取收益加速记录")
-    public String _accelerationFacade_getAccelerationRecord(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getAccelerationResult", desc = "获取用户加速的结果")
-    public String _accelerationFacade_getAccelerationResult(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getAcceleratorInfo", desc = "获取收益加速好友信息")
-    public String _accelerationFacade_getAcceleratorInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getDailyAccelerationInfo", desc = "获取收益加速标的信息")
-    public String _accelerationFacade_getDailyAccelerationInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/accelerationFacade/getOrderAccelerationInfo", desc = "获取订单的加速信息")
-    public String _accelerationFacade_getOrderAccelerationInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/behaviorAnalysisFacade/addMarketingPushMessage", desc = "推送消息")
     public String _behaviorAnalysisFacade_addMarketingPushMessage(HryTest test) {
         return HryHttpClientUtil.send(test, this);
