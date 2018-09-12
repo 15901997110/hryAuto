@@ -200,6 +200,14 @@
             copyFlag = true;
             copyTcase = getTcaseById(getParameter("cId"));
         }
+        var fromTiFlag = false;
+        var fromTiSid = null;
+        var fromTiIid=null;
+        if (getParameter("fromTiSid") != null && getParameter("fromTiSid") != ""&&getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
+            fromTiFlag = true;
+            fromTiSid =getParameter("fromTiSid") ;
+            fromTiIid =getParameter("fromTiIid") ;
+        }
 
         //服务字段
         var sId = $.cookie('serviceid');
@@ -210,11 +218,13 @@
         $("#service").append(serviceHtml);
         if (copyFlag) {
             $("#service").val(copyTcase.serviceid);
+        } else if(fromTiFlag){
+            $("#service").val(fromTiSid);
+
         } else if (sId != null) {
             $("#service").val(sId);
         }
         var selectedServiceId = $("#service").val();
-
 
         //接口字段
         var tId = $.cookie('iid');
@@ -233,6 +243,8 @@
 
             if (copyFlag) {//如果是复制用例,这里选中
                 $("#ti").select2().val(copyTcase.iid).trigger("change");//注意,select2的选中与select并不相同
+            }else if(fromTiFlag){
+                $("#ti").select2().val(fromTiIid).trigger("change");
             } else if (tId != null) {
                 $("#ti").select2().val(tId).trigger("change");
             }
