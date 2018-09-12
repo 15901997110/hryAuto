@@ -72,9 +72,9 @@
     //loading
     $(function () {
         $.ajaxSetup({
-            layerIndex:-1,
+            layerIndex: -1,
             beforeSend: function () { //插件加载前
-                this.layerIndex = layer.load(1, { shade: [1.01, '#fff'] });
+                this.layerIndex = layer.load(1, {shade: [1.01, '#fff']});
                 $('#admin-role-save').val("正在提交请稍等...")
             },
             complete: function () { //完成加载后执行
@@ -109,42 +109,42 @@
             },
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                var list=data.data;
+                var status = data.status;
+                var msg = data.msg;
+                var list = data.data;
                 console.log(data);
 
-                if(status == 0){
+                if (status == 0) {
                     var envkey = list.envkey;
                     var remark = list.remark;
                     var html = "<div class=\"row cl\" style=\"display:none;\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境id：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input class=\"input-text\" value=\""+id+"\" placeholder=\"\" id=\"id\" name=\"id\">\n" +
+                        "                <input class=\"input-text\" value=\"" + id + "\" placeholder=\"\" id=\"id\" name=\"id\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\"><span class=\"c-red\">*</span>环境标识：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+envkey+"\" placeholder=\"\" id=\"envkey\" name=\"envkey\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\"" + envkey + "\" placeholder=\"\" id=\"envkey\" name=\"envkey\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <label class=\"form-label col-xs-4 col-sm-3\">环境描述：</label>\n" +
                         "            <div class=\"formControls col-xs-8 col-sm-9\">\n" +
-                        "                <input type=\"text\" class=\"input-text\" value=\""+remark+"\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
+                        "                <input type=\"text\" class=\"input-text\" value=\"" + remark + "\" placeholder=\"\" id=\"remark\" name=\"remark\">\n" +
                         "            </div>\n" +
                         "        </div>\n" +
                         "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
                         "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\"\n" +
-                        "                        onclick=\"editTservice("+id+")\"><i class=\"icon-ok\"></i> 提交\n" +
+                        "                        onclick=\"editTservice(" + id + ")\"><i class=\"icon-ok\"></i> 提交\n" +
                         "                </button>\n" +
                         "            </div>\n" +
                         "        </div>";
 
                     $("#form").append(html);
-                }else{
+                } else {
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
@@ -158,38 +158,40 @@
     });
 
     //编辑环境
-    function editTservice(tenvId){
+    function editTservice(tenvId) {
         var id = tenvId;
         var envkey = $("#envkey").val();
         var remark = $("#remark").val();
         //alert("tenvId="+id+"envKey_="+envKey+"remark"+remark);
-        if(envkey == null || envkey == ""){
+        if (envkey == null || envkey == "") {
             layer.msg("环境标识不能为空！");
             return;
         }/*else if(remark == null || remark == ""){
             layer.msg("环境描述不能为空！");
             return;
-        }*/else{
+        }*/ else {
             $.ajax({
                 type: 'POST',
                 url: '/tenv/updateOne',
-                data:{
-                    id:id,
-                    envkey:envkey,
-                    remark:remark
+                data: {
+                    id: id,
+                    envkey: envkey,
+                    remark: remark
                 },
                 dataType: 'json',
-                success: function(data){
-                    var status=data.status;
-                    var msg=data.msg;
-                    var list=data.data;
+                success: function (data) {
+                    var status = data.status;
+                    var msg = data.msg;
+                    var list = data.data;
 
-                    if(status == 0){
+                    if (status == 0) {
                         //alert("更新成功！");
-                        window.parent.pageSkip(1);;
+                        //环境列表页面没有pageskip
+                        /*window.parent.pageSkip(1);;*/
+                        parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
-                    }else{
+                    } else {
                         layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -197,7 +199,7 @@
                     }
 
                 },
-                error:function(xhr) {
+                error: function (xhr) {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
