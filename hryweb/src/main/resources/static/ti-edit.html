@@ -406,8 +406,9 @@
                         "        <div class=\"row cl\">\n" +
                         "            <div class=\"col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3\">\n" +
                         "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTi(" + id + ")\"><i class=\"icon-ok\"></i> 提交</button>\n" +
-                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"cancel_ti(this," + id + ")\"><i class=\"icon-ok\"></i> 作废</button>\n" +
-                        "            </div>\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-cancel\" name=\"admin-role-cancel\" onclick=\"cancel_ti(this," + id + ")\"><i class=\"icon-ok\"></i> 作废</button>\n" +
+                        "                <button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-close\" name=\"admin-role-close\" onclick=\"layer_close()\"><i class=\"icon-ok\"></i> 关闭</button>\n" +
+                        "</div>\n" +
                         "        </div>";
 
                     $("#form").append(html);
