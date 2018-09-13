@@ -42,6 +42,7 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public Integer insertOne(Ti ti) {
+        //插入接口
         tiMapper.insertSelective(ti);
         return ti.getId();
     }

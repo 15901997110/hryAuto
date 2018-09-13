@@ -32,6 +32,8 @@ public class Ti {
 
     private String idev;
 
+    private Integer casecount;
+
     private Integer istatus;
 
     private Date updatetime;
@@ -122,6 +124,14 @@ public class Ti {
 
     public void setIdev(String idev) {
         this.idev = idev == null ? null : idev.trim();
+    }
+
+    public Integer getCasecount() {
+        return casecount;
+    }
+
+    public void setCasecount(Integer casecount) {
+        this.casecount = casecount;
     }
 
     public Integer getIstatus() {

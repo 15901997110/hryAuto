@@ -36,6 +36,9 @@ public interface TcaseService {
     //查-综合查询
     PageInfo<TcaseCustom> selectByContion(TcaseCustom tcaseCustom, Integer pageNum, Integer pageSize);
 
+    //统计case,根据iid和serviceid
+    Integer statisticCase(Tcase tcase);
+
     /**
      * 运行单条Case
      */

@@ -8,14 +8,15 @@
         <result column="serviceName" jdbcType="VARCHAR" property="servicename"/>
         <result column="iUri" jdbcType="VARCHAR" property="iuri"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="iRequestMethod" jdbcType="SMALLINT" property="irequestmethod"/>
+        <result column="iRequestMethod" jdbcType="INTEGER" property="irequestmethod"/>
         <result column="iContentType" jdbcType="SMALLINT" property="icontenttype"/>
         <result column="iHeaderSample" jdbcType="VARCHAR" property="iheadersample"/>
-        <result column="iParamType" jdbcType="SMALLINT" property="iparamtype"/>
+        <result column="iParamType" jdbcType="INTEGER" property="iparamtype"/>
         <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample"/>
-        <result column="iResponseType" jdbcType="SMALLINT" property="iresponsetype"/>
+        <result column="iResponseType" jdbcType="INTEGER" property="iresponsetype"/>
         <result column="iDev" jdbcType="VARCHAR" property="idev"/>
-        <result column="iStatus" jdbcType="SMALLINT" property="istatus"/>
+        <result column="caseCount" jdbcType="INTEGER" property="casecount"/>
+        <result column="iStatus" jdbcType="INTEGER" property="istatus"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
     </resultMap>
     <select id="selectByCondition" parameterType="com.haier.po.TiCustom" resultMap="TiCustomResultMap">
@@ -44,6 +45,13 @@
                 /*AND (tservice.`serviceKey` LIKE #{servicekey}
                 OR tservice.`serviceName` LIKE #{servicekey})*/
             </if>
+            <if test="casecount!=null and casecount &lt;= 3"><!--case数量小于等于3-->
+                AND ti.`caseCount`=#{casecount}
+            </if>
+            <if test="casecount!=null and casecount &gt; 3"><!--case数量大于3-->
+                AND ti.`caseCount`>#{casecount}
+            </if>
+
         </if>
     </select>
 

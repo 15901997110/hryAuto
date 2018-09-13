@@ -31,17 +31,20 @@
 <div class="page-container">
     <div>
         <div style="margin-left:30px;margin-top:20px;">
+            <label style="margin-left:30px;">id：</label><input type="text" name="cid" id="cid"
+                                                               placeholder=" 用例id" style="width:5%"
+                                                               class="input-text">
             <!--<label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" serviceKey或serviceName" style="width:12%" class="input-text">-->
             <label style="margin-left:65px;">服务：</label>
-            <span class="select-box" style="width:12%">
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="serviceKey" id="serviceKey">
-                    <option value="">请选择</option>
+                    <option value="">--请选择--</option>
                 </select>
             </span>
             <label style="margin-left:55px;">环境：</label>
-            <span class="select-box" style="width:12%">
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="envKey" id="envKey">
-                    <option value="" selected>请选择</option>
+                    <option value="" selected>--请选择--</option>
                 </select>
             </span>
             <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl"
@@ -49,20 +52,20 @@
                                                                class="input-text">
         </div>
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:33px;">用例名称：</label><input type="text" name="caseName" id="caseName"
+            <label style="margin-left:30px;">用例名称：</label><input type="text" name="caseName" id="caseName"
                                                                  placeholder=" 用例名称" style="width:12%"
                                                                  class="input-text">
             <label style="margin-left:23px;">断言类型：</label>
-            <span class="select-box" style="width:12%">
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="assertType" id="assertType">
-                    <option value="" selected>请选择</option>
+                    <option value="" selected>--请选择--</option>
                 </select>
             </span>
             <!--<label style="margin-left:37px;">设计人：</label><input type="text" name="author" id="author" placeholder=" 用例设计人" style="width:12%" class="input-text">-->
             <label style="margin-left:54px;">设计人：</label>
-            <span class="select-box" style="width:12%">
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="author" id="author">
-                    <option value="" selected>请选择</option>
+                    <option value="" selected>--请选择--</option>
                 </select>
             </span>
             <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button"
@@ -75,8 +78,9 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a  id="tCase_add" class="btn btn-primary radius" onclick=""><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
+            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
+                    class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+            <a id="tCase_add" class="btn btn-primary radius" onclick=""><i class="Hui-iconfont">&#xe600;</i> 添加用例</a>
         </span>
         <span class="r">共有数据：<strong id="total">0</strong> 条</span>
     </div>
@@ -85,7 +89,7 @@
             <thead>
             <tr class="text-c">
                 <th width="3%"><input name="" type="checkbox" value=""></th>
-                <th width="3%">ID</th>
+                <th width="3%">id</th>
                 <th width="10%">用例名称</th>
                 <th width="10%">用例描述</th>
                 <th width="7%">服务</th>
@@ -124,8 +128,8 @@
     var layerIndex;
     var w = document.body.clientWidth;
     var h = document.body.clientHeight;
-    var width=w*70/100;
-    var height=h*95/100;
+    var width = w * 70 / 100;
+    var height = h * 95 / 100;
     //alert("宽=" + width + ",高=" + height);
     //loading
     $(function () {
@@ -148,18 +152,19 @@
         // $("#servicekey").val("");
         $("#serviceKey option:first").prop("selected", 'selected');
         $("#tiUrl").val("");
+        $("#cid").val("");
         $("#caseName").val("");
         //$("#author").val("");
         $("#author").val(null).trigger("change");
-        $("#author").val("请选择").trigger("change");
+        //$("#author").val("请选择").trigger("change");
         $("#envKey option:first").prop("selected", 'selected');
         $("#assertType option:first").prop("selected", 'selected');
     }
 
     //初始加载
     $(document).ready(function () {
-        var onclik="tCase_add('添加用例','tcase-add.html','"+width+"','"+height+"')";
-        $("#tCase_add").attr("onclick",onclik);
+        var onclik = "tCase_add('添加用例','tcase-add.html','" + width + "','" + height + "')";
+        $("#tCase_add").attr("onclick", onclik);
 
         var list = getServiceList();
         var html = "";
@@ -222,11 +227,13 @@
         var caseName = $("#caseName").val();
         var author = $("#author").val();
         var assertType = $("#assertType").val();
+        var cid = $("#cid").val();
 
         $.ajax({
             type: "post",
             url: "/tcase/selectByCondition",
             data: {
+                id: cid,
                 serviceid: serviceKey,
                 envid: envKey,
                 iuri: tiUrl,
@@ -314,8 +321,8 @@
                             "<td>" + row.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"运行\" href=\"javascript:;\" onclick=\"tcase_run(" + row.id + ",'" + tiName + "')\" style=\"text-decoration:none;margin-right:5px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
-                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','"+width+"','"+height+"'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html'," + row.id + ",'"+width+"','"+height+"')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
+                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"tcase_copy2('用例复制','tcase-add.html','" + width + "','" + height + "'," + row.id + ")\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"tcase_edit('用例编辑','tcase-edit.html'," + row.id + ",'" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"tcase_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";

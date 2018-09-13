@@ -30,24 +30,37 @@
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div>
-        <label style="margin-left:30px">ID：</label><input type="text" name="ID" id="id" placeholder=" 接口ID"
-                                                            style="width:8%" class="input-text">
+        <label style="margin-left:30px">id：
+        </label><input type="text" name="ID" id="id" placeholder=" 接口id"
+                       style="width:4%" class="input-text">
         <!--<label style="margin-left:30px">服务：</label><input type="text" name="serviceid" id="serviceid" placeholder=" 服务标识/服务描述" style="width:12%" class="input-text">-->
         <label style="margin-left:30px;">服务：</label>
-        <span class="select-box" style="width:12%">
+        <span class="select-box" style="width:8%">
             <select class="select" size="1" name="serviceKey" id="serviceKey">
-                <option value="">请选择</option>
+                <option value="">-请选择-</option>
             </select>
             </span>
-        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述"
-                                                            style="width:8%" class="input-text">
         <label style="margin-left:30px">接口地址：</label><input type="text" name="iuri" id="iuri" placeholder=" 接口地址"
                                                             style="width:12%" class="input-text">
+        <label style="margin-left:30px">接口描述：</label><input type="text" name="remark" id="remark" placeholder=" 接口描述"
+                                                            style="width:8%" class="input-text">
+
         <!--<label style="margin-left:30px">开发者：</label><input type="text" name="idev" id="idev" placeholder=" 开发者" style="width:10%" class="input-text">-->
-        <label style="margin-left:30px;">接口开发人员：</label>
-        <span class="select-box" style="width:12%">
+        <label style="margin-left:30px;">开发者：</label>
+        <span class="select-box" style="width:8%">
             <select class="select" size="1" name="idev" id="idev">
-                <option value="" selected>请选择</option>
+                <option value="" selected>-请选择-</option>
+            </select>
+        </span>
+        <label style="margin-left:30px;">用例数：</label>
+        <span class="select-box" style="width:8%">
+            <select class="select" size="1" name="casecount" id="casecount">
+                <option value="" selected>-请选择-</option>
+                <option value="0"> 未设计用例 </option>
+                <option value="1"> 1个用例 </option>
+                <option value="2"> 2个用例 </option>
+                <option value="3"> 3个用例 </option>
+                <option value="4"> 4个及以上 </option>
             </select>
         </span>
         <button name="find" id="find" style="margin-left:50px;width:80px;" class="btn btn-success" type="button"
@@ -75,14 +88,15 @@
                 <th width="3%"><input type="checkbox" name="" value=""></th>
                 <th width="5%">ID</th>
                 <th width="8%">服务</th>
-                <th width="23%" style="text-align:left;">接口地址</th>
-                <th width="10%">接口描述</th>
+                <th width="22%" style="text-align:left;">接口地址</th>
+                <th width="18%" style="text-align:left;">接口描述</th>
                 <th width="7%">请求方式</th>
                 <th width="7%">iContentType</th>
-                <th width="8%">请求参数类型</th>
-                <th width="5%">返回类型</th>
+                <!--<th width="8%">请求参数类型</th>-->
+                <!--<th width="5%">返回类型</th>-->
                 <th width="5%">开发者</th>
-                <th width="9%">更新时间</th>
+                <th width="5">用例数</th>
+                <th width="10%">更新时间</th>
                 <th width="10%">操作</th>
             </tr>
             </thead>
@@ -111,14 +125,18 @@
     var layerIndex;
     var w = document.body.clientWidth;
     var h = document.body.clientHeight;
-    var width=w*70/100;
-    var height=h*95/100;
+    var width = w * 70 / 100;
+    var height = h * 95 / 100;
     //loading
     $(function () {
         $.ajaxSetup({
             layerIndex: -1,
             beforeSend: function () { //插件加载前
-                layerIndex = layer.load(1, {shade: [0.01, '#fff']});
+                this.layerIndex = layer.load(1, {shade: [0.01, '#fff']});
+                //$('#submit').val("正在加载请稍等...")
+            },
+            complete: function () { //完成加载后执行
+                layer.close(this.layerIndex); //完成加载后关闭loading
             },
             error: function () { //报错时执行
                 layer.alert('显示异常，请刷新后重试', {
@@ -136,14 +154,16 @@
         $("#remark").val("");
         $("#iuri").val("");
         $("#idev").val(null).trigger("change");
-        $("#idev").val("请选择").trigger("change");
+        //$("#idev").val("请选择").trigger("change");
+        $("#casecount").val("");
+
     }
 
     //查询接口列表
     $(document).ready(function () {
         var list = getServiceList();
         var html = "";
-        for (i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             var row = list[i];
             var rowHtml = "<option value=\"" + row.id + "\">" + row.servicekey + "</option>";
             html = html + rowHtml;
@@ -168,22 +188,24 @@
         if (index == 0) {
             return;
         }
-        var id =$("#id").val();
+        var id = $("#id").val();
         var serviceKey = $("#serviceKey").val();
         var remark = $("#remark").val();
         var iuri = $("#iuri").val();
         var idev = $("#idev").val();
+        var caseCount = $("#casecount").val();
         var allEnum = getAllEnum();
         var ContentTypeEnum = allEnum.ContentTypeEnum;
-        var ResponseTypeEnum = allEnum.ResponseTypeEnum;
+        /*var ResponseTypeEnum = allEnum.ResponseTypeEnum;*/
 
         $.ajax({
             type: "post",
             url: "/ti/selectByCondition",
             data: {
-                id:id,
+                id: id,
                 iuri: iuri,
                 idev: idev,
+                casecount: caseCount,
                 serviceid: serviceKey,
                 remark: remark,
                 pageNum: index,
@@ -221,8 +243,14 @@
                                 iContentType = row1.value;
                             }
                         }
+                        var trColor = "#f93e3e";
+                        var trStyle = "";
+                        if (row.casecount == 0) {
+                            trStyle = "style=\"color: " + trColor + "\";";
+                        }
 
-                        var iParamType = "";
+                        /** 请求参数类型和返回值类型由于现在100%都是JSON,所以在列表中隐藏这两个字段,详情页仍可见*/
+                        /*var iParamType = "";
                         for (var n = 0; n < ResponseTypeEnum.length; n++) {
                             var row2 = ResponseTypeEnum[n];
                             if (row.iparamtype == row2.id) {
@@ -236,9 +264,10 @@
                             if (row.iresponsetype == row3.id) {
                                 iResponseType = row3.value;
                             }
-                        }
+                        }*/
 
-                        var rowHtml = "<tr class=\"text-c\">\n" +
+
+                        var rowHtml = "<tr class=\"text-c\" " + trStyle + ">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>" + row.id + "</td>\n" +
                             "<td>" + row.servicekey + "</td>\n" +
@@ -246,13 +275,14 @@
                             "<td >" + remark + "</td>\n" +
                             "<td >" + irequestmethod + "</td>\n" +
                             "<td>" + iContentType + "</td>\n" +
-                            "<td>" + iParamType + "</td>\n" +
-                            "<td>" + iResponseType + "</td>\n" +
+                            /* "<td>" + iParamType + "</td>\n" +
+                             "<td>" + iResponseType + "</td>\n" +*/
                             "<td>" + (row.idev == null ? "" : row.idev) + "</td>\n" +
+                            "<td>" + row.casecount + "</td>" +
                             "<td>" + row.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"新增用例\" href=\"javascript:;\" onclick=\"tcase_add('新增用例','tcase-add.html'," + row.serviceid + ",'" + row.id + "','"+width+"','"+height+"')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6f2; </i></a>"  +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html'," + row.id + ",'"+width+"','"+height+"')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>" +
+                            "<a title=\"新增用例\" href=\"javascript:;\" onclick=\"tcase_add('新增用例','tcase-add.html'," + row.serviceid + ",'" + row.id + "','" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6f2; </i></a>" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html'," + row.id + ",'" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>" +
                             "<a title=\"作废\" href=\"javascript:;\" onclick=\"ti_cancel(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e0;</i></a>" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
@@ -278,6 +308,7 @@
     function interface_add(title, url, w, h) {
         layer_show(title, url, w, h);
     }
+
     function tcase_add(title, url, fromTiSid, fromTiIid, w, h) {
         url = url + "?fromTiSid=" + fromTiSid + "&fromTiIid=" + fromTiIid;
         layer_show(title, url, w, h);
@@ -291,13 +322,13 @@
     }
 
     //作废接口
-    function ti_cancel(obj,id){
-       /* layer.confirm("作废接口将会连带删除此接口关联的用例,并且一键导入时,也不会重新导入此接口,确认作废?")
-        cancelTi(id)
-        //window.location.reload();*/
+    function ti_cancel(obj, id) {
+        /* layer.confirm("作废接口将会连带删除此接口关联的用例,并且一键导入时,也不会重新导入此接口,确认作废?")
+         cancelTi(id)
+         //window.location.reload();*/
         layer.confirm('作废接口将会连带删除此接口关联的用例,并且一键导入时,也不会重新导入此接口,确认作废?', {
-            btn: ['作废','取消'] //按钮
-        }, function(){
+            btn: ['作废', '取消'] //按钮
+        }, function () {
             cancelTi(id)
             layer.msg('已作废', {icon: 1});
             pageSkip(1);

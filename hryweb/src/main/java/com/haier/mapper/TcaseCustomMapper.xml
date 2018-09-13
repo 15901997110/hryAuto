@@ -29,6 +29,9 @@
         INNER JOIN tservice ON ti.`serviceId`=tservice.`id` AND tservice.`isDel`=0
         WHERE tcase.`status`>0
         <if test="_parameter != null">
+            <if test="id!=null">
+                AND tcase.`id`=#{id}
+            </if>
             <if test="servicekey !=null and servicekey !=''">
                 AND tservice.`serviceKey` =#{servicekey}
             </if>
