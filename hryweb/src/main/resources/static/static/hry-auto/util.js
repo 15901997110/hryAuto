@@ -18,7 +18,7 @@ function pagination(data) {
     var pageEnd = "</span>\n" +
         "            <a class=\"paginate_button next disabled\" onclick='pageSkip(" + nextPage + ")' id=\"table_next\">下一页</a>";
 
-    if (pages < 5) {
+    if (pages <=5) {
         for (var k = 0; k < pages; k++) {
             if ((k + 1) == now) {
                 var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
