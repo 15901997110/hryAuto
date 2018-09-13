@@ -217,17 +217,17 @@ public class ImportServiceImpl implements ImportService {
         //ref值的/之后的最后一段字英文字符
         String refKey = ref.substring(ref.lastIndexOf("/") + 1);
         JSONObject refValue = definitions.getJSONObject(refKey);
-
+        //ref打开后获取type和properties
+        String type = refValue.getString("type");
         JSONObject propertiesJSONObject = refValue.getJSONObject("properties");
-        if (Objects.nonNull(propertiesJSONObject)) {
+        //type为object且properties不为空
+        if ("object".equals(type) && Objects.nonNull(propertiesJSONObject)) {
             paramsamples.append("{");
-
             for (String paramName : propertiesJSONObject.keySet()) {
                 paramsamples.append("\"").append(paramName).append("\":");
-
                 JSONObject paramValueJSONObject = propertiesJSONObject.getJSONObject(paramName);
-
                 String paramValueType = paramValueJSONObject.getString("type");
+                //properties的参数类型判断
                 if ("array".equals(paramValueType)) {
                     JSONObject itemsJSONObject = paramValueJSONObject.getJSONObject("items");
                     String ref1 = itemsJSONObject.getString("$ref");
@@ -238,17 +238,6 @@ public class ImportServiceImpl implements ImportService {
                         paramsamples.replace(paramsamples.lastIndexOf("]"), paramsamples.lastIndexOf("]") + 1, "],");
                     } else {
                         log.info("array 中的item为null");
-                        /*String samples = itemsJSONObject.get("type").toString();
-                        if ("integer".equals(samples)) {
-                            paramsamples.append("[").append(samples.replace("integer", "0")).append("],");
-                        } else if ("string".equals(samples)) {
-                            paramsamples.append("[\"").append(samples.replace("string", "")).append("\"],");
-                        } else if ("number".equals(samples)) {
-                            paramsamples.append("[").append(samples.replace("number", "0")).append("],");
-                        } else {
-                            paramsamples.append("[").append(samples).append("],");
-                        }*/
-                        //paramsamples.append("[").append(items.get("type").toString().replace("array", "L")).append("],");
                     }
                 } else if ("integer".equals(paramValueType) || "number".equals(paramValueType)) {
                     paramsamples.append("0,");
@@ -256,27 +245,26 @@ public class ImportServiceImpl implements ImportService {
                     paramsamples.append("\"").append("\",");
                 } else if ("boolean".equals(paramValueType)) {
                     paramsamples.append("true,");
-                }
-                /*else if ("number".equals(paramValueType)) {
-                    paramsamples.append(paramValueType.toString().replace("number", "0")).append(",");
-                }*/ /*else if (Objects.nonNull(paramValueType)) {
-                    if ("type".equals(paramValueObjectKey) && (!"string".equals(v)) && (!"integer".equals(v)) && (!"array".equals(v))) {
-                        paramsamples.append("\"").append(v.toString()).append("\",");
-                    } else if ("$ref".equals(paramValueObjectKey)) {
-                        parseRef(v.toString().replace("#", ""), ti, refValue, paramsamples);
-                        paramsamples.append(",");
-                        //paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
+                }else if ("object".equals(paramValueType)) {
+                    JSONObject additionalPropertiesobj = paramValueJSONObject.getJSONObject("additionalProperties");
+                    String objectPropertiestype = additionalPropertiesobj.getString("type");
+                    if("object".equals(objectPropertiestype)||"array".equals(objectPropertiestype)){
+                        paramsamples.append("{},");
                     }
-                }*/
-               /* else {
-                    ti.setIparamsample(null);
-                }*/
-
+                } else if(StringUtils.isBlank(paramValueType)) {
+                    String propertiesref = paramValueJSONObject.getString("$ref");
+                    if (StringUtils.isNotBlank(propertiesref)){
+                        parseRef(propertiesref, definitions, paramsamples);
+                        paramsamples.replace(paramsamples.lastIndexOf("}"), paramsamples.lastIndexOf("}") + 1, "},");
+                    }
+                }
             }
             if (paramsamples.lastIndexOf(",") >= 0) {
                 paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
                 paramsamples.append("}");
             }
+        }else if ("object".equals(type) && Objects.isNull(propertiesJSONObject)){
+            paramsamples.append(" ");
         }
     }
 }
