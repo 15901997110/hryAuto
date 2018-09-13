@@ -102,7 +102,7 @@ function del(obj, id, url, ms) {
                 var msg = data.msg;
                 if (status == 0) {
                     $(obj).parents("tr").remove();
-                    window.location.reload();
+                    pageSkip(1);
                     layer.msg('已删除!', {icon: 1, time: 1000});
                 } else {
                     layer.alert(msg, {
@@ -832,6 +832,12 @@ function cancelTi(tiId){
         }
     });
 
+}
+
+/*关闭弹出框口*/
+function layer_close(){
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
 }
 
 

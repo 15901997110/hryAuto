@@ -8,12 +8,17 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CdpBase
  * @Author: 自动生成
- * @Date: 2018/08/22 16:04:42
+ * @Date: 2018/09/12 11:31:36
  */
 @SKey("Cdp")
 public class CdpBase extends Base {
     @Uri(value = "/baiduFacade/queryBlackRiskLevel", desc = "百度-磐石系统-黑名单风险等级")
     public String _baiduFacade_queryBlackRiskLevel(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/bairongFacade/riskStrategy", desc = "百融-策略引擎-实名反欺诈")
+    public String _bairongFacade_riskStrategy(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -317,8 +322,8 @@ public class CdpBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/worldunionFacade/getQueryPrice", desc = "世联评估自动估价-获取地址拆分自动估价结果")
-    public String _worldunionFacade_getQueryPrice(HryTest test) {
+    @Uri(value = "/worldunionFacade/getQueryPriceData", desc = "世联评估自动估价-获取地址拆分自动估价结果")
+    public String _worldunionFacade_getQueryPriceData(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

@@ -38,7 +38,8 @@ import java.util.UUID;
  */
 @Slf4j
 public class LoginUtil {
-    private static UnionLoginConfig unionLoginConfig=SpringContextHolder.getBean(UnionLoginConfig.class);
+    private static UnionLoginConfig unionLoginConfig = SpringContextHolder.getBean(UnionLoginConfig.class);
+
     /**
      * zhuanle 登录
      */
@@ -51,11 +52,15 @@ public class LoginUtil {
 
         List<Ti> tis = tiService.selectByCondition(tiCondition);
 
-        if (tis.size() == 0) {
-            log.error("未找到接口:serviceId=" + tiCondition.getServiceid() + ",iUri=" + iUri);
+        Ti ti = null;
+        for (Ti i : tis) {
+            if (i.getIuri().equals(iUri)) {
+                ti = i;
+            }
+        }
+        if (ti == null) {
             return;
         }
-        Ti ti = tis.get(0);
         Tcase tcaseCondition = new Tcase();
         tcaseCondition.setEnvid(tservicedetail.getEnvid());
         tcaseCondition.setIid(ti.getId());
@@ -136,15 +141,15 @@ public class LoginUtil {
             e.printStackTrace();
         }
 
-        String hostinfo=tservicedetail.getHostinfo();
+        String hostinfo = tservicedetail.getHostinfo();
         String domain;
 
-        if(hostinfo.contains(":")){
-            domain=hostinfo.substring(0,hostinfo.indexOf(":"));
-        }else if(hostinfo.contains("/")){
-            domain=hostinfo.substring(0,hostinfo.indexOf("/"));
-        }else{
-            domain=hostinfo;
+        if (hostinfo.contains(":")) {
+            domain = hostinfo.substring(0, hostinfo.indexOf(":"));
+        } else if (hostinfo.contains("/")) {
+            domain = hostinfo.substring(0, hostinfo.indexOf("/"));
+        } else {
+            domain = hostinfo;
         }
         CookieStore cookieStore = null;
         Header[] resHeaders = config.headers();
@@ -168,7 +173,6 @@ public class LoginUtil {
             log.error("联合登录失败");
             return;
         }
-
 
 
         ReflectUtil.setFirstPublicFieldValueByAnno(entity, HryCookie.class, cookieStore);

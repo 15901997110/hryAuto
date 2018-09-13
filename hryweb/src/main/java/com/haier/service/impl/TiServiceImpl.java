@@ -101,14 +101,6 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public PageInfo<TiCustom> selectByCondition(TiCustom tiCustom, Integer pageNum, Integer pageSize) {
-        if (tiCustom != null) {
-            if (StringUtils.isNotBlank(tiCustom.getIuri())) {
-                tiCustom.setIuri("%" + tiCustom.getIuri() + "%");
-            }
-            if (StringUtils.isNotBlank(tiCustom.getRemark())) {
-                tiCustom.setRemark("%" + tiCustom.getRemark() + "%");
-            }
-        }
         PageHelper.startPage(pageNum, pageSize, SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         List<TiCustom> tiCustomList = tiCustomMapper.selectByCondition(tiCustom);
         PageInfo<TiCustom> pageInfo = new PageInfo<>(tiCustomList);
@@ -135,6 +127,9 @@ public class TiServiceImpl implements TiService {
             criteria.andIstatusGreaterThan(0);
         }
         if (ti != null) {
+            if (ti.getId() != null) {
+                criteria.andIdEqualTo(ti.getId());
+            }
             if (ti.getServiceid() != null) {
                 criteria.andServiceidEqualTo(ti.getServiceid());
             }

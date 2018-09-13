@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: UserBase
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @SKey("User")
 public class UserBase extends Base {
@@ -39,6 +39,11 @@ public class UserBase extends Base {
 
     @Uri(value = "/accountFacade/queryAccountFlowByLoginNameListAndTime", desc = "账单查询-根据登录名列表和账务开始、结束时间")
     public String _accountFacade_queryAccountFlowByLoginNameListAndTime(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/accountFacade/queryAccountFlowForApp", desc = "资金流水查询")
+    public String _accountFacade_queryAccountFlowForApp(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -252,11 +257,6 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/oauthFacade/decryptUserId", desc = "userId解密")
-    public String _oauthFacade_decryptUserId(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/oauthFacade/encryptUserId", desc = "userId加密")
     public String _oauthFacade_encryptUserId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -397,7 +397,7 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userConsoleFacade/uploadImageFile", desc = "no desc")
+    @Uri(value = "/userConsoleFacade/uploadImageFile", desc = "")
     public String _userConsoleFacade_uploadImageFile(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }

@@ -265,10 +265,10 @@
                     $("#author").val(tcase.author);
 
                     var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase(" + cId + ")\"><i class=\"icon-ok\"></i> 提交</button>" +
-                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"test\" name=\"admin-role-save\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>";
+                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-run\" name=\"admin-role-run\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>"+
+                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-close\" name=\"admin-role-close\" onclick=\"layer_close()\"><i class=\"icon-ok\"></i>关闭</button>";
                     $("#submit").append(submit);
                     layer.close(layerIndex);
-
                 } else {
                     layer.close(layerIndex);
                     layer.alert(msg, {

@@ -23,11 +23,14 @@
         FROM ti INNER JOIN tservice ON ti.`serviceId`=tservice.`id` AND ti.`iStatus`>0 AND tservice.`isDel`=0
         WHERE 1=1
         <if test="_parameter != null">
+            <if test="id!=null">
+                AND ti.`id`=#{id}
+            </if>
             <if test="iuri!=null and iuri!=''">
-                AND ti.`iUri` LIKE #{iuri}
+                AND ti.`iUri` LIKE CONCAT('%',#{iuri},'%')
             </if>
             <if test="remark!=null and remark!=''">
-                AND ti.`remark` LIKE #{remark}
+                AND ti.`remark` LIKE CONCAT('%',#{remark},'%')
             </if>
             <if test="idev!=null and idev!=''">
                 AND ti.`iDev` = #{idev}

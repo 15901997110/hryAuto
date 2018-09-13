@@ -9,6 +9,7 @@ import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.google.gson.JsonObject;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
@@ -56,12 +57,26 @@ public class ImportServiceImpl implements ImportService {
         //获取接口表(ti)已经存在的记录,by serviceId
         Ti condition = new Ti();
         condition.setServiceid(serviceId);
-        List<Ti> tis = tiService.selectByCondition(condition);//ti表中所有的此serviceId存在的记录的集合,(不包括删除的)
+        List<Ti> tis = tiService.selectAllStatusByCondition(condition);//ti表中所有的此serviceId存在的记录的集合,包括删除与作废的
         List<String> existIuri = new ArrayList<>();
+        List<String> deleteIuri = new ArrayList<>();
+        List<String> invalidIuri = new ArrayList<>();
         Map<String, Integer> existIuriId = new HashMap<>();//后续更新记录时会用到primaryKey
+        Map<String, Integer> deleteIuriId = new HashMap<>();
+        Map<String, Integer> invalidIuriId = new HashMap<>();
         for (Ti i : tis) {
-            existIuri.add(i.getIuri());
-            existIuriId.put(i.getIuri(), i.getId());
+            if (i.getIstatus() > 0) {
+                existIuri.add(i.getIuri());
+                existIuriId.put(i.getIuri(), i.getId());
+            }
+            if (i.getIstatus().equals(StatusEnum._ONE.getId())) {
+                deleteIuri.add(i.getIuri());
+                deleteIuriId.put(i.getIuri(), i.getId());
+            }
+            if (i.getIstatus().equals(StatusEnum._TWO.getId())) {
+                invalidIuri.add(i.getIuri());
+                invalidIuriId.put(i.getIuri(), i.getId());
+            }
         }
 
 
@@ -146,11 +161,16 @@ public class ImportServiceImpl implements ImportService {
                 }
 
 
+                //如果此接口已经作废,并且此接口不在有效接口的列表中,则直接忽略,
+                if (invalidIuri.size() > 0 && invalidIuri.contains(iUri) && (existIuri.size() == 0 || !existIuri.contains(iUri))) {
+                    failList.add(iUri + "(已作废)");
+                    continue;
+                }
                 //如果此服务下不存在接口,或者虽然存在接口,但是不包含当前这条接口记录
                 if (existIuri.size() == 0 || !existIuri.contains(iUri)) {
                     tiService.insertOne(ti);
                     insertList.add(iUri);
-                } else {//existIuri不是null&&existIuri包含当前要插入的记录
+                } else {//existIuri.size()>0 && existIuri包含当前要插入的记录
 
                     if (overwrite) {//如果overwrite==true,则覆盖存在的记录,将数据更新
                         ti.setId(existIuriId.get(iUri));

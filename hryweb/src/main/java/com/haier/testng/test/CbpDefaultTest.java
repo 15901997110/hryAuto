@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: CbpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @Slf4j
 public class CbpDefaultTest extends CbpBase{
@@ -92,6 +92,12 @@ public class CbpDefaultTest extends CbpBase{
     @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/getContractByState", dataProvider = "provider", description = "消金直融，线上直融代签借款合同文件获取")
     public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractByState(HryTest hryTest) {
         String actual = this._cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractByState(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/getContractFile", dataProvider = "provider", description = "消金代签借款合同文件获取")
+    public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractFile(HryTest hryTest) {
+        String actual = this._cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractFile(hryTest);
         supperAssert(actual, hryTest);
     }
 

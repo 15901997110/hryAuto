@@ -13,14 +13,10 @@ import com.haier.service.TservicedetailService;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @Description:
@@ -56,7 +52,8 @@ public class ImportController {
         try {
             jsonObject = JSON.parseObject(responseJson, Feature.DisableCircularReferenceDetect);
         } catch (Exception e) {
-            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "请求结果转换为JSON异常,请求地址=" + tservicedetail.getSwaggerurl());
+            throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "解析Swagger失败,swaggerUrl=" + tservicedetail.getSwaggerurl()
+                    + ", swagger内容为: " + responseJson);
         }
 
         //3.解析json,插入数据到ti表

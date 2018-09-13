@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CbpBase
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @SKey("Cbp")
 public class CbpBase extends Base {
@@ -64,6 +64,11 @@ public class CbpBase extends Base {
 
     @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/getContractByState", desc = "消金直融，线上直融代签借款合同文件获取")
     public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractByState(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/getContractFile", desc = "消金代签借款合同文件获取")
+    public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractFile(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

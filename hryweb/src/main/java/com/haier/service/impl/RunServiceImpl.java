@@ -55,8 +55,10 @@ public class RunServiceImpl implements RunService {
         ti.setServiceid(serviceId);
         ti.setIuri(iUri);
         List<Ti> tis = tiService.selectByCondition(ti);
-        if (tis != null && tis.size() > 0) {
-            return tis.get(0);
+        for (Ti i : tis) {
+            if (i.getIuri().equals(iUri)) {
+                return i;
+            }
         }
         return null;
     }

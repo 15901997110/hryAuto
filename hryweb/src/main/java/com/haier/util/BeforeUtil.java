@@ -63,6 +63,10 @@ public class BeforeUtil {
         /**
          * 匹配到日期和时间,做相应的处理
          */
+
+        if (base.matches(".*" + BeforeRegexEnum.LONGDATE.getPattern() + ".*")) {
+            base = replaceLongDate(base);
+        }
         if (base.matches(".*" + BeforeRegexEnum.DATE.getPattern() + ".*")) {
             base = replaceDate(base);
         }
@@ -151,6 +155,16 @@ public class BeforeUtil {
             //替换原字符串中
             base = matcher.replaceFirst(date);
             matcher.reset(base);//重置匹配器
+        }
+        return base;
+    }
+
+    public static String replaceLongDate(String base) {
+        Pattern pattern = Pattern.compile(BeforeRegexEnum.LONGDATE.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            base = matcher.replaceFirst(System.currentTimeMillis() + "");
+            matcher.reset(base);
         }
         return base;
     }

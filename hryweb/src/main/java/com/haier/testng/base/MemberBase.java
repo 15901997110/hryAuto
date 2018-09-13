@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MemberBase
  * @Author: 自动生成
- * @Date: 2018/09/11 10:34:39
+ * @Date: 2018/09/11 19:27:25
  */
 @SKey("Member")
 public class MemberBase extends Base {
@@ -74,36 +74,6 @@ public class MemberBase extends Base {
 
     @Uri(value = "/bankCardFacade/queryUserBindCards", desc = "查询用户绑定的银行卡")
     public String _bankCardFacade_queryUserBindCards(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/checkConsumerFinanceStatus", desc = "查询消费金融状态")
-    public String _consumerFinanceFacade_checkConsumerFinanceStatus(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/getIdCardImages", desc = "下载会员影印件")
-    public String _consumerFinanceFacade_getIdCardImages(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/openConsumerFinance", desc = "开通消费金融")
-    public String _consumerFinanceFacade_openConsumerFinance(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/queryUserBasicInfo", desc = "查询用户基本信息")
-    public String _consumerFinanceFacade_queryUserBasicInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/queryUserCreditLimit", desc = "查询用户贷款额度信息")
-    public String _consumerFinanceFacade_queryUserCreditLimit(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumerFinanceFacade/updateUserCreditLimit", desc = "更新用户贷款额度信息")
-    public String _consumerFinanceFacade_updateUserCreditLimit(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -339,76 +309,6 @@ public class MemberBase extends Base {
 
     @Uri(value = "/dealerFacade/getDealerByTaxNo", desc = "根据税务登记证号获取经销商信息")
     public String _dealerFacade_getDealerByTaxNo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/enterpriseFacade/getEnterpriseInfoByHryIdFromHry", desc = "根据hryId获取企业用户信息")
-    public String _enterpriseFacade_getEnterpriseInfoByHryIdFromHry(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/enterpriseFacade/getEnterpriseKjtAccountInfoByLoginName", desc = "根据登录名查询Kjt账户信息")
-    public String _enterpriseFacade_getEnterpriseKjtAccountInfoByLoginName(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/fundIn", desc = "基金开户并转入")
-    public String _fundFacade_fundIn(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/getUserStatisticsProfit", desc = "历史收益查询")
-    public String _fundFacade_getUserStatisticsProfit(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/getWithdrawCode", desc = "获取提现手机验证码")
-    public String _fundFacade_getWithdrawCode(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/isOpenFund", desc = "判断当前登录用户是否开通基金账户")
-    public String _fundFacade_isOpenFund(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/openFundAccount", desc = "基金开户")
-    public String _fundFacade_openFundAccount(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryAllQuickBankAccount", desc = "查询会员绑定的所有快捷卡信息")
-    public String _fundFacade_queryAllQuickBankAccount(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryBankAccount", desc = "查询会员绑定的银行卡信息")
-    public String _fundFacade_queryBankAccount(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryFundOrder", desc = "查询基金交易订单")
-    public String _fundFacade_queryFundOrder(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryFundRates", desc = "查询年化利率和万份收益信息")
-    public String _fundFacade_queryFundRates(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryProfitDate", desc = "本次转入后收益发放时间")
-    public String _fundFacade_queryProfitDate(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/queryWithdrawBankAccount", desc = "查询会员可提现的银行卡信息")
-    public String _fundFacade_queryWithdrawBankAccount(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fundFacade/withdraw", desc = "提现")
-    public String _fundFacade_withdraw(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
