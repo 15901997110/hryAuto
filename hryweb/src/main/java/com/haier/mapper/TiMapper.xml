@@ -13,6 +13,7 @@
     <result column="iParamSample" jdbcType="VARCHAR" property="iparamsample" />
     <result column="iResponseType" jdbcType="INTEGER" property="iresponsetype" />
     <result column="iDev" jdbcType="VARCHAR" property="idev" />
+    <result column="caseCount" jdbcType="INTEGER" property="casecount" />
     <result column="iStatus" jdbcType="INTEGER" property="istatus" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
@@ -76,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, serviceId, iUri, remark, iRequestMethod, iContentType, iHeaderSample, iParamType, 
-    iParamSample, iResponseType, iDev, iStatus, updateTime
+    iParamSample, iResponseType, iDev, caseCount, iStatus, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TiExample" resultMap="BaseResultMap">
     select
@@ -115,13 +116,13 @@
     insert into ti (serviceId, iUri, remark, 
       iRequestMethod, iContentType, iHeaderSample, 
       iParamType, iParamSample, iResponseType, 
-      iDev, iStatus, updateTime
-      )
+      iDev, caseCount, iStatus, 
+      updateTime)
     values (#{serviceid,jdbcType=INTEGER}, #{iuri,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{irequestmethod,jdbcType=INTEGER}, #{icontenttype,jdbcType=INTEGER}, #{iheadersample,jdbcType=VARCHAR}, 
       #{iparamtype,jdbcType=INTEGER}, #{iparamsample,jdbcType=VARCHAR}, #{iresponsetype,jdbcType=INTEGER}, 
-      #{idev,jdbcType=VARCHAR}, #{istatus,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}
-      )
+      #{idev,jdbcType=VARCHAR}, #{casecount,jdbcType=INTEGER}, #{istatus,jdbcType=INTEGER}, 
+      #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Ti">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -158,6 +159,9 @@
       </if>
       <if test="idev != null">
         iDev,
+      </if>
+      <if test="casecount != null">
+        caseCount,
       </if>
       <if test="istatus != null">
         iStatus,
@@ -196,6 +200,9 @@
       </if>
       <if test="idev != null">
         #{idev,jdbcType=VARCHAR},
+      </if>
+      <if test="casecount != null">
+        #{casecount,jdbcType=INTEGER},
       </if>
       <if test="istatus != null">
         #{istatus,jdbcType=INTEGER},
@@ -247,6 +254,9 @@
       <if test="record.idev != null">
         iDev = #{record.idev,jdbcType=VARCHAR},
       </if>
+      <if test="record.casecount != null">
+        caseCount = #{record.casecount,jdbcType=INTEGER},
+      </if>
       <if test="record.istatus != null">
         iStatus = #{record.istatus,jdbcType=INTEGER},
       </if>
@@ -271,6 +281,7 @@
       iParamSample = #{record.iparamsample,jdbcType=VARCHAR},
       iResponseType = #{record.iresponsetype,jdbcType=INTEGER},
       iDev = #{record.idev,jdbcType=VARCHAR},
+      caseCount = #{record.casecount,jdbcType=INTEGER},
       iStatus = #{record.istatus,jdbcType=INTEGER},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -310,6 +321,9 @@
       <if test="idev != null">
         iDev = #{idev,jdbcType=VARCHAR},
       </if>
+      <if test="casecount != null">
+        caseCount = #{casecount,jdbcType=INTEGER},
+      </if>
       <if test="istatus != null">
         iStatus = #{istatus,jdbcType=INTEGER},
       </if>
@@ -331,6 +345,7 @@
       iParamSample = #{iparamsample,jdbcType=VARCHAR},
       iResponseType = #{iresponsetype,jdbcType=INTEGER},
       iDev = #{idev,jdbcType=VARCHAR},
+      caseCount = #{casecount,jdbcType=INTEGER},
       iStatus = #{istatus,jdbcType=INTEGER},
       updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
