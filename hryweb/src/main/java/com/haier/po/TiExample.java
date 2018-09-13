@@ -815,6 +815,66 @@ public class TiExample {
             return (Criteria) this;
         }
 
+        public Criteria andCasecountIsNull() {
+            addCriterion("caseCount is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountIsNotNull() {
+            addCriterion("caseCount is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountEqualTo(Integer value) {
+            addCriterion("caseCount =", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountNotEqualTo(Integer value) {
+            addCriterion("caseCount <>", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountGreaterThan(Integer value) {
+            addCriterion("caseCount >", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("caseCount >=", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountLessThan(Integer value) {
+            addCriterion("caseCount <", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountLessThanOrEqualTo(Integer value) {
+            addCriterion("caseCount <=", value, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountIn(List<Integer> values) {
+            addCriterion("caseCount in", values, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountNotIn(List<Integer> values) {
+            addCriterion("caseCount not in", values, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountBetween(Integer value1, Integer value2) {
+            addCriterion("caseCount between", value1, value2, "casecount");
+            return (Criteria) this;
+        }
+
+        public Criteria andCasecountNotBetween(Integer value1, Integer value2) {
+            addCriterion("caseCount not between", value1, value2, "casecount");
+            return (Criteria) this;
+        }
+
         public Criteria andIstatusIsNull() {
             addCriterion("iStatus is null");
             return (Criteria) this;

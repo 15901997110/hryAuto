@@ -209,6 +209,23 @@ public class TcaseServiceImpl implements TcaseService {
         return pageInfo;
     }
 
+    @Override
+    public Integer statisticCase(Tcase tcase) {
+        TcaseExample example = new TcaseExample();
+        TcaseExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusGreaterThan(0);
+        if (tcase != null) {
+            if (tcase.getIid() != null) {
+                criteria.andIidEqualTo(tcase.getIid());
+            }
+            if (tcase.getServiceid() != null) {
+                criteria.andServiceidEqualTo(tcase.getServiceid());
+            }
+        }
+        Long longCount = tcaseMapper.countByExample(example);
+        return longCount.intValue();
+    }
+
 
     @Override
     public RunOneResult runOne(Tcase tcase) {
