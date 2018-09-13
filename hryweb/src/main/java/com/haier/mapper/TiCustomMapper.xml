@@ -46,9 +46,9 @@
                 OR tservice.`serviceName` LIKE #{servicekey})*/
             </if>
             <if test="casecount!=null and casecount &lt;= 3"><!--case数量小于等于3-->
-                AND ti.`caseCount`>#{casecount}
+                AND ti.`caseCount`=#{casecount}
             </if>
-            <if test="casecount!=null and casecount &gt; 3">!--case数量大于3-->
+            <if test="casecount!=null and casecount &gt; 3"><!--case数量大于3-->
                 AND ti.`caseCount`>#{casecount}
             </if>
 
