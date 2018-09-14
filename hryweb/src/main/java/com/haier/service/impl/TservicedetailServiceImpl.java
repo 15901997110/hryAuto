@@ -14,6 +14,7 @@ import com.haier.service.TservicedetailService;
 import com.haier.util.ReflectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +38,12 @@ public class TservicedetailServiceImpl implements TservicedetailService {
 
     @Override
     public Integer insertOne(Tservicedetail tservicedetail) {
-        return tservicedetailMapper.insertSelective(tservicedetail);
+        tservicedetailMapper.insertSelective(tservicedetail);
+        return tservicedetail.getId();
     }
 
     @Override
     public Integer deleteOne(Integer id) {
-        if (id == null || id == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
         Tservicedetail tservicedetail = new Tservicedetail();
         tservicedetail.setId(id);
         tservicedetail.setStatus(-1);
@@ -98,9 +97,7 @@ public class TservicedetailServiceImpl implements TservicedetailService {
 
     @Override
     public List<Tservicedetail> selectByCondition(Tservicedetail tservicedetail) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tservicedetail, false);
         TservicedetailExample example = new TservicedetailExample();
-
         TservicedetailExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
         if (tservicedetail != null) {
@@ -110,34 +107,27 @@ public class TservicedetailServiceImpl implements TservicedetailService {
                 criteria.andServiceidEqualTo(tservicedetail.getServiceid());
             if (tservicedetail.getEnvid() != null)
                 criteria.andEnvidEqualTo(tservicedetail.getEnvid());
-            if (tservicedetail.getHostinfo() != null)
-                criteria.andHostinfoLike(tservicedetail.getHostinfo());
-            if (tservicedetail.getDbinfo() != null)
-                criteria.andDbinfoLike(tservicedetail.getDbinfo());
-            if (tservicedetail.getSwaggerurl() != null)
-                criteria.andSwaggerurlLike(tservicedetail.getSwaggerurl());
+            if (StringUtils.isNotBlank(tservicedetail.getHostinfo()))
+                criteria.andHostinfoLike("%" + tservicedetail.getHostinfo() + "%");
+            if (StringUtils.isNotBlank(tservicedetail.getDbinfo()))
+                criteria.andDbinfoLike("%" + tservicedetail.getDbinfo() + "%");
+            if (StringUtils.isNotBlank(tservicedetail.getSwaggerurl()))
+                criteria.andSwaggerurlLike("%" + tservicedetail.getSwaggerurl() + "%");
         }
-
         List<Tservicedetail> tservicedetailList = tservicedetailMapper.selectByExample(example);
         return tservicedetailList;
     }
 
     @Override
     public List<TservicedetailCustom> selectByCondition(TservicedetailCustom tservicedetailCustom) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tservicedetailCustom, true);
         List<TservicedetailCustom> tservicedetailCustomList = tservicedetailCustomMapper.selectByCondition(tservicedetailCustom);
         return tservicedetailCustomList;
     }
 
     @Override
     public PageInfo<TservicedetailCustom> selectByCondition(TservicedetailCustom tservicedetailCustom, Integer pageNum, Integer pageSize) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tservicedetailCustom, true);
-        if (pageNum == null || pageSize == null) {
-            pageNum = 1;
-            pageSize = 10;
-        }
         PageHelper.startPage(pageNum, pageSize, SortEnum.ID.getValue());
-        List<TservicedetailCustom> tservicedetailCustomList = tservicedetailCustomMapper.selectByCondition(tservicedetailCustom);
+        List<TservicedetailCustom> tservicedetailCustomList = this.selectByCondition(tservicedetailCustom);
         PageInfo<TservicedetailCustom> pageInfo = new PageInfo<>(tservicedetailCustomList);
         return pageInfo;
     }

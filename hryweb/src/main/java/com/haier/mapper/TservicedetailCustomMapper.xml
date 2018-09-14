@@ -3,7 +3,7 @@
 <mapper namespace="com.haier.mapper.TservicedetailCustomMapper">
     <resultMap id="TservicedetailCustomResultMap" type="com.haier.po.TservicedetailCustom">
         <id column="id" property="id"/>
-        <result column="serviceid" property="serviceid"></result>
+        <result column="serviceid" property="serviceid"/>
         <result column="servicekey" property="servicekey"/>
         <result column="servicename" property="servicename"/>
         <result column="editor" property="seditor"/>
@@ -46,25 +46,24 @@
             <if test="envid!=null">
                 AND tservicedetail.envId=#{envid}
             </if>
-            <if test="servicekey!=null">
-                AND (tservice.serviceKey like #{servicekey} or tservice.serviceName like #{servicekey})
+            <if test="servicekey!=null and servicekey!=''">
+                AND tservice.serviceKey =#{servicekey}
             </if>
-            <if test="seditor!=null">
-                AND tservice.editor LIKE #{seditor}
+            <if test="seditor!=null and seditor!=''">
+                AND tservice.editor =#{seditor}
             </if>
-            <if test="envkey!=null">
-                AND (tenv.envKey like #{envkey} or tenv.remark like #{envkey})
+            <if test="envkey!=null and envkey!=''">
+                AND tenv.envKey =#{envkey}
             </if>
-            <if test="hostinfo!=null">
-                AND tservicedetail.hostInfo like #{hostinfo}
+            <if test="hostinfo!=null and hostinfo!=''">
+                AND tservicedetail.hostInfo like CONCAT('%',#{hostinfo},'%')
             </if>
-            <if test="dbinfo!=null">
-                AND tservicedetail.dbInfo like #{dbinfo}
+            <if test="dbinfo!=null and dbinfo!=''">
+                AND tservicedetail.dbInfo like CONCAT('%',#{dbinfo},'%')
             </if>
-            <if test="swaggerurl!=null">
-                AND tservicedetail.swaggerUrl like #{swaggerurl}
+            <if test="swaggerurl!=null and swaggerurl!=''">
+                AND tservicedetail.swaggerUrl like CONCAT('%',#{swaggerurl},'%')
             </if>
         </if>
     </select>
-
 </mapper>

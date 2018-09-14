@@ -1,12 +1,18 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class Tservicedetail {
     private Integer id;
 
+    @NotNull(message = "服务必须")
     private Integer serviceid;
 
+    @NotNull(message = "环境必须")
     private Integer envid;
 
+    @NotBlank(message = "hostinfo必须")
     private String hostinfo;
 
     private String dbinfo;

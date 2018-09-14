@@ -13,6 +13,7 @@ import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,12 +35,7 @@ public class TservicedetailController {
 
     //增
     @PostMapping("/insertOne")
-    public Result insertOne(Tservicedetail tservicedetail) {
-        ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
-        if (tservicedetail == null || tservicedetail.getHostinfo() == null || tservicedetail.getServiceid() == null
-                || tservicedetail.getEnvid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "serviceId,envId,hostInfo必填");
-        }
+    public Result insertOne(@Validated Tservicedetail tservicedetail) {
         dbInfoVerify(tservicedetail);
         //数据校验
         Tservicedetail condition = new Tservicedetail();
@@ -47,7 +43,7 @@ public class TservicedetailController {
         condition.setEnvid(tservicedetail.getEnvid());
         List<Tservicedetail> tservicedetailList = this.selectList(condition);
         if (tservicedetailList.size() > 0) {
-            throw new HryException(StatusCodeEnum.EXIST_RECORD, "tservicedetail表中serviceId=" + tservicedetail.getServiceid() + ",envId=" + tservicedetail.getEnvid() + "的数据已存在");
+            throw new HryException(StatusCodeEnum.EXIST_RECORD, "已存在相同serviceid和envid的记录");
         }
         //插入数据
         return ResultUtil.success(tservicedetailService.insertOne(tservicedetail));
@@ -61,27 +57,18 @@ public class TservicedetailController {
 
     //改
     @PostMapping("/updateOne")
-    public Result updateOne(Tservicedetail tservicedetail) {
-        ReflectUtil.setInvalidFieldToNull(tservicedetail, false);
-        if (tservicedetail == null || tservicedetail.getId() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
+    public Result updateOne(@Validated Tservicedetail tservicedetail) {
         dbInfoVerify(tservicedetail);
         //数据重复性校验
-        if (tservicedetail.getServiceid() != null && tservicedetail.getEnvid() != null) {
-            Tservicedetail condition = new Tservicedetail();
-            condition.setServiceid(tservicedetail.getServiceid());
-            condition.setEnvid(tservicedetail.getEnvid());
-            List<Tservicedetail> tservicedetailList = this.selectList(condition);
-            if (tservicedetailList.size() > 0) {
-                for (Tservicedetail t : tservicedetailList) {
-                    if (tservicedetail.getServiceid().equals(t.getServiceid()) && tservicedetail.getEnvid().equals(t.getEnvid()) && !tservicedetail.getId().equals(t.getId())) {
-                        throw new HryException(StatusCodeEnum.EXIST_RECORD, "请检查serviceKey和envKey");
-                    }
-                }
+        Tservicedetail condition = new Tservicedetail();
+        condition.setServiceid(tservicedetail.getServiceid());
+        condition.setEnvid(tservicedetail.getEnvid());
+        List<Tservicedetail> tservicedetailList = this.selectList(condition);
+        for (Tservicedetail t : tservicedetailList) {
+            if (tservicedetail.getServiceid().equals(t.getServiceid()) && tservicedetail.getEnvid().equals(t.getEnvid()) && !t.getId().equals(tservicedetail.getId())) {
+                throw new HryException(StatusCodeEnum.EXIST_RECORD, "已存在相同serviceid和envid的记录");
             }
         }
-
         return ResultUtil.success(tservicedetailService.updateOne(tservicedetail));
     }
 
@@ -113,7 +100,7 @@ public class TservicedetailController {
     //查-仅查询tservicedetail表数据,返回list,但是使用Result来进行了包装
     @PostMapping("/selectTservicedetailListByCondition")
     public Result selectTservicedetailListByCondition(Tservicedetail tservicedetail) {
-        return ResultUtil.success(tservicedetailService.selectByCondition(tservicedetail));
+        return ResultUtil.success(this.selectList(tservicedetail));
     }
 
     //返回纯List
@@ -125,6 +112,10 @@ public class TservicedetailController {
     //查-关联表查询,返回包装类,并且携带pageinfo
     @PostMapping("/selectByCondition")
     public Result selectByCondition(TservicedetailCustom tservicedetailCustom, Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
         return ResultUtil.success(tservicedetailService.selectByCondition(tservicedetailCustom, pageNum, pageSize));
     }
 }
