@@ -754,8 +754,7 @@ function getTcaseNumByTiId(tiId) {
         type: "post",
         url: "/tcase/selectByConditionSimple",
         data: {
-            iid: tiId,
-            envid:envId
+            iid: tiId
         },
         dataType: "json",
         success: function (data) {
