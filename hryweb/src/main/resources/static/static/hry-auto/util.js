@@ -745,9 +745,9 @@ function getUserList() {
 
 
 /**
- *根据接口id和环境id查询用例数量
+ *根据接口id查询用例数量
  */
-function getTcaseNumByTiId(tiId,envId) {
+function getTcaseNumByTiId(tiId) {
     var num = 0;
     $.ajaxSetup({async: false});
     $.ajax({
