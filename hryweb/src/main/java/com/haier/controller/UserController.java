@@ -1,13 +1,13 @@
 package com.haier.controller;
 
 import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
 import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.UserService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +41,8 @@ public class UserController {
 
     //新增用户
     @PostMapping("/insertOne")
-    public Result insertOne(User user) {
+    public Result insertOne(@Validated User user) {
+
         return ResultUtil.success(userService.insertOne(user));
     }
 

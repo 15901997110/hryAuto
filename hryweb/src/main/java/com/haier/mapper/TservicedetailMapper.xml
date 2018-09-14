@@ -102,20 +102,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tservicedetail" keyProperty="id" useGeneratedKeys="true">
-    insert into tservicedetail (id, serviceId, envId, 
-      hostInfo, dbInfo, swaggerUrl, 
-      clazz, status)
-    values (#{id,jdbcType=INTEGER}, #{serviceid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, 
-      #{hostinfo,jdbcType=VARCHAR}, #{dbinfo,jdbcType=VARCHAR}, #{swaggerurl,jdbcType=VARCHAR}, 
-      #{clazz,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.haier.po.Tservicedetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tservicedetail (serviceId, envId, hostInfo, 
+      dbInfo, swaggerUrl, clazz, 
+      status)
+    values (#{serviceid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{hostinfo,jdbcType=VARCHAR}, 
+      #{dbinfo,jdbcType=VARCHAR}, #{swaggerurl,jdbcType=VARCHAR}, #{clazz,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tservicedetail" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.haier.po.Tservicedetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tservicedetail
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="serviceid != null">
         serviceId,
       </if>
@@ -139,9 +142,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="serviceid != null">
         #{serviceid,jdbcType=INTEGER},
       </if>

@@ -3,11 +3,11 @@
 <mapper namespace="com.haier.mapper.UserMapper">
   <resultMap id="BaseResultMap" type="com.haier.po.User">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="groupId" jdbcType="SMALLINT" property="groupid" />
+    <result column="groupId" jdbcType="INTEGER" property="groupid" />
     <result column="identity" jdbcType="VARCHAR" property="identity" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="realname" jdbcType="VARCHAR" property="realname" />
-    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -71,12 +71,6 @@
   <sql id="Base_Column_List">
     id, groupId, identity, password, realname, status, remark
   </sql>
-  <select id="selectByUsername" parameterType="java.lang.String" resultType="com.haier.po.User">
-    SELECT * FROM `user` WHERE `user`.status>0 AND `user`.`identity`=#{identity}
-  </select>
-  <select id="selectAllByUsername" parameterType="java.lang.String" resultType="com.haier.po.User">
-    SELECT * from `user` where `user`.identity=#{identity}
-  </select>
   <select id="selectByExample" parameterType="com.haier.po.UserExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -108,19 +102,22 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.haier.po.User">
-    insert into user (id, groupId, identity, 
-      password, realname, status, 
-      remark)
-    values (#{id,jdbcType=INTEGER}, #{groupid,jdbcType=SMALLINT}, #{identity,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
-      #{remark,jdbcType=VARCHAR})
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (groupId, identity, password, 
+      realname, status, remark
+      )
+    values (#{groupid,jdbcType=INTEGER}, #{identity,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="groupid != null">
         groupId,
       </if>
@@ -141,11 +138,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="groupid != null">
-        #{groupid,jdbcType=SMALLINT},
+        #{groupid,jdbcType=INTEGER},
       </if>
       <if test="identity != null">
         #{identity,jdbcType=VARCHAR},
@@ -157,7 +151,7 @@
         #{realname,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        #{status,jdbcType=SMALLINT},
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -177,7 +171,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.groupid != null">
-        groupId = #{record.groupid,jdbcType=SMALLINT},
+        groupId = #{record.groupid,jdbcType=INTEGER},
       </if>
       <if test="record.identity != null">
         identity = #{record.identity,jdbcType=VARCHAR},
@@ -189,7 +183,7 @@
         realname = #{record.realname,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=SMALLINT},
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
@@ -202,11 +196,11 @@
   <update id="updateByExample" parameterType="map">
     update user
     set id = #{record.id,jdbcType=INTEGER},
-      groupId = #{record.groupid,jdbcType=SMALLINT},
+      groupId = #{record.groupid,jdbcType=INTEGER},
       identity = #{record.identity,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
       realname = #{record.realname,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=SMALLINT},
+      status = #{record.status,jdbcType=INTEGER},
       remark = #{record.remark,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -216,7 +210,7 @@
     update user
     <set>
       <if test="groupid != null">
-        groupId = #{groupid,jdbcType=SMALLINT},
+        groupId = #{groupid,jdbcType=INTEGER},
       </if>
       <if test="identity != null">
         identity = #{identity,jdbcType=VARCHAR},
@@ -228,7 +222,7 @@
         realname = #{realname,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
-        status = #{status,jdbcType=SMALLINT},
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
@@ -238,11 +232,11 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.haier.po.User">
     update user
-    set groupId = #{groupid,jdbcType=SMALLINT},
+    set groupId = #{groupid,jdbcType=INTEGER},
       identity = #{identity,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       realname = #{realname,jdbcType=VARCHAR},
-      status = #{status,jdbcType=SMALLINT},
+      status = #{status,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
