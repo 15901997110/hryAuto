@@ -26,18 +26,21 @@ public interface UserService {
     //综合条件查询用户列表-不带分页
     List<User> selectByCondition(User user);
 
+    List<User> selectAllUser(User user);
     //根据主键更新用户
-    Integer updateOne(Integer id, User user);
+    Integer updateOne(User user);
 
     //删除用户(逻辑删除)
     Integer deleteOne(Integer id);
 
     //修改用户密码
-    Integer modifyPwd(String identity, String oldPwd, String newPwd);
+    Integer modifyPwd(User user);
 
     //按groupId查询相应user List
     List<User> selectByGroupId(Integer groupid);
 
     //按groupId查询开发人员,上海组(11-19)返回上海开发组(12),杭州返回杭州开发组
     List<User> selectDever(Integer groupid);
+
+    User selectByIdentity(String identity);
 }

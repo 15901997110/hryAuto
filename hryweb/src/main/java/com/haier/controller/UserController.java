@@ -1,11 +1,16 @@
 package com.haier.controller;
 
+import com.haier.enums.RegexEnum;
 import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.UserService;
+import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * @Description:
@@ -37,19 +43,39 @@ public class UserController {
         return ResultUtil.success(userService.selectOne(id));
     }
 
-    //
-
     //新增用户
     @PostMapping("/insertOne")
     public Result insertOne(@Validated User user) {
-
+        //用户名校验,只支持邮箱
+        if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL, "登录名必须是邮箱");
+        }
+        //密码校验,密码只能是数字,字母,英文符号,不包括空格
+        if (!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD);
+        }
+        //数据重复性校验
+        User condition = new User();
+        condition.setIdentity(user.getIdentity());
+        List<User> users = userService.selectAllUser(condition);
+        for (User u : users) {
+            if (u.getIdentity().equals(user.getIdentity())) {
+                throw new HryException(StatusCodeEnum.EXIST_RECORD, "重复的用户名");
+            }
+        }
+        user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         return ResultUtil.success(userService.insertOne(user));
     }
 
     //更新用户
     @PostMapping("/updateOne")
     public Result updateOne(User user) {
-        return ResultUtil.success(userService.updateOne(user.getId(), user));
+        if (user == null || user.getId() == null) {
+            return ResultUtil.error(StatusCodeEnum.PARAMETER_ERROR);
+        }
+        user.setIdentity(null);
+        user.setPassword(null);
+        return ResultUtil.success(userService.updateOne(user));
     }
 
     //删除用户
@@ -61,6 +87,10 @@ public class UserController {
     //综合查询-返回pageInfo
     @PostMapping("/selectByConditionWithPageInfo")
     public Result selectByCondition(User user, Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
         return ResultUtil.success(userService.selectByCondition(user, pageNum, pageSize));
     }
 
@@ -85,7 +115,27 @@ public class UserController {
     //修改用户密码
     @PostMapping("/modifyPwd")
     public Result modifyPwd(String identity, String oldPwd, String newPwd) {
-        return ResultUtil.success(userService.modifyPwd(identity, oldPwd, newPwd));
+        if (StringUtils.isAnyBlank(identity, oldPwd, newPwd)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "用户名,旧密码,新密码任一项不可为空");
+        }
+        if (!newPwd.matches(RegexEnum.PWD_REGEX.getRegex())) {
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_PWD, "请确认输入的新密码");
+        }
+        //根据identity查询status>0的用户名
+        User user = userService.selectByIdentity(identity);
+        if (user == null) {
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "未发现此用户名:" + identity);
+        }
+
+        //用户存在 ,并且旧密码输入正确,则使用新密码更新
+        if (!user.getPassword().equals(DigestUtils.md5Hex(oldPwd))) {
+            throw new HryException(10087, "旧密码不匹配");
+        }
+        User update = new User();
+        update.setId(user.getId());
+        update.setPassword(DigestUtils.md5Hex(newPwd));
+
+        return ResultUtil.success(userService.modifyPwd(update));
     }
 
     //登录
