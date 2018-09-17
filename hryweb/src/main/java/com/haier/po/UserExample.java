@@ -174,52 +174,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andGroupidEqualTo(Short value) {
+        public Criteria andGroupidEqualTo(Integer value) {
             addCriterion("groupId =", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidNotEqualTo(Short value) {
+        public Criteria andGroupidNotEqualTo(Integer value) {
             addCriterion("groupId <>", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidGreaterThan(Short value) {
+        public Criteria andGroupidGreaterThan(Integer value) {
             addCriterion("groupId >", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidGreaterThanOrEqualTo(Short value) {
+        public Criteria andGroupidGreaterThanOrEqualTo(Integer value) {
             addCriterion("groupId >=", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidLessThan(Short value) {
+        public Criteria andGroupidLessThan(Integer value) {
             addCriterion("groupId <", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidLessThanOrEqualTo(Short value) {
+        public Criteria andGroupidLessThanOrEqualTo(Integer value) {
             addCriterion("groupId <=", value, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidIn(List<Short> values) {
+        public Criteria andGroupidIn(List<Integer> values) {
             addCriterion("groupId in", values, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidNotIn(List<Short> values) {
+        public Criteria andGroupidNotIn(List<Integer> values) {
             addCriterion("groupId not in", values, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidBetween(Short value1, Short value2) {
+        public Criteria andGroupidBetween(Integer value1, Integer value2) {
             addCriterion("groupId between", value1, value2, "groupid");
             return (Criteria) this;
         }
 
-        public Criteria andGroupidNotBetween(Short value1, Short value2) {
+        public Criteria andGroupidNotBetween(Integer value1, Integer value2) {
             addCriterion("groupId not between", value1, value2, "groupid");
             return (Criteria) this;
         }
@@ -444,52 +444,52 @@ public class UserExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Short value) {
+        public Criteria andStatusEqualTo(Integer value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Short value) {
+        public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Short value) {
+        public Criteria andStatusGreaterThan(Integer value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Short value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Short value) {
+        public Criteria andStatusLessThan(Integer value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Short value) {
+        public Criteria andStatusLessThanOrEqualTo(Integer value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Short> values) {
+        public Criteria andStatusIn(List<Integer> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Short> values) {
+        public Criteria andStatusNotIn(List<Integer> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Short value1, Short value2) {
+        public Criteria andStatusBetween(Integer value1, Integer value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Short value1, Short value2) {
+        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

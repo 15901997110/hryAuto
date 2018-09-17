@@ -1,17 +1,24 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class User {
     private Integer id;
 
-    private Short groupid;
+    @NotNull(message = "用户组必须")
+    private Integer groupid;
 
+    @NotBlank(message = "用户名必须")
     private String identity;
 
+    @NotBlank(message = "登录密码必须")
     private String password;
 
+    @NotBlank(message = "真实姓名必须")
     private String realname;
 
-    private Short status;
+    private Integer status;
 
     private String remark;
 
@@ -23,11 +30,11 @@ public class User {
         this.id = id;
     }
 
-    public Short getGroupid() {
+    public Integer getGroupid() {
         return groupid;
     }
 
-    public void setGroupid(Short groupid) {
+    public void setGroupid(Integer groupid) {
         this.groupid = groupid;
     }
 
@@ -55,11 +62,11 @@ public class User {
         this.realname = realname == null ? null : realname.trim();
     }
 
-    public Short getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
