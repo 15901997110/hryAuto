@@ -202,11 +202,11 @@
         }
         var fromTiFlag = false;
         var fromTiSid = null;
-        var fromTiIid=null;
-        if (getParameter("fromTiSid") != null && getParameter("fromTiSid") != ""&&getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
+        var fromTiIid = null;
+        if (getParameter("fromTiSid") != null && getParameter("fromTiSid") != "" && getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
             fromTiFlag = true;
-            fromTiSid =getParameter("fromTiSid") ;
-            fromTiIid =getParameter("fromTiIid") ;
+            fromTiSid = getParameter("fromTiSid");
+            fromTiIid = getParameter("fromTiIid");
         }
 
         //服务字段
@@ -218,7 +218,7 @@
         $("#service").append(serviceHtml);
         if (copyFlag) {
             $("#service").val(copyTcase.serviceid);
-        } else if(fromTiFlag){
+        } else if (fromTiFlag) {
             $("#service").val(fromTiSid);
 
         } else if (sId != null) {
@@ -243,7 +243,7 @@
 
             if (copyFlag) {//如果是复制用例,这里选中
                 $("#ti").select2().val(copyTcase.iid).trigger("change");//注意,select2的选中与select并不相同
-            }else if(fromTiFlag){
+            } else if (fromTiFlag) {
                 $("#ti").select2().val(fromTiIid).trigger("change");
             } else if (tId != null) {
                 $("#ti").select2().val(tId).trigger("change");
@@ -297,10 +297,23 @@
         var iheader = selectedTi.iheadersample;
         if (copyFlag && copyTcase.requestheader != null && copyTcase.requestheader != "") {
             $("#headerDiv").show();
-            $("#headerText").val(JSON.stringify(JSON.parse(copyTcase.requestheader), null, 2));
+            var headerJson = null;
+            try {
+                headerJson = JSON.stringify(JSON.parse(copyTcase.requestheader), null, 2);
+            }
+            catch (e) {
+                headerJson = copyTcase.requestheader;
+            }
+            $("#headerText").val(headerJson);
         } else if (iheader != null && iheader != "") {
             $("#headerDiv").show();
-            var headerJson = JSON.stringify(JSON.parse(iheader), null, 2);
+            var headerJson;
+            try {
+                headerJson = JSON.stringify(JSON.parse(iheader), null, 2);
+            }
+            catch (e) {
+                headerJson = iheader;
+            }
             $("#headerText").val(headerJson);
         }
 
