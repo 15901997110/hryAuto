@@ -6,7 +6,6 @@ import com.haier.exception.HryException;
 import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.UserService;
-import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -48,7 +47,7 @@ public class UserController {
     public Result insertOne(@Validated User user) {
         //用户名校验,只支持邮箱
         if (!user.getIdentity().matches(RegexEnum.EMAIL_REGEX.getRegex())) {
-            throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL, "登录名必须是邮箱");
+            throw new HryException(StatusCodeEnum.REGEX_ERROR_EMAIL, "用户名必须是邮箱");
         }
         //密码校验,密码只能是数字,字母,英文符号,不包括空格
         if (!user.getPassword().matches(RegexEnum.PWD_REGEX.getRegex())) {
@@ -59,7 +58,7 @@ public class UserController {
         condition.setIdentity(user.getIdentity());
         List<User> users = userService.selectAllUser(condition);
         for (User u : users) {
-            if (u.getIdentity().equals(user.getIdentity())) {
+            if (u.getIdentity().equalsIgnoreCase((user.getIdentity()))) {
                 throw new HryException(StatusCodeEnum.EXIST_RECORD, "重复的用户名");
             }
         }
@@ -142,7 +141,13 @@ public class UserController {
     @PostMapping("/login")
     public Result login(HttpServletRequest request, HttpServletResponse response, String identity, String password) throws UnsupportedEncodingException {
         HttpSession session;
-        User user = userService.findUser(identity, password);
+        User user = null;
+        if (!StringUtils.isAnyBlank(identity, password)) {
+            if (!identity.contains("@")) {
+                identity += "@legain.com";
+            }
+            user = userService.findUser(identity, password);
+        }
         if (user == null) {
             return ResultUtil.error(StatusCodeEnum.LOGIN_ERROR);
         } else {

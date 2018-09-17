@@ -3,8 +3,6 @@ package com.haier.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.RegexEnum;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
 import com.haier.mapper.UserMapper;
 import com.haier.po.User;
 import com.haier.po.UserExample;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Description:
@@ -38,16 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUser(String username, String password) {
-        if (username == null || password == null || "".equals(username.trim()) || "".equals(password.trim())) {
-            return null;
-        } else {
-            username = username.trim();
-        }
-
-        if (!username.contains("@")) {
-            username += "@kjtpay.com.cn";//支持只输入邮箱前辍登录
-        }
-        User finded = userMapper.selectByUsername(username);
+        User finded = this.selectByIdentity(username);
         if (finded != null) {
             if (finded.getPassword().equals(DigestUtils.md5Hex(password))) {
                 return finded;
@@ -118,6 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer deleteOne(Integer id) {
         User user = new User();
+        user.setId(id);
         user.setStatus(-1);
         return updateOne(user);
     }
@@ -155,7 +144,7 @@ public class UserServiceImpl implements UserService {
         condition.setIdentity(identity);
         List<User> users = this.selectByCondition(condition);
         for (User u : users) {
-            if (u.getIdentity().equals(identity)) {
+            if (u.getIdentity().equalsIgnoreCase(identity)) {
                 return u;
             }
         }
