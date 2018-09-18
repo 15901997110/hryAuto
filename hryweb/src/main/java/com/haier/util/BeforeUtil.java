@@ -354,13 +354,15 @@ public class BeforeUtil {
             String password = dbinfoJsonObject.getString(DBInfoKeyEnum.PASSWORD.name().toLowerCase());
             jdbcTemplate = DBUtil.getJdbcTemplate(driver, url, username, password);
         } catch (RuntimeException e) {
+            log.info("dbinfo信息:" + dbinfoJsonObject.toJSONString());
+            log.error("", e);
         }
 
         while (matcher.find()) {
             String re = matcher.group();//<sql:xxx>
             String sql = re.substring(re.indexOf(":") + 1, re.lastIndexOf(">")).trim();
             if (dbinfoJsonObject == null || jdbcTemplate == null) {
-                queryResult = "［异常:数据库连接异］,dbInfo=" + dbinfo;
+                queryResult = "［异常:数据库连接异常,dbinfo为空,或者dbinfo不为空,但是连接时出现异常］,dbInfo=" + dbinfo;
                 base = matcher.replaceFirst(queryResult);
                 matcher.reset(base);
                 continue;
@@ -377,6 +379,7 @@ public class BeforeUtil {
                 }
             } catch (Exception e) {
                 log.error("", e);
+                log.info("要执行的sql语句:" + sql);
                 queryResult = "［异常:执行sql异常］";
             }
 

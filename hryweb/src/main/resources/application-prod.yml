@@ -6,6 +6,8 @@ server:
   port: 8885
 logging:
   file: hryweb.log
+  level:
+    com.haier.mapper.*: debug
 spring:
   application:
     name: hryweb
