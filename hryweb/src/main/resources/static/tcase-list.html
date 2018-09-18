@@ -47,6 +47,9 @@
                     <option value="" selected>--请选择--</option>
                 </select>
             </span>
+            <label style="margin-left:53px;">接口id：</label><input type="text" name="tiid" id="tiid"
+                                                               placeholder=" 接口id" style="width:5%"
+                                                               class="input-text">
             <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl"
                                                                placeholder=" 接口地址或接口描述" style="width:12%"
                                                                class="input-text">
@@ -159,6 +162,7 @@
         //$("#author").val("请选择").trigger("change");
         $("#envKey option:first").prop("selected", 'selected');
         $("#assertType option:first").prop("selected", 'selected');
+        $("#tiid").val("");
     }
 
     //初始加载
@@ -228,12 +232,14 @@
         var author = $("#author").val();
         var assertType = $("#assertType").val();
         var cid = $("#cid").val();
+        var tiid=$("#tiid").val();
 
         $.ajax({
             type: "post",
             url: "/tcase/selectByCondition",
             data: {
                 id: cid,
+                iid: tiid,
                 serviceid: serviceKey,
                 envid: envKey,
                 iuri: tiUrl,
@@ -250,12 +256,11 @@
 
                 var status = data.status;
                 var msg = data.msg;
-                var list = data.data.list;
                 console.log(data);
                 var html = "";
 
                 if (status == 0) {
-
+                    var list = data.data.list;
                     $("#tcaseList").html("");
                     var assertList = getAssertType();
                     var assertName = "";
