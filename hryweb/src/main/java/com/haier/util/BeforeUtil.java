@@ -45,6 +45,10 @@ public class BeforeUtil {
         Boolean ret = false;
         BeforeRegexEnum[] values = BeforeRegexEnum.values();
         for (BeforeRegexEnum value : values) {
+            //ref的匹配需要SOURCE配合,单独不做替换逻辑
+            if(value.equals(BeforeRegexEnum.REF)){
+                continue;
+            }
             if (base.matches(".*" + value.getPattern() + ".*")) {
                 return true;
             }
