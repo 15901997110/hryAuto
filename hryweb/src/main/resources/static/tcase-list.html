@@ -47,9 +47,9 @@
                     <option value="" selected>--请选择--</option>
                 </select>
             </span>
-            <label style="margin-left:53px;">接口id：</label><input type="text" name="tiid" id="tiid"
-                                                               placeholder=" 接口id" style="width:5%"
-                                                               class="input-text">
+            <label style="margin-left:53px;">iid：</label><input type="text" name="tiid" id="tiid"
+                                                                placeholder=" 接口id" style="width:5%"
+                                                                class="input-text">
             <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl"
                                                                placeholder=" 接口地址或接口描述" style="width:12%"
                                                                class="input-text">
@@ -98,7 +98,7 @@
                 <th width="7%">服务</th>
                 <th width="3%">环境</th>
                 <th width="10">接口名称</th>
-                <th width="13%">接口地址</th>
+                <th width="13%">接口地址(iid)</th>
                 <th width="5%">断言类型</th>
                 <th width="18%">期望结果</th>
                 <th width="4%">设计人</th>
@@ -210,7 +210,7 @@
 
         var list = getEnvList();
         var html = "";
-        for (i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             var row = list[i];
             var rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
             html = html + rowHtml;
@@ -219,7 +219,7 @@
 
         var assertList = getAssertType();
         var asserts = "";
-        for (k = 0; k < assertList.length; k++) {
+        for (var k = 0; k < assertList.length; k++) {
             var one = assertList[k];
             var rowHtml = "<option value=\"" + one.id + "\">" + one.value + "</option>";
             asserts = asserts + rowHtml;
@@ -242,18 +242,8 @@
         var author = $("#author").val();
         var assertType = $("#assertType").val();
         var cid = $("#cid").val();
-        var tiid=$("#tiid").val();
-        var fromTiFlag = false;
-        var fromTiIid = null;
-        if (getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
-            fromTiFlag = true;
-            fromTiIid = getParameter("fromTiIid");
-        }
-        if (fromTiFlag) {//如果是复制用例,这里选中
-            $("#tiid").val(fromTiIid);
-            $("#author").val(null).trigger("change");
+        var tiid = $("#tiid").val();
 
-        }
 
         $.ajax({
             type: "post",
@@ -338,7 +328,7 @@
                             "<td>" + row.servicekey + "</td>\n" +
                             "<td>" + envKey + "</td>\n" +
                             "<td>" + row.iremark + "</td>\n" +
-                            "<td style=\"text-align:left\">" + row.iuri + "</td>\n" +
+                            "<td style=\"text-align:left\">" + row.iuri + "(" + row.iid + ")" + "</td>\n" +
                             "<td>" + assertName + "</td>\n" +
                             "<td><pre style='text-align: left;border: 0px'>" + expected + "</pre></td>\n" +
                             "<td>" + row.author + "</td>\n" +

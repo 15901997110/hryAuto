@@ -246,7 +246,7 @@
                         }
                         var trColor = "#f93e3e";
                         var trStyle = "";
-                        var caseCountHtml = "<a title=\"我的用例\" href=\"javascript:void(0);\" onclick=\"tcase_list('我的用例','tcase-list.html','" + row.id + "')\" style=\"text-decoration: underline;\" >" + row.casecount + "</a>"
+                        var caseCountHtml = "<a title=\"查看用例\" href=\"javascript:void(0);\" onclick=\"tcase_list('我的用例','tcase-list.html','" + row.id + "')\" style=\"text-decoration: underline;color:#0000ff;\" >" + row.casecount + "</a>"
                         if (row.casecount == 0) {
                             trStyle = "style=\"color: " + trColor + "\";";
                             caseCountHtml = row.casecount;
