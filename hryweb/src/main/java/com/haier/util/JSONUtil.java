@@ -2,22 +2,12 @@ package com.haier.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.haier.enums.AssertTypeEnum;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
-import com.haier.po.Tcase;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @Description: json封装类, 提供json与各种对象互转的方法及异常处理

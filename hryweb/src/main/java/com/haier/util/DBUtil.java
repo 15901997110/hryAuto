@@ -1,12 +1,8 @@
 package com.haier.util;
 
-import com.haier.enums.DBTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * @Description:

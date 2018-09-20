@@ -2,11 +2,8 @@ package com.haier.service.impl;
 
 import com.haier.mapper.StatisticMapper;
 import com.haier.po.RealtimeStatistic;
-import com.haier.po.Tcase;
-import com.haier.po.Ti;
 import com.haier.po.Tservice;
 import com.haier.service.StatisticService;
-import com.haier.service.TiService;
 import com.haier.service.TserviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

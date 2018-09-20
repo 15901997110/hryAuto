@@ -2,14 +2,12 @@ package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.haier.enums.*;
-import com.haier.exception.HryException;
 import com.haier.mapper.TcustomMapper;
-import com.haier.mapper.TcustomdetailMapper;
 import com.haier.po.*;
-import com.haier.testng.run.Runner;
-import com.haier.vo.CustomVO;
 import com.haier.service.*;
+import com.haier.testng.run.Runner;
 import com.haier.util.ReflectUtil;
+import com.haier.vo.CustomVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

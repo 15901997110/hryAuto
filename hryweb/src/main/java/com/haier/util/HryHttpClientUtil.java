@@ -18,12 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Description: 封装httpClientUtil

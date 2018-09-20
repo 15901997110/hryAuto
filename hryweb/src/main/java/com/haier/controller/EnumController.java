@@ -2,7 +2,6 @@ package com.haier.controller;
 
 import com.haier.enums.*;
 import com.haier.util.EnumUtil;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

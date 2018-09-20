@@ -1,16 +1,12 @@
 package com.haier.service.impl;
 
-import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
 import com.haier.mapper.TenvMapper;
 import com.haier.po.Tcase;
 import com.haier.po.Tenv;
-import com.haier.po.TenvExample;
 import com.haier.po.Tservicedetail;
 import com.haier.service.TcaseService;
 import com.haier.service.TenvService;
 import com.haier.service.TservicedetailService;
-import com.haier.util.ReflectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

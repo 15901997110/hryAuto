@@ -1,28 +1,20 @@
 package com.haier.service.impl;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
-import com.google.gson.JsonObject;
 import com.haier.enums.ContentTypeEnum;
-import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.enums.StatusEnum;
-import com.haier.mapper.TiMapper;
 import com.haier.mapper.TserviceMapper;
-import com.haier.po.*;
+import com.haier.po.ImportInterfaceResult;
+import com.haier.po.Ti;
 import com.haier.service.ImportService;
 import com.haier.service.TiService;
-import com.haier.util.HryHttpClientUtil;
 import com.haier.util.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.testng.collections.Maps;
 
 import java.util.*;
 
