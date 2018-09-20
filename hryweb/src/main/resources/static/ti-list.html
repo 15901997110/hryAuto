@@ -246,8 +246,10 @@
                         }
                         var trColor = "#f93e3e";
                         var trStyle = "";
+                        var caseCountHtml = "<a title=\"我的用例\" href=\"javascript:void(0);\" onclick=\"tcase_list('我的用例','tcase-list.html','" + row.id + "')\" style=\"text-decoration: underline;\" >" + row.casecount + "</a>"
                         if (row.casecount == 0) {
                             trStyle = "style=\"color: " + trColor + "\";";
+                            caseCountHtml = row.casecount;
                         }
 
                         /** 请求参数类型和返回值类型由于现在100%都是JSON,所以在列表中隐藏这两个字段,详情页仍可见*/
@@ -267,7 +269,6 @@
                             }
                         }*/
 
-
                         var rowHtml = "<tr class=\"text-c\" " + trStyle + ">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>" + row.id + "</td>\n" +
@@ -279,7 +280,7 @@
                             /* "<td>" + iParamType + "</td>\n" +
                              "<td>" + iResponseType + "</td>\n" +*/
                             "<td>" + (row.idev == null ? "" : row.idev) + "</td>\n" +
-                            "<td>" + row.casecount + "</td>" +
+                            "<td>" + caseCountHtml + "</td>\n" +
                             "<td>" + row.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
                             "<a title=\"新增用例\" href=\"javascript:;\" onclick=\"tcase_add('新增用例','tcase-add.html'," + row.serviceid + ",'" + row.id + "','" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6f2; </i></a>" +
@@ -315,6 +316,11 @@
         layer_show(title, url, w, h);
     }
 
+    function tcase_list(title, url, fromTiIid) {
+        url = url + "?fromTiIid=" + fromTiIid;
+        creatIframe(url, title);
+        min_titleList();
+    }
 
     //编辑接口
     function ti_edit(title, url, id, w, h) {

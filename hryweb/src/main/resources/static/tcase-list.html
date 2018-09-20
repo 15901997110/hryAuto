@@ -169,7 +169,6 @@
     $(document).ready(function () {
         var onclik = "tCase_add('添加用例','tcase-add.html','" + width + "','" + height + "')";
         $("#tCase_add").attr("onclick", onclik);
-
         var list = getServiceList();
         var html = "";
         for (i = 0; i < list.length; i++) {
@@ -197,6 +196,17 @@
 
         // var realName=$.cookie('realnameCookie');
         // $("#author").val(realName);
+        var fromTiFlag = false;
+        var fromTiIid = null;
+        if (getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
+            fromTiFlag = true;
+            fromTiIid = getParameter("fromTiIid");
+        }
+        if (fromTiFlag) {//如果是复制用例,这里选中
+            $("#tiid").val(fromTiIid);
+            $("#author").val(null).trigger("change");
+
+        }
 
         var list = getEnvList();
         var html = "";
@@ -233,6 +243,17 @@
         var assertType = $("#assertType").val();
         var cid = $("#cid").val();
         var tiid=$("#tiid").val();
+        var fromTiFlag = false;
+        var fromTiIid = null;
+        if (getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {
+            fromTiFlag = true;
+            fromTiIid = getParameter("fromTiIid");
+        }
+        if (fromTiFlag) {//如果是复制用例,这里选中
+            $("#tiid").val(fromTiIid);
+            $("#author").val(null).trigger("change");
+
+        }
 
         $.ajax({
             type: "post",
