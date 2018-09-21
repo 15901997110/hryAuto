@@ -389,7 +389,7 @@
                     var msg=data.msg;
                     if(status == 0){
                         layer.close(layerIndex);
-                        window.parent.pageSkip(1);;
+                        parent.window.location.reload();
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     }else{
