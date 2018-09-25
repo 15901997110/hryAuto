@@ -36,6 +36,16 @@ public class Runner {
     TreportService treportService;
 
     @Async("asyncServiceExecutor")
+    public void run(Map<String,String> params,Integer reportId,String reportName,String customName,List<XmlTest> xmlTests){
+        TestNG ng=new TestNG();
+        XmlSuite suite = new XmlSuite();
+        suite.setName("AutoSuite");
+        if (params != null) {
+            suite.setParameters(params);
+        }
+
+    }
+    @Async("asyncServiceExecutor")
     public void run(Map<String, String> params, Integer reportId, String reportName, String customName, Map<Tcustomdetail, XmlClass> sMap) {
         TestNG ng = new TestNG();
         XmlSuite suite = new XmlSuite();
