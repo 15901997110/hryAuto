@@ -16,10 +16,7 @@ import org.testng.xml.XmlClass;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 异步运行测试, 测试运行完成后, 更新测试报告的状态
@@ -35,16 +32,27 @@ public class Runner {
     @Autowired
     TreportService treportService;
 
+    /**
+     * 运行suite
+     * @param reportId 测试报告id
+     * @param reportName 测试报告文件名称
+     * @param customName 测试报告名称(一般传定制名称即可,单个case运行可传null)
+     * @param xmlSuite 待测试的suite
+     */
     @Async("asyncServiceExecutor")
-    public void run(Map<String,String> params,Integer reportId,String reportName,String customName,List<XmlTest> xmlTests){
-        TestNG ng=new TestNG();
-        XmlSuite suite = new XmlSuite();
-        suite.setName("AutoSuite");
-        if (params != null) {
-            suite.setParameters(params);
-        }
+    public void run(Integer reportId, String reportName, String customName, XmlSuite xmlSuite) {
+        TestNG ng = new TestNG();
+        ng.setXmlSuites(Arrays.asList(xmlSuite));
+        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
+        ng.addListener(reporter);
+        ng.run();
 
+        /**
+         * 运行完成之后,更新treport状态
+         */
+        updateReportStatus(reportId);
     }
+
     @Async("asyncServiceExecutor")
     public void run(Map<String, String> params, Integer reportId, String reportName, String customName, Map<Tcustomdetail, XmlClass> sMap) {
         TestNG ng = new TestNG();
@@ -94,6 +102,8 @@ public class Runner {
         List<XmlTest> xmlTests = new ArrayList<>();
         for (XmlClass c : xmlClasses) {
             XmlTest test = new XmlTest(suite);
+            test.setParameters(c.getAllParameters());
+            c.setParameters(new HashMap<>());
             test.setName(c.getName().substring(c.getName().lastIndexOf(".") + 1));
             test.setClasses(Arrays.asList(c));
             xmlTests.add(test);

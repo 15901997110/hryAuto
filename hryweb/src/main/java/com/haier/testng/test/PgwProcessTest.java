@@ -15,9 +15,8 @@ import java.lang.reflect.Method;
 @Slf4j
 public class PgwProcessTest extends PgwBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public PgwProcessTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
     }
 
     @DataProvider(name = "provider")
@@ -29,7 +28,7 @@ public class PgwProcessTest extends PgwBase {
 
     @Test(testName = "/payToAccountFacade/payToAccount", dataProvider = "provider", description = "转账到账户")
     public void payToAccountFacade_payToAccount(HryTest test) {
-        String actual = this._payToAccountFacade_payToAccount(test);
+        String actual = super._payToAccountFacade_payToAccount(test);
         JSONObject actualJsonObject = JSONObject.parseObject(actual);
         requestNo = actualJsonObject.getString("requestNo");
 
@@ -38,7 +37,7 @@ public class PgwProcessTest extends PgwBase {
 
     @Test(testName = "/tradeQueryFacade/tradeQuery", dataProvider = "provider", description = "交易查询", dependsOnMethods = "payToAccountFacade_payToAccount")
     public void tradeQueryFacade_tradeQuery(HryTest test) {
-        String actual = this._tradeQueryFacade_tradeQuery(test);
+        String actual = super._tradeQueryFacade_tradeQuery(test);
         AssertUtil.supperAssert(actual, test);
     }
 }

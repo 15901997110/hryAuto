@@ -12,6 +12,9 @@ import com.haier.util.HryHttpClientUtil;
  */
 @SKey("Rmp")
 public class RmpBase extends Base {
+    public RmpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/riskManagementFacade/apply", desc = "提交风控申请")
     public String _riskManagementFacade_apply(HryTest test) {
         return HryHttpClientUtil.send(test, this);

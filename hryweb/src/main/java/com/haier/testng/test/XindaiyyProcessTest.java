@@ -5,7 +5,6 @@ import com.haier.testng.base.XindaiyyBase;
 import com.haier.util.AssertUtil;
 import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -20,10 +19,9 @@ import java.lang.reflect.Method;
 @Slf4j
 public class XindaiyyProcessTest extends XindaiyyBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-        LoginUtil.unionLogin(tservicedetail, this, null);
+    public XindaiyyProcessTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+        LoginUtil.unionLogin(tservicedetail, this, "cbp");
     }
 
     @DataProvider(name = "provider")

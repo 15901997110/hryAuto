@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Oss")
 public class OssBase extends Base {
+    public OssBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/behaviorAnalysisFacade/addMarketingPushMessage", desc = "推送消息")
     public String _behaviorAnalysisFacade_addMarketingPushMessage(HryTest test) {
         return HryHttpClientUtil.send(test, this);

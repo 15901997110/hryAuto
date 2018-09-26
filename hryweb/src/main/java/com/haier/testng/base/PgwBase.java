@@ -8,14 +8,11 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: PgwBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Pgw")
 public class PgwBase extends Base {
-    public PgwBase(){
-
-    }
-    public PgwBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy){
+    public PgwBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
     }
     @Uri(value = "/accountBalanceQueryFacade/accountBalanceQuery", desc = "账户余额查询")

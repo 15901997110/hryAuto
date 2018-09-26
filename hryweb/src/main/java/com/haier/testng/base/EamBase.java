@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: EamBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Eam")
 public class EamBase extends Base {
+    public EamBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/eam-api/resource/com.haier.eam.biz.resource.rs.facade.AssetsResource/abolishAss", desc = "废弃一笔资产")
     public String _eam_api_resource_com_haier_eam_biz_resource_rs_facade_AssetsResource_abolishAss(HryTest test) {
         return HryHttpClientUtil.send(test, this);

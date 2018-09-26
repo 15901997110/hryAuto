@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MtsBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Mts")
 public class MtsBase extends Base {
+    public MtsBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/emailFacade/queryEmail", desc = "查询邮件信息详情")
     public String _emailFacade_queryEmail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -179,6 +182,46 @@ public class MtsBase extends Base {
 
     @Uri(value = "/wechatAlarmFacade/sendWechatAlarmUseTemplate", desc = "发送微信报警,使用模板")
     public String _wechatAlarmFacade_sendWechatAlarmUseTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/addWechatMessageTemplate", desc = "新增微信公众号消息模版,系统内部使用的模版")
+    public String _wechatPublicAccountFacade_addWechatMessageTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/deleteWechatMessageTemplate", desc = "删除微信公众号消息模版,系统内部使用的模版")
+    public String _wechatPublicAccountFacade_deleteWechatMessageTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/fetchWechatMessageTemplate", desc = "查询微信公众号中配置的消息模版列表")
+    public String _wechatPublicAccountFacade_fetchWechatMessageTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/getWechatAccessToken", desc = "获取微信公众号access_token")
+    public String _wechatPublicAccountFacade_getWechatAccessToken(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/getWechatMessageTemplate", desc = "查看mts已配置的微信公众号消息模版详情")
+    public String _wechatPublicAccountFacade_getWechatMessageTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/queryWechatMessageTemplate", desc = "查询mts已配置的微信公众号消息模版列表")
+    public String _wechatPublicAccountFacade_queryWechatMessageTemplate(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/sendWechatTemplateMessage", desc = "发送微信公众号模版消息")
+    public String _wechatPublicAccountFacade_sendWechatTemplateMessage(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/wechatPublicAccountFacade/updateWechatMessageTemplate", desc = "修改微信公众号消息模版,系统内部使用的模版")
+    public String _wechatPublicAccountFacade_updateWechatMessageTemplate(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("P2p")
 public class P2pBase extends Base {
+    public P2pBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/agreementFacade/addProductInstruction", desc = "增加产品说明书")
     public String _agreementFacade_addProductInstruction(HryTest test) {
         return HryHttpClientUtil.send(test, this);

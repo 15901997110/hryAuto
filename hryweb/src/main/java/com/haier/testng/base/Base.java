@@ -39,10 +39,11 @@ public class Base extends AbstractTestNGSpringContextTests {
     public Tservicedetail tservicedetail;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
 
-    public Base(){
+    public Base() {
 
     }
-    public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy){
+
+    public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
@@ -55,8 +56,9 @@ public class Base extends AbstractTestNGSpringContextTests {
         runService = SpringContextHolder.getBean(RunService.class);
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
-        log.info("base类初始化(init()执行)完成");
+        log.info("Base带参构造器执行完成!");
     }
+
     @HryCookie
     public CookieStore cookieStore;
 

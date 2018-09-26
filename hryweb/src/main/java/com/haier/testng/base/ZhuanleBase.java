@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
+    public ZhuanleBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/arap/query-by-range", desc = "资金日历查询")
     public String _arap_query_by_range(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -572,11 +575,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/home-dispatch/member-trade-bid-list", desc = "查询会员交易")
-    public String _home_dispatch_member_trade_bid_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/home-dispatch/news", desc = "新闻列表")
     public String _home_dispatch_news(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -987,21 +985,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/password/find-loginPassword", desc = "findLoginPassword")
-    public String _password_find_loginPassword(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/password/find-password", desc = "findPassword")
-    public String _password_find_password(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/password/getEncryptPassword", desc = "getRandomKey")
-    public String _password_getEncryptPassword(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/password/set-password", desc = "setPassword")
     public String _password_set_password(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1009,16 +992,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/password/update-password", desc = "updatePassword")
     public String _password_update_password(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/password/verify-password", desc = "verifyPassword")
-    public String _password_verify_password(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/popup/list", desc = "查询弹窗广告入口")
-    public String _popup_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1059,11 +1032,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/sms/sendEmailVerifyCode", desc = "sendEmailVerifyCode")
     public String _sms_sendEmailVerifyCode(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/sms/sendSignSms", desc = "sendSignSms")
-    public String _sms_sendSignSms(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1157,18 +1125,8 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/ym-account/bank-card/common-supported-list", desc = "查询kjt和盈米都支持的银行卡信息")
-    public String _ym_account_bank_card_common_supported_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/ym-account/bank-card/list", desc = "查询盈米绑定的银行卡")
     public String _ym_account_bank_card_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-account/bank-validation", desc = "校验盈米基金是否支持指定的银行")
-    public String _ym_account_bank_validation(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1187,38 +1145,8 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/ym-account/open", desc = "盈米基金开户")
-    public String _ym_account_open(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-account/pre-open", desc = "盈米基金预开户(可幂等操作)")
-    public String _ym_account_pre_open(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/ym-account/share-info", desc = "基金赎回之前查询基金份额的相关信息")
     public String _ym_account_share_info(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-fund/cancel-order", desc = "撤销")
-    public String _ym_fund_cancel_order(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-fund/list", desc = "可申购基金列表")
-    public String _ym_fund_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-fund/purchase", desc = "基金申购")
-    public String _ym_fund_purchase(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-fund/purchase-fees", desc = "查询预计费用")
-    public String _ym_fund_purchase_fees(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1229,21 +1157,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/ym-fund/simple-info", desc = "查询基金的一些简要信息")
     public String _ym_fund_simple_info(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-fund/update-dividend", desc = "修改分红方式")
-    public String _ym_fund_update_dividend(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-questionnaire/list", desc = "questionList")
-    public String _ym_questionnaire_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-questionnaire/submit-riskgrade", desc = "submitRiskGrade")
-    public String _ym_questionnaire_submit_riskgrade(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

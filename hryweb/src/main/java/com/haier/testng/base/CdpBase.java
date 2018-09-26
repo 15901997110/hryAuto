@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CdpBase
  * @Author: 自动生成
- * @Date: 2018/09/12 11:31:36
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Cdp")
 public class CdpBase extends Base {
+    public CdpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/baiduFacade/queryBlackRiskLevel", desc = "百度-磐石系统-黑名单风险等级")
     public String _baiduFacade_queryBlackRiskLevel(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -52,11 +55,6 @@ public class CdpBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/juXinLiFacade/queryData", desc = "聚信立统一facade")
-    public String _juXinLiFacade_queryData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/kjtPayFacade/queryData", desc = "快捷通统一facade")
     public String _kjtPayFacade_queryData(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -87,21 +85,6 @@ public class CdpBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/moxieFacade/alipay/queryAlipayTradeInfoData", desc = "摩羯-支付宝用户交易记录facade")
-    public String _moxieFacade_alipay_queryAlipayTradeInfoData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/alipay/queryAlipayUserInfoData", desc = "摩羯-支付宝用户基本信息facade")
-    public String _moxieFacade_alipay_queryAlipayUserInfoData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/alipay/queryAlipayWealthData", desc = "摩羯-支付宝用户资产状况facade")
-    public String _moxieFacade_alipay_queryAlipayWealthData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/moxieFacade/carrier/pushCarrierMobilesDataToKafka", desc = "摩羯-运营商-获取运营商原始数据(推送BI的Kafka)facade")
     public String _moxieFacade_carrier_pushCarrierMobilesDataToKafka(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -112,18 +95,8 @@ public class CdpBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/moxieFacade/carrier/queryCarrierMobilesDataAll", desc = "摩羯-运营商-获取运营商聚合数据(含计算后的原始数据业务数据和报表数据)facade")
-    public String _moxieFacade_carrier_queryCarrierMobilesDataAll(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/moxieFacade/carrier/queryCarrierMobilesDataStats", desc = "摩羯-运营商-获取运营商原始数据(交叉统计数据)facade")
     public String _moxieFacade_carrier_queryCarrierMobilesDataStats(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/carrier/queryCarrierMobilesOriginalData", desc = "摩羯-运营商-获取运营商原始数据(含通话详单采集结果)facade")
-    public String _moxieFacade_carrier_queryCarrierMobilesOriginalData(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -134,36 +107,6 @@ public class CdpBase extends Base {
 
     @Uri(value = "/moxieFacade/carrier/queryCarrierReportData", desc = "摩羯-运营商-获取运营商数据报表(报表URL和HTML数据)facade")
     public String _moxieFacade_carrier_queryCarrierReportData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/email/emailBillsConsistencyCheck", desc = "摩羯-用户姓名、卡号与信用卡邮箱数据一致性校验")
-    public String _moxieFacade_email_emailBillsConsistencyCheck(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/email/queryEmailBills", desc = "摩羯-查询信用卡邮箱接口facade")
-    public String _moxieFacade_email_queryEmailBills(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/email/queryMobilesMxreport", desc = "摩羯-信用卡邮箱报告接口(报表URL和HTML数据)facade")
-    public String _moxieFacade_email_queryMobilesMxreport(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/email/queryMobilesMxreportData", desc = "摩羯-信用卡邮箱报告接口(报原始数据)facade")
-    public String _moxieFacade_email_queryMobilesMxreportData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/queryMobilesMxreport", desc = "摩羯-用户报告API文档facade")
-    public String _moxieFacade_queryMobilesMxreport(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/moxieFacade/queryReportStatus", desc = "摩羯-查询报告状态接口facade")
-    public String _moxieFacade_queryReportStatus(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -339,61 +282,6 @@ public class CdpBase extends Base {
 
     @Uri(value = "/yinLianFacade/queryData", desc = "银联统一facade")
     public String _yinLianFacade_queryData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/yirenFacade/queryDate", desc = "宜人-公积金接口")
-    public String _yirenFacade_queryDate(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/yirenFacade/queryDateDetail", desc = "宜人-公积金Detail数据接口")
-    public String _yirenFacade_queryDateDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/yirenFacade/queryDateInfo", desc = "宜人-公积金Info数据接口")
-    public String _yirenFacade_queryDateInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/yirenFacade/yirenMpfCallbackBill", desc = "宜人-公积金Bill持久化facade")
-    public String _yirenFacade_yirenMpfCallbackBill(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/auth", desc = "芝麻授权")
-    public String _zhimaFacade_auth(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/authQuery", desc = "芝麻授权查询")
-    public String _zhimaFacade_authQuery(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/queryAntifraudRiskList", desc = "欺诈关注清单查询")
-    public String _zhimaFacade_queryAntifraudRiskList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/queryAntifraudScore", desc = "芝麻申请反欺诈分查询")
-    public String _zhimaFacade_queryAntifraudScore(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/queryCreditScore", desc = "芝麻信用分查询")
-    public String _zhimaFacade_queryCreditScore(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/queryCreditWatchlistii", desc = "行业关注名单查询")
-    public String _zhimaFacade_queryCreditWatchlistii(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/zhimaFacade/verifyAntifraud", desc = "欺诈信息验证")
-    public String _zhimaFacade_verifyAntifraud(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

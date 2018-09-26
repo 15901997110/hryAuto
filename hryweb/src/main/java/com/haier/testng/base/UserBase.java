@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: UserBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("User")
 public class UserBase extends Base {
+    public UserBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/accountFacade/balanceCheckDetail", desc = "日终余额校验明细")
     public String _accountFacade_balanceCheckDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -307,18 +310,8 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userCommonFacade/clearCache", desc = "根据缓存key清理缓存")
-    public String _userCommonFacade_clearCache(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/userCommonFacade/getAllCacheNames", desc = "获取所有的缓存名称")
     public String _userCommonFacade_getAllCacheNames(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/userCommonFacade/viewCacheDetail", desc = "查看缓存值")
-    public String _userCommonFacade_viewCacheDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

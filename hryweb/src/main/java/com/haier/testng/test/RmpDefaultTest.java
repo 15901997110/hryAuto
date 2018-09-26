@@ -2,7 +2,9 @@ package com.haier.testng.test;
 
 import com.haier.po.HryTest;
 import com.haier.testng.base.RmpBase;
+
 import static com.haier.util.AssertUtil.supperAssert;
+
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -17,11 +19,10 @@ import java.lang.reflect.Method;
  * @Date: 2018/08/22 17:47:20
  */
 @Slf4j
-public class RmpDefaultTest extends RmpBase{
+public class RmpDefaultTest extends RmpBase {
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    @BeforeClass
-    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public RmpDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
     }
 
     @DataProvider(name = "provider")

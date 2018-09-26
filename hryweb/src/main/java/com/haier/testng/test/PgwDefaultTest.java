@@ -2,6 +2,7 @@ package com.haier.testng.test;
 
 import com.haier.po.HryTest;
 import com.haier.testng.base.PgwBase;
+import static com.haier.util.AssertUtil.supperAssert;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -9,30 +10,22 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
-import static com.haier.util.AssertUtil.supperAssert;
-
 /**
  * @Description: PgwDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @Slf4j
-public class PgwDefaultTest extends PgwBase {
+public class PgwDefaultTest extends PgwBase{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
     public PgwDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
     }
-
-/*    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-    }*/
-
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);
     }
 
-    //@Override
     @Test(testName = "/accountBalanceQueryFacade/accountBalanceQuery", dataProvider = "provider", description = "账户余额查询")
     public void accountBalanceQueryFacade_accountBalanceQuery(HryTest hryTest) {
         String actual = super._accountBalanceQueryFacade_accountBalanceQuery(hryTest);

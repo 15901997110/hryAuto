@@ -8,10 +8,13 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CbpBase
  * @Author: 自动生成
- * @Date: 2018/09/11 19:27:25
+ * @Date: 2018/09/26 19:37:05
  */
 @SKey("Cbp")
 public class CbpBase extends Base {
+    public CbpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    }
     @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/createCfPrepay", desc = "消金直融，线上直融提前还款申请")
     public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_createCfPrepay(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -59,11 +62,6 @@ public class CbpBase extends Base {
 
     @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfXszrLoan", desc = "消金直融，线上直融借款申请")
     public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_createCfXszrLoan(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/getContractByState", desc = "消金直融，线上直融代签借款合同文件获取")
-    public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_getContractByState(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
