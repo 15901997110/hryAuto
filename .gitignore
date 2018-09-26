@@ -4,6 +4,7 @@ debug/
 */META-INF/
 test-output/
 testng.xml
+application-devUseProdDB.yml
 
 
 # Compiled class file
