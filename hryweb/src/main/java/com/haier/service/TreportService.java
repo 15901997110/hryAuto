@@ -18,7 +18,11 @@ public interface TreportService {
 
     Integer deleteOne(Integer id);
 
+    Treport selectOne(Integer id);
+
     Integer getStatus(String reportname);
+
+    Integer getStatus(Integer id);
 
     PageInfo<Treport> selectByCondition(Treport treport, Date startTime, Date endTime, Integer pageNum, Integer pageSize);
 }

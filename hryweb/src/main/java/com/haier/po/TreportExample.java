@@ -305,6 +305,66 @@ public class TreportExample {
             return (Criteria) this;
         }
 
+        public Criteria andReporttypeIsNull() {
+            addCriterion("reportType is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeIsNotNull() {
+            addCriterion("reportType is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeEqualTo(Integer value) {
+            addCriterion("reportType =", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeNotEqualTo(Integer value) {
+            addCriterion("reportType <>", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeGreaterThan(Integer value) {
+            addCriterion("reportType >", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("reportType >=", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeLessThan(Integer value) {
+            addCriterion("reportType <", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeLessThanOrEqualTo(Integer value) {
+            addCriterion("reportType <=", value, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeIn(List<Integer> values) {
+            addCriterion("reportType in", values, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeNotIn(List<Integer> values) {
+            addCriterion("reportType not in", values, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeBetween(Integer value1, Integer value2) {
+            addCriterion("reportType between", value1, value2, "reporttype");
+            return (Criteria) this;
+        }
+
+        public Criteria andReporttypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("reportType not between", value1, value2, "reporttype");
+            return (Criteria) this;
+        }
+
         public Criteria andUseridIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;

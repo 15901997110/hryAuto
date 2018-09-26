@@ -8,6 +8,7 @@ import com.haier.response.Result;
 import com.haier.service.TreportService;
 import com.haier.util.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -36,16 +37,33 @@ public class TreportController {
     }
 
     @PostMapping("/deleteOne")
-    public Result deleteOne(@RequestParam("id") Integer id) {
-        if (null == id || 0 == id) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
+    public Result deleteOne(Integer id) {
+        if (id == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必须");
         }
         return ResultUtil.success(treportService.deleteOne(id));
     }
 
     @PostMapping("/getStatus")
-    public Result getStatus(@RequestParam("reportname") String reportname) {
-        return ResultUtil.success(treportService.getStatus(reportname));
+    public Result getStatus(String reportname) {
+        if (StringUtils.isBlank(reportname)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "报告名称必须");
+        }
+        if (treportService.getStatus(reportname) > 0) {
+            return ResultUtil.success(treportService.getStatus(reportname));
+        }
+        throw new HryException(StatusCodeEnum.NOT_FOUND);
+    }
+
+    @PostMapping("/getStatusById")
+    public Result getStatusById(Integer id) {
+        if (id == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "报告名称必须");
+        }
+        if (treportService.getStatus(id) > 0) {
+            return ResultUtil.success(treportService.getStatus(id));
+        }
+        throw new HryException(StatusCodeEnum.NOT_FOUND);
     }
 
     @PostMapping("/selectByCondition")

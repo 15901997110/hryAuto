@@ -9,6 +9,8 @@ public class Treport {
 
     private String reportname;
 
+    private Integer reporttype;
+
     private Integer userid;
 
     private String username;
@@ -25,7 +27,6 @@ public class Treport {
 
     private String servicenames;
 
-    //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date testtime;
 
     private Integer status;
@@ -52,6 +53,14 @@ public class Treport {
 
     public void setReportname(String reportname) {
         this.reportname = reportname == null ? null : reportname.trim();
+    }
+
+    public Integer getReporttype() {
+        return reporttype;
+    }
+
+    public void setReporttype(Integer reporttype) {
+        this.reporttype = reporttype;
     }
 
     public Integer getUserid() {
