@@ -8,6 +8,7 @@ import com.haier.po.Treport;
 import com.haier.po.TreportExample;
 import com.haier.service.TreportService;
 import com.haier.util.ReflectUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,22 +47,33 @@ public class TreportServiceImpl implements TreportService {
     }
 
     @Override
+    public Treport selectOne(Integer id) {
+        return treportMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
     public Integer getStatus(String reportname) {
         TreportExample example = new TreportExample();
         example.createCriteria().andReportnameEqualTo(reportname);
         List<Treport> treports = treportMapper.selectByExample(example);
-        if(treports!=null&&treports.size()>0){
-            return treports.get(0).getStatus();
+        for (Treport treport : treports) {
+            return treport.getStatus();
         }
-        else{
-            return -1;
+        return -1;
+    }
+
+    @Override
+    public Integer getStatus(Integer id) {
+        Treport treport = this.selectOne(id);
+        if (treport != null) {
+            return treport.getStatus();
         }
+        return -1;
     }
 
 
     @Override
     public PageInfo<Treport> selectByCondition(Treport treport, Date startTime, Date endTime, Integer pageNum, Integer pageSize) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(treport, false);
         TreportExample example = new TreportExample();
         TreportExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);//筛选状态status>0的数据
@@ -75,20 +87,23 @@ public class TreportServiceImpl implements TreportService {
             if (treport.getUserid() != null) {
                 criteria.andUseridEqualTo(treport.getUserid());
             }
-            if (treport.getCustomname() != null) {
-                criteria.andCustomnameLike(treport.getCustomname());
+            if (StringUtils.isNotBlank(treport.getCustomname())) {
+                criteria.andCustomnameLike("%" + treport.getCustomname() + "%");
             }
-            if (treport.getEnvkey() != null) {
-                criteria.andEnvkeyLike(treport.getEnvkey());
+            if (StringUtils.isNotBlank(treport.getEnvkey())) {
+                criteria.andEnvkeyEqualTo(treport.getEnvkey());
             }
-            if (treport.getUsername() != null) {
-                criteria.andUsernameLike(treport.getUsername());
+            if (StringUtils.isNotBlank(treport.getUsername())) {
+                criteria.andUsernameEqualTo(treport.getUsername());
             }
-            if (treport.getReportname() != null) {
-                criteria.andReportnameLike(treport.getReportname());
+            if (StringUtils.isNotBlank(treport.getReportname())) {
+                criteria.andReportnameLike("%" + treport.getReportname() + "%");
             }
             if (treport.getStatus() != null) {
                 criteria.andStatusEqualTo(treport.getStatus());
+            }
+            if (treport.getReporttype() != null) {
+                criteria.andReporttypeEqualTo(treport.getReporttype());
             }
         }
         if (startTime != null) {
