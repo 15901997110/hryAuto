@@ -30,42 +30,48 @@
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div>
-        <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:30px;">id：</label><input type="text" name="cid" id="cid"
-                                                               placeholder=" 用例id" style="width:5%"
-                                                               class="input-text">
+        <div style="margin-left:10px;">
+            <label style="margin-left:30px;">id ：</label>
+            <input type="text" name="cid" id="cid"
+                   placeholder=" 用例id" style="width:5%"
+                   class="input-text"/>
+            <label style="margin-left:30px;">用例名称：</label>
+            <input type="text" name="caseName" id="caseName"
+                   placeholder=" 用例名称" style="width:12%"
+                   class="input-text"/>
             <!--<label style="margin-left:65px;">服务：</label><input type="text" name="servicekey" id="servicekey" placeholder=" serviceKey或serviceName" style="width:12%" class="input-text">-->
-            <label style="margin-left:65px;">服务：</label>
+            <label style="margin-left:30px;">&ensp;&ensp;&ensp;&ensp;服务：</label>
             <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="serviceKey" id="serviceKey">
                     <option value="">--请选择--</option>
                 </select>
             </span>
-            <label style="margin-left:55px;">环境：</label>
+            <label style="margin-left:30px;"> &ensp;&ensp;环境：</label>
             <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="envKey" id="envKey">
                     <option value="" selected>--请选择--</option>
                 </select>
             </span>
-            <label style="margin-left:53px;">iid：</label><input type="text" name="tiid" id="tiid"
-                                                                placeholder=" 接口id" style="width:5%"
-                                                                class="input-text">
-            <label style="margin-left:53px;">接口：</label><input type="text" name="tiUrl" id="tiUrl"
-                                                               placeholder=" 接口地址或接口描述" style="width:12%"
-                                                               class="input-text">
+
         </div>
-        <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:30px;">用例名称：</label><input type="text" name="caseName" id="caseName"
-                                                                 placeholder=" 用例名称" style="width:12%"
-                                                                 class="input-text">
-            <label style="margin-left:23px;">断言类型：</label>
+        <div style="margin-left:10px;margin-top: 10px">
+            <label style="margin-left:30px;">iid：</label>
+            <input type="text" name="tiid" id="tiid"
+                   placeholder=" 接口id" style="width:5%"
+                   class="input-text">
+            <label style="margin-left:30px;">接口地址：</label>
+            <input type="text" name="tiUrl" id="tiUrl"
+                   placeholder=" 接口地址或接口描述" style="width:12%"
+                   class="input-text">
+
+            <label style="margin-left:30px;">断言类型：</label>
             <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="assertType" id="assertType">
                     <option value="" selected>--请选择--</option>
                 </select>
             </span>
             <!--<label style="margin-left:37px;">设计人：</label><input type="text" name="author" id="author" placeholder=" 用例设计人" style="width:12%" class="input-text">-->
-            <label style="margin-left:54px;">设计人：</label>
+            <label style="margin-left:30px;">设计人：</label>
             <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="author" id="author">
                     <option value="" selected>--请选择--</option>
