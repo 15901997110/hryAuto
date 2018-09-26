@@ -31,8 +31,7 @@ public class HryReporter implements IReporter {
     private String customName;//测试报告中的报告名称,一般传定制名称
 
     public HryReporter(String reportPath, String fileName) {
-        this.reportPath = reportPath;
-        this.fileName = fileName;
+        this(reportPath, fileName, null);
     }
 
     public HryReporter(String reportPath, String fileName, String customName) {
