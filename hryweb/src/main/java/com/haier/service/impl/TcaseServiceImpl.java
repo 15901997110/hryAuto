@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.testng.xml.XmlClass;
 import org.testng.xml.XmlInclude;
+import org.testng.xml.XmlSuite;
+import org.testng.xml.XmlTest;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -303,7 +305,7 @@ public class TcaseServiceImpl implements TcaseService {
         Tenv tenv = tenvService.selectOne(tcase.getEnvid());
         User user = userService.selectOne(userId);
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "r_simple_u" + userId + "_s" + tservice.getId() + "_i" + ti.getId() + "_" + date + ".html";
+        String reportName = "r_case_u" + userId + "_s" + tservice.getId() + "_i" + ti.getId() + "_" + date + ".html";
 
         String methodName = HryUtil.iUri2MethodName(ti.getIuri());
         Map<String, List<Tcase>> testCase = new HashMap<>();
@@ -330,9 +332,19 @@ public class TcaseServiceImpl implements TcaseService {
         XmlInclude include = new XmlInclude(methodName);
         xmlClass.setIncludedMethods(Arrays.asList(include));
 
+        /**
+         * 现在传入suite到runner运行,故将参数提到test中,因为测试类现在改成构造器接收参数,必须将参数设置到类的上层
+         */
         //设置测试类初始化参数
-        xmlClass.setParameters(initParam);
+        //xmlClass.setParameters(initParam);
 
+        //构造待测试suite
+        XmlSuite xmlSuite = new XmlSuite();
+        xmlSuite.setName("AutoSuite");
+        XmlTest xmlTest = new XmlTest(xmlSuite);
+        xmlTest.setName(testClassName);
+        xmlTest.setParameters(initParam);
+        xmlTest.setClasses(Arrays.asList(xmlClass));
 
         //构造测试报告
         Treport treport = new Treport();
@@ -348,14 +360,15 @@ public class TcaseServiceImpl implements TcaseService {
         treport.setEnvid(tenv.getId());
         treport.setEnvkey(tenv.getEnvkey());
         treport.setCustomid(0);
-        treport.setCustomname("simple:" + tcase.getCasename());
+        treport.setReporttype(1);
+        treport.setCustomname(tcase.getCasename());
         Integer reportId = treportService.insertOne(treport);
 
         log.info("即将运行单条用例的测试:");
         log.info("启动测试类:" + PackageEnum.TEST.getPackageName() + "." + tcase.getTestclass());
         log.info("传给测试类的参数:" + initParam);
 
-        runner.run(null, reportId, reportName, Arrays.asList(xmlClass));
+        runner.run(reportId, reportName, "", xmlSuite);
         return resourcePathPattern + reportName;
 
     }
