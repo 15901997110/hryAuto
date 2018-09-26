@@ -31,34 +31,42 @@
 <div class="page-container">
     <div>
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:38px;">报告名称：</label><input type="text" name="reportname" id="reportname"
-                                                                 placeholder=" " style="width:12%" class="input-text">
-            <label style="margin-left:23px;">环境：</label>
-            <span class="select-box" style="width:12%">
+            <label style="margin-left:30px;">报告名称：</label><input type="text" name="reportname" id="reportname"
+                                                                 placeholder=" " style="width:8%" class="input-text">
+            <label style="margin-left:30px;">环境：</label>
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="envKey" id="envKey">
-                    <option value="">请选择</option>
+                    <option value="">--请选择--</option>
                 </select>
             </span>
-            <label style="margin-left:55px;">执行人：</label>
+            <label style="margin-left:30px;">报告类型：</label>
+            <span class="select-box" style="width:8%">
+                <select class="select" size="1" name="reportType" id="reportType">
+                    <option value="">--请选择--</option>
+                    <option value="1">单用例</option>
+                    <option value="2">定制测试</option>
+                </select>
+            </span>
+            <label style="margin-left:30px;">执行人：</label>
             <!--<input type="text" name="username" id="username" placeholder=" " style="width:12%" class="input-text">-->
-            <span class="select-box" style="width:12%">
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="username" id="username">
-                    <option value="" selected>请选择</option>
+                    <option value="" selected>--请选择--</option>
                 </select>
             </span>
         </div>
         <div style="margin-left:30px;margin-top:20px;">
-            <label style="margin-left:37px;">定制名称：</label><input type="text" name="customname" id="customname"
-                                                                 placeholder=" " style="width:12%" class="input-text">
-            <label style="margin-left:23px;">状态：</label>
-            <span class="select-box" style="width:12%">
+            <label style="margin-left:30px;">定制名称：</label><input type="text" name="customname" id="customname"
+                                                                 placeholder=" " style="width:8%" class="input-text">
+            <label style="margin-left:30px;">状态：</label>
+            <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="status" id="status">
-                    <option value="" selected>请选择</option>
+                    <option value="" selected>--请选择--</option>
                     <option value="5">报告中</option>
                     <option value="10">报告完成</option>
                 </select>
             </span>
-            <label style="margin-left:37px;">测试时间：</label>
+            <label style="margin-left:30px;">测试时间：</label>
             <input type="text" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}'})" id="datemin"
                    class="input-text Wdate" style="width:120px;">
             -
@@ -86,13 +94,14 @@
                 <th width="5%"><input name="" type="checkbox" value=""></th>
                 <th width="5%">ID</th>
                 <th width="20%">测试报告名称</th>
-                <th width="8%">执行人</th>
+                <th width="7%">执行人</th>
                 <th width="15%">定制测试名称</th>
                 <th width="7%">环境</th>
-                <th width="10">服务</th>
+                <th width="7%">服务</th>
                 <th width="10%">测试时间</th>
-                <th width="10%">状态</th>
-                <th width="10%">操作</th>
+                <th width="8%">状态</th>
+                <th width="8%">类型</th>
+                <th width="8%">操作</th>
             </tr>
             </thead>
             <tbody id="treportList">
@@ -152,13 +161,13 @@
     function empty() {
         $("#reportname").val("");
         $("#username").val(null).trigger("change");
-        $("#username").val("请选择").trigger("change");
+        //$("#username").val("请选择").trigger("change");
         $("#customname").val("");
-        $("#status option:first").prop("selected", 'selected');
-        $("#envKey option:first").prop("selected", 'selected');
+        $("#status option:first").prop("selected", "selected");
+        $("#envKey option:first").prop("selected", "selected");
+        $("#reportType option:first").prop("selected", "selected");
         $("#datemin").val("");
         $("#datemax").val("");
-
     }
 
     //初始加载
@@ -166,7 +175,7 @@
         var realName = $.cookie('realnameCookie');
         var list = getEnvList();
         var html = "";
-        for (i = 0; i < list.length; i++) {
+        for (var i = 0; i < list.length; i++) {
             var row = list[i];
             var rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
             html = html + rowHtml;
@@ -199,6 +208,7 @@
         }
         var reportname = $("#reportname").val();
         var envKey = $("#envKey").val();
+        var reportType = $("#reportType").val();
         var username = $("#username").val();
         var customname = $("#customname").val();
         var status = $("#status").val();
@@ -210,6 +220,7 @@
             url: "/report/selectByCondition",
             data: {
                 reportname: reportname,
+                reporttype: reportType,
                 envid: envKey,
                 username: username,
                 customname: customname,
@@ -249,6 +260,14 @@
                             status = "报告中";
                             a = rePortName;
                         }
+                        var reportType1 = "";
+                        if (row.reporttype == null || row.reporttype == "") {
+
+                        } else if (row.reporttype == 1) {
+                            reportType1 = "单用例";
+                        } else if (row.reporttype = 2) {
+                            reportType1 = "定制测试";
+                        }
 
                         var servicenames = JSON.parse(row.servicenames);
                         var ul = "";
@@ -270,6 +289,7 @@
                             "<td style='text-align: left;'><ul id='serv'>" + ul + "</ul></td>\n" +
                             "<td>" + row.testtime + "</td>\n" +
                             "<td>" + status + "</td>\n" +
+                            "<td>" + reportType1 + "</td>" +
                             "<td class=\"f-14\">" +
                             view +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"treport_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
@@ -416,8 +436,8 @@
 
     /*报告-删除*/
     function treport_del(obj, id) {
-        var ms="测试报告删除需谨慎，请确认是否删除！";
-        del(obj,id,"/report/deleteOne",ms);
+        var ms = "测试报告删除需谨慎，请确认是否删除！";
+        del(obj, id, "/report/deleteOne", ms);
     }
 
 </script>
