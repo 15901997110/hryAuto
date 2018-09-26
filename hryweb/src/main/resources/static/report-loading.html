@@ -120,22 +120,22 @@
             }
         }
 
-/*        @-keyframes loader {
-        0% {
-            -transform: translateX(-30px);
-            opacity: 0;
-        }
-        25% {
-            opacity: 1;
-        }
-        50% {
-            -transform: translateX(30px);
-            opacity: 0;
-        }
-        100% {
-            opacity: 0;
-        }
-        }*/
+        /*        @-keyframes loader {
+                0% {
+                    -transform: translateX(-30px);
+                    opacity: 0;
+                }
+                25% {
+                    opacity: 1;
+                }
+                50% {
+                    -transform: translateX(30px);
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 0;
+                }
+                }*/
 
         @-ms-keyframes loader {
             0% {
@@ -166,41 +166,39 @@
     <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 
     <script type="application/javascript">
-        var reportname=getParameter("reportname");
-        var customname=getParameter("customname");
+        var reportname = getParameter("reportname");
+        var customname = getParameter("customname");
 
         $(document).ready(function () {
             $("#customname").append(customname);
 
         });
 
-        var startTime=new Date();
-        var interval=setInterval(selectReport,1000,reportname);//每1秒钟主动查询一次测试报告的状态
+        var t = 1000;
+        var interval = setInterval(selectReport, t, reportname);//每1秒钟主动查询一次测试报告的状态
         function selectReport(reportname) {
-            if(new Date()-startTime>30*60*1000){//超过半小时 ,将停止查询数据库
-                clearInterval(interval);
-            }
-            if(reportname==null||reportname==""){
+            t += 1000;
+            if (reportname == null || reportname == "") {
                 return;
             }
-            var reportStatus=null;
-            $.ajaxSetup({async : false});
+            var reportStatus = null;
+            $.ajaxSetup({async: false});
             $.ajax({
                 type: "post",
                 url: "/report/getStatus",
                 data: {
-                    reportname:reportname
+                    reportname: reportname
                 },
                 dataType: "json",
                 success: function (data) {
 
-                    var status=data.status;
+                    var status = data.status;
 
-                    var msg=data.msg;
+                    var msg = data.msg;
 
-                    if(status == 0){
-                        reportStatus=data.data;
-                    }else{
+                    if (status == 0) {
+                        reportStatus = data.data;
+                    } else {
                         layer.alert(msg, {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -208,13 +206,13 @@
                     }
 
                 },
-                fail:function (data) {
+                fail: function (data) {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     layer.alert('Error' + JSON.stringify(xhr), {
                         icon: 2,
                         skin: 'layer-ext-moon'
@@ -222,11 +220,15 @@
                 }
             });
 
-            if(reportStatus == 10){
-                this.location.href=reportname;
+            if (reportStatus == 10) {
+                this.location.href = reportname;
+            } else {
+                clearInterval(interval);
+                interval = setInterval(selectReport, t, reportname);
             }
 
         }
+
         function getParameter(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = window.location.search.substr(1).match(reg);
@@ -237,7 +239,7 @@
 </head>
 <body>
 <span style="font-size: 20px;" id="customname"></span>
-<span ></span>
+<span></span>
 <span style="font-size: 20px;margin-top: 20px;">测试中</span>
 <span class="l-1"></span>
 <span class="l-2"></span>
