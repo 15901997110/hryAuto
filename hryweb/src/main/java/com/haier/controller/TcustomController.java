@@ -11,6 +11,7 @@ import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import com.haier.vo.CustomVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,94 +33,44 @@ public class TcustomController {
     @Autowired
     TcustomService tcustomService;
 
-/*    @PostMapping("/insertOne")
-    public Result insertOne(Tcustom tcustom, List<Tcustomdetail> list) {
-        ReflectUtil.setInvalidFieldToNull(tcustom, false);
-        if (tcustom == null || tcustom.getUserid() == null || tcustom.getCustomname() == null ||
-                tcustom.getEnvid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "tcustom对象中userid,customname,envid必填");
-        }
-        if (list == null || list.size() == 0) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "Tcustomdetail必填");
-        }
-        for (Tcustomdetail tcustomdetail : list) {
-            ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
-            if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制详情中,clientLevle,clientId,clientName必填");
-            }
-        }
-        return ResultUtil.success(tcustomService.insertOne(tcustom, list));
-    }*/
-
     @PostMapping("/insertOne")
     public Result insertOne(@RequestBody CustomVO customVO) {
-        ReflectUtil.setInvalidFieldToNull(customVO, true);
         if (customVO == null || customVO.getCustomname() == null || customVO.getUserid() == null || customVO.getEnvid() == null
                 || customVO.getTcustomdetails() == null || customVO.getTcustomdetails().size() == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
         List<Tcustomdetail> list = customVO.getTcustomdetails();
         for (Tcustomdetail tcustomdetail : list) {
-            ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
-            //必填校验
-            if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
-            }
-            if (tcustomdetail.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()) && tcustomdetail.getClassname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, tcustomdetail.getClientname() + "服务未指定测试类");
-            }
-            //当定制明细为接口和用例时,需要校验parentClientId不为0或者null
-            if (!tcustomdetail.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()) && tcustomdetail.getParentclientid() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,定制接口和用例时parentClientId必填");
-            }
+            verifyTcustomdetail(tcustomdetail);
         }
         return ResultUtil.success(tcustomService.insertOne(customVO));
     }
 
     @PostMapping("/updateOne")
     public Result updateOne(@RequestBody CustomVO customVO) {
-        ReflectUtil.setInvalidFieldToNull(customVO, true);
         if (customVO == null || customVO.getId() == null || customVO.getTcustomdetails() == null || customVO.getTcustomdetails().size() == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新定制时,定制id,定制明细不可为空!");
         }
         List<Tcustomdetail> list = customVO.getTcustomdetails();
         for (Tcustomdetail tcustomdetail : list) {
-            ReflectUtil.setInvalidFieldToNull(tcustomdetail, false);
-            if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || tcustomdetail.getClientname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
-            }
-            if (tcustomdetail.getClientlevel() == ClientLevelEnum.SERVICE.getLevel() && tcustomdetail.getClassname() == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, tcustomdetail.getClientname() + "服务未指定测试类");
-            }
+            verifyTcustomdetail(tcustomdetail);
+            tcustomdetail.setCustomid(customVO.getId());
         }
         return ResultUtil.success(tcustomService.updateOne(customVO));
     }
 
     @PostMapping("/deleteOne")
-    public Result deleteOne(@RequestBody Map<String, String> map) {
-        Integer id;
-        if (map.containsKey("id")) {
-            id = Integer.parseInt(map.get("id"));
-            if (id == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "删除定制信息时id必填!");
-            }
-        } else {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
+    public Result deleteOne(@RequestBody Map<String, Integer> map) {
+        Integer id = map.get("id");
+        if (id == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "删除定制信息时id必填!");
         }
         return ResultUtil.success(tcustomService.deleteOne(id));
     }
 
     @PostMapping("/selectOne")
-    public Result selectOne(@RequestBody Map<String, String> map) {
-        Integer id;
-        if (map.containsKey("id")) {
-            id = Integer.parseInt(map.get("id"));
-            if (id == null) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "查询定制信息时id必填!");
-            }
-        } else {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "id必填");
-        }
+    public Result selectOne(@RequestBody Map<String, Integer> map) {
+        Integer id = map.get("id");
         return ResultUtil.success(tcustomService.selectOne(id));
     }
 
@@ -139,5 +90,27 @@ public class TcustomController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行定制测试时,定制测试id必填!");
         }
         return ResultUtil.success(tcustomService.run(customId, executeUserId));
+    }
+
+    public void verifyTcustomdetail(Tcustomdetail tcustomdetail) {
+        //必填校验
+        if (tcustomdetail.getClientlevel() == null || tcustomdetail.getClientid() == null || StringUtils.isBlank(tcustomdetail.getClientname())) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,clientLevel,clientId,clientName必填");
+        }
+        if (tcustomdetail.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()) && StringUtils.isBlank(tcustomdetail.getClassname())) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, tcustomdetail.getClientname() + "服务未指定测试类");
+        }
+        //当定制明细为接口和用例时,需要校验parentClientId不为0或者null
+        if (!tcustomdetail.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()) && tcustomdetail.getParentclientid() == null) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制明细中,定制接口和用例时parentClientId必填");
+        }
+        //如果未指定父级ID,则默认0
+        if (tcustomdetail.getParentclientid() == null) {
+            tcustomdetail.setParentclientid(0);
+        }
+        //如果没有指定优化级,则默认0(最低)
+        if (tcustomdetail.getPriority() == null) {
+            tcustomdetail.setPriority(0);
+        }
     }
 }

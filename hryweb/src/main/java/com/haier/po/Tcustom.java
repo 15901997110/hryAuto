@@ -1,14 +1,18 @@
 package com.haier.po;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Tcustom {
     private Integer id;
 
+    @NotBlank(message = "定制名称必须")
     private String customname;
 
     private Integer userid;
 
+    @NotNull(message ="运行环境必须")
     private Integer envid;
 
     private String strategy;
