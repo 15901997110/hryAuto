@@ -1,5 +1,6 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
@@ -148,6 +149,15 @@ public class AssertUtil {
              */
 
             if (actualValue instanceof JSONObject) {//如果值是一个JSONObject,则迭代
+
+                //兼容期望值为{},实际值也为{}的情况
+                if (key.equals(actualKey) && value instanceof JSONObject) {
+                    if (((JSONObject) value).size() == 0 && ((JSONObject) actualValue).size() == 0) {
+                        return true;
+                    }
+                }
+
+                //否则,嵌套执行,解析到不是JSONObject为止
                 if (isMatch(key, value, (JSONObject) actualValue)) {
                     return true;
                 }
