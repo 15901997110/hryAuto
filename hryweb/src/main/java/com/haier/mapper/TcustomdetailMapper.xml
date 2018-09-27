@@ -3,6 +3,7 @@
 <mapper namespace="com.haier.mapper.TcustomdetailMapper">
   <resultMap id="BaseResultMap" type="com.haier.po.Tcustomdetail">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
     <result column="customId" jdbcType="INTEGER" property="customid" />
     <result column="clientLevel" jdbcType="INTEGER" property="clientlevel" />
     <result column="clientId" jdbcType="INTEGER" property="clientid" />
@@ -71,8 +72,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, customId, clientLevel, clientId, parentClientId, hasChild, clientName, className, 
-    status
+    id, priority, customId, clientLevel, clientId, parentClientId, hasChild, clientName, 
+    className, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcustomdetailExample" resultMap="BaseResultMap">
     select
@@ -108,12 +109,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tcustomdetail (customId, clientLevel, clientId, 
-      parentClientId, hasChild, clientName, 
-      className, status)
-    values (#{customid,jdbcType=INTEGER}, #{clientlevel,jdbcType=INTEGER}, #{clientid,jdbcType=INTEGER}, 
-      #{parentclientid,jdbcType=INTEGER}, #{haschild,jdbcType=BIT}, #{clientname,jdbcType=VARCHAR}, 
-      #{classname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+    insert into tcustomdetail (priority, customId, clientLevel, 
+      clientId, parentClientId, hasChild, 
+      clientName, className, status
+      )
+    values (#{priority,jdbcType=INTEGER}, #{customid,jdbcType=INTEGER}, #{clientlevel,jdbcType=INTEGER}, 
+      #{clientid,jdbcType=INTEGER}, #{parentclientid,jdbcType=INTEGER}, #{haschild,jdbcType=BIT}, 
+      #{clientname,jdbcType=VARCHAR}, #{classname,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcustomdetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -121,6 +124,9 @@
     </selectKey>
     insert into tcustomdetail
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="priority != null">
+        priority,
+      </if>
       <if test="customid != null">
         customId,
       </if>
@@ -147,6 +153,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="priority != null">
+        #{priority,jdbcType=INTEGER},
+      </if>
       <if test="customid != null">
         #{customid,jdbcType=INTEGER},
       </if>
@@ -185,6 +194,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
       <if test="record.customid != null">
         customId = #{record.customid,jdbcType=INTEGER},
       </if>
@@ -217,6 +229,7 @@
   <update id="updateByExample" parameterType="map">
     update tcustomdetail
     set id = #{record.id,jdbcType=INTEGER},
+      priority = #{record.priority,jdbcType=INTEGER},
       customId = #{record.customid,jdbcType=INTEGER},
       clientLevel = #{record.clientlevel,jdbcType=INTEGER},
       clientId = #{record.clientid,jdbcType=INTEGER},
@@ -232,6 +245,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.haier.po.Tcustomdetail">
     update tcustomdetail
     <set>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
       <if test="customid != null">
         customId = #{customid,jdbcType=INTEGER},
       </if>
@@ -261,7 +277,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.haier.po.Tcustomdetail">
     update tcustomdetail
-    set customId = #{customid,jdbcType=INTEGER},
+    set priority = #{priority,jdbcType=INTEGER},
+      customId = #{customid,jdbcType=INTEGER},
       clientLevel = #{clientlevel,jdbcType=INTEGER},
       clientId = #{clientid,jdbcType=INTEGER},
       parentClientId = #{parentclientid,jdbcType=INTEGER},

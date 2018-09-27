@@ -3,6 +3,8 @@ package com.haier.po;
 public class Tcustomdetail {
     private Integer id;
 
+    private Integer priority;
+
     private Integer customid;
 
     private Integer clientlevel;
@@ -25,6 +27,14 @@ public class Tcustomdetail {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
     public Integer getCustomid() {

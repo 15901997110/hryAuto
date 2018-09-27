@@ -8,6 +8,7 @@
     <result column="envId" jdbcType="INTEGER" property="envid" />
     <result column="strategy" jdbcType="VARCHAR" property="strategy" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, customName, userId, envId, strategy, status
+    id, customName, userId, envId, strategy, status, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcustomExample" resultMap="BaseResultMap">
     select
@@ -100,20 +101,23 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.haier.po.Tcustom" useGeneratedKeys="true" keyProperty="id">
-    insert into tcustom (id, customName, userId, 
-      envId, strategy, status
+  <insert id="insert" parameterType="com.haier.po.Tcustom">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tcustom (customName, userId, envId, 
+      strategy, status, updateTime
       )
-    values (#{id,jdbcType=INTEGER}, #{customname,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
-      #{envid,jdbcType=INTEGER}, #{strategy,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
+    values (#{customname,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, 
+      #{strategy,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.haier.po.Tcustom" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insertSelective" parameterType="com.haier.po.Tcustom">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into tcustom
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="customname != null">
         customName,
       </if>
@@ -129,11 +133,11 @@
       <if test="status != null">
         status,
       </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="customname != null">
         #{customname,jdbcType=VARCHAR},
       </if>
@@ -148,6 +152,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -178,6 +185,9 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.updatetime != null">
+        updateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -190,7 +200,8 @@
       userId = #{record.userid,jdbcType=INTEGER},
       envId = #{record.envid,jdbcType=INTEGER},
       strategy = #{record.strategy,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER}
+      status = #{record.status,jdbcType=INTEGER},
+      updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,6 +224,9 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -222,7 +236,8 @@
       userId = #{userid,jdbcType=INTEGER},
       envId = #{envid,jdbcType=INTEGER},
       strategy = #{strategy,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

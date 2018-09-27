@@ -1,5 +1,7 @@
 package com.haier.po;
 
+import java.util.Date;
+
 public class Tcustom {
     private Integer id;
 
@@ -12,6 +14,8 @@ public class Tcustom {
     private String strategy;
 
     private Integer status;
+
+    private Date updatetime;
 
     public Integer getId() {
         return id;
@@ -59,5 +63,13 @@ public class Tcustom {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
     }
 }
