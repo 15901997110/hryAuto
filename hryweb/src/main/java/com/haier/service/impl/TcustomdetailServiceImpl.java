@@ -39,12 +39,6 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
 
     @Override
     public Integer insertBatch(List<Tcustomdetail> tcustomdetails) {
-        //注意,很多时候,为了校验页面值 ,会将0转换为null,但是插入数据时,此项值 不可为null,又要再转换为0
-        for (Tcustomdetail tcustomdetail : tcustomdetails) {
-            if (tcustomdetail.getParentclientid() == null) {
-                tcustomdetail.setParentclientid(0);
-            }
-        }
         return batchMapper.insertBatch(tcustomdetails);
     }
 

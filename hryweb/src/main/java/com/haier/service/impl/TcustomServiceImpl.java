@@ -64,9 +64,6 @@ public class TcustomServiceImpl implements TcustomService {
         Integer customId = tcustom.getId();//获取插入的自增Id
         for (Tcustomdetail tcustomdetail : tcustomdetails) {
             tcustomdetail.setCustomid(customId);
-            if (tcustomdetail.getParentclientid() == null) {
-                tcustomdetail.setParentclientid(0);
-            }
         }
         tcustomdetailService.insertBatch(tcustomdetails);
         return customId;
@@ -74,10 +71,8 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer insertOne(CustomVO customVO) {
-        Tcustom tcustom = new Tcustom();
-        ReflectUtil.cloneChildToParent(tcustom, customVO);
         List<Tcustomdetail> list = customVO.getTcustomdetails();
-        return this.insertOne(tcustom, list);
+        return this.insertOne(customVO, list);
     }
 
     @Override
@@ -87,28 +82,24 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer updateOne(CustomVO customVO) {
-        Tcustom tcustom = new Tcustom();
-        ReflectUtil.cloneChildToParent(tcustom, customVO);
+        /*Tcustom tcustom = new Tcustom();
+        ReflectUtil.cloneChildToParent(tcustom, customVO);*/
         /**
          *  更新tcustom信息
          */
-        this.updateOne(tcustom);
+        this.updateOne(customVO);
         /**
          * 更新tcustomdetail信息
          */
         //先删除历史保存的tcustomdetail记录
         Tcustomdetail condition = new Tcustomdetail();
-        condition.setCustomid(tcustom.getId());
+        condition.setCustomid(customVO.getId());
         tcustomdetailService.physicalDeleteByCondition(condition);
 
         //插入本次编辑的tcustomdetail记录
         List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
-        for (Tcustomdetail tcustomdetail : tcustomdetails) {
-            tcustomdetail.setCustomid(tcustom.getId());
-            //tcustomdetailService.insertOne(tcustomdetail);//为提升效率 ,改用下面一句代码 ,批量插入
-        }
         tcustomdetailService.insertBatch(tcustomdetails);
-        return tcustom.getId();
+        return customVO.getId();
     }
 
     @Override
@@ -161,14 +152,15 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustom> tcustoms = this.selectByCondition(tcustom);
         List<TcustomCustom> tcustomCustoms = new ArrayList<>();
 
-        List<Tenv> tenvList = tenvService.selectAll();
+        List<Tenv> tenvs = tenvService.selectAll();
         Map<Integer, Tenv> tenvMap = new HashMap<>();
-        for (Tenv _env : tenvList) {
-            tenvMap.put(_env.getId(), _env);
+        for (Tenv tenv : tenvs) {
+            tenvMap.put(tenv.getId(), tenv);
         }
 
         for (Tcustom t : tcustoms) {
             TcustomCustom tcustomCustom = new TcustomCustom();
+
             ReflectUtil.cloneParentToChild(t, tcustomCustom);
             tcustomCustom.setEnvkey(tenvMap.get(tcustomCustom.getEnvid()).getEnvkey());
 
