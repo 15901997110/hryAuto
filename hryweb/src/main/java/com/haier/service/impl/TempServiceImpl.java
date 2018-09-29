@@ -51,6 +51,20 @@ public class TempServiceImpl implements TempService {
     }
 
     @Override
+    public String getTempValue(String testingId, String tempKey) {
+        if (!StringUtils.isAnyBlank(testingId, tempKey)) {
+            Temp condition = new Temp();
+            condition.setTestingid(testingId);
+            condition.setTempkey(tempKey);
+            List<Temp> temps = this.selectAll(condition);
+            for (Temp temp : temps) {
+                return temp.getTempvalue() == null ? "" : temp.getTempvalue();
+            }
+        }
+        return "";
+    }
+
+    @Override
     public List<Temp> selectList(String testingId) {
         if (StringUtils.isBlank(testingId)) {
             return new ArrayList<>();
@@ -62,6 +76,7 @@ public class TempServiceImpl implements TempService {
 
     public List<Temp> selectAll(Temp temp) {
         TempExample example = new TempExample();
+        example.setOrderByClause("updateTime desc,id desc");//时间倒序,id倒序
         TempExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
         if (temp != null) {

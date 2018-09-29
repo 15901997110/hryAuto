@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
 
 @Slf4j
 public class PgwProcessTest extends PgwBase {
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public PgwProcessTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy","testingId"})
+    public PgwProcessTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy,String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy,testingId);
     }
 
     @DataProvider(name = "provider")

@@ -16,5 +16,7 @@ public interface TempService {
 
     Temp selectOne(String testingId, String tempKey);
 
+    String getTempValue(String testingId, String tempKey);
+
     List<Temp> selectList(String testingId);
 }

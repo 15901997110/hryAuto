@@ -6,7 +6,9 @@ import com.haier.config.SpringContextHolder;
 import com.haier.enums.BeforeRegexEnum;
 import com.haier.enums.DBInfoKeyEnum;
 import com.haier.enums.RegexEnum;
+import com.haier.po.Temp;
 import com.haier.service.TempService;
+import com.haier.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +34,7 @@ public class BeforeUtil {
     /**
      * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
      */
-    public static <T> String replace(String param, String dbinfo, T entity) {
+    public static <T extends Base> String replace(String param, String dbinfo, T entity) {
 
         if (StringUtils.isNotBlank(param)) {
             param = param.replaceAll("\\n", " ");//所有的换行替换成空格
@@ -50,7 +52,7 @@ public class BeforeUtil {
         BeforeRegexEnum[] values = BeforeRegexEnum.values();
         for (BeforeRegexEnum value : values) {
             //ref的匹配需要SOURCE配合,单独不做替换逻辑
-            if(value.equals(BeforeRegexEnum.REF)){
+            if (value.equals(BeforeRegexEnum.REF)) {
                 continue;
             }
             if (base.matches(".*" + value.getPattern() + ".*")) {
@@ -60,7 +62,7 @@ public class BeforeUtil {
         return ret;
     }
 
-    public static <T> String replaceAll(String base, String dbinfo, T entity) {
+    public static <T extends Base> String replaceAll(String base, String dbinfo, T entity) {
         /**
          * 匹配到<uuid>,替换成随机唯一字符串
          */
@@ -112,12 +114,16 @@ public class BeforeUtil {
             base = replaceSql(base, dbinfo);
         }
 
-        if(base.matches(".*"+BeforeRegexEnum.PUTH.getPattern()+".*")){
-            base=replacePutH(base);
+        if (base.matches(".*" + BeforeRegexEnum.PUTH.getPattern() + ".*")) {
+            base = replacePutH(base, entity);
         }
 
-        if(base.matches(".*"+BeforeRegexEnum.PUTR.getPattern()+".*")){
-            base=replacePutR(base);
+        if (base.matches(".*" + BeforeRegexEnum.PUTR.getPattern() + ".*")) {
+            base = replacePutR(base, entity);
+        }
+
+        if (base.matches(".*" + BeforeRegexEnum.GET.getPattern() + ".*")) {
+            base = replaceGet(base, entity);
         }
 
         return base;
@@ -405,23 +411,67 @@ public class BeforeUtil {
         return base;
     }
 
-    public static String replacePutH(String base){
+    public static <T extends Base> String replacePutH(String base, T entity) {
+
         Pattern pattern = Pattern.compile(BeforeRegexEnum.PUTH.getPattern());
         Matcher matcher = pattern.matcher(base);
-        while(matcher.find()){
-            String group = matcher.group();//<putH(key,value)>
-            String key=group.substring(group.indexOf("("));
+        while (matcher.find()) {
+            Temp temp = new Temp();
 
+            String group = matcher.group();//<putH(key,value)>
+            String key = group.substring(group.indexOf("(") + 1, group.indexOf(","));
+            String value = group.substring(group.indexOf(",") + 1, group.lastIndexOf(")"));
+            if (value.length() > 500) {
+                value = value.substring(0, 499);
+            }
+
+            temp.setTestingid(entity.testingId);
+            temp.setTempkey(key);
+            temp.setTempvalue(value);
+            temp.setServicekey(entity.tservice.getServicekey());
+            tempService.insertOne(temp);
+
+            base = matcher.replaceFirst(value);
+            matcher.reset(base);
         }
         return base;
     }
 
-    public static String replacePutR(String base){
+    public static <T extends Base> String replacePutR(String base, T entity) {
+        Pattern pattern = Pattern.compile(BeforeRegexEnum.PUTR.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            Temp temp = new Temp();
+
+            String group = matcher.group();//<putR(key,value)>
+            String key = group.substring(group.indexOf("(") + 1, group.indexOf(","));
+            String value = group.substring(group.indexOf(",") + 1, group.lastIndexOf(")"));
+            if (value.length() > 500) {
+                value = value.substring(0, 499);
+            }
+
+            temp.setTestingid(entity.testingId);
+            temp.setTempkey(key);
+            temp.setTempvalue(value);
+            temp.setServicekey(entity.tservice.getServicekey());
+            tempService.insertOne(temp);
+
+            base = matcher.replaceFirst("");
+            matcher.reset(base);
+        }
         return base;
     }
 
-    public static String replaceGet(String base){
+    public static <T extends Base> String replaceGet(String base, T entity) {
+        Pattern pattern = Pattern.compile(BeforeRegexEnum.GET.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            String group = matcher.group();//<get(key)>
+            String key = group.substring(group.indexOf("(") + 1, group.indexOf(")"));
+            String tempValue = tempService.getTempValue(entity.testingId, key);
+            base = matcher.replaceFirst(tempValue);
+            matcher.reset(base);
+        }
         return base;
     }
-
 }
