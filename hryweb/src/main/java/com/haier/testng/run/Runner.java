@@ -34,13 +34,20 @@ public class Runner {
 
     /**
      * 运行suite
-     * @param reportId 测试报告id
+     *
+     * @param reportId   测试报告id
      * @param reportName 测试报告文件名称
      * @param customName 测试报告名称(一般传定制名称即可,单个case运行可传null)
-     * @param xmlSuite 待测试的suite
+     * @param xmlSuite   待测试的suite
      */
     @Async("asyncServiceExecutor")
     public void run(Integer reportId, String reportName, String customName, XmlSuite xmlSuite) {
+        //构建唯一的testingId
+        String testingId = UUID.randomUUID().toString().replaceAll("-", "");
+        Map<String, String> map = new HashMap<>();
+        map.put("testingId", testingId);
+        xmlSuite.setParameters(map);
+
         TestNG ng = new TestNG();
         ng.setXmlSuites(Arrays.asList(xmlSuite));
         ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);

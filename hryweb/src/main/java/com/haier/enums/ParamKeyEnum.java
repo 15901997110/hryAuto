@@ -6,6 +6,7 @@ package com.haier.enums;
  * @Date: 2018/7/10 16:00
  */
 public enum ParamKeyEnum {
+    TESTING_ID("testingId","测试活动ID"),
     SERVICEID("serviceId", "服务ID"),
     ENVID("envId", "环境ID"),
     DESIGNER("caseDesigner", "用例设计人"),

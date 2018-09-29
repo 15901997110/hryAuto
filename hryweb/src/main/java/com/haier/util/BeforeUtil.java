@@ -2,9 +2,11 @@ package com.haier.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.haier.config.SpringContextHolder;
 import com.haier.enums.BeforeRegexEnum;
 import com.haier.enums.DBInfoKeyEnum;
 import com.haier.enums.RegexEnum;
+import com.haier.service.TempService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +27,8 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class BeforeUtil {
+    private static TempService tempService = SpringContextHolder.getBean(TempService.class);
+
     /**
      * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
      */
@@ -106,6 +110,14 @@ public class BeforeUtil {
          */
         if (base.matches(".*" + BeforeRegexEnum.SQL.getPattern() + ".*")) {
             base = replaceSql(base, dbinfo);
+        }
+
+        if(base.matches(".*"+BeforeRegexEnum.PUTH.getPattern()+".*")){
+            base=replacePutH(base);
+        }
+
+        if(base.matches(".*"+BeforeRegexEnum.PUTR.getPattern()+".*")){
+            base=replacePutR(base);
         }
 
         return base;
@@ -390,6 +402,25 @@ public class BeforeUtil {
             base = matcher.replaceFirst(queryResult == null ? "null" : queryResult);
             matcher.reset(base);//重置匹配器
         }
+        return base;
+    }
+
+    public static String replacePutH(String base){
+        Pattern pattern = Pattern.compile(BeforeRegexEnum.PUTH.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while(matcher.find()){
+            String group = matcher.group();//<putH(key,value)>
+            String key=group.substring(group.indexOf("("));
+
+        }
+        return base;
+    }
+
+    public static String replacePutR(String base){
+        return base;
+    }
+
+    public static String replaceGet(String base){
         return base;
     }
 

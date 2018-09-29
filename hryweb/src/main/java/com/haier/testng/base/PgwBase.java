@@ -12,8 +12,8 @@ import com.haier.util.HryHttpClientUtil;
  */
 @SKey("Pgw")
 public class PgwBase extends Base {
-    public PgwBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public PgwBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy,String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy,testingId);
     }
     @Uri(value = "/accountBalanceQueryFacade/accountBalanceQuery", desc = "账户余额查询")
     public String _accountBalanceQueryFacade_accountBalanceQuery(HryTest test) {
