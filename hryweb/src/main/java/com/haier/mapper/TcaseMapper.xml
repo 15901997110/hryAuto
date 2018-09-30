@@ -13,6 +13,7 @@
     <result column="requestParam" jdbcType="VARCHAR" property="requestparam" />
     <result column="assertType" jdbcType="INTEGER" property="asserttype" />
     <result column="expected" jdbcType="VARCHAR" property="expected" />
+    <result column="cAfter" jdbcType="VARCHAR" property="cafter" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="author" jdbcType="VARCHAR" property="author" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
@@ -77,7 +78,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, caseName, remark, serviceId, iId, envId, testClass, requestHeader, requestParam, 
-    assertType, expected, status, author, updateTime
+    assertType, expected, cAfter, status, author, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcaseExample" resultMap="BaseResultMap">
     select
@@ -116,13 +117,13 @@
     insert into tcase (caseName, remark, serviceId, 
       iId, envId, testClass, 
       requestHeader, requestParam, assertType, 
-      expected, status, author, 
-      updateTime)
+      expected, cAfter, status, 
+      author, updateTime)
     values (#{casename,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{serviceid,jdbcType=INTEGER}, 
       #{iid,jdbcType=INTEGER}, #{envid,jdbcType=INTEGER}, #{testclass,jdbcType=VARCHAR}, 
       #{requestheader,jdbcType=VARCHAR}, #{requestparam,jdbcType=VARCHAR}, #{asserttype,jdbcType=INTEGER}, 
-      #{expected,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+      #{expected,jdbcType=VARCHAR}, #{cafter,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcase">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -159,6 +160,9 @@
       </if>
       <if test="expected != null">
         expected,
+      </if>
+      <if test="cafter != null">
+        cAfter,
       </if>
       <if test="status != null">
         status,
@@ -200,6 +204,9 @@
       </if>
       <if test="expected != null">
         #{expected,jdbcType=VARCHAR},
+      </if>
+      <if test="cafter != null">
+        #{cafter,jdbcType=VARCHAR},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -254,6 +261,9 @@
       <if test="record.expected != null">
         expected = #{record.expected,jdbcType=VARCHAR},
       </if>
+      <if test="record.cafter != null">
+        cAfter = #{record.cafter,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -281,6 +291,7 @@
       requestParam = #{record.requestparam,jdbcType=VARCHAR},
       assertType = #{record.asserttype,jdbcType=INTEGER},
       expected = #{record.expected,jdbcType=VARCHAR},
+      cAfter = #{record.cafter,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       author = #{record.author,jdbcType=VARCHAR},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
@@ -321,6 +332,9 @@
       <if test="expected != null">
         expected = #{expected,jdbcType=VARCHAR},
       </if>
+      <if test="cafter != null">
+        cAfter = #{cafter,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -345,6 +359,7 @@
       requestParam = #{requestparam,jdbcType=VARCHAR},
       assertType = #{asserttype,jdbcType=INTEGER},
       expected = #{expected,jdbcType=VARCHAR},
+      cAfter = #{cafter,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       author = #{author,jdbcType=VARCHAR},
       updateTime = #{updatetime,jdbcType=TIMESTAMP}

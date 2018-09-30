@@ -16,6 +16,7 @@
         <result column="requestParam" jdbcType="VARCHAR" property="requestparam"/>
         <result column="assertType" jdbcType="INTEGER" property="asserttype"/>
         <result column="expected" jdbcType="VARCHAR" property="expected"/>
+        <result column="cAfter" jdbcType="VARCHAR" property="cafter"/>
         <result column="status" jdbcType="SMALLINT" property="status"/>
         <result column="author" jdbcType="VARCHAR" property="author"/>
         <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime"/>
