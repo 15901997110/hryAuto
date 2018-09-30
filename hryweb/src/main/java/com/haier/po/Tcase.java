@@ -30,6 +30,8 @@ public class Tcase {
 
     private String expected;
 
+    private String cafter;
+
     private Integer status;
 
     private String author;
@@ -122,6 +124,14 @@ public class Tcase {
 
     public void setExpected(String expected) {
         this.expected = expected == null ? null : expected.trim();
+    }
+
+    public String getCafter() {
+        return cafter;
+    }
+
+    public void setCafter(String cafter) {
+        this.cafter = cafter == null ? null : cafter.trim();
     }
 
     public Integer getStatus() {

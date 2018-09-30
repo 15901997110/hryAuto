@@ -825,6 +825,76 @@ public class TcaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andCafterIsNull() {
+            addCriterion("cAfter is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterIsNotNull() {
+            addCriterion("cAfter is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterEqualTo(String value) {
+            addCriterion("cAfter =", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterNotEqualTo(String value) {
+            addCriterion("cAfter <>", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterGreaterThan(String value) {
+            addCriterion("cAfter >", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterGreaterThanOrEqualTo(String value) {
+            addCriterion("cAfter >=", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterLessThan(String value) {
+            addCriterion("cAfter <", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterLessThanOrEqualTo(String value) {
+            addCriterion("cAfter <=", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterLike(String value) {
+            addCriterion("cAfter like", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterNotLike(String value) {
+            addCriterion("cAfter not like", value, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterIn(List<String> values) {
+            addCriterion("cAfter in", values, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterNotIn(List<String> values) {
+            addCriterion("cAfter not in", values, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterBetween(String value1, String value2) {
+            addCriterion("cAfter between", value1, value2, "cafter");
+            return (Criteria) this;
+        }
+
+        public Criteria andCafterNotBetween(String value1, String value2) {
+            addCriterion("cAfter not between", value1, value2, "cafter");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
