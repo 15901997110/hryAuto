@@ -346,10 +346,9 @@
 
     //删除接口
     function ti_del(obj, id) {
-        var ms = "请确认是否要删除id=" + id + "的接口数据";
+        var ms = "请确认是否要删除id=" + id + "的接口数据,警告:接口删除时,将会连带删除接口关联的所有用例,确定?";
         del(obj, id, "/ti/deleteOne", ms);
     }
-
 
 </script>
 </body>
