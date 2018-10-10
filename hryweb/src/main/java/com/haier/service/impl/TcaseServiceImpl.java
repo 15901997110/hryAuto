@@ -11,7 +11,7 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
 import com.haier.service.*;
 import com.haier.testng.run.Runner;
-import com.haier.util.BeforeUtil;
+import com.haier.util.ReplaceUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.HryUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -250,7 +250,7 @@ public class TcaseServiceImpl implements TcaseService {
         }
 
         String url = HttpTypeEnum.getValue(tservice.getHttptype()) + "://" + tservicedetail.getHostinfo() + ti.getIuri();
-        String actualParam = BeforeUtil.replace(tcase.getRequestparam(), tservicedetail.getDbinfo(), null);
+        String actualParam = ReplaceUtil.replaceBefore(tcase.getRequestparam(), tservicedetail.getDbinfo(), null);
 
         //发送http请求
         String actual = HryHttpClientUtil.send(url, ti.getIrequestmethod(), ti.getIcontenttype(), ti.getIparamtype(), actualParam);

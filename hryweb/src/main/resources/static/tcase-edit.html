@@ -109,6 +109,13 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">后置处理：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <textarea id="cafter" name="cafter" cols="" rows="" class="textarea valid"
+                          placeholder="此用例运行完成后处理的内容"></textarea>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">设计人：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="" placeholder="" id="author" name="author"
@@ -261,11 +268,17 @@
                     } else {
                         $("#expected").val(expected);
                     }
+
+                    //后置处理
+                    if (tcase.cafter != null) {
+                        $("#cafter").val(tcase.cafter);
+                    }
+
                     //用例设计人
                     $("#author").val(tcase.author);
 
                     var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editTcase(" + cId + ")\"><i class=\"icon-ok\"></i> 提交</button>" +
-                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-run\" name=\"admin-role-run\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>"+
+                        "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-run\" name=\"admin-role-run\" onclick=\"runTcase()\"><i class=\"icon-ok\"></i> 测试</button>" +
                         "<button type=\"button\" style='margin-left:5px;' class=\"btn btn-success radius\" id=\"admin-role-close\" name=\"admin-role-close\" onclick=\"layer_close()\"><i class=\"icon-ok\"></i>关闭</button>";
                     $("#submit").append(submit);
                     layer.close(layerIndex);
@@ -312,9 +325,11 @@
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
+        var cafter = $("#cafter").val();
         //var author = $("#author").val();
         var author = $.cookie("realnameCookie");
         var testclass = $("#testclass").val();
+
 
         if (caseName == null || caseName == "") {
             layer.alert("用例名称不能为空！");
@@ -341,6 +356,7 @@
                     requestparam: requestParam,
                     asserttype: assertType,
                     expected: expected,
+                    cafter: cafter,
                     author: author,
                     // status: 1  //状态不必传,所有的状态,都是通过操作改变,不可通过定义改变
                 },
@@ -385,6 +401,7 @@
         var requestParam = $("#requestParam").val();
         var assertType = $("#assertType").val();
         var expected = $("#expected").val();
+        var cafter = $("#cafter").val();
         var testClass = $("#testclass").val();
         var userId = $.cookie('uidCookie');
 
@@ -408,6 +425,7 @@
                     requestparam: requestParam,
                     asserttype: assertType,
                     expected: expected,
+                    cafter: cafter,
                     testclass: testClass,
                     userId: userId
                 },

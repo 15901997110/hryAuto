@@ -5,7 +5,7 @@ package com.haier.enums;
  * @Author: luqiwei
  * @Date: 2018/6/19 9:39
  */
-public enum BeforeRegexEnum {
+public enum ReplaceRegexEnum {
     /**
      * <uuid(num)> 随机唯一字符串
      * 参数:num-非必填,指定要截断的长度
@@ -96,14 +96,14 @@ public enum BeforeRegexEnum {
 
 
     /**
-     * <putH(key,value)> put && hold 将value存储到临时变量中,并且此表达式使用value替换
+     * <put(key,value)> put  将value存储到临时变量中,并且此表达式使用value替换
      * 参数:
      * key-必填,只能是单词字符([a-zA-Z_0-9]),临时变量名,如果与临时变量表中的变量名重复,则覆盖
      * value-需要存储的临时变量值
      * 例:
-     * <putH(bid_id,3838384393)>  此表达式变为3838384393,并且3838384393作为变量值存储在临时变量表中,可供下一次调用时使用
+     * <put(bid_id,3838384393)>  此表达式变为3838384393,并且3838384393作为变量值存储在临时变量表中,可供下一次调用时使用
      */
-    PUTH("(?i)<putH\\(\\w+,[^<>]*\\)>"),
+    PUT("(?i)<put\\(\\w+,[^<>]*\\)>"),
 
     /**
      * <putR(key,value) put && remove 将value存储到临时变量中,并且此表达式将被删除
@@ -126,7 +126,7 @@ public enum BeforeRegexEnum {
     ;
     private String pattern;
 
-    BeforeRegexEnum(String pattern) {
+    ReplaceRegexEnum(String pattern) {
         this.pattern = pattern;
     }
 

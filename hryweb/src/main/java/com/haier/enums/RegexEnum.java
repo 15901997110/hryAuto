@@ -24,7 +24,16 @@ public enum RegexEnum {
 
     UPDATE_REGEX("^(?i)\\s*update.+", "更新语句(以update开头)"),
 
-    NOTBLANK("[^\\s]*", "非空校验,校验不包含非空字符");
+    NOTBLANK("[^\\s]*", "非空校验,校验不包含非空字符"),
+
+    SIMPLE_JSONKEY("^\\$(\\w+)","$后面紧跟json key,如:$title"),
+
+    HARD_JSONKEY("^\\$(\\{\\w+|\\[\\d+)+","根据JSON路径获取相应的值,如:${aaa[0{title   ,  ${aaa{bbb 等"),
+
+    META_PATH("(\\{\\w+)|(\\[\\d+)","JSON中的元路径,{xxx或者[xxx"),
+    ;
+
+
 
 
     private String regex;

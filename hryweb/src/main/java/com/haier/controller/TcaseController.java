@@ -182,7 +182,7 @@ public class TcaseController {
      * @return 测试报告页面地址
      */
     @PostMapping("/runCase")
-    public Result runcase(Tcase tcase, Integer userId) {
+    public Result runCase(Tcase tcase, Integer userId) {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || tcase.getEnvid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行单条Case时,必须指定运行的环境");
@@ -198,9 +198,9 @@ public class TcaseController {
      * @return 测试报告页面地址
      */
     @PostMapping("/runCaseById")
-    public Result runcase(Integer id, Integer userId) {
+    public Result runCase(Integer id, Integer userId) {
         Tcase tcase = tcaseService.selectOne(id);
-        return this.runcase(tcase, userId);
+        return this.runCase(tcase, userId);
     }
 
 

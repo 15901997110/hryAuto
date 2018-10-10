@@ -143,9 +143,9 @@ public class HryHttpClientUtil {
 
 
         //参数替换
-        String param = replaceParam(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
+        String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
 
-        return send(
+        String responseBody = send(
                 url,
                 test.getTi().getIrequestmethod(),
                 test.getTi().getIcontenttype(),
@@ -154,6 +154,8 @@ public class HryHttpClientUtil {
                 headers,
                 entityCookieStore
         );
+        ReplaceUtil.replaceAfter(test.getTcase().getCafter(),responseBody,test.getTservicedetail().getDbinfo(),entity);
+        return responseBody;
     }
 
     public static <T> String send(String url, Integer requestMethod, T param) throws HttpProcessException {
@@ -191,13 +193,13 @@ public class HryHttpClientUtil {
         return send(url, RequestMethodTypeEnum.GET.getId(), null, null, null);
     }
 
-    private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {
+/*    private static <T extends Base> String replaceParam(String param, String dbInfo, T entity) {
         if (StringUtils.isNotBlank(param)) {
             Reporter.log("用例设计参数:" + param.replaceAll("<", "＜").replaceAll(">", "＞"));
-            param = BeforeUtil.replace(param, dbInfo, entity);
+            param = ReplaceUtil.replace(param, dbInfo, entity);
         } else {
             Reporter.log("用例设计参数:null");
         }
         return param;
-    }
+    }*/
 }
