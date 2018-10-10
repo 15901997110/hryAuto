@@ -94,4 +94,5 @@ public class EnumController {
     public List<Map<String,Object>> getStatusEnum(){
         return EnumUtil.getEnumList(StatusEnum.values());
     }
+
 }

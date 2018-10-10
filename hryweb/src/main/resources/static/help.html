@@ -151,8 +151,41 @@
         <th> &lt;ref(index)&gt;与<$index(xxx)>配合使用,引用xxx内容</th>
         <th></th>
     </tr>
+    <tr class="text-l">
+        <th>(?i)&lt;put\(\w+,[^<>]*\)&gt;</th>
+        <th>
+            &lt;put(key,value)&gt; 将key,value存储到临时变量中,并且此表达式使用value替换,使用&lt;get(key)&gt;可取得此值<br/>
+            参数:<br/>
+            key-必填,只能由单词字符组成[a-zA-Z_0-9],待存储的临时值的名称<br/>
+            value-必填,待存储的值<br/>
+            注意:<br/>
+            value有两种特殊写法,表明从当前测试结果(JSONObject)中取值,分别是:<br/>
+            \$\w+&emsp;:&emsp; 例:$responseCode,从当前测试用例的测试返回结果中,找到第一个非null的responseCode的值<br/>
+            \$\(\{\w+|\[\d+)+&emsp;:&emsp; 例:${resultList[1{name,从当前测试用例的测试返回结果中,按此路径查找name的值<br/>
+        </th>
+        <th>
+            &lt;put(title,我是一个标题)&gt; : 将(title=我是一个标题)存入临时表中<br/>
+            &lt;put(title,$title)&gt; : 首先根据$title去返回结果中找值,然后存入临时表中<br/>
+            &lt;put(title,${resultList[0{id)&gt;:首先根据${resultList[0{id)去返回结果中找值,然后存入临时表中
+        </th>
+    </tr>
+    <tr class="text-l">
+        <th>(?i)&lt;putR\(\w+,[^<>]*\)&gt;</th>
+        <th>&lt;putR(key,value)&gt; put & remove,将(key,value)存储到临时变量中,并且此表达式的占位将被移除,使用&lt;get(key)&gt;可取得此值<br/></th>
+        <th>
+            &lt;putR(title,我是一个标题)&gt; : 将(title=我是一个标题)存入临时表中,并且源字符串中此表达式将移除<br/>
+        </th>
+    </tr>
+    <tr class="text-l">
+        <th>(?i)&lt;get\(\w+\)&gt;</th>
+        <th>&lt;get(key)&gt; 从临时表中取出名称为key的值,与put配合使用</th>
+        <th>&lt;get(title)&gt; 从临时表中取出名称为`title`对应的值,如果有多个`title`,则取最近一次的值</th>
+    </tr>
     </tbody>
 </table>
+<br/>
+<br/>
+<br/>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
