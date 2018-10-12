@@ -105,8 +105,7 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
 
     @Override
     public List<Tcustomdetail> selectByCondition(Tcustomdetail tcustomdetail) {
-        ReflectUtil.setFieldAddPercentAndCleanZero(tcustomdetail, false);
-
+        //ReflectUtil.setFieldAddPercentAndCleanZero(tcustomdetail, false);
         TcustomdetailExample example = new TcustomdetailExample();
         TcustomdetailExample.Criteria criteria = example.createCriteria();
         criteria.andStatusGreaterThan(0);
@@ -118,7 +117,6 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
                 }
             }
         }
-
         return mapper.selectByExample(example);
     }
 

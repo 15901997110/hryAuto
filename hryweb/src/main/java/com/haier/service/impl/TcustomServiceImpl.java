@@ -82,12 +82,12 @@ public class TcustomServiceImpl implements TcustomService {
 
     @Override
     public Integer updateOne(CustomVO customVO) {
-        /*Tcustom tcustom = new Tcustom();
-        ReflectUtil.cloneChildToParent(tcustom, customVO);*/
+        Tcustom tcustom = new Tcustom();
+        ReflectUtil.cloneChildToParent(tcustom, customVO);
         /**
          *  更新tcustom信息
          */
-        this.updateOne(customVO);
+        this.updateOne(tcustom);
         /**
          * 更新tcustomdetail信息
          */
