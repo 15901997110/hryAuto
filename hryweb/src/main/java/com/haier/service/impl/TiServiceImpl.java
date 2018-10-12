@@ -20,9 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description:
@@ -164,38 +162,24 @@ public class TiServiceImpl implements TiService {
         List<Ti> tis = this.selectByCondition(ti, true);
         Tcase condition = new Tcase();
         condition.setServiceid(ti.getServiceid());
-        condition.setIid(ti.getId());
         List<Tcase> tcases = tcaseService.selectByCondition(condition);
+
+        //将tcases转成Map<iid,List<Tcase>>
+        Map<Integer, List<Tcase>> map = new HashMap<>();
+        for (Tcase tcase : tcases) {
+            if (map.containsKey(tcase.getIid())) {
+                map.get(tcase.getIid()).add(tcase);
+            } else {
+                ArrayList<Tcase> tcasesArray = new ArrayList<>();
+                tcasesArray.add(tcase);
+                map.put(tcase.getIid(), tcasesArray);
+            }
+        }
+
         for (Ti i : tis) {
             TiWithCaseVO vo = new TiWithCaseVO();
-            ReflectUtil.cloneParentToChild(i, vo);
-            List<Tcase> retTcase = new ArrayList<>();
-            if (tcases != null && tcases.size() > 0) {
-                Iterator<Tcase> iterator = tcases.iterator();
-                /**
-                 * 替换下面的实现,改成iterator迭代
-                 */
-                while (iterator.hasNext()) {
-                    Tcase next = iterator.next();
-                    if (i.getId().equals(next.getIid())) {
-                        retTcase.add(next);
-                        iterator.remove();
-                    }
-                }
-                /**
-                 * 下面代码会引发ConcurrentModificationException异常
-                 * 在List迭代中如果需要移除元素,不可以使用list.remove,
-                 * https://www.cnblogs.com/dolphin0520/p/3933551.html
-                 */
-                /*
-                for (Tcase tcase : tcases) {
-                    if (i.getId().equals(tcase.getIid())) {
-                        retTcase.add(tcase);
-                        tcases.remove(tcase);//已经被接口匹配到,这里移除掉,减少tcases数组的长度,为下一次循环提升效率
-                    }
-                }*/
-            }
-            vo.setTcases(retTcase);
+            ReflectUtil.cloneParentToChild(i, vo);//设置ti
+            vo.setTcases(map.get(i.getId()));//设置List<Tcase>
             list.add(vo);
         }
         return list;
