@@ -114,18 +114,29 @@ public class TiServiceImpl implements TiService {
     }
 
     @Override
-    public List<Ti> selectAllStatusByCondition(Ti ti) {
-        return this.selectByCondition(ti, true);
+    public List<Ti> selectByCondition(Ti ti, Boolean hasCase) {
+        return this.selectByCondition(ti, hasCase, null);
     }
 
-    public List<Ti> selectByCondition(Ti ti, Boolean selectAllStatus) {
+    @Override
+    public List<Ti> selectAllStatusByCondition(Ti ti) {
+        return this.selectByCondition(ti, null, true);
+    }
+
+    public List<Ti> selectByCondition(Ti ti, Boolean hasCase, Boolean selectAllStatus) {
         if (selectAllStatus == null) {
             selectAllStatus = false;
+        }
+        if (hasCase == null) {
+            hasCase = false;
         }
         TiExample tiExample = new TiExample();
         TiExample.Criteria criteria = tiExample.createCriteria();
         if (!selectAllStatus) {
             criteria.andIstatusGreaterThan(0);
+        }
+        if (hasCase) {
+            criteria.andCasecountGreaterThan(0);
         }
         if (ti != null) {
             if (ti.getId() != null) {
@@ -149,9 +160,8 @@ public class TiServiceImpl implements TiService {
 
     @Override
     public List<TiWithCaseVO> selectTiWithCaseVO(Ti ti) {
-
         List<TiWithCaseVO> list = new ArrayList<>();
-        List<Ti> tis = this.selectByCondition(ti);
+        List<Ti> tis = this.selectByCondition(ti, true);
         Tcase condition = new Tcase();
         condition.setServiceid(ti.getServiceid());
         condition.setIid(ti.getId());
@@ -173,7 +183,7 @@ public class TiServiceImpl implements TiService {
                     }
                 }
                 /**
-                 * 下面注解的部分会引发ConcurrentModificationException异常
+                 * 下面代码会引发ConcurrentModificationException异常
                  * 在List迭代中如果需要移除元素,不可以使用list.remove,
                  * https://www.cnblogs.com/dolphin0520/p/3933551.html
                  */

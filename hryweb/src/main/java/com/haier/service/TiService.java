@@ -29,6 +29,8 @@ public interface TiService {
 
     List<Ti> selectByCondition(Ti ti);
 
+    List<Ti> selectByCondition(Ti ti,Boolean hasCase);
+
     List<Ti> selectAllStatusByCondition(Ti ti);
 
     List<TiWithCaseVO> selectTiWithCaseVO(Ti ti);
