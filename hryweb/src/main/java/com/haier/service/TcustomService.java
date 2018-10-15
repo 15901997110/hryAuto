@@ -1,5 +1,6 @@
 package com.haier.service;
 
+import com.github.pagehelper.PageInfo;
 import com.haier.po.Tcustom;
 import com.haier.po.TcustomCustom;
 import com.haier.po.Tcustomdetail;
@@ -35,7 +36,7 @@ public interface TcustomService {
 
     List<Tcustom> selectByCondition(Tcustom tcustom);
 
-    List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom);
+    PageInfo<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom, Integer pageNum, Integer pageSize);
 
     String run(Integer customId, Integer executeUserId);
 

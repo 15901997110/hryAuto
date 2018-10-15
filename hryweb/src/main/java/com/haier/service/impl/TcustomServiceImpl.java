@@ -1,6 +1,8 @@
 package com.haier.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.haier.enums.*;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
@@ -162,7 +164,8 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom) {
+    public PageInfo<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         List<Tcustom> tcustoms = this.selectByCondition(tcustom);
         List<TcustomCustom> tcustomCustoms = new ArrayList<>();
 
@@ -184,7 +187,9 @@ public class TcustomServiceImpl implements TcustomService {
             tcustomCustoms.add(tcustomCustom);
         }
 
-        return tcustomCustoms;
+        PageInfo<TcustomCustom> pageInfo=new PageInfo<>(tcustomCustoms);
+
+        return pageInfo;
     }
 
     @Override

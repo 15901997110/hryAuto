@@ -80,8 +80,12 @@ public class TcustomController {
     }
 
     @PostMapping("/selectTcustomCustomByCondition")
-    public Result selectTcustomCustomByCondition(Tcustom tcustom) {
-        return ResultUtil.success(tcustomService.selectTcustomCustomByCondition(tcustom));
+    public Result selectTcustomCustomByCondition(Tcustom tcustom, Integer pageNum, Integer pageSize) {
+        if (pageNum == null || pageSize == null) {
+            pageNum = 1;
+            pageSize = 10;
+        }
+        return ResultUtil.success(tcustomService.selectTcustomCustomByCondition(tcustom, pageNum, pageSize));
     }
 
     @PostMapping("/runByTcustomId")
