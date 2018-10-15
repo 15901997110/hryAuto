@@ -9,6 +9,7 @@ import com.haier.testng.run.Runner;
 import com.haier.util.ReflectUtil;
 import com.haier.vo.CustomVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -140,12 +141,25 @@ public class TcustomServiceImpl implements TcustomService {
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
         tcustomExample.setOrderByClause(SortEnum.UPDATETIME.getValue());
         criteria.andStatusGreaterThan(0);
-        if (tcustom != null && tcustom.getUserid() != null) {
-            criteria.andUseridEqualTo(tcustom.getUserid());
+        if (tcustom != null) {
+            if (tcustom.getId() != null) {
+                criteria.andIdEqualTo(tcustom.getId());
+            }
+            if (tcustom.getUserid() != null) {
+                criteria.andUseridEqualTo(tcustom.getUserid());
+            }
+            if (StringUtils.isNotBlank(tcustom.getUsername())) {
+                criteria.andUsernameEqualTo(tcustom.getUsername());
+            }
+            if (tcustom.getEnvid() != null) {
+                criteria.andEnvidEqualTo(tcustom.getEnvid());
+            }
+            if (StringUtils.isNotBlank(tcustom.getCustomname())) {
+                criteria.andCustomnameLike("%" + tcustom.getCustomname() + "%");
+            }
         }
         return tcustomMapper.selectByExample(tcustomExample);
     }
-
 
     @Override
     public List<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom) {
@@ -160,11 +174,11 @@ public class TcustomServiceImpl implements TcustomService {
 
         for (Tcustom t : tcustoms) {
             TcustomCustom tcustomCustom = new TcustomCustom();
-
             ReflectUtil.cloneParentToChild(t, tcustomCustom);
+
             tcustomCustom.setEnvkey(tenvMap.get(tcustomCustom.getEnvid()).getEnvkey());
 
-            List<Tcustomdetail> tcustomdetails = tcustomdetailService.selectByCondition(t.getId());
+            List<Tcustomdetail> tcustomdetails = tcustomdetailService.selectByCondition(t.getId(), ClientLevelEnum.SERVICE.getLevel());//只取clientLevel=1的数据
             tcustomCustom.setTcustomdetails(tcustomdetails);
 
             tcustomCustoms.add(tcustomCustom);

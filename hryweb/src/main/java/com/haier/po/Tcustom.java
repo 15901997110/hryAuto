@@ -12,6 +12,8 @@ public class Tcustom {
 
     private Integer userid;
 
+    private String username;
+
     @NotNull(message ="运行环境必须")
     private Integer envid;
 
@@ -43,6 +45,14 @@ public class Tcustom {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
     }
 
     public Integer getEnvid() {

@@ -295,6 +295,7 @@
         var env = $("#env").val();
         var strategy = $("#strategy").val();
         var userid = $.cookie('uidCookie');
+        var userName=$.cookie("realnameCookie");
 
         var service = new Array();
         $("#services :checkbox:checked").each(function (i) {
@@ -386,6 +387,7 @@
             var obj = new Object();
             obj.customname = customname;
             obj.userid = userid;
+            obj.username=userName;
             obj.envid = env;
             obj.strategy = strategy;
             obj.tcustomdetails = service;

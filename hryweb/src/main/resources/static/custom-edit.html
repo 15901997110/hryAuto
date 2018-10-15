@@ -362,7 +362,8 @@
         var customname = $("#customname").val();
         var env = $("#env").val();
         var strategy = $("#strategy").val();
-        var userid = $.cookie('uidCookie');
+        var userId = $.cookie("uidCookie");
+        var userName=$.cookie("realnameCookie");
 
         var tCustomDetails = new Array();
         $("#services :checkbox:checked").each(function (i) {
@@ -447,7 +448,8 @@
             var obj = new Object();
             obj.id = id;
             obj.customname = customname;
-            obj.userid = userid;
+            obj.userid = userId;
+            obj.username=userName;
             obj.envid = env;
             obj.strategy = strategy;
             obj.tcustomdetails = tCustomDetails;
