@@ -34,9 +34,11 @@ public interface TcustomService {
 
     CustomVO selectOne(Integer id);
 
-    List<Tcustom> selectByCondition(Tcustom tcustom);
+    List<Tcustom> selectTcustomList(Tcustom tcustom);
 
-    PageInfo<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom, Integer pageNum, Integer pageSize);
+    List<TcustomCustom> selectTcustomCustomList(Tcustom tcustom);
+
+    PageInfo<TcustomCustom> selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize);
 
     String run(Integer customId, Integer executeUserId);
 

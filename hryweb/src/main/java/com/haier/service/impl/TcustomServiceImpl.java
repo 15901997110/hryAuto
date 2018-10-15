@@ -138,10 +138,10 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public List<Tcustom> selectByCondition(Tcustom tcustom) {
+    public List<Tcustom> selectTcustomList(Tcustom tcustom) {
         TcustomExample tcustomExample = new TcustomExample();
         TcustomExample.Criteria criteria = tcustomExample.createCriteria();
-        tcustomExample.setOrderByClause(SortEnum.UPDATETIME.getValue());
+        tcustomExample.setOrderByClause(SortEnum.UPDATETIME.getValue() + "," + SortEnum.ID.getValue());
         criteria.andStatusGreaterThan(0);
         if (tcustom != null) {
             if (tcustom.getId() != null) {
@@ -164,9 +164,8 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public PageInfo<TcustomCustom> selectTcustomCustomByCondition(Tcustom tcustom,Integer pageNum,Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<Tcustom> tcustoms = this.selectByCondition(tcustom);
+    public List<TcustomCustom> selectTcustomCustomList(Tcustom tcustom) {
+        List<Tcustom> tcustoms = this.selectTcustomList(tcustom);
         List<TcustomCustom> tcustomCustoms = new ArrayList<>();
 
         List<Tenv> tenvs = tenvService.selectAll();
@@ -186,9 +185,14 @@ public class TcustomServiceImpl implements TcustomService {
 
             tcustomCustoms.add(tcustomCustom);
         }
+        return tcustomCustoms;
+    }
 
-        PageInfo<TcustomCustom> pageInfo=new PageInfo<>(tcustomCustoms);
-
+    @Override
+    public PageInfo<TcustomCustom> selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<TcustomCustom> tcustomCustoms = this.selectTcustomCustomList(tcustom);
+        PageInfo<TcustomCustom> pageInfo = new PageInfo<>(tcustomCustoms);
         return pageInfo;
     }
 
