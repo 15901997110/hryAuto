@@ -1204,7 +1204,7 @@ $.fn.atwho["default"] = {
   delay: null,
   spaceSelectsMatch: false,
   tabSelectsMatch: true,
-  editableAtwhoQueryAttrs: {},
+  editableAtwhoQueryAttrs:{},
   scrollDuration: 150,
   suspendOnComposing: true,
   lookUpOnClick: true
