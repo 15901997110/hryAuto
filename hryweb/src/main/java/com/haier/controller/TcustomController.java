@@ -76,16 +76,21 @@ public class TcustomController {
 
     @PostMapping("/selectByCondition")
     public Result selectByCondition(Tcustom tcustom) {
-        return ResultUtil.success(tcustomService.selectByCondition(tcustom));
+        return ResultUtil.success(tcustomService.selectTcustomList(tcustom));
     }
 
     @PostMapping("/selectTcustomCustomByCondition")
-    public Result selectTcustomCustomByCondition(Tcustom tcustom, Integer pageNum, Integer pageSize) {
+    public Result selectTcustomCustomByCondition(Tcustom tcustom) {
+        return ResultUtil.success(tcustomService.selectTcustomCustomList(tcustom));
+    }
+
+    @PostMapping("/selectTcustomCustomPageInfo")
+    public Result selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize) {
         if (pageNum == null || pageSize == null) {
             pageNum = 1;
             pageSize = 10;
         }
-        return ResultUtil.success(tcustomService.selectTcustomCustomByCondition(tcustom, pageNum, pageSize));
+        return ResultUtil.success(tcustomService.selectTcustomCustomPageInfo(tcustom, pageNum, pageSize));
     }
 
     @PostMapping("/runByTcustomId")
