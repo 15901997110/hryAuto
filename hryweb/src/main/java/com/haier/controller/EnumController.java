@@ -96,8 +96,8 @@ public class EnumController {
         return EnumUtil.getEnumList(StatusEnum.values());
     }
 
-    @GetMapping("/replaceEunmExamples")
-    public List<String> getReplaceEunmExamples() {
+    @GetMapping("/replaceEnumExamples")
+    public List<String> getReplaceEnumExamples() {
         List<String> list = new ArrayList<>();
         ReplaceRegexEnum[] values = ReplaceRegexEnum.values();
         for (ReplaceRegexEnum value : values) {
