@@ -361,6 +361,7 @@
 
         var customname = $("#customname").val();
         var env = $("#env").val();
+        var envKey=$("#env").find("option:selected").text();
         var strategy = $("#strategy").val();
         var userId = $.cookie("uidCookie");
         var userName=$.cookie("realnameCookie");
@@ -451,6 +452,7 @@
             obj.userid = userId;
             obj.username=userName;
             obj.envid = env;
+            obj.envkey=envKey;
             obj.strategy = strategy;
             obj.tcustomdetails = tCustomDetails;
             var json = JSON.stringify(obj)

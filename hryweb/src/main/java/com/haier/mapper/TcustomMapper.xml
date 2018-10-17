@@ -7,6 +7,7 @@
     <result column="userId" jdbcType="INTEGER" property="userid" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="envId" jdbcType="INTEGER" property="envid" />
+    <result column="envKey" jdbcType="VARCHAR" property="envkey" />
     <result column="strategy" jdbcType="VARCHAR" property="strategy" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, customName, userId, userName, envId, strategy, status, updateTime
+    id, customName, userId, userName, envId, envKey, strategy, status, updateTime
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TcustomExample" resultMap="BaseResultMap">
     select
@@ -107,11 +108,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tcustom (customName, userId, userName, 
-      envId, strategy, status, 
-      updateTime)
+      envId, envKey, strategy, 
+      status, updateTime)
     values (#{customname,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
-      #{envid,jdbcType=INTEGER}, #{strategy,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{updatetime,jdbcType=TIMESTAMP})
+      #{envid,jdbcType=INTEGER}, #{envkey,jdbcType=VARCHAR}, #{strategy,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Tcustom">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -130,6 +131,9 @@
       </if>
       <if test="envid != null">
         envId,
+      </if>
+      <if test="envkey != null">
+        envKey,
       </if>
       <if test="strategy != null">
         strategy,
@@ -153,6 +157,9 @@
       </if>
       <if test="envid != null">
         #{envid,jdbcType=INTEGER},
+      </if>
+      <if test="envkey != null">
+        #{envkey,jdbcType=VARCHAR},
       </if>
       <if test="strategy != null">
         #{strategy,jdbcType=VARCHAR},
@@ -189,6 +196,9 @@
       <if test="record.envid != null">
         envId = #{record.envid,jdbcType=INTEGER},
       </if>
+      <if test="record.envkey != null">
+        envKey = #{record.envkey,jdbcType=VARCHAR},
+      </if>
       <if test="record.strategy != null">
         strategy = #{record.strategy,jdbcType=VARCHAR},
       </if>
@@ -210,6 +220,7 @@
       userId = #{record.userid,jdbcType=INTEGER},
       userName = #{record.username,jdbcType=VARCHAR},
       envId = #{record.envid,jdbcType=INTEGER},
+      envKey = #{record.envkey,jdbcType=VARCHAR},
       strategy = #{record.strategy,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=INTEGER},
       updateTime = #{record.updatetime,jdbcType=TIMESTAMP}
@@ -232,6 +243,9 @@
       <if test="envid != null">
         envId = #{envid,jdbcType=INTEGER},
       </if>
+      <if test="envkey != null">
+        envKey = #{envkey,jdbcType=VARCHAR},
+      </if>
       <if test="strategy != null">
         strategy = #{strategy,jdbcType=VARCHAR},
       </if>
@@ -250,6 +264,7 @@
       userId = #{userid,jdbcType=INTEGER},
       userName = #{username,jdbcType=VARCHAR},
       envId = #{envid,jdbcType=INTEGER},
+      envKey = #{envkey,jdbcType=VARCHAR},
       strategy = #{strategy,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
       updateTime = #{updatetime,jdbcType=TIMESTAMP}

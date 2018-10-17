@@ -7,7 +7,6 @@ import com.haier.po.Tcustom;
 import com.haier.po.Tcustomdetail;
 import com.haier.response.Result;
 import com.haier.service.TcustomService;
-import com.haier.util.ReflectUtil;
 import com.haier.util.ResultUtil;
 import com.haier.vo.CustomVO;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +39,11 @@ public class TcustomController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
         List<Tcustomdetail> list = customVO.getTcustomdetails();
+        //参数校验
+        /*
+        //据说效率反而低...
+        list.stream().forEach(this::verifyTcustomdetail);
+        */
         for (Tcustomdetail tcustomdetail : list) {
             verifyTcustomdetail(tcustomdetail);
         }

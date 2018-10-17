@@ -293,6 +293,7 @@
     function addCustom() {
         var customname = $("#customname").val();
         var env = $("#env").val();
+        var envKey=$("#env").find("option:selected").text();
         var strategy = $("#strategy").val();
         var userid = $.cookie('uidCookie');
         var userName=$.cookie("realnameCookie");
@@ -389,6 +390,7 @@
             obj.userid = userid;
             obj.username=userName;
             obj.envid = env;
+            obj.envkey=envKey;
             obj.strategy = strategy;
             obj.tcustomdetails = service;
             var json = JSON.stringify(obj);

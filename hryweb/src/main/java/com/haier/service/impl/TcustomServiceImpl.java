@@ -40,11 +40,11 @@ public class TcustomServiceImpl implements TcustomService {
     @Autowired
     TcustomMapper tcustomMapper;
 
-    @Autowired
-    TenvService tenvService;
+/*    @Autowired
+    TenvService tenvService;*/
 
-    @Autowired
-    UserService userService;
+/*    @Autowired
+    UserService userService;*/
 
     @Autowired
     TserviceService tserviceService;
@@ -168,21 +168,24 @@ public class TcustomServiceImpl implements TcustomService {
         List<Tcustom> tcustoms = this.selectTcustomList(tcustom);
         List<TcustomCustom> tcustomCustoms = new ArrayList<>();
 
-        List<Tenv> tenvs = tenvService.selectAll();
+        //现在已经在tcustom对象中扩展了envkey字段,无需再联查env表
+       /* List<Tenv> tenvs = tenvService.selectAll();
+        //java 1.8的新特性,使用Stream Api 将list转换为Map
+        Map<Integer, Tenv> tenvMap = tenvs.stream().collect(Collectors.toMap(Tenv::getId, tenv -> tenv));
+
+        *//*
         Map<Integer, Tenv> tenvMap = new HashMap<>();
         for (Tenv tenv : tenvs) {
             tenvMap.put(tenv.getId(), tenv);
         }
+        */
 
         for (Tcustom t : tcustoms) {
             TcustomCustom tcustomCustom = new TcustomCustom();
             ReflectUtil.cloneParentToChild(t, tcustomCustom);
-
-            tcustomCustom.setEnvkey(tenvMap.get(tcustomCustom.getEnvid()).getEnvkey());
-
+            //tcustomCustom.setEnvkey(tenvMap.get(tcustomCustom.getEnvid()).getEnvkey());
             List<Tcustomdetail> tcustomdetails = tcustomdetailService.selectByCondition(t.getId(), ClientLevelEnum.SERVICE.getLevel());//只取clientLevel=1的数据
             tcustomCustom.setTcustomdetails(tcustomdetails);
-
             tcustomCustoms.add(tcustomCustom);
         }
         return tcustomCustoms;
@@ -202,7 +205,10 @@ public class TcustomServiceImpl implements TcustomService {
         //VO包含Tcustom 和 Tcustomdetail
         CustomVO customVO = this.selectOne(customId);
 
+        Comparator<Tcustomdetail> comparator = Comparator.comparingInt(Tcustomdetail::getPriority);
+
         List<Tcustomdetail> tcustomdetails = customVO.getTcustomdetails();
+        Collections.sort(tcustomdetails, comparator);//按priority倒序
 
         List<Tcustomdetail> tcustomdetails_service = new ArrayList<>();//定制的服务
         List<Tcustomdetail> tcustomdetails_interface = new ArrayList<>();//定制的接口
@@ -305,7 +311,7 @@ public class TcustomServiceImpl implements TcustomService {
         Map<Tcustomdetail, XmlClass> sMap = new HashMap<>();
 
         Integer envid = customVO.getEnvid();
-        User user = userService.selectOne(executeUserId);
+        //User user = userService.selectOne(executeUserId);
 
         log.info("即将运行定制:" + customId);
 //        Tservicedetail condition = new Tservicedetail();
@@ -408,20 +414,20 @@ public class TcustomServiceImpl implements TcustomService {
     }*/
         }
 
-        Tenv tenv = tenvService.selectOne(envid);
+        //Tenv tenv = tenvService.selectOne(envid);
 
         String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "r_u" + user.getId() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
+        String reportName = "r_u" + customVO.getUserid() + "_c" + customId + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
         //构造入库测试报告记录
         Treport treport = new Treport();
         treport.setCustomid(customVO.getId());
         treport.setCustomname(customVO.getCustomname());
         treport.setEnvid(envid);
-        treport.setEnvkey(tenv.getEnvkey());
+        treport.setEnvkey(customVO.getEnvkey());
         treport.setServiceids(JSON.toJSONString(service_ids));//[1,2,3]
         treport.setServicenames(JSON.toJSONString(service_names));//["aaa","bbb","ccc"],取出后,可直接转换成JSONArray
-        treport.setUserid(user.getId());
-        treport.setUsername(user.getRealname());
+        treport.setUserid(customVO.getUserid());
+        treport.setUsername(customVO.getUsername());
         treport.setReportpath(reportPath);
         treport.setReportname(resourcePathPattern + reportName);
         treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
