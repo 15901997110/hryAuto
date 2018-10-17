@@ -626,6 +626,7 @@ TextareaController = (function(superClass) {
     suffix = (suffix = this.getOpt('suffix')) === "" ? suffix : suffix || " ";
     content += suffix;
     text = "" + startStr + content + (source.slice(this.query['endPos'] || 0));
+    text = text.replace(/(\s*$)/g,"");
     $inputor.val(text);
     $inputor.caret('pos', startStr.length + content.length, {
       iframe: this.app.iframe
@@ -1204,7 +1205,7 @@ $.fn.atwho["default"] = {
   delay: null,
   spaceSelectsMatch: false,
   tabSelectsMatch: true,
-  editableAtwhoQueryAttrs: {},
+  editableAtwhoQueryAttrs:{},
   scrollDuration: 150,
   suspendOnComposing: true,
   lookUpOnClick: true

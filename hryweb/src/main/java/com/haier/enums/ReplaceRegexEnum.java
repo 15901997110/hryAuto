@@ -30,7 +30,7 @@ public enum ReplaceRegexEnum {
      * <date(-1)>:生成昨天的日期,结果:2018-08-07
      * <date(10)>:生成10天后的日期,结果:2018-08-18
      */
-    DATE("(?i)<date\\(-?\\d*\\)>", "<date(numDay)"),
+    DATE("(?i)<date\\(-?\\d*\\)>", "<date(numDay)>"),
 
     /**
      * <datetime(num)> 生成一个datetime,格式"yyyy-MM-dd HH:mm:ss"
