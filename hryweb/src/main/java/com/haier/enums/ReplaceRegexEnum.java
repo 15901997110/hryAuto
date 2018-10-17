@@ -113,7 +113,7 @@ public enum ReplaceRegexEnum {
      * 例:
      * <putR(BOOK_CODE,CFB201809270001932)>  将BOOK_CODE=CFB201809270001932存入临时变量表中
      */
-    PUTR("(?i)<putR\\(\\w+,[^<>]*\\)>", "<putR(key,value)"),
+    PUTR("(?i)<putR\\(\\w+,[^<>]*\\)>", "<putR(key,value)>"),
 
     /**
      * <get(key)>  从临时变量表中,取出key的值,并且替换此表达式
