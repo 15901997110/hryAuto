@@ -33,8 +33,8 @@ public class Base extends AbstractTestNGSpringContextTests {
     public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
-    public JSONObject i_c_JSONObject;//{"methodName",List<CaseId>}
-    public JSONObject i_c_zdy_JSONObject;//{"methodName",list<Tcase>}
+    public JSONObject i_c_JSONObject;//{"methodName":List<CaseId>}
+    public JSONObject i_c_zdy_JSONObject;//{"methodName":list<Tcase>}
     public Tservice tservice;
     public Tservicedetail tservicedetail;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错

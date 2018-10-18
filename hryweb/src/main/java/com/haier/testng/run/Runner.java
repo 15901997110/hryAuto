@@ -1,5 +1,6 @@
 package com.haier.testng.run;
 
+import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.po.Tcustomdetail;
 import com.haier.po.Treport;
@@ -45,7 +46,7 @@ public class Runner {
         //构建唯一的testingId
         String testingId = UUID.randomUUID().toString().replaceAll("-", "");
         Map<String, String> map = new HashMap<>();
-        map.put("testingId", testingId);
+        map.put(ParamKeyEnum.TESTING_ID.getKey(), testingId);
         xmlSuite.setParameters(map);
 
         TestNG ng = new TestNG();
