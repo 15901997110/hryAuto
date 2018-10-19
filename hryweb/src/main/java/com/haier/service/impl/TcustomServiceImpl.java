@@ -245,7 +245,7 @@ public class TcustomServiceImpl implements TcustomService {
             if (iList != null && iList.size() > 0) {
                 iList.stream().sorted(sortByPriorityDesc).forEach(i -> {
                     String methodName = HryUtil.iUri2MethodName(i.getClientname());
-                    xmlIncludeList.add(new XmlInclude(methodName));
+                    xmlIncludeList.add(new XmlInclude(methodName, 0 - i.getPriority()));//XmlInclude按index升序的顺序执行测试
                     List<Tcustomdetail> cList = i_cList.get(i.getClientid());
                     if (cList != null && cList.size() > 0) {
                         iName_cIdList.put(methodName, cList.stream().sorted(sortByPriorityDesc).map(Tcustomdetail::getClientid).collect(Collectors.toList()));
