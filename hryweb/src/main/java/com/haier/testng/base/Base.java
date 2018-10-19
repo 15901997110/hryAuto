@@ -1,6 +1,7 @@
 package com.haier.testng.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.haier.anno.HryCookie;
 import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
@@ -54,7 +55,7 @@ public class Base extends AbstractTestNGSpringContextTests {
         this.caseDesigner = caseDesigner;
         this.testingId = testingId;
         if (StringUtils.isNotBlank(i_c)) {
-            this.i_c_JSONObject = JSONObject.parseObject(i_c);
+            this.i_c_JSONObject = JSONObject.parseObject(i_c, Feature.OrderedField);
         }
         if (StringUtils.isNotBlank(i_c_zdy)) {
             this.i_c_zdy_JSONObject = JSONObject.parseObject(i_c_zdy);

@@ -238,7 +238,7 @@ public class TcustomServiceImpl implements TcustomService {
 
         Consumer<Tcustomdetail> s_consumer = s -> {
             XmlClass xmlClass = new XmlClass();
-            xmlClass.setName(PackageEnum.TEST + "." + s.getClassname());
+            xmlClass.setName(PackageEnum.TEST.getPackageName() + "." + s.getClassname());
             List<XmlInclude> xmlIncludeList = new ArrayList<>();
             Map<String, List<Integer>> iName_cIdList = new HashMap<>();
             List<Tcustomdetail> iList = s_iList.get(s.getClientid());
@@ -270,7 +270,6 @@ public class TcustomServiceImpl implements TcustomService {
             xmlTestList.add(xmlTest);
 
         };
-
         ss.stream().sorted(sortByPriorityDesc).forEach(s_consumer);
 
         suite.setTests(xmlTestList);

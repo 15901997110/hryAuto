@@ -32,11 +32,6 @@ public class RunServiceImpl implements RunService {
     }
 
     @Override
-    public Tenv getTenv(Integer tenvId) {
-        return tenvService.selectOne(tenvId);
-    }
-
-    @Override
     public Tservicedetail getTservicedetail(Integer serviceId, Integer envId) {
         Tservicedetail tservicedetail = new Tservicedetail();
         tservicedetail.setServiceid(serviceId);
