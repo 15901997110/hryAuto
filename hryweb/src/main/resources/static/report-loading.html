@@ -30,18 +30,55 @@
             -webkit-border-radius: 100%;
             -moz-border-radius: 100%;
 
-            -webkit-animation: loader 4s infinite;
+            -webkit-animation: loader 6s infinite;
             -webkit-animation-timing-function: cubic-bezier(0.030, 0.615, 0.995, 0.415);
             -webkit-animation-fill-mode: both;
-            -moz-animation: loader 4s infinite;
+            -moz-animation: loader 6s infinite;
             -moz-animation-timing-function: cubic-bezier(0.030, 0.615, 0.995, 0.415);
             -moz-animation-fill-mode: both;
-            -ms-animation: loader 4s infinite;
+            -ms-animation: loader 6s infinite;
             -ms-animation-timing-function: cubic-bezier(0.030, 0.615, 0.995, 0.415);
             -ms-animation-fill-mode: both;
-            animation: loader 4s infinite;
+            animation: loader 6s infinite;
             animation-timing-function: cubic-bezier(0.030, 0.615, 0.995, 0.415);
             animation-fill-mode: both;
+        }
+
+        span.l-12 {
+            -webkit-animation-delay: 2.2s;
+            animation-delay: 2.2s;
+            -ms-animation-delay: 2.2s;
+            -moz-animation-delay: 2.2s;
+        }
+        span.l-11 {
+            -webkit-animation-delay: 2.0s;
+            animation-delay: 2.0s;
+            -ms-animation-delay: 2.0s;
+            -moz-animation-delay: 2.0s;
+        }
+        span.l-10 {
+            -webkit-animation-delay: 1.8s;
+            animation-delay: 1.8s;
+            -ms-animation-delay: 1.8s;
+            -moz-animation-delay: 1.8s;
+        }
+        span.l-9 {
+            -webkit-animation-delay: 1.6s;
+            animation-delay: 1.6s;
+            -ms-animation-delay: 1.6s;
+            -moz-animation-delay: 1.6s;
+        }
+        span.l-8 {
+            -webkit-animation-delay: 1.4s;
+            animation-delay: 1.4s;
+            -ms-animation-delay: 1.4s;
+            -moz-animation-delay: 1.4s;
+        }
+        span.l-7 {
+            -webkit-animation-delay: 1.2s;
+            animation-delay: 1.2s;
+            -ms-animation-delay: 1.2s;
+            -moz-animation-delay: 1.2s;
         }
 
         span.l-1 {
@@ -174,7 +211,7 @@
 
         });
 
-        var t = 1000;
+        var t = 2500;
         var interval = setInterval(selectReport, t, reportname);//每1秒钟主动查询一次测试报告的状态
         function selectReport(reportname) {
             t += 1000;
@@ -241,6 +278,12 @@
 <span style="font-size: 20px;" id="customname"></span>
 <span></span>
 <span style="font-size: 20px;margin-top: 20px;">测试中</span>
+<span class="l-12"></span>
+<span class="l-11"></span>
+<span class="l-10"></span>
+<span class="l-9"></span>
+<span class="l-8"></span>
+<span class="l-7"></span>
 <span class="l-1"></span>
 <span class="l-2"></span>
 <span class="l-3"></span>
