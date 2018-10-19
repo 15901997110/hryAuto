@@ -7,7 +7,6 @@ import com.haier.mapper.TreportMapper;
 import com.haier.po.Treport;
 import com.haier.po.TreportExample;
 import com.haier.service.TreportService;
-import com.haier.util.ReflectUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

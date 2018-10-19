@@ -13,7 +13,10 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,10 +52,7 @@ public class TreportController {
         if (StringUtils.isBlank(reportname)) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "报告名称必须");
         }
-        if (treportService.getStatus(reportname) > 0) {
-            return ResultUtil.success(treportService.getStatus(reportname));
-        }
-        throw new HryException(StatusCodeEnum.NOT_FOUND);
+        return ResultUtil.success(treportService.getStatus(reportname));
     }
 
     @PostMapping("/getStatusById")
