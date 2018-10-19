@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -80,9 +81,7 @@ public class HryUtil {
                                     JSONObject i_c, JSONObject i_c_zdy, Method method) {
         RunService runService = SpringContextHolder.getBean(RunService.class);
         Object[] ret;
-        String iUri;
-        //testName可能未填写
-        iUri = method.getAnnotation(Test.class).testName();
+        String iUri = method.getAnnotation(Test.class).testName();
         if (StringUtils.isBlank(iUri)) {
             throw new SkipException("测试方法(" + method.getName() + ")上@Test.testName注解异常");
         }
@@ -112,39 +111,49 @@ public class HryUtil {
             }
         }
 
-
         /**
-         * 用户没有自定义的Case,则使用数据库的Case,选择对应环境的所有Case(注意,未指定envId的Case也会被选择出来)
-         * 然后根据用户的定制需求,过滤出用户定制的Case
+         * 找出此接口中的所有case
          */
-        List<Tcase> tcases = runService.getTcase(ti.getId(), tservicedetail.getEnvid(), caseDesigner);
+        List<Tcase> tcases = runService.getTcase(ti.getId(), null, null);
         if (tcases.size() == 0) {
             throw new SkipException("此接口(" + iUri + ")无可用的测试用例");
         }
 
+        Map<Integer, Tcase> collect = tcases.stream().collect(Collectors.toMap(Tcase::getId, tcase -> tcase));
+
         /**
-         * 处理用户定制的Case
+         * 过滤出用户定制的case
          */
+        List<Tcase> customCases = new ArrayList<>();
+        ;
         if (i_c != null && i_c.size() > 0) {
             JSONArray customCaseArray = i_c.getJSONArray(method.getName());
             if (customCaseArray != null && customCaseArray.size() > 0) {
-                Iterator<Tcase> iterator = tcases.iterator();
-                while (iterator.hasNext()) {
-                    Tcase tcase = iterator.next();
-                    //数据库中查到的caseid不在定制列表中,则移除掉
-                    if (!customCaseArray.contains(tcase.getId())) {
-                        iterator.remove();
+
+                for (Object o : customCaseArray) {
+                    Tcase tcase = collect.get(o);
+                    if (tcase != null) {
+                        customCases.add(tcase);
                     }
                 }
             }
         }
-        ret = new Object[tcases.size()];
-        for (int i = 0; i < tcases.size(); i++) {
+        //如果有自定的Case,则将自定义的Case包装成HryTest对象返回
+        if (customCases.size() > 0) {
+            return collectHtyTest(tservice, tservicedetail, ti, customCases);
+        }
+        //如果用户未定义Case,则将此接口查询到的Case全部返回
+        return collectHtyTest(tservice, tservicedetail, ti, tcases);
+    }
+
+    public static Object[] collectHtyTest(Tservice tservice, Tservicedetail tservicedetail, Ti ti, List<Tcase> customCases) {
+        Object[] ret = new Object[customCases.size()];
+        for (int i = 0; i < customCases.size(); i++) {
             HryTest test = new HryTest();
             test.setTservice(tservice);
             test.setTservicedetail(tservicedetail);
             test.setTi(ti);
-            test.setTcase(tcases.get(i));
+            test.setTcase(customCases.get(i));
             ret[i] = test;
         }
         return ret;
