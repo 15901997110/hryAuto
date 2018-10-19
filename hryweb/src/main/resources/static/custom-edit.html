@@ -120,6 +120,9 @@
     $(document).ready(function () {
         var id = getParameter('id');
         var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom(" + id + ")\"><i class=\"icon-ok\"></i> 提交</button>";
+        submit+="<button type=\"button\" class=\"btn btn-success radius\" style='margin-left:3px;' id=\"admin-role-close\" name=\"admin-role-close\"\n" +
+            "                        onclick=\"layer_close()\"><i class=\"icon-ok\"></i> 关闭\n" +
+            "                </button>";
         $("#submit").append(submit);
 
         var obj = new Object();
