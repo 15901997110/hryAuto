@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Oss")
 public class OssBase extends Base {
-    public OssBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public OssBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/behaviorAnalysisFacade/addMarketingPushMessage", desc = "推送消息")
     public String _behaviorAnalysisFacade_addMarketingPushMessage(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -165,6 +166,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/consolePromotionFacade/addBlackList", desc = "新增黑名单")
+    public String _consolePromotionFacade_addBlackList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/consolePromotionFacade/addMerchantChannel", desc = "新增商户活动渠道")
     public String _consolePromotionFacade_addMerchantChannel(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -177,6 +183,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/consolePromotionFacade/addPromotionActivityRule", desc = "新增活动规则")
     public String _consolePromotionFacade_addPromotionActivityRule(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consolePromotionFacade/deleteBlackList", desc = "删除黑名单")
+    public String _consolePromotionFacade_deleteBlackList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -227,6 +238,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/consolePromotionFacade/getPromotionRewardsInfo", desc = "查询推广活动奖励统计信息")
     public String _consolePromotionFacade_getPromotionRewardsInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/consolePromotionFacade/queryBlackList", desc = "查询黑名单")
+    public String _consolePromotionFacade_queryBlackList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -302,6 +318,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/couponFacade/exchangePrepaidCouponWithLcj", desc = "抵用金兑换抵扣券")
     public String _couponFacade_exchangePrepaidCouponWithLcj(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/couponFacade/freezeCoupon", desc = "冻结券")
+    public String _couponFacade_freezeCoupon(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -465,6 +486,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/couponFacade/queryFreezeRewards", desc = "查询冻结奖励")
+    public String _couponFacade_queryFreezeRewards(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/couponFacade/queryGrabCouponActivity", desc = "定时发放券查看")
     public String _couponFacade_queryGrabCouponActivity(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -497,6 +523,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/couponFacade/refundCoupon", desc = "券退款")
     public String _couponFacade_refundCoupon(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/couponFacade/unFreezeCoupon", desc = "解冻券")
+    public String _couponFacade_unFreezeCoupon(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1065,6 +1096,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/promotionFacade/queryPromotionActivityRewards", desc = "查询推广奖励")
+    public String _promotionFacade_queryPromotionActivityRewards(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/promotionFacade/queryPromotionRelationList", desc = "查询推广关系")
     public String _promotionFacade_queryPromotionRelationList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1230,6 +1266,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/rewardsFacade/freezeLcj", desc = "冻结理财金")
+    public String _rewardsFacade_freezeLcj(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/rewardsFacade/getManualRewardsDetails", desc = "查询人工发放奖励列明细")
     public String _rewardsFacade_getManualRewardsDetails(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1262,6 +1303,11 @@ public class OssBase extends Base {
 
     @Uri(value = "/rewardsFacade/sendRewards", desc = "手动发放抵用金奖励")
     public String _rewardsFacade_sendRewards(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/rewardsFacade/unFreezeLcj", desc = "解冻理财金")
+    public String _rewardsFacade_unFreezeLcj(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1310,6 +1356,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/tpPromotionFacade/getChannelPromotionUri", desc = "根据用户获取推广码（链接）")
+    public String _tpPromotionFacade_getChannelPromotionUri(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/tpPromotionFacade/getDailyPromotionRewards", desc = "查询奖励信息")
     public String _tpPromotionFacade_getDailyPromotionRewards(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1330,8 +1381,23 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/tpPromotionFacade/getRegisteredUserBehaviorData", desc = "查询已注册用户行为数据")
+    public String _tpPromotionFacade_getRegisteredUserBehaviorData(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/tpPromotionFacade/getSummaryPromotionRewards", desc = "查询奖励总额信息")
     public String _tpPromotionFacade_getSummaryPromotionRewards(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/tpPromotionFacade/getUserType", desc = "查询是否属于客服可跟进用户")
+    public String _tpPromotionFacade_getUserType(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/tpPromotionFacade/queryChannelInfo", desc = "查询渠道数据总览")
+    public String _tpPromotionFacade_queryChannelInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

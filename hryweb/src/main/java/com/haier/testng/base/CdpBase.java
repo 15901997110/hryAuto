@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CdpBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Cdp")
 public class CdpBase extends Base {
-    public CdpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public CdpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/baiduFacade/queryBlackRiskLevel", desc = "百度-磐石系统-黑名单风险等级")
     public String _baiduFacade_queryBlackRiskLevel(HryTest test) {
         return HryHttpClientUtil.send(test, this);

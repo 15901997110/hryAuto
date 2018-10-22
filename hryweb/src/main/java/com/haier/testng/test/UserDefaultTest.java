@@ -13,22 +13,35 @@ import java.lang.reflect.Method;
 /**
  * @Description: UserDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @Slf4j
 public class UserDefaultTest extends UserBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public UserDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+    public UserDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);
     }
 
+    @Test(testName = "/accountFacade/authorisedBalance", dataProvider = "provider", description = "余额授权")
+    public void accountFacade_authorisedBalance(HryTest hryTest) {
+        String actual = super._accountFacade_authorisedBalance(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/accountFacade/balanceCheckDetail", dataProvider = "provider", description = "日终余额校验明细")
     public void accountFacade_balanceCheckDetail(HryTest hryTest) {
         String actual = super._accountFacade_balanceCheckDetail(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/accountFacade/cancelAuthorisedBalance", dataProvider = "provider", description = "取消授权余额")
+    public void accountFacade_cancelAuthorisedBalance(HryTest hryTest) {
+        String actual = super._accountFacade_cancelAuthorisedBalance(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -68,6 +81,18 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/accountFacade/queryAuthorisedInfo", dataProvider = "provider", description = "查询授权信息")
+    public void accountFacade_queryAuthorisedInfo(HryTest hryTest) {
+        String actual = super._accountFacade_queryAuthorisedInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/accountFacade/queryAuthorisedTransaction", dataProvider = "provider", description = "查询使用授权余额信息")
+    public void accountFacade_queryAuthorisedTransaction(HryTest hryTest) {
+        String actual = super._accountFacade_queryAuthorisedTransaction(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/accountFacade/queryUserInfoCheckFileResult", dataProvider = "provider", description = "查询对账结果")
     public void accountFacade_queryUserInfoCheckFileResult(HryTest hryTest) {
         String actual = super._accountFacade_queryUserInfoCheckFileResult(hryTest);
@@ -92,9 +117,63 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/accountFacade/useAuthorisedBalance", dataProvider = "provider", description = "匹配授权余额")
+    public void accountFacade_useAuthorisedBalance(HryTest hryTest) {
+        String actual = super._accountFacade_useAuthorisedBalance(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/accountFacade/userCheckDetail", dataProvider = "provider", description = "客户信息校验明细")
     public void accountFacade_userCheckDetail(HryTest hryTest) {
         String actual = super._accountFacade_userCheckDetail(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/confirmProtocolSign", dataProvider = "provider", description = "协议支付签约确认")
+    public void externalFacade_confirmProtocolSign(HryTest hryTest) {
+        String actual = super._externalFacade_confirmProtocolSign(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/getHaiLiProjectByOpenId", dataProvider = "provider", description = "根据OpenId查询是否属于海利计划")
+    public void externalFacade_getHaiLiProjectByOpenId(HryTest hryTest) {
+        String actual = super._externalFacade_getHaiLiProjectByOpenId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/getOpenIdByTpId", dataProvider = "provider", description = "根据第三方ID查询openId")
+    public void externalFacade_getOpenIdByTpId(HryTest hryTest) {
+        String actual = super._externalFacade_getOpenIdByTpId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/getUserProtocolSign", dataProvider = "provider", description = "查询用户协议支付签约信息")
+    public void externalFacade_getUserProtocolSign(HryTest hryTest) {
+        String actual = super._externalFacade_getUserProtocolSign(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/getZDPersonalStateByGateway", dataProvider = "provider", description = "根据用户证件号+银行卡号+渠道标识查询个人状态网关专用(适用于显性开户)")
+    public void externalFacade_getZDPersonalStateByGateway(HryTest hryTest) {
+        String actual = super._externalFacade_getZDPersonalStateByGateway(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/externalFacade/protocolSign", dataProvider = "provider", description = "协议支付签约(该接口只支持个人身份证用户)")
+    public void externalFacade_protocolSign(HryTest hryTest) {
+        String actual = super._externalFacade_protocolSign(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/haierGatewayFacade/haierUserBinding", dataProvider = "provider", description = "海尔用户绑定")
+    public void haierGatewayFacade_haierUserBinding(HryTest hryTest) {
+        String actual = super._haierGatewayFacade_haierUserBinding(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/haierGatewayFacade/haierUserLogin", dataProvider = "provider", description = "海尔用户登录")
+    public void haierGatewayFacade_haierUserLogin(HryTest hryTest) {
+        String actual = super._haierGatewayFacade_haierUserLogin(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -119,6 +198,12 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/lanmaoGatewayFacade/checkPassword", dataProvider = "provider", description = "校验密码")
     public void lanmaoGatewayFacade_checkPassword(HryTest hryTest) {
         String actual = super._lanmaoGatewayFacade_checkPassword(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/lanmaoGatewayFacade/confirmProtocolSign", dataProvider = "provider", description = "协议支付签约确认")
+    public void lanmaoGatewayFacade_confirmProtocolSign(HryTest hryTest) {
+        String actual = super._lanmaoGatewayFacade_confirmProtocolSign(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -155,6 +240,18 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/lanmaoGatewayFacade/personalRegister", dataProvider = "provider", description = "个人绑卡注册")
     public void lanmaoGatewayFacade_personalRegister(HryTest hryTest) {
         String actual = super._lanmaoGatewayFacade_personalRegister(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/lanmaoGatewayFacade/protocolSign", dataProvider = "provider", description = "协议支付签约(该接口只支持个人身份证用户)")
+    public void lanmaoGatewayFacade_protocolSign(HryTest hryTest) {
+        String actual = super._lanmaoGatewayFacade_protocolSign(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/lanmaoGatewayFacade/queryProtocolSign", dataProvider = "provider", description = "查询用户的协议签约信息")
+    public void lanmaoGatewayFacade_queryProtocolSign(HryTest hryTest) {
+        String actual = super._lanmaoGatewayFacade_queryProtocolSign(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -320,6 +417,12 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/oauthFacade/decryptUserId", dataProvider = "provider", description = "userId解密")
+    public void oauthFacade_decryptUserId(HryTest hryTest) {
+        String actual = super._oauthFacade_decryptUserId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/oauthFacade/encryptUserId", dataProvider = "provider", description = "userId加密")
     public void oauthFacade_encryptUserId(HryTest hryTest) {
         String actual = super._oauthFacade_encryptUserId(hryTest);
@@ -386,21 +489,9 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/userConsoleFacade/addUserExtraInfo", dataProvider = "provider", description = "添加借款人附加信息")
-    public void userConsoleFacade_addUserExtraInfo(HryTest hryTest) {
-        String actual = super._userConsoleFacade_addUserExtraInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/userConsoleFacade/deleteUserExtraAttachment", dataProvider = "provider", description = "删除借款人附加附件")
     public void userConsoleFacade_deleteUserExtraAttachment(HryTest hryTest) {
         String actual = super._userConsoleFacade_deleteUserExtraAttachment(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/userConsoleFacade/executeTask", dataProvider = "provider", description = "执行任务")
-    public void userConsoleFacade_executeTask(HryTest hryTest) {
-        String actual = super._userConsoleFacade_executeTask(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -434,7 +525,7 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/userConsoleFacade/queryEnterpriseDetail", dataProvider = "provider", description = "根据用户id查询用户详细信息")
+    @Test(testName = "/userConsoleFacade/queryEnterpriseDetail", dataProvider = "provider", description = "根据用户id查询企业详细信息")
     public void userConsoleFacade_queryEnterpriseDetail(HryTest hryTest) {
         String actual = super._userConsoleFacade_queryEnterpriseDetail(hryTest);
         supperAssert(actual, hryTest);
@@ -482,6 +573,12 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/userFacade/addUserExtraInfo", dataProvider = "provider", description = "添加借款人附加信息")
+    public void userFacade_addUserExtraInfo(HryTest hryTest) {
+        String actual = super._userFacade_addUserExtraInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/userFacade/checkBankCardAudit", dataProvider = "provider", description = "检查用户换绑卡审核记录状态")
     public void userFacade_checkBankCardAudit(HryTest hryTest) {
         String actual = super._userFacade_checkBankCardAudit(hryTest);
@@ -497,6 +594,12 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/userFacade/checkLoginNameExists", dataProvider = "provider", description = "检查用户名是否存在")
     public void userFacade_checkLoginNameExists(HryTest hryTest) {
         String actual = super._userFacade_checkLoginNameExists(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/userFacade/filterUserIdByBirthday", dataProvider = "provider", description = "根据生日筛选userId")
+    public void userFacade_filterUserIdByBirthday(HryTest hryTest) {
+        String actual = super._userFacade_filterUserIdByBirthday(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -602,6 +705,18 @@ public class UserDefaultTest extends UserBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/userFacade/getUserPropertyDetail", dataProvider = "provider", description = "获得用户资产详情")
+    public void userFacade_getUserPropertyDetail(HryTest hryTest) {
+        String actual = super._userFacade_getUserPropertyDetail(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/userFacade/getUserProtocolSign", dataProvider = "provider", description = "查询用户协议支付签约信息")
+    public void userFacade_getUserProtocolSign(HryTest hryTest) {
+        String actual = super._userFacade_getUserProtocolSign(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/userFacade/getZDPersonalState", dataProvider = "provider", description = "根据用户证件号+银行卡号+渠道标识查询个人状态(适用于显性开户)")
     public void userFacade_getZDPersonalState(HryTest hryTest) {
         String actual = super._userFacade_getZDPersonalState(hryTest);
@@ -665,6 +780,30 @@ public class UserDefaultTest extends UserBase{
     @Test(testName = "/userFacade/verifyPasswordByRequestNo", dataProvider = "provider", description = "根据请求号验证密码")
     public void userFacade_verifyPasswordByRequestNo(HryTest hryTest) {
         String actual = super._userFacade_verifyPasswordByRequestNo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/weChatFacade/bindOpenIdAndUserId", dataProvider = "provider", description = "绑定微信openId和userId")
+    public void weChatFacade_bindOpenIdAndUserId(HryTest hryTest) {
+        String actual = super._weChatFacade_bindOpenIdAndUserId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/weChatFacade/getOpenIdByUserId", dataProvider = "provider", description = "根据userId查询openId")
+    public void weChatFacade_getOpenIdByUserId(HryTest hryTest) {
+        String actual = super._weChatFacade_getOpenIdByUserId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/weChatFacade/getUserIdByOpenId", dataProvider = "provider", description = "根据openId查询userId")
+    public void weChatFacade_getUserIdByOpenId(HryTest hryTest) {
+        String actual = super._weChatFacade_getUserIdByOpenId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/weChatFacade/unbindOpenIdAndUserId", dataProvider = "provider", description = "解绑微信openId")
+    public void weChatFacade_unbindOpenIdAndUserId(HryTest hryTest) {
+        String actual = super._weChatFacade_unbindOpenIdAndUserId(hryTest);
         supperAssert(actual, hryTest);
     }
 

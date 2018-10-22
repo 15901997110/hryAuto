@@ -9,6 +9,7 @@ import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
 import com.haier.service.RunService;
 import com.haier.util.HryUtil;
+import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -45,10 +46,6 @@ public class Base extends AbstractTestNGSpringContextTests {
 
     }
 
-    public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        this(serviceId, envId, caseDesigner, i_c, i_c_zdy, null);
-    }
-
     public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         this.serviceId = serviceId;
         this.envId = envId;
@@ -63,7 +60,12 @@ public class Base extends AbstractTestNGSpringContextTests {
         runService = SpringContextHolder.getBean(RunService.class);
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
+
+
+        LoginUtil.loginInit(this);
+
         log.info("Base带参构造器执行完成!");
+
     }
 
     @HryCookie

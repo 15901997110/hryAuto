@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("P2p")
 public class P2pBase extends Base {
-    public P2pBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public P2pBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/agreementFacade/addProductInstruction", desc = "增加产品说明书")
     public String _agreementFacade_addProductInstruction(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -715,11 +716,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/offlinePlanFacade/userReservation", desc = "WEB-用户预约")
-    public String _offlinePlanFacade_userReservation(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/orderFacade/exportPurchaseRecord", desc = "导出查询投资记录")
     public String _orderFacade_exportPurchaseRecord(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1110,33 +1106,13 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/addCarBidDetail", desc = "保存车抵押表抵押物信息")
-    public String _tenderFacade_addCarBidDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/addCarBidDetailList", desc = "保存车抵押表抵押物列表信息")
-    public String _tenderFacade_addCarBidDetailList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/addEnclosure", desc = "新增附件")
     public String _tenderFacade_addEnclosure(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/addExchangeInfo", desc = "增加交易所信息")
-    public String _tenderFacade_addExchangeInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/addLabelInfo", desc = "增加标签")
     public String _tenderFacade_addLabelInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/addTenderBidInfo", desc = "保存标的信息接口")
-    public String _tenderFacade_addTenderBidInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1150,33 +1126,13 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/createAccountsPayableDetail", desc = "增加融租债转账款信息")
-    public String _tenderFacade_createAccountsPayableDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/createBidToCopy", desc = "根据当前标的复制创建新标的")
     public String _tenderFacade_createBidToCopy(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/deleteAccountsPayableDetail", desc = "删除融租债转账款信息")
-    public String _tenderFacade_deleteAccountsPayableDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/deleteAccountsPayableDetailList", desc = "删除融租债转账款信息(根据标的ID)")
-    public String _tenderFacade_deleteAccountsPayableDetailList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/deleteBidLabel", desc = "删除标的的标签")
     public String _tenderFacade_deleteBidLabel(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/deleteCarBidDetail", desc = "删除车抵押表抵押物信息")
-    public String _tenderFacade_deleteCarBidDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1205,11 +1161,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/getCarBidDetails", desc = "查询车抵押表抵押物信息")
-    public String _tenderFacade_getCarBidDetails(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/getCbpLoanInfoByLoanId", desc = "查询信贷信息")
     public String _tenderFacade_getCbpLoanInfoByLoanId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1222,16 +1173,6 @@ public class P2pBase extends Base {
 
     @Uri(value = "/tenderFacade/getEnclosureTypes", desc = "查询附件类型")
     public String _tenderFacade_getEnclosureTypes(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/getExchangeInfoByBidId", desc = "根据标的ID获取交易所信息")
-    public String _tenderFacade_getExchangeInfoByBidId(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/getExchangeInfoById", desc = "根据交易所ID获取交易所信息")
-    public String _tenderFacade_getExchangeInfoById(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1275,16 +1216,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/queryAccountsPayableDetail", desc = "查询融租债转账款信息")
-    public String _tenderFacade_queryAccountsPayableDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/queryAllExchangeInfo", desc = "获取全部交易所信息")
-    public String _tenderFacade_queryAllExchangeInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/queryBidCheckList", desc = "查询标的审核信息")
     public String _tenderFacade_queryBidCheckList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1325,11 +1256,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/updateAccountsPayableDetail", desc = "更新融租债转账款信息")
-    public String _tenderFacade_updateAccountsPayableDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/updateBidExtraInfo", desc = "更新标的附加信息")
     public String _tenderFacade_updateBidExtraInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1337,16 +1263,6 @@ public class P2pBase extends Base {
 
     @Uri(value = "/tenderFacade/updateBidReleaseQueue", desc = "修改标的发布队列")
     public String _tenderFacade_updateBidReleaseQueue(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/updateCarBidDetail", desc = "更新车抵押表抵押物信息")
-    public String _tenderFacade_updateCarBidDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/tenderFacade/updateExchangeInfo", desc = "更新交易所信息")
-    public String _tenderFacade_updateExchangeInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

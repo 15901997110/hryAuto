@@ -3,8 +3,6 @@ package com.haier.testng.test;
 import com.haier.po.HryTest;
 import com.haier.testng.base.ZhuanleBase;
 import static com.haier.util.AssertUtil.supperAssert;
-
-import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -15,15 +13,15 @@ import java.lang.reflect.Method;
 /**
  * @Description: ZhuanleDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @Slf4j
 public class ZhuanleDefaultTest extends ZhuanleBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public ZhuanleDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-        LoginUtil.zhuanleLogin(tservice, tservicedetail, "/sign-in", this);
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+    public ZhuanleDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);
