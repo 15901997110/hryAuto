@@ -613,7 +613,7 @@ TextareaController = (function(superClass) {
     scaleBottom = this.app.document.selection ? 0 : 2;
     return {
       left: c.left-200,
-      top: c.top-200,
+      top: c.top-10,
       bottom: c.top + c.height + scaleBottom
     };
   };
