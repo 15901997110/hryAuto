@@ -11,6 +11,5 @@ import java.util.List;
  */
 @Data
 public class TcustomCustom extends Tcustom {
-    private String envkey;
     private List<Tcustomdetail> tcustomdetails;
 }

@@ -8,15 +8,26 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: UserBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("User")
 public class UserBase extends Base {
-    public UserBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public UserBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
+    @Uri(value = "/accountFacade/authorisedBalance", desc = "余额授权")
+    public String _accountFacade_authorisedBalance(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/accountFacade/balanceCheckDetail", desc = "日终余额校验明细")
     public String _accountFacade_balanceCheckDetail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/accountFacade/cancelAuthorisedBalance", desc = "取消授权余额")
+    public String _accountFacade_cancelAuthorisedBalance(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -50,6 +61,16 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/accountFacade/queryAuthorisedInfo", desc = "查询授权信息")
+    public String _accountFacade_queryAuthorisedInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/accountFacade/queryAuthorisedTransaction", desc = "查询使用授权余额信息")
+    public String _accountFacade_queryAuthorisedTransaction(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/accountFacade/queryUserInfoCheckFileResult", desc = "查询对账结果")
     public String _accountFacade_queryUserInfoCheckFileResult(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -70,8 +91,53 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/accountFacade/useAuthorisedBalance", desc = "匹配授权余额")
+    public String _accountFacade_useAuthorisedBalance(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/accountFacade/userCheckDetail", desc = "客户信息校验明细")
     public String _accountFacade_userCheckDetail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/confirmProtocolSign", desc = "协议支付签约确认")
+    public String _externalFacade_confirmProtocolSign(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/getHaiLiProjectByOpenId", desc = "根据OpenId查询是否属于海利计划")
+    public String _externalFacade_getHaiLiProjectByOpenId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/getOpenIdByTpId", desc = "根据第三方ID查询openId")
+    public String _externalFacade_getOpenIdByTpId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/getUserProtocolSign", desc = "查询用户协议支付签约信息")
+    public String _externalFacade_getUserProtocolSign(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/getZDPersonalStateByGateway", desc = "根据用户证件号+银行卡号+渠道标识查询个人状态网关专用(适用于显性开户)")
+    public String _externalFacade_getZDPersonalStateByGateway(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/externalFacade/protocolSign", desc = "协议支付签约(该接口只支持个人身份证用户)")
+    public String _externalFacade_protocolSign(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/haierGatewayFacade/haierUserBinding", desc = "海尔用户绑定")
+    public String _haierGatewayFacade_haierUserBinding(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/haierGatewayFacade/haierUserLogin", desc = "海尔用户登录")
+    public String _haierGatewayFacade_haierUserLogin(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -92,6 +158,11 @@ public class UserBase extends Base {
 
     @Uri(value = "/lanmaoGatewayFacade/checkPassword", desc = "校验密码")
     public String _lanmaoGatewayFacade_checkPassword(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/lanmaoGatewayFacade/confirmProtocolSign", desc = "协议支付签约确认")
+    public String _lanmaoGatewayFacade_confirmProtocolSign(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -122,6 +193,16 @@ public class UserBase extends Base {
 
     @Uri(value = "/lanmaoGatewayFacade/personalRegister", desc = "个人绑卡注册")
     public String _lanmaoGatewayFacade_personalRegister(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/lanmaoGatewayFacade/protocolSign", desc = "协议支付签约(该接口只支持个人身份证用户)")
+    public String _lanmaoGatewayFacade_protocolSign(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/lanmaoGatewayFacade/queryProtocolSign", desc = "查询用户的协议签约信息")
+    public String _lanmaoGatewayFacade_queryProtocolSign(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -260,6 +341,11 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/oauthFacade/decryptUserId", desc = "userId解密")
+    public String _oauthFacade_decryptUserId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/oauthFacade/encryptUserId", desc = "userId加密")
     public String _oauthFacade_encryptUserId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -315,18 +401,8 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userConsoleFacade/addUserExtraInfo", desc = "添加借款人附加信息")
-    public String _userConsoleFacade_addUserExtraInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/userConsoleFacade/deleteUserExtraAttachment", desc = "删除借款人附加附件")
     public String _userConsoleFacade_deleteUserExtraAttachment(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/userConsoleFacade/executeTask", desc = "执行任务")
-    public String _userConsoleFacade_executeTask(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -355,7 +431,7 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/userConsoleFacade/queryEnterpriseDetail", desc = "根据用户id查询用户详细信息")
+    @Uri(value = "/userConsoleFacade/queryEnterpriseDetail", desc = "根据用户id查询企业详细信息")
     public String _userConsoleFacade_queryEnterpriseDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -395,6 +471,11 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/userFacade/addUserExtraInfo", desc = "添加借款人附加信息")
+    public String _userFacade_addUserExtraInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/userFacade/checkBankCardAudit", desc = "检查用户换绑卡审核记录状态")
     public String _userFacade_checkBankCardAudit(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -407,6 +488,11 @@ public class UserBase extends Base {
 
     @Uri(value = "/userFacade/checkLoginNameExists", desc = "检查用户名是否存在")
     public String _userFacade_checkLoginNameExists(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/userFacade/filterUserIdByBirthday", desc = "根据生日筛选userId")
+    public String _userFacade_filterUserIdByBirthday(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -495,6 +581,16 @@ public class UserBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/userFacade/getUserPropertyDetail", desc = "获得用户资产详情")
+    public String _userFacade_getUserPropertyDetail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/userFacade/getUserProtocolSign", desc = "查询用户协议支付签约信息")
+    public String _userFacade_getUserProtocolSign(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/userFacade/getZDPersonalState", desc = "根据用户证件号+银行卡号+渠道标识查询个人状态(适用于显性开户)")
     public String _userFacade_getZDPersonalState(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -547,6 +643,26 @@ public class UserBase extends Base {
 
     @Uri(value = "/userFacade/verifyPasswordByRequestNo", desc = "根据请求号验证密码")
     public String _userFacade_verifyPasswordByRequestNo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/weChatFacade/bindOpenIdAndUserId", desc = "绑定微信openId和userId")
+    public String _weChatFacade_bindOpenIdAndUserId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/weChatFacade/getOpenIdByUserId", desc = "根据userId查询openId")
+    public String _weChatFacade_getOpenIdByUserId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/weChatFacade/getUserIdByOpenId", desc = "根据openId查询userId")
+    public String _weChatFacade_getUserIdByOpenId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/weChatFacade/unbindOpenIdAndUserId", desc = "解绑微信openId")
+    public String _weChatFacade_unbindOpenIdAndUserId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

@@ -26,58 +26,58 @@ import java.util.Map;
 @Service
 @Slf4j
 public class AutocodeServiceImpl implements AutocodeService {
-    private static final String BASE_HEAD = "package com.haier.testng.base;\n" +
-            "\n" +
-            "import com.haier.anno.SKey;\n" +
-            "import com.haier.anno.Uri;\n" +
-            "import com.haier.po.HryTest;\n" +
-            "import com.haier.util.HryHttpClientUtil;\n" +
-            "\n";
-    private static final String DEFAULT_HEAD = "package com.haier.testng.test;\n" +
-            "\n" +
-            "import com.haier.po.HryTest;\n" +
-            "import com.haier.testng.base.${supperClassName};\n" +
-            "import static com.haier.util.AssertUtil.supperAssert;\n" +
-            "import lombok.extern.slf4j.Slf4j;\n" +
-            /*"import org.testng.annotations.BeforeClass;\n" +*/
-            "import org.testng.annotations.DataProvider;\n" +
-            "import org.testng.annotations.Parameters;\n" +
-            "import org.testng.annotations.Test;\n" +
-            "\n" +
-            "import java.lang.reflect.Method;\n" +
-            "\n";
-    private static final String BASE_CLASS = "/**\n" +
-            " * @Description: ${baseClassName}\n" +
-            " * @Author: 自动生成\n" +
-            " * @Date: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + "\n" +
-            " */\n" +
-            "@SKey(\"${SKey}\")\n" +
-            "public class ${baseClassName} extends Base ";
+    private static final String BASE_HEAD =
+            "package com.haier.testng.base;\n" +
+                    "\n" +
+                    "import com.haier.anno.SKey;\n" +
+                    "import com.haier.anno.Uri;\n" +
+                    "import com.haier.po.HryTest;\n" +
+                    "import com.haier.util.HryHttpClientUtil;\n" +
+                    "\n";
+    private static final String DEFAULT_HEAD =
+            "package com.haier.testng.test;\n" +
+                    "\n" +
+                    "import com.haier.po.HryTest;\n" +
+                    "import com.haier.testng.base.${supperClassName};\n" +
+                    "import static com.haier.util.AssertUtil.supperAssert;\n" +
+                    "import lombok.extern.slf4j.Slf4j;\n" +
+                    "import org.testng.annotations.DataProvider;\n" +
+                    "import org.testng.annotations.Parameters;\n" +
+                    "import org.testng.annotations.Test;\n" +
+                    "\n" +
+                    "import java.lang.reflect.Method;\n" +
+                    "\n";
+    private static final String BASE_CLASS =
+            "/**\n" +
+                    " * @Description: ${baseClassName}\n" +
+                    " * @Author: 自动生成\n" +
+                    " * @Date: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + "\n" +
+                    " */\n" +
+                    "@SKey(\"${SKey}\")\n" +
+                    "public class ${baseClassName} extends Base ";
 
-    private static final String DEFAULT_CLASS = "/**\n" +
-            " * @Description: ${defaultClassName}\n" +
-            " * @Author: 自动生成\n" +
-            " * @Date: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + "\n" +
-            " */\n" +
-            "@Slf4j\n" +
-            "public class ${defaultClassName} extends ${supperClassName}";
-    private static final String BASE_CONSTRUCT = "    public ${baseClassName}(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {\n" +
-            "        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);\n" +
-            "    }\n" +
-            "\n";
+    private static final String DEFAULT_CLASS =
+            "/**\n" +
+                    " * @Description: ${defaultClassName}\n" +
+                    " * @Author: 自动生成\n" +
+                    " * @Date: " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()) + "\n" +
+                    " */\n" +
+                    "@Slf4j\n" +
+                    "public class ${defaultClassName} extends ${supperClassName}";
+    private static final String BASE_CONSTRUCT =
+            "    public ${baseClassName}(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {\n" +
+                    "        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);\n" +
+                    "    }\n" +
+                    "\n";
 
-    private static final String DEFAULT_CONSTUCT = "    @Parameters({\"serviceId\", \"envId\", \"caseDesigner\", \"i_c\", \"i_c_zdy\"})\n" +
-            "    public ${defaultClassName}(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {\n" +
-            "        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);\n" +
-            "    }\n" +
-            "\n";
+    private static final String DEFAULT_CONSTUCT =
+            "    @Parameters({\"serviceId\", \"envId\", \"caseDesigner\", \"i_c\", \"i_c_zdy\" ,\"testingId\"})\n" +
+                    "    public ${defaultClassName}(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {\n" +
+                    "        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);\n" +
+                    "    }\n" +
+                    "\n";
 
-    private static final String DEFAULT_COMMON = /*"    @Parameters({\"serviceId\", \"envId\", \"caseDesigner\", \"i_c\", \"i_c_zdy\"})\n" +
-            "    @BeforeClass\n" +
-            "    public void beforeClass(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {\n" +
-            "        init(serviceId, envId, caseDesigner, i_c, i_c_zdy);\n" +
-            "    }\n" +
-            "\n" +*/
+    private static final String DEFAULT_COMMON =
             "    @DataProvider(name = \"provider\")\n" +
                     "    public Object[] getCase(Method method) {\n" +
                     "        return provider(method);\n" +
@@ -85,16 +85,19 @@ public class AutocodeServiceImpl implements AutocodeService {
                     "\n";
 
 
-    private static final String BASE_METHOD = "    @Uri(value = \"${annoTestName}\", desc = \"${annoDesc}\")\n" +
-            "    public String _${testMethodName}(HryTest test) {\n" +
-            "        return HryHttpClientUtil.send(test, this);\n" +
-            "    }\n" +
-            "\n";
-    private static final String DEFAULT_METHOD = "    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
-            "    public void ${testMethodName}(HryTest hryTest) {\n" +
-            "        String actual = super._${testMethodName}(hryTest);\n" +
-            "        supperAssert(actual, hryTest);\n" +
-            "    }\n\n";
+    private static final String BASE_METHOD =
+            "    @Uri(value = \"${annoTestName}\", desc = \"${annoDesc}\")\n" +
+                    "    public String _${testMethodName}(HryTest test) {\n" +
+                    "        return HryHttpClientUtil.send(test, this);\n" +
+                    "    }\n" +
+                    "\n";
+
+    private static final String DEFAULT_METHOD =
+            "    @Test(testName = \"${annoTestName}\", dataProvider = \"provider\", description = \"${annoDesc}\")\n" +
+                    "    public void ${testMethodName}(HryTest hryTest) {\n" +
+                    "        String actual = super._${testMethodName}(hryTest);\n" +
+                    "        supperAssert(actual, hryTest);\n" +
+                    "    }\n\n";
 
 
     private static final String BRACE_LEFT = "{\n";

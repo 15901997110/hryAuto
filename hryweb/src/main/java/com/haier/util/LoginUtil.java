@@ -5,12 +5,13 @@ import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.HryCookie;
-import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.testng.base.Base;
+import com.haier.testng.base.XindaiyyBase;
+import com.haier.testng.base.ZhuanleBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.Header;
@@ -22,7 +23,6 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,27 +37,42 @@ import java.util.UUID;
 public class LoginUtil {
     private static UnionLoginConfig unionLoginConfig = SpringContextHolder.getBean(UnionLoginConfig.class);
 
+    public static <T extends Base> void loginInit(T entity) {
+        if (entity instanceof ZhuanleBase) {
+            zhuanleLogin(entity, "/sign-in");
+        }
+        if (entity instanceof XindaiyyBase) {
+            unionLogin(entity, "cbp");
+        }
+    }
+
     /**
      * zhuanle 登录
      */
-    public static <T extends Base> void zhuanleLogin(Tservice tservice, Tservicedetail tservicedetail, String iUri, T entity) {
+    public static <T extends Base> void zhuanleLogin(T entity, String iUri) {
+        Tservice tservice = entity.tservice;
+        Tservicedetail tservicedetail = entity.tservicedetail;
         TiService tiService = SpringContextHolder.getBean(TiService.class);
         TcaseService tcaseService = SpringContextHolder.getBean(TcaseService.class);
+
         Ti tiCondition = new Ti();
         tiCondition.setServiceid(tservicedetail.getServiceid());
         tiCondition.setIuri(iUri);
-
         List<Ti> tis = tiService.selectByCondition(tiCondition);
 
+        //找到登录接口
         Ti ti = null;
         for (Ti i : tis) {
             if (i.getIuri().equals(iUri)) {
                 ti = i;
+                break;
             }
         }
+
         if (ti == null) {
             return;
         }
+
         Tcase tcaseCondition = new Tcase();
         tcaseCondition.setEnvid(tservicedetail.getEnvid());
         tcaseCondition.setIid(ti.getId());
@@ -67,48 +82,52 @@ public class LoginUtil {
             log.error("未找到Case,查询条件iid=" + tcaseCondition.getIid() + ",envId=" + tcaseCondition.getEnvid());
             return;
         }
-        Tcase tcase = tcases.get(0);
+
+        //找到相应环境的登录case
+        Tcase tcase = null;
+        for (Tcase c : tcases) {
+            if (c.getEnvid().equals(tservicedetail.getEnvid())) {
+                tcase = c;
+                break;
+            }
+        }
+        if (tcase == null) {
+            return;
+        }
 
         HryTest test = new HryTest();
         test.setTservice(tservice);
         test.setTservicedetail(tservicedetail);
         test.setTi(ti);
         test.setTcase(tcase);
-        String loginRes = HryHttpClientUtil.send(test, null);
+        String zhuanleLoginRes = HryHttpClientUtil.send(test, null);
 
-        log.info("zhuanle登录返回:" + loginRes);
-        JSONObject jsonObject = JSONUtil.str2JSONObj(loginRes);
+        //将返回结果转换为JSON对象
+        JSONObject jsonObject = JSONUtil.str2JSONObj(zhuanleLoginRes);
 
         if (jsonObject != null) {
             try {
                 String auth = jsonObject.getJSONObject("body").getString("auth");
                 Header header = new BasicHeader("X-KJT-Auth", auth);
-                Field[] fields = entity.getClass().getFields();
-                for (Field field : fields) {
-                    if (field.getAnnotation(HryHeader.class) != null) {
-                        field.set(entity, ArrayUtils.add(null, header));
-                        Reporter.log("登录成功,设置auth=" + auth);
-                        break;
-                    }
-                }
+                entity.headers = ArrayUtils.add(entity.headers, header);
             } catch (Exception e) {
                 Reporter.log(e.getMessage());
                 log.error("登录返回结果中寻找auth发生异常");
             }
-
         } else {
-            log.error("登录失败");
-            Reporter.log("登录失");
+            log.error("zhuanle登录失败,环境=" + tservicedetail.getEnvid());
+            Reporter.log("zhuanle登录失败,环境=" + tservicedetail.getEnvid());
         }
-
     }
 
     /**
      * 联合登录 ,如果未传入sysCode,默认登录cbp-信贷系统
      */
-    public static <T extends Base> void unionLogin(Tservicedetail tservicedetail, T entity, String sysCode) {
+    public static <T extends Base> void unionLogin(T entity, String sysCode) {
         Reporter.log(unionLoginConfig.toString());
+        Tservicedetail tservicedetail = entity.tservicedetail;
         List<LoginInfoDetail> loginInfoDetails = unionLoginConfig.getLoginInfoDetails();
+        //根据环境确定使用哪个登录配置信息
         LoginInfoDetail lid = null;
         for (LoginInfoDetail loginInfoDetail : loginInfoDetails) {
             if (tservicedetail.getEnvid().equals(loginInfoDetail.getEnvId())) {
@@ -123,6 +142,7 @@ public class LoginUtil {
         Header headerContentType = new BasicHeader("Content-Type", "application/x-www-form-urlencoded");
         Header headerCookie = new BasicHeader("Cookie", "__login_name=supper2; __login_expied=7; __login_sys=" + (sysCode == null ? "cbp" : sysCode));
         String requestId = UUID.randomUUID().toString().replaceAll("-", "");
+
         Map<String, Object> map = new HashMap<>();
         map.put("loginName", lid.getUsername());
         map.put("password", lid.getPassword());
@@ -143,9 +163,9 @@ public class LoginUtil {
 
         if (hostinfo.contains(":")) {
             domain = hostinfo.substring(0, hostinfo.indexOf(":"));
-        } else if (hostinfo.contains("/")) {
+        } /*else if (hostinfo.contains("/")) {
             domain = hostinfo.substring(0, hostinfo.indexOf("/"));
-        } else {
+        }*/ else {
             domain = hostinfo;
         }
         CookieStore cookieStore = null;
@@ -170,8 +190,7 @@ public class LoginUtil {
             log.error("联合登录失败");
             return;
         }
-
-
-        ReflectUtil.setFirstPublicFieldValueByAnno(entity, HryCookie.class, cookieStore);
+        //设置登录cookie到测试类中,后续测试类执行测试时将会优先检查cookie
+        entity.cookieStore=cookieStore;
     }
 }

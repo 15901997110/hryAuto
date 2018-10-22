@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: CbpBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Cbp")
 public class CbpBase extends Base {
-    public CbpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public CbpBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/createCfPrepay", desc = "消金直融，线上直融提前还款申请")
     public String _cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_createCfPrepay(HryTest test) {
         return HryHttpClientUtil.send(test, this);

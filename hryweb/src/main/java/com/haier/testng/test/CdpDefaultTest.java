@@ -13,14 +13,15 @@ import java.lang.reflect.Method;
 /**
  * @Description: CdpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @Slf4j
 public class CdpDefaultTest extends CdpBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public CdpDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+    public CdpDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);

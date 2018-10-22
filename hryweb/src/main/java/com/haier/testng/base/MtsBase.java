@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MtsBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Mts")
 public class MtsBase extends Base {
-    public MtsBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public MtsBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/emailFacade/queryEmail", desc = "查询邮件信息详情")
     public String _emailFacade_queryEmail(HryTest test) {
         return HryHttpClientUtil.send(test, this);

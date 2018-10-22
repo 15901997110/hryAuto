@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: XindaiyyBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Xindaiyy")
 public class XindaiyyBase extends Base {
-    public XindaiyyBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public XindaiyyBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/cbp-web/book/addBookInfo.json", desc = "新建预约")
     public String _cbp_web_book_addBookInfo_json(HryTest test) {
         return HryHttpClientUtil.send(test, this);

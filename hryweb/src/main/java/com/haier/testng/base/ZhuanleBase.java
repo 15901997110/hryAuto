@@ -8,13 +8,14 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
-    public ZhuanleBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    public ZhuanleBase(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @Uri(value = "/arap/query-by-range", desc = "资金日历查询")
     public String _arap_query_by_range(HryTest test) {
         return HryHttpClientUtil.send(test, this);

@@ -425,6 +425,76 @@ public class TcustomExample {
             return (Criteria) this;
         }
 
+        public Criteria andEnvkeyIsNull() {
+            addCriterion("envKey is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyIsNotNull() {
+            addCriterion("envKey is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyEqualTo(String value) {
+            addCriterion("envKey =", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotEqualTo(String value) {
+            addCriterion("envKey <>", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyGreaterThan(String value) {
+            addCriterion("envKey >", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyGreaterThanOrEqualTo(String value) {
+            addCriterion("envKey >=", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLessThan(String value) {
+            addCriterion("envKey <", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLessThanOrEqualTo(String value) {
+            addCriterion("envKey <=", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyLike(String value) {
+            addCriterion("envKey like", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotLike(String value) {
+            addCriterion("envKey not like", value, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyIn(List<String> values) {
+            addCriterion("envKey in", values, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotIn(List<String> values) {
+            addCriterion("envKey not in", values, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyBetween(String value1, String value2) {
+            addCriterion("envKey between", value1, value2, "envkey");
+            return (Criteria) this;
+        }
+
+        public Criteria andEnvkeyNotBetween(String value1, String value2) {
+            addCriterion("envKey not between", value1, value2, "envkey");
+            return (Criteria) this;
+        }
+
         public Criteria andStrategyIsNull() {
             addCriterion("strategy is null");
             return (Criteria) this;

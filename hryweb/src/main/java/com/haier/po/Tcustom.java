@@ -17,6 +17,8 @@ public class Tcustom {
     @NotNull(message ="运行环境必须")
     private Integer envid;
 
+    private String envkey;
+
     private String strategy;
 
     private Integer status;
@@ -61,6 +63,14 @@ public class Tcustom {
 
     public void setEnvid(Integer envid) {
         this.envid = envid;
+    }
+
+    public String getEnvkey() {
+        return envkey;
+    }
+
+    public void setEnvkey(String envkey) {
+        this.envkey = envkey == null ? null : envkey.trim();
     }
 
     public String getStrategy() {

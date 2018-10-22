@@ -3,24 +3,23 @@ package com.haier.testng.test;
 import com.haier.po.HryTest;
 import com.haier.testng.base.XindaiyyBase;
 import static com.haier.util.AssertUtil.supperAssert;
-
-import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.*;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
 /**
  * @Description: XindaiyyDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @Slf4j
 public class XindaiyyDefaultTest extends XindaiyyBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public XindaiyyDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
-        LoginUtil.unionLogin(tservicedetail, this, "cbp");
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+    public XindaiyyDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
     @DataProvider(name = "provider")

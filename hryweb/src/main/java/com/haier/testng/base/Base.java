@@ -1,6 +1,7 @@
 package com.haier.testng.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.haier.anno.HryCookie;
 import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
@@ -8,6 +9,7 @@ import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
 import com.haier.service.RunService;
 import com.haier.util.HryUtil;
+import com.haier.util.LoginUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -33,8 +35,8 @@ public class Base extends AbstractTestNGSpringContextTests {
     public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
-    public JSONObject i_c_JSONObject;//{"methodName",List<CaseId>}
-    public JSONObject i_c_zdy_JSONObject;//{"methodName",list<Tcase>}
+    public JSONObject i_c_JSONObject;//{"methodName":List<CaseId>}
+    public JSONObject i_c_zdy_JSONObject;//{"methodName":list<Tcase>}
     public Tservice tservice;
     public Tservicedetail tservicedetail;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
@@ -44,17 +46,13 @@ public class Base extends AbstractTestNGSpringContextTests {
 
     }
 
-    public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        this(serviceId, envId, caseDesigner, i_c, i_c_zdy, null);
-    }
-
     public Base(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         this.serviceId = serviceId;
         this.envId = envId;
         this.caseDesigner = caseDesigner;
         this.testingId = testingId;
         if (StringUtils.isNotBlank(i_c)) {
-            this.i_c_JSONObject = JSONObject.parseObject(i_c);
+            this.i_c_JSONObject = JSONObject.parseObject(i_c, Feature.OrderedField);
         }
         if (StringUtils.isNotBlank(i_c_zdy)) {
             this.i_c_zdy_JSONObject = JSONObject.parseObject(i_c_zdy);
@@ -62,7 +60,12 @@ public class Base extends AbstractTestNGSpringContextTests {
         runService = SpringContextHolder.getBean(RunService.class);
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
+
+
+        LoginUtil.loginInit(this);
+
         log.info("Base带参构造器执行完成!");
+
     }
 
     @HryCookie

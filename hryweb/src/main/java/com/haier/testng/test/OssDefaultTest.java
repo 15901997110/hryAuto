@@ -13,14 +13,15 @@ import java.lang.reflect.Method;
 /**
  * @Description: OssDefaultTest
  * @Author: 自动生成
- * @Date: 2018/09/26 19:37:05
+ * @Date: 2018/10/22 15:52:34
  */
 @Slf4j
 public class OssDefaultTest extends OssBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy"})
-    public OssDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-        super(serviceId, envId, caseDesigner, i_c, i_c_zdy);
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+    public OssDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+        super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
+
     @DataProvider(name = "provider")
     public Object[] getCase(Method method) {
         return provider(method);
@@ -206,6 +207,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/consolePromotionFacade/addBlackList", dataProvider = "provider", description = "新增黑名单")
+    public void consolePromotionFacade_addBlackList(HryTest hryTest) {
+        String actual = super._consolePromotionFacade_addBlackList(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/consolePromotionFacade/addMerchantChannel", dataProvider = "provider", description = "新增商户活动渠道")
     public void consolePromotionFacade_addMerchantChannel(HryTest hryTest) {
         String actual = super._consolePromotionFacade_addMerchantChannel(hryTest);
@@ -221,6 +228,12 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/consolePromotionFacade/addPromotionActivityRule", dataProvider = "provider", description = "新增活动规则")
     public void consolePromotionFacade_addPromotionActivityRule(HryTest hryTest) {
         String actual = super._consolePromotionFacade_addPromotionActivityRule(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/consolePromotionFacade/deleteBlackList", dataProvider = "provider", description = "删除黑名单")
+    public void consolePromotionFacade_deleteBlackList(HryTest hryTest) {
+        String actual = super._consolePromotionFacade_deleteBlackList(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -281,6 +294,12 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/consolePromotionFacade/getPromotionRewardsInfo", dataProvider = "provider", description = "查询推广活动奖励统计信息")
     public void consolePromotionFacade_getPromotionRewardsInfo(HryTest hryTest) {
         String actual = super._consolePromotionFacade_getPromotionRewardsInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/consolePromotionFacade/queryBlackList", dataProvider = "provider", description = "查询黑名单")
+    public void consolePromotionFacade_queryBlackList(HryTest hryTest) {
+        String actual = super._consolePromotionFacade_queryBlackList(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -371,6 +390,12 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/couponFacade/exchangePrepaidCouponWithLcj", dataProvider = "provider", description = "抵用金兑换抵扣券")
     public void couponFacade_exchangePrepaidCouponWithLcj(HryTest hryTest) {
         String actual = super._couponFacade_exchangePrepaidCouponWithLcj(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/couponFacade/freezeCoupon", dataProvider = "provider", description = "冻结券")
+    public void couponFacade_freezeCoupon(HryTest hryTest) {
+        String actual = super._couponFacade_freezeCoupon(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -566,6 +591,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/couponFacade/queryFreezeRewards", dataProvider = "provider", description = "查询冻结奖励")
+    public void couponFacade_queryFreezeRewards(HryTest hryTest) {
+        String actual = super._couponFacade_queryFreezeRewards(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/couponFacade/queryGrabCouponActivity", dataProvider = "provider", description = "定时发放券查看")
     public void couponFacade_queryGrabCouponActivity(HryTest hryTest) {
         String actual = super._couponFacade_queryGrabCouponActivity(hryTest);
@@ -605,6 +636,12 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/couponFacade/refundCoupon", dataProvider = "provider", description = "券退款")
     public void couponFacade_refundCoupon(HryTest hryTest) {
         String actual = super._couponFacade_refundCoupon(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/couponFacade/unFreezeCoupon", dataProvider = "provider", description = "解冻券")
+    public void couponFacade_unFreezeCoupon(HryTest hryTest) {
+        String actual = super._couponFacade_unFreezeCoupon(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1286,6 +1323,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/promotionFacade/queryPromotionActivityRewards", dataProvider = "provider", description = "查询推广奖励")
+    public void promotionFacade_queryPromotionActivityRewards(HryTest hryTest) {
+        String actual = super._promotionFacade_queryPromotionActivityRewards(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/promotionFacade/queryPromotionRelationList", dataProvider = "provider", description = "查询推广关系")
     public void promotionFacade_queryPromotionRelationList(HryTest hryTest) {
         String actual = super._promotionFacade_queryPromotionRelationList(hryTest);
@@ -1484,6 +1527,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/rewardsFacade/freezeLcj", dataProvider = "provider", description = "冻结理财金")
+    public void rewardsFacade_freezeLcj(HryTest hryTest) {
+        String actual = super._rewardsFacade_freezeLcj(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/rewardsFacade/getManualRewardsDetails", dataProvider = "provider", description = "查询人工发放奖励列明细")
     public void rewardsFacade_getManualRewardsDetails(HryTest hryTest) {
         String actual = super._rewardsFacade_getManualRewardsDetails(hryTest);
@@ -1523,6 +1572,12 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/rewardsFacade/sendRewards", dataProvider = "provider", description = "手动发放抵用金奖励")
     public void rewardsFacade_sendRewards(HryTest hryTest) {
         String actual = super._rewardsFacade_sendRewards(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/rewardsFacade/unFreezeLcj", dataProvider = "provider", description = "解冻理财金")
+    public void rewardsFacade_unFreezeLcj(HryTest hryTest) {
+        String actual = super._rewardsFacade_unFreezeLcj(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1580,6 +1635,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/tpPromotionFacade/getChannelPromotionUri", dataProvider = "provider", description = "根据用户获取推广码（链接）")
+    public void tpPromotionFacade_getChannelPromotionUri(HryTest hryTest) {
+        String actual = super._tpPromotionFacade_getChannelPromotionUri(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/tpPromotionFacade/getDailyPromotionRewards", dataProvider = "provider", description = "查询奖励信息")
     public void tpPromotionFacade_getDailyPromotionRewards(HryTest hryTest) {
         String actual = super._tpPromotionFacade_getDailyPromotionRewards(hryTest);
@@ -1604,9 +1665,27 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/tpPromotionFacade/getRegisteredUserBehaviorData", dataProvider = "provider", description = "查询已注册用户行为数据")
+    public void tpPromotionFacade_getRegisteredUserBehaviorData(HryTest hryTest) {
+        String actual = super._tpPromotionFacade_getRegisteredUserBehaviorData(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/tpPromotionFacade/getSummaryPromotionRewards", dataProvider = "provider", description = "查询奖励总额信息")
     public void tpPromotionFacade_getSummaryPromotionRewards(HryTest hryTest) {
         String actual = super._tpPromotionFacade_getSummaryPromotionRewards(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/tpPromotionFacade/getUserType", dataProvider = "provider", description = "查询是否属于客服可跟进用户")
+    public void tpPromotionFacade_getUserType(HryTest hryTest) {
+        String actual = super._tpPromotionFacade_getUserType(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/tpPromotionFacade/queryChannelInfo", dataProvider = "provider", description = "查询渠道数据总览")
+    public void tpPromotionFacade_queryChannelInfo(HryTest hryTest) {
+        String actual = super._tpPromotionFacade_queryChannelInfo(hryTest);
         supperAssert(actual, hryTest);
     }
 

@@ -11,9 +11,9 @@ import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
 import com.haier.service.*;
 import com.haier.testng.run.Runner;
-import com.haier.util.ReplaceUtil;
 import com.haier.util.HryHttpClientUtil;
 import com.haier.util.HryUtil;
+import com.haier.util.ReplaceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +25,8 @@ import org.testng.xml.XmlInclude;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -185,7 +186,7 @@ public class TcaseServiceImpl implements TcaseService {
                 criteria.andTestclassEqualTo(tcase.getTestclass());
             }
             if (StringUtils.isNotBlank(tcase.getAuthor())) {
-                criteria.andAuthorLike("%" + tcase.getAuthor() + "%");
+                criteria.andAuthorEqualTo(tcase.getAuthor());
             }
             if (StringUtils.isNotBlank(tcase.getExpected())) {
                 criteria.andExpectedLike("%" + tcase.getExpected() + "%");
@@ -304,8 +305,8 @@ public class TcaseServiceImpl implements TcaseService {
         Tservice tservice = tserviceService.selectOne(ti.getServiceid());
         Tenv tenv = tenvService.selectOne(tcase.getEnvid());
         User user = userService.selectOne(userId);
-        String date = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String reportName = "r_case_u" + userId + "_s" + tservice.getId() + "_i" + ti.getId() + "_" + date + ".html";
+        String date = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
+        String reportName = "r_uid" + userId + "_sid" + tservice.getId() + "_iid" + ti.getId() + "_" + date + ".html";
 
         String methodName = HryUtil.iUri2MethodName(ti.getIuri());
         Map<String, List<Tcase>> testCase = new HashMap<>();
