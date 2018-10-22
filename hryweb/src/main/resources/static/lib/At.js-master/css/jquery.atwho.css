@@ -1,9 +1,9 @@
 .atwho-view {
     position:absolute;
-    top: 0;
-    left: 0;
+    top:0;
+    left:0;
     display: none;
-    margin-top: 18px;
+    margin-top: 15px;
     background: white;
     color: black;
     border: 1px solid #DDD;
