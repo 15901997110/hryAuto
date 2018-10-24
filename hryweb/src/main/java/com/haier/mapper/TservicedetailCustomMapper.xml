@@ -7,11 +7,11 @@
         <result column="servicekey" property="servicekey"/>
         <result column="servicename" property="servicename"/>
         <result column="editor" property="seditor"/>
-        <result column="envid" property="envid"></result>
+        <result column="envid" property="envid"/>
         <result column="envkey" property="envkey"/>
         <result column="remark" property="envremark"/>
-        <result column="hostinfo" property="hostinfo"></result>
-        <result column="dbinfo" property="dbinfo"></result>
+        <result column="hostinfo" property="hostinfo"/>
+        <result column="dbinfo" property="dbinfo"/>
         <result column="swaggerurl" property="swaggerurl"/>
         <result column="clazz" property="clazz"/>
         <result column="status" property="status"/>
