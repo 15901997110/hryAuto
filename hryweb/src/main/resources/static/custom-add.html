@@ -67,6 +67,17 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>运行方式：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="intersect" id="intersect">
+                        <option value="0" selected>顺序</option>
+                        <option value="1">交叉</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">运行策略：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid"
@@ -125,7 +136,8 @@
     $(document).ready(function () {
         //onclick='checkAllservice("+row.id+")'
         var serviceList = getServiceList();
-        var env = getTenvList();
+
+        env_selectEle_init("env");
         var services = "";
         for (var i = 0; i < serviceList.length; i++) {
             var row = serviceList[i];
@@ -151,13 +163,6 @@
         }
         $("#services").append(services);
 
-        var tenv = "";
-        for (var k = 0; k < env.length; k++) {
-            var row = env[k];
-            var rowHtml = "<option value=\"" + row.id + "\">" + row.envkey + "</option>";
-            tenv = tenv + rowHtml;
-        }
-        $("#env").append(tenv);
         layer.close(layerIndex);
 
     });
@@ -300,6 +305,7 @@
         var strategy = $("#strategy").val();
         var userid = $.cookie('uidCookie');
         var userName=$.cookie("realnameCookie");
+        var intersect=$("#intersect").val();
 
         var service = new Array();
         $("#services :checkbox:checked").each(function (i) {
@@ -395,6 +401,7 @@
             obj.envid = env;
             obj.envkey=envKey;
             obj.strategy = strategy;
+            obj.intersect=intersect;
             obj.tcustomdetails = service;
             var json = JSON.stringify(obj);
             console.log(json);

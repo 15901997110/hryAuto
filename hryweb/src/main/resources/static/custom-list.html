@@ -83,6 +83,7 @@
                 <th width="15%">定制名称</th>
                 <th width="20%">服务-测试类</th>
                 <th width="10%">环境</th>
+                <th width="10%">运行方式</th>
                 <th width="20%">运行策略</th>
                 <th width="5%">定制人</th>
                 <th width="15%">操作</th>
@@ -132,7 +133,8 @@
 
     //初始化
     $(document).ready(function () {
-        queryInit();
+        env_selectEle_init("query_custom_env");
+        user_selectEle_init("query_custom_user");
         var userId = $.cookie('uidCookie');
         //默认选中当前登录人
         $("#query_custom_user").val(userId).trigger("change");
@@ -264,6 +266,7 @@
                             "<td>" + custom.customname + "</td>\n" +
                             "<td style='text-align: left;'><ul>" + serviceColumnText + "</ul></td>\n" +
                             "<td>" + custom.envkey + "</td>\n" +
+                            "<td>" + (custom.intersect == 0 ? "顺序" : "交叉") + "</td>" +
                             "<td>" + custom.strategy + "</td>\n" +
                             "<td> " + custom.username + "</td>" +
                             "<td class=\"f-14\">" +
@@ -298,21 +301,6 @@
         return ul;
     }
 
-    function queryInit() {
-        var envList = getEnvList();
-        var users = getUserList();
-        var envOptions = "";
-        for (var i = 0; i < envList.length; i++) {
-            envOptions += "<option value='" + envList[i].id + "'>" + envList[i].envkey + "</option>";
-        }
-        var userOptions = "";
-        for (var i = 0; i < users.length; i++) {
-            userOptions += "<option value='" + users[i].id + "'>" + users[i].realname + "</option>";
-        }
-        $("#query_custom_env").append(envOptions);
-        $("#query_custom_user").append(userOptions);
-        $("#query_custom_user").select2();
-    }
 
     /*定制测试-添加*/
     function custom_add(title, url, w, h) {

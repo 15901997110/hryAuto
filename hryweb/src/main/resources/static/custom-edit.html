@@ -68,6 +68,17 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>运行方式：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" name="intersect" id="intersect">
+                        <option value="0">顺序</option>
+                        <option value="1">交叉</option>
+                    </select>
+				</span>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">运行策略：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid"
@@ -120,7 +131,7 @@
     $(document).ready(function () {
         var id = getParameter('id');
         var submit = "<button type=\"button\" class=\"btn btn-success radius\" id=\"admin-role-save\" name=\"admin-role-save\" onclick=\"editCustom(" + id + ")\"><i class=\"icon-ok\"></i> 提交</button>";
-        submit+="<button type=\"button\" class=\"btn btn-success radius\" style='margin-left:3px;' id=\"admin-role-close\" name=\"admin-role-close\"\n" +
+        submit += "<button type=\"button\" class=\"btn btn-success radius\" style='margin-left:3px;' id=\"admin-role-close\" name=\"admin-role-close\"\n" +
             "                        onclick=\"layer_close()\"><i class=\"icon-ok\"></i> 关闭\n" +
             "                </button>";
         $("#submit").append(submit);
@@ -138,13 +149,14 @@
                 //console.log(data);
                 var status = data.status;
                 var msg = data.msg;
-                var resData = data.data;
                 var serviceList = getServiceList();
 
                 if (status == 0) {
+                    var resData = data.data;
                     $("#customname").val(resData.customname);
-                    envHtmlInit();
+                    env_selectEle_init("env");
                     $("#env").val(resData.envid);
+                    $("#intersect").val(resData.intersect);
                     $("#strategy").val(resData.strategy);
 
                     var services = "";
@@ -219,14 +231,6 @@
 
     });
 
-    function envHtmlInit() {
-        var envList = getTenvList();
-        var envHtml = "";
-        for (var i = 0; i < envList.length; i++) {
-            envHtml += "<option value=\"" + envList[i].id + "\">" + envList[i].envkey + "</option>";
-        }
-        $("#env").append(envHtml);
-    }
 
     //展开处理
     function spread(serviceId) {
@@ -364,10 +368,11 @@
 
         var customname = $("#customname").val();
         var env = $("#env").val();
-        var envKey=$("#env").find("option:selected").text();
+        var envKey = $("#env").find("option:selected").text();
+        var intersect = $("#intersect").val();
         var strategy = $("#strategy").val();
         var userId = $.cookie("uidCookie");
-        var userName=$.cookie("realnameCookie");
+        var userName = $.cookie("realnameCookie");
 
         var tCustomDetails = new Array();
         $("#services :checkbox:checked").each(function (i) {
@@ -453,9 +458,10 @@
             obj.id = id;
             obj.customname = customname;
             obj.userid = userId;
-            obj.username=userName;
+            obj.username = userName;
             obj.envid = env;
-            obj.envkey=envKey;
+            obj.envkey = envKey;
+            obj.intersect = intersect;
             obj.strategy = strategy;
             obj.tcustomdetails = tCustomDetails;
             var json = JSON.stringify(obj)
