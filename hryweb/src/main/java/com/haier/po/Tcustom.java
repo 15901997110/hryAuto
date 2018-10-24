@@ -25,6 +25,8 @@ public class Tcustom {
 
     private Date updatetime;
 
+    private Integer intersect;
+
     public Integer getId() {
         return id;
     }
@@ -95,5 +97,13 @@ public class Tcustom {
 
     public void setUpdatetime(Date updatetime) {
         this.updatetime = updatetime;
+    }
+
+    public Integer getIntersect() {
+        return intersect;
+    }
+
+    public void setIntersect(Integer intersect) {
+        this.intersect = intersect;
     }
 }

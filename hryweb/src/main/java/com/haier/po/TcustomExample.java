@@ -684,6 +684,66 @@ public class TcustomExample {
             addCriterion("updateTime not between", value1, value2, "updatetime");
             return (Criteria) this;
         }
+
+        public Criteria andIntersectIsNull() {
+            addCriterion("intersect is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectIsNotNull() {
+            addCriterion("intersect is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectEqualTo(Integer value) {
+            addCriterion("intersect =", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectNotEqualTo(Integer value) {
+            addCriterion("intersect <>", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectGreaterThan(Integer value) {
+            addCriterion("intersect >", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectGreaterThanOrEqualTo(Integer value) {
+            addCriterion("intersect >=", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectLessThan(Integer value) {
+            addCriterion("intersect <", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectLessThanOrEqualTo(Integer value) {
+            addCriterion("intersect <=", value, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectIn(List<Integer> values) {
+            addCriterion("intersect in", values, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectNotIn(List<Integer> values) {
+            addCriterion("intersect not in", values, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectBetween(Integer value1, Integer value2) {
+            addCriterion("intersect between", value1, value2, "intersect");
+            return (Criteria) this;
+        }
+
+        public Criteria andIntersectNotBetween(Integer value1, Integer value2) {
+            addCriterion("intersect not between", value1, value2, "intersect");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
