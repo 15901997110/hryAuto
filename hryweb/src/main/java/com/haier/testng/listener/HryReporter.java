@@ -36,7 +36,9 @@ public class HryReporter implements IReporter {
 
     public HryReporter(String reportPath, String fileName, String customName) {
         this.reportPath = reportPath;
-        this.fileName = fileName;
+        //兼容直接传treport.reportName的情况   /test-output/r_uid53_sid15_iid1377_20181022_165804.html
+        //update 2018-10-24 by luqiwei
+        this.fileName = fileName.contains("/") ? fileName.substring(fileName.lastIndexOf("/") + 1) : fileName;
         this.customName = customName;
     }
 
