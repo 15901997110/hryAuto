@@ -4,16 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.haier.enums.*;
-import com.haier.exception.HryException;
+import com.haier.enums.PackageEnum;
+import com.haier.enums.ParamKeyEnum;
+import com.haier.enums.SortEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.mapper.TcaseCustomMapper;
 import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
 import com.haier.service.*;
 import com.haier.testng.run.Runner;
-import com.haier.util.HryHttpClientUtil;
 import com.haier.util.HryUtil;
-import com.haier.util.ReplaceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +27,10 @@ import org.testng.xml.XmlTest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -230,7 +233,7 @@ public class TcaseServiceImpl implements TcaseService {
     }
 
 
-    @Override
+/*    @Override
     public RunOneResult runOne(Tcase tcase) {
         //准备数据
 
@@ -258,7 +261,7 @@ public class TcaseServiceImpl implements TcaseService {
 
         //断言结果
         //update by luqiwei ,现在断言直接抛出AssertionError,不再返回布尔值 2018/8/22
-        /* Boolean result = AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());*/
+        *//* Boolean result = AssertUtil.supperAssert(tcase.getAsserttype(), tcase.getExpected(), actual, ti.getIresponsetype());*//*
         Boolean result = true;
 
 
@@ -296,7 +299,7 @@ public class TcaseServiceImpl implements TcaseService {
     public RunOneResult runOne(Integer id) {
         Tcase tcase = tcaseMapper.selectByPrimaryKey(id);
         return this.runOne(tcase);
-    }
+    }*/
 
     @Override
     public String runOne(Tcase tcase, Integer userId) {

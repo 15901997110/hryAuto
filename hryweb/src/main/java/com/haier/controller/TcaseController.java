@@ -1,6 +1,5 @@
 package com.haier.controller;
 
-import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.enums.AssertTypeEnum;
 import com.haier.enums.RequestParamTypeEnum;
 import com.haier.enums.StatusCodeEnum;
@@ -150,19 +149,19 @@ public class TcaseController {
     /**
      * 运行单条case
      */
-    @PostMapping("/runCaseOne")
+    /*@PostMapping("/runCaseOne")
     public Result runCaseOne(Tcase tcase) throws HttpProcessException {
         ReflectUtil.setInvalidFieldToNull(tcase, false);
         if (tcase == null || tcase.getIid() == null || tcase.getEnvid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "在新增和编辑页面运行Case时,IId(接口),EnvId(环境)是必须的!");
         }
         return ResultUtil.success(tcaseService.runOne(tcase));
-    }
+    }*/
 
     /**
      * 运行单条case,传入caseid,适用于case列表页运行时调用此接口
      */
-    @PostMapping("/runCaseOneById")
+    /*@PostMapping("/runCaseOneById")
     public Result runCaseOneById(@RequestParam("id") Integer id) throws HttpProcessException {
         Tcase tcase = tcaseService.selectOne(id);
         if (tcase == null) {
@@ -172,7 +171,7 @@ public class TcaseController {
             throw new HryException(911, "此用例未指定测试环境,无法运行!");
         }
         return this.runCaseOne(tcase);
-    }
+    }*/
 
     /**
      * 用例新增和编辑页面运行单条用例(新)
