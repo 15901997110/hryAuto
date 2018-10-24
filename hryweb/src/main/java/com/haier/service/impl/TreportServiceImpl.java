@@ -1,18 +1,27 @@
 package com.haier.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.SortEnum;
+import com.haier.enums.StatusEnum;
 import com.haier.mapper.TreportMapper;
+import com.haier.po.Tcustomdetail;
 import com.haier.po.Treport;
 import com.haier.po.TreportExample;
 import com.haier.service.TreportService;
+import com.haier.vo.CustomVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -22,6 +31,11 @@ import java.util.List;
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class TreportServiceImpl implements TreportService {
+    @Value("${zdy.reportPath}")
+    String reportPath;
+
+    @Value("${zdy.resourcePathPattern}")
+    String resourcePathPattern;
 
     @Autowired
     TreportMapper treportMapper;
@@ -30,6 +44,32 @@ public class TreportServiceImpl implements TreportService {
     public Integer insertOne(Treport treport) {
         treportMapper.insertSelective(treport);
         return treport.getId();
+    }
+
+    @Override
+    public Treport insertOne(CustomVO customVO) {
+        List<Tcustomdetail> ss = customVO.getTcustomdetails().stream()
+                .filter(p -> p.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()))
+                .collect(Collectors.toList());
+        List<Integer> sIds = ss.stream().map(Tcustomdetail::getClientid).collect(Collectors.toList());
+        List<String> sNames = ss.stream().map(Tcustomdetail::getClientname).collect(Collectors.toList());
+        String date = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
+        String reportName = "r_uid" + customVO.getUserid() + "_cid" + customVO.getId() + "_" + date + ".html";//u(user)代表用户,c(custom)代表定制
+        //构造入库测试报告记录
+        Treport treport = new Treport();
+        treport.setCustomid(customVO.getId());
+        treport.setCustomname(customVO.getCustomname());
+        treport.setEnvid(customVO.getEnvid());
+        treport.setEnvkey(customVO.getEnvkey());
+        treport.setServiceids(JSON.toJSONString(sIds));//[1,2,3]
+        treport.setServicenames(JSON.toJSONString(sNames));//["aaa","bbb","ccc"],取出后,可直接转换成JSONArray
+        treport.setUserid(customVO.getUserid());
+        treport.setUsername(customVO.getUsername());
+        treport.setReportpath(reportPath);
+        treport.setReportname(resourcePathPattern + reportName);
+        treport.setStatus(StatusEnum.FIVE.getId());//测试报告生成中
+        treportMapper.insertSelective(treport);
+        return treport;
     }
 
     @Override

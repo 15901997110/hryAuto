@@ -2,6 +2,7 @@ package com.haier.service;
 
 import com.github.pagehelper.PageInfo;
 import com.haier.po.Treport;
+import com.haier.vo.CustomVO;
 
 import java.util.Date;
 
@@ -13,6 +14,8 @@ import java.util.Date;
 public interface TreportService {
 
     Integer insertOne(Treport treport);
+
+    Treport insertOne(CustomVO customVO);
 
     Integer updateOne(Treport treport);
 
