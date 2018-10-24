@@ -18,7 +18,7 @@ function pagination(data) {
     var pageEnd = "</span>\n" +
         "            <a class=\"paginate_button next disabled\" onclick='pageSkip(" + nextPage + ")' id=\"table_next\">下一页</a>";
 
-    if (pages <=5) {
+    if (pages <= 5) {
         for (var k = 0; k < pages; k++) {
             if ((k + 1) == now) {
                 var pageHtml = "<a class=\"paginate_button current\" onclick='pageSkip(" + (k + 1) + ")'>" + (k + 1) + "</a>";
@@ -86,9 +86,9 @@ function pagination(data) {
 
 //删除列表数据
 function del(obj, id, url, ms) {
-   /* if (ms == null || ms == "") {
-        ms = "请确认是否要删除id=" + id + "的数据！";
-    }*/
+    /* if (ms == null || ms == "") {
+         ms = "请确认是否要删除id=" + id + "的数据！";
+     }*/
     layer.confirm(ms, function (index) {
         $.ajax({
             type: 'POST',
@@ -348,8 +348,9 @@ function getTClassListByServiceKey(serviceKey) {
     });
     return tClassList;
 }
+
 //根据serviceId获取测试类列表
-function getClassesBySId(serviceId){
+function getClassesBySId(serviceId) {
     var tClassList = null;
     $.ajaxSetup({async: false});
     $.ajax({
@@ -792,13 +793,13 @@ function getTcaseNumByTiId(tiId) {
 /**
  * 根据接口id作废接口
  * */
-function cancelTi(tiId){
+function cancelTi(tiId) {
     $.ajaxSetup({async: false});
     $.ajax({
         type: "post",
         url: "/ti/invalidInterface",
         data: {
-            id:tiId
+            id: tiId
         },
         dataType: "json",
         success: function (data) {
@@ -834,9 +835,69 @@ function cancelTi(tiId){
 }
 
 /*关闭弹出框口*/
-function layer_close(){
+function layer_close() {
     var index = parent.layer.getFrameIndex(window.name);
     parent.layer.close(index);
+}
+
+/**
+ * 初始化环境下拉列表,将option填充为<option value=envId>envKey</option>
+ * @param html_envId-必填,环境下拉框元素的id
+ */
+function env_selectEle_init(html_envId) {
+    var envs = getEnvList();
+    var env_select_options = null;
+    for (var i = 0; i < envs.length; i++) {
+        env_select_options += "<option value='" + envs[i].id + "'>" + envs[i].envkey + "</option>";
+    }
+    if (env_select_options == null) {
+        return;
+    }
+    try {
+        $("#" + html_envId).append(env_select_options);
+    } catch (e) {
+        console.log("初始化环境列表失败:" + e);
+    }
+}
+
+/**
+ * 初始化服务下拉列表,将option填充为<option value=serviceId>serviceKey</option>
+ * @param html_serviceId-必填,服务下拉框元素的id
+ */
+function service_selectEle_init(html_serviceId) {
+    var services = getServiceList();
+    var service_select_options = null;
+    for (var i = 0; i < services.length; i++) {
+        service_select_options += "<option value='" + services[i].id + "'>" + services[i].servicekey + "</option>";
+    }
+    if (service_select_options != null) {
+        try {
+            $("#" + html_serviceId).append(service_select_options);
+        } catch (e) {
+            console.log("初始化服务列表失败:" + e);
+        }
+    }
+}
+
+/**
+ * 初始化用户下拉框列表,将option填充为<option value=userId>realName</option>,并且将select标签渲染为select2
+ *
+ * @param html_userId-必填,用户下拉框元素id
+ */
+function user_selectEle_init(html_userId) {
+    var users = getUserList();
+    var user_select_options = null;
+    for (var i = 0; i < users.length; i++) {
+        user_select_options += "<option value='" + users[i].id + "'>" + users[i].realname + "</option>";
+    }
+    if (user_select_options != null) {
+        try {
+            $("#" + html_userId).append(user_select_options);
+            $("#" + html_userId).select2();
+        } catch (e) {
+            console.log("初始化用户列表抵账:" + e);
+        }
+    }
 }
 
 
