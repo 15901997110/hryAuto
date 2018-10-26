@@ -191,12 +191,12 @@ public class TcustomServiceImpl implements TcustomService {
          */
         Map<Integer, List<Tcustomdetail>> levelGroups = ls.stream().collect(Collectors.groupingBy(Tcustomdetail::getClientlevel));
         List<Tcustomdetail> ss = levelGroups.get(ClientLevelEnum.SERVICE.getLevel());//定制的服务,服务是一定有的
-        List<Tcustomdetail> is = levelGroups.get(ClientLevelEnum.INTERFACE.getLevel());//定制的接口,可能有,可能没有
-        List<Tcustomdetail> cs = levelGroups.get(ClientLevelEnum.CASE.getLevel());//定制的用例,可能有,可能没有
+        List<Tcustomdetail> is = levelGroups.containsKey(ClientLevelEnum.INTERFACE.getLevel()) ?
+                levelGroups.get(ClientLevelEnum.INTERFACE.getLevel()) : new ArrayList<>();//定制的接口,可能有,可能没有
+        List<Tcustomdetail> cs = levelGroups.containsKey(ClientLevelEnum.CASE.getLevel()) ?
+                levelGroups.get(ClientLevelEnum.CASE.getLevel()) : new ArrayList<>();//定制的用例,可能有,可能没有
 
-        /**
-         * 映射服务-接口s,接口-用例s
-         */
+        Map<Integer, Tcustomdetail> s_sList = ss.stream().collect(Collectors.toMap(Tcustomdetail::getClientid, p -> p));
         Map<Integer, List<Tcustomdetail>> s_iList = is == null ? new HashMap<>() : is.stream().collect(Collectors.groupingBy(Tcustomdetail::getParentclientid));
         Map<Integer, List<Tcustomdetail>> i_cList = cs == null ? new HashMap<>() : cs.stream().collect(Collectors.groupingBy(Tcustomdetail::getParentclientid));
 
@@ -239,10 +239,63 @@ public class TcustomServiceImpl implements TcustomService {
         };
         ss.stream().sorted(sortByPriorityDesc).forEach(s_consumer);
 
+
+        Consumer<List<Tcustomdetail>> i_consumer = i -> {
+            //Map<服务id,List<对应的接口>>
+            Map<Integer, List<Tcustomdetail>> collect = i.stream().collect(Collectors.groupingBy(Tcustomdetail::getParentclientid));
+            for (Map.Entry<Integer, List<Tcustomdetail>> entry : collect.entrySet()) {
+                Tcustomdetail s = s_sList.get(entry.getKey());//某个服务
+
+                XmlTest xmlTest = new XmlTest(suite);
+                XmlClass xmlClass = new XmlClass();
+                xmlClass.setName(PackageEnum.TEST.getPackageName() + "." + s.getClassname());
+                List<XmlInclude> xmlIncludeList = new ArrayList<>();
+
+            }
+        };
+        if (customVO.getIntersect().equals(1)) {
+            /**
+             * 1-根据优先级将服务分组
+             */
+            //Map<服务优先级,服务列表>
+            Map<Integer, List<Tcustomdetail>> sPriority_sList = ss.stream().collect(Collectors.groupingBy(Tcustomdetail::getPriority));
+            //所有服务的优先级的集合
+            Set<Integer> sPriorities = sPriority_sList.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toSet());//服务优先级倒序
+            /**
+             * 2-根据服务的优先级,依次处理每个优先级的所有服务
+             */
+            for (Integer sPriority : sPriorities) {
+                /**
+                 * 2.1-同一个优先级的所有服务
+                 */
+                //所有服务
+                List<Tcustomdetail> samePriority_ss = sPriority_sList.get(sPriority);
+                //所有服务id集合(clientId)
+                List<Integer> samePriority_sIds = samePriority_ss.stream().map(Tcustomdetail::getClientid).collect(Collectors.toList());
+
+                /**
+                 * 2.2-要处理的所有接口
+                 */
+                //Map<接口优先级,接口List>
+                Map<Integer, List<Tcustomdetail>> iPriority_iList = is.stream()
+                        .filter(p -> samePriority_sIds.contains(p.getParentclientid()))//过滤此优先级的所有服务对应的接口
+                        .collect(Collectors.groupingBy(Tcustomdetail::getPriority));
+                //接口优先级集合
+                Set<Integer> iPriorities = iPriority_iList.keySet().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toSet());
+                //处理同一个优先级的所有接口
+                for (Integer iPriority : iPriorities) {
+                    List<Tcustomdetail> iList = iPriority_iList.get(iPriority);
+                    //iList.stream().forEach();
+                }
+            }
+        }
+
+
         suite.setTests(xmlTestList);
         Treport treport = treportService.insertOne(customVO);
 
         runner.run(treport.getId(), treport.getReportname(), customVO.getCustomname(), suite);
         return treport.getReportname();
     }
+
 }

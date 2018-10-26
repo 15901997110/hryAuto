@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -39,14 +41,25 @@ public class TcustomController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
         List<Tcustomdetail> list = customVO.getTcustomdetails();
-        //参数校验
-        /*
-        //据说效率反而低...
-        list.stream().forEach(this::verifyTcustomdetail);
-        */
+        /**
+         * 交叉运行校验,
+         * 1.服务至少两个,并且至少有一组服务的优先级相同(服务优先级相同,才能交叉测试接口)
+         */
+        if (customVO.getIntersect().intValue() == 1) {
+            List<Tcustomdetail> ss = list.stream().filter(tcustomdetail -> tcustomdetail.getClientlevel().equals(1)).collect(Collectors.toList());
+            if (ss.size() < 2) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式='交叉'时,至少需要选择两个或两个以上服务");
+            }
+            Map<Integer, Long> collect = ss.stream().collect(Collectors.groupingBy(Tcustomdetail::getPriority, Collectors.counting()));
+            Long aLong = collect.values().stream().max(Comparator.naturalOrder()).get();//按优先级分组后,计数最大的数
+            if (aLong < 2) {
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式='交叉'时,至少需要有某一个优先级对应的服务数大于或等于2");
+            }
+        }
         for (Tcustomdetail tcustomdetail : list) {
             verifyTcustomdetail(tcustomdetail);
         }
+
         return ResultUtil.success(tcustomService.insertOne(customVO));
     }
 
