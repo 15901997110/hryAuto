@@ -41,26 +41,62 @@ public class TcustomController {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "定制名称,定制环境,定制人,定制明细必填!");
         }
         List<Tcustomdetail> list = customVO.getTcustomdetails();
+
+        for (Tcustomdetail tcustomdetail : list) {
+            verifyTcustomdetail(tcustomdetail);
+        }
         /**
          * 交叉运行校验,
-         * 1.服务至少两个,并且至少有一组服务的优先级相同(服务优先级相同,才能交叉测试接口)
          */
+        verifyIntersect(customVO);
+
+        return ResultUtil.success(tcustomService.insertOne(customVO));
+    }
+
+    public void verifyIntersect(CustomVO customVO) {
+        List<Tcustomdetail> list = customVO.getTcustomdetails();
         if (customVO.getIntersect().intValue() == 1) {
+            /**
+             * 1.1服务至少两个,并且至少有一组服务的优先级相同(服务优先级相同,才能交叉测试接口)
+             * 1.2至少有一个优先级对应的服务数>=2
+             */
             List<Tcustomdetail> ss = list.stream().filter(tcustomdetail -> tcustomdetail.getClientlevel().equals(1)).collect(Collectors.toList());
             if (ss.size() < 2) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式='交叉'时,至少需要选择两个或两个以上服务");
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式为[交叉]时,至少选择两个服务");
             }
             Map<Integer, Long> collect = ss.stream().collect(Collectors.groupingBy(Tcustomdetail::getPriority, Collectors.counting()));
             Long aLong = collect.values().stream().max(Comparator.naturalOrder()).get();//按优先级分组后,计数最大的数
             if (aLong < 2) {
-                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式='交叉'时,至少需要有某一个优先级对应的服务数大于或等于2");
+                throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式为[交叉]时,至少需要有一个优先级对应的服务数大于或等于2");
+            }
+
+            /**
+             * 2.1交叉运行的服务,必须都有选择接口
+             * 2.2交叉运行的服务,所有选择的接口,优先级不可重复(都为0时除外)
+             */
+            for (Integer priority : collect.keySet()) {
+                if (collect.get(priority) >= 2) {//对于同一个优先级对应 多个服务的情况 ,需要对服务进行是否选择接口的校验
+                    List<Tcustomdetail> samePriority_ss = ss.stream().filter(p0 -> p0.getPriority().equals(priority)).collect(Collectors.toList());
+                    samePriority_ss.stream().filter(ps -> ps.getPriority().equals(priority)).forEach(ps -> {
+                        if (!ps.getHaschild()) {
+                            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式为[交叉]时,同优先级的所有服务中都必须选择至少一个接口");
+                        }
+                    });
+
+                    List<Integer> sids = samePriority_ss.stream().map(Tcustomdetail::getClientid).collect(Collectors.toList());
+                    Map<Integer, Long> collect1 = list.stream()
+                            .filter(pi -> pi.getClientlevel().equals(2) && sids.contains(pi.getParentclientid()))//过滤此优先级的所有服务对应的所有接口
+                            .collect(Collectors.groupingBy(Tcustomdetail::getPriority, Collectors.counting()));//按接口的优先级分组并计数
+                    for (Map.Entry<Integer, Long> entry : collect1.entrySet()) {
+                        Integer i_priotity = entry.getKey();
+                        Long i_count = entry.getValue();
+                        if (i_priotity.intValue() != 0 && i_count > 1) {
+                            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式为[交叉]时,同优先级服务中的所有接口的优先级不可重复(接口优先级为0时除外)");
+                        }
+                    }
+                }
             }
         }
-        for (Tcustomdetail tcustomdetail : list) {
-            verifyTcustomdetail(tcustomdetail);
-        }
-
-        return ResultUtil.success(tcustomService.insertOne(customVO));
     }
 
     @PostMapping("/updateOne")
@@ -73,6 +109,10 @@ public class TcustomController {
             verifyTcustomdetail(tcustomdetail);
             tcustomdetail.setCustomid(customVO.getId());
         }
+        /**
+         * 交叉运行校验,
+         */
+        verifyIntersect(customVO);
         return ResultUtil.success(tcustomService.updateOne(customVO));
     }
 
@@ -137,6 +177,8 @@ public class TcustomController {
         //如果没有指定优化级,则默认0(最低)
         if (tcustomdetail.getPriority() == null) {
             tcustomdetail.setPriority(0);
+        } else if (tcustomdetail.getPriority() < 0) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "优先级必须>=0");
         }
     }
 }
