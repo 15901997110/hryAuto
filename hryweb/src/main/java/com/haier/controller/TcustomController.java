@@ -60,7 +60,8 @@ public class TcustomController {
              * 1.1服务至少两个,并且至少有一组服务的优先级相同(服务优先级相同,才能交叉测试接口)
              * 1.2至少有一个优先级对应的服务数>=2
              */
-            List<Tcustomdetail> ss = list.stream().filter(tcustomdetail -> tcustomdetail.getClientlevel().equals(1)).collect(Collectors.toList());
+            List<Tcustomdetail> ss = list.stream()
+                    .filter(p -> p.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel())).collect(Collectors.toList());
             if (ss.size() < 2) {
                 throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行方式为[交叉]时,至少选择两个服务");
             }
@@ -85,7 +86,7 @@ public class TcustomController {
 
                     List<Integer> sids = samePriority_ss.stream().map(Tcustomdetail::getClientid).collect(Collectors.toList());
                     Map<Integer, Long> collect1 = list.stream()
-                            .filter(pi -> pi.getClientlevel().equals(2) && sids.contains(pi.getParentclientid()))//过滤此优先级的所有服务对应的所有接口
+                            .filter(pi -> pi.getClientlevel().equals(ClientLevelEnum.INTERFACE.getLevel()) && sids.contains(pi.getParentclientid()))//过滤此优先级的所有服务对应的所有接口
                             .collect(Collectors.groupingBy(Tcustomdetail::getPriority, Collectors.counting()));//按接口的优先级分组并计数
                     for (Map.Entry<Integer, Long> entry : collect1.entrySet()) {
                         Integer i_priotity = entry.getKey();
