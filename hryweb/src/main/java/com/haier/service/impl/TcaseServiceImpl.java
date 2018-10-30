@@ -314,15 +314,18 @@ public class TcaseServiceImpl implements TcaseService {
         String methodName = HryUtil.iUri2MethodName(ti.getIuri());
         Map<String, List<Tcase>> testCase = new HashMap<>();
         testCase.put(methodName, Arrays.asList(tcase));
-        String i_c_zdy = JSON.toJSONString(testCase);
+        /*String i_c_zdy = JSON.toJSONString(testCase);*/
 
-        //测试类初始化参数
+
+/*        //测试类初始化参数
         Map<String, String> initParam = new HashMap<>();
         initParam.put(ParamKeyEnum.SERVICEID.getKey(), tservice.getId() + "");
         initParam.put(ParamKeyEnum.ENVID.getKey(), tenv.getId() + "");
         initParam.put(ParamKeyEnum.DESIGNER.getKey(), "");
         initParam.put(ParamKeyEnum.I_C.getKey(), "");
-        initParam.put(ParamKeyEnum.I_C_ZDY.getKey(), i_c_zdy);
+        initParam.put(ParamKeyEnum.I_C_ZDY.getKey(), i_c_zdy);*/
+
+        Map<String, String> initParam = HryUtil.install_S_Params(tservice.getId(), tenv.getId(), null, null, testCase);
 
         //如果没有指定测试类名,则使用默认的测试类来测试
         if (StringUtils.isBlank(testClassName)) {
