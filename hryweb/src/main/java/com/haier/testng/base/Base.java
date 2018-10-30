@@ -74,10 +74,6 @@ public class Base extends AbstractTestNGSpringContextTests {
     @HryHeader
     public Header[] headers;
 
-    public void init(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy) {
-
-    }
-
     public Object[] provider(Method method) {
         return HryUtil.getTests(tservice, tservicedetail, caseDesigner, i_c_JSONObject, i_c_zdy_JSONObject, method);
     }
