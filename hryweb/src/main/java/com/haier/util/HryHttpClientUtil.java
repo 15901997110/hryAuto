@@ -8,6 +8,8 @@ import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.HryCookie;
 import com.haier.anno.HryHeader;
+import com.haier.config.SpringContextHolder;
+import com.haier.config.ZdyProperty;
 import com.haier.enums.*;
 import com.haier.exception.HryException;
 import com.haier.po.HryTest;
@@ -31,6 +33,17 @@ import java.util.Objects;
  */
 @Slf4j
 public class HryHttpClientUtil {
+    private static Boolean DEBUG;
+
+    static {
+        ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
+        if (bean.debug.equalsIgnoreCase("true")) {
+            DEBUG = true;
+        } else {
+            DEBUG = false;
+        }
+    }
+
     /**
      * 最底层的封装方法
      *
@@ -112,7 +125,16 @@ public class HryHttpClientUtil {
         return responseEntity;
     }
 
+
     public static <T extends Base> String send(HryTest test, T entity) {
+        if (DEBUG) {
+            log.info(test.getTservice().getServicekey() + "(" + test.getTservice().getId() + ")");
+            log.info(test.getTi().getIuri() + "(" + test.getTi().getId() + ")");
+            log.info(test.getTcase().getCasename() + "(" + test.getTcase().getId() + ")");
+            log.info("--------------------------------------------------------------------------");
+            return "";
+        }
+
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
 
         //请求Header
@@ -154,7 +176,7 @@ public class HryHttpClientUtil {
                 headers,
                 entityCookieStore
         );
-        ReplaceUtil.replaceAfter(test.getTcase().getCafter(),responseBody,test.getTservicedetail().getDbinfo(),entity);
+        ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
         return responseBody;
     }
 
