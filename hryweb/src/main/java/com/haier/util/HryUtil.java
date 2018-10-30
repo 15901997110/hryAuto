@@ -1,8 +1,10 @@
 package com.haier.util;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
+import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
@@ -170,5 +172,25 @@ public class HryUtil {
             testMethodName = iUri.replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
         }
         return testMethodName;
+    }
+
+    /**
+     * 组装测试类的参数
+     *
+     * @param sid            required,服务id
+     * @param envId          required,运行环境id
+     * @param designer       用例设计人
+     * @param iName_cIdList  Map<iName,List<cid>>,测试方法名-用例id集合 的映射,testng组织测试时靠此过滤用例
+     * @param iName_CaseList Map<iName, List<Tcase>>,测试方法名-用例对象集合 的映射
+     * @return
+     */
+    public static Map<String, String> install_S_Params(Integer sid, Integer envId, String designer, Map<String, List<Integer>> iName_cIdList, Map<String, List<Tcase>> iName_CaseList) {
+        Map<String, String> ret = new HashMap<>();
+        ret.put(ParamKeyEnum.SERVICEID.getKey(), sid + "");
+        ret.put(ParamKeyEnum.ENVID.getKey(), envId + "");
+        ret.put(ParamKeyEnum.DESIGNER.getKey(), StringUtils.isNotBlank(designer) ? designer : "");
+        ret.put(ParamKeyEnum.I_C.getKey(), iName_cIdList != null && iName_cIdList.size() > 0 ? JSON.toJSONString(iName_cIdList) : "");
+        ret.put(ParamKeyEnum.I_C_ZDY.getKey(), iName_CaseList != null ? JSON.toJSONString(iName_CaseList) : "");
+        return ret;
     }
 }
