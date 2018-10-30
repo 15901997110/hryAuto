@@ -2,6 +2,7 @@ zdy:
   reportPath: C:/testngReport/
   resourcePathPattern: /test-output/
   autoCodeDir: C:/autoCode/
+  debug: true
 server:
   port: 8885
 logging:
@@ -15,7 +16,7 @@ logging:
     com.haier.service.impl: debug
     com.haier.util: debug
     com.haier.testng.*: debug
-    com.haier.mapper.*: debug
+#    com.haier.mapper.*: debug
 spring:
   application:
     name: hryweb
