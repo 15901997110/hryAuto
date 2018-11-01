@@ -1,7 +1,5 @@
 项目结构图:
    hryAuto
-    * hryrun
-        * 暂未使用
     * hryweb
         * 维护测试环境
         * 维护待测服务
