@@ -79,10 +79,10 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <label>
+                <label title="当待导入的接口已经存在于系统中时,则删除已经存在的接口和其关联的用例,再新增此条接口和Postman中保留的用例">
                     <input type="radio" value="true" name="overwriteI">是
                 </label>&emsp;
-                <label>
+                <label title="当待导入的接口已经存在于系统中时,则忽略">
                     <input type="radio" checked value="false" name="overwriteI">否
                 </label>
             </div>
@@ -91,11 +91,11 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖用例：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <label>
-                    <input type="radio" value="true" name="overwriteC">是
+                <label for="owC_true" title="删除老的用例再从postman文件中导入用例">
+                    <input id="owC_true" type="radio" value="true" name="overwriteC">覆盖
                 </label>&emsp;
-                <label>
-                    <input type="radio" checked value="false" name="overwriteC">否
+                <label for="owC_false" title="保留老的用例,将postman中的用例追加至数据库中">
+                    <input id="owC_false" type="radio" checked value="false" name="overwriteC">追加
                 </label>
 
             </div>

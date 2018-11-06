@@ -279,17 +279,18 @@ public class ImportServiceImpl implements ImportService {
                     ti.setId(existTi.get(iUri).getId());
                     /*tiService.updateOne(ti);*///不对接口进行更新
                     if (overwriteC) {//如果覆盖用例,则将新用例插入,老用例删除,否则 ,不对用例做处理
-                        updateList.add(iUri + "(只更新用例)");
+                        updateList.add(iUri + "(覆盖用例)");
                         Tcase conditionTcase = new Tcase();
                         conditionTcase.setIid(ti.getId());
                         tcaseService.deleteByCondition(conditionTcase);
-                        List<Tcase> tcases = c_map.get(iUri);
-                        for (Tcase tcase : tcases) {
-                            tcase.setIid(ti.getId());
-                            tcaseService.insertOne(tcase);
-                        }
-                    } else {
-                        failList.add(iUri + "(您选择不覆盖接口及用例)");
+                    } else {//追加用例
+                        updateList.add(iUri + "(追加用例)");
+                    }
+                    //不管是覆盖还是追加,都会有新增用例
+                    List<Tcase> tcases = c_map.get(iUri);
+                    for (Tcase tcase : tcases) {
+                        tcase.setIid(ti.getId());
+                        tcaseService.insertOne(tcase);
                     }
                 }
             }
