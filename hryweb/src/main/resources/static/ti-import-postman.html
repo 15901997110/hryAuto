@@ -10,6 +10,21 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="Bookmark" href="/favicon.ico">
     <link rel="Shortcut Icon" href="/favicon.ico"/>
+
+    <!--_footer 作为公共模版分离出去-->
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+    <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
+    <script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="lib/select2/select2.full.js"></script>
+    <script type="text/javascript" src="lib/select2/pinyin.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+
+
     <!--[if lt IE 9]-->
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
@@ -32,59 +47,82 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span
-        class="c-gray en">&gt;</span> swagger导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="c-gray en">&gt;</span> 本地导入(postman) <a class="btn btn-success radius r"
+                                                       style="line-height:1.6em;margin-top:3px"
+                                                       href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
+
+
 <div class="page-container">
-    <form method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form method="post" class="form form-horizontal" id="form-admin-role-add" enctype="multipart/form-data">
+        <!--serviceId-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" tiserviceDetailId="" name="serviceid" id="serviceid"
+                    <select class="select" size="1" tiserviceDetailId="" name="serviceId" id="serviceId"
                             onchange="setMatchValue()">
                         <option value="" selected>请选择服务</option>
                     </select>
 				</span>
             </div>
         </div>
+        <!--上传JSON-->
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>swaggerUrl：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>上传json格式文件：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" readonly id="swaggerUrl" name="swaggerUrl"
-                       style="background-color: #DEDEDE;">
+                <input type="file" class="btn-upload" id="jsonFile" name="jsonFile" accept=".json">
+                <label style="color: lightcoral; font-size: 12px">(文件大小不可超过2M,文件类型为.json,文件编码格式为UTF-8)</label>
             </div>
         </div>
+        <!--是否覆盖接口-->
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <label>
-                    <input id="overwrite_true" type="radio" value="true" name="cover">是
+                    <input type="radio" value="true" name="overwriteI">是
                 </label>&emsp;
                 <label>
-                    <input id="overwrite_false" type="radio" checked value="false" name="cover">否
+                    <input type="radio" checked value="false" name="overwriteI">否
+                </label>
+            </div>
+        </div>
+        <!--是否覆盖用例-->
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖用例：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <label>
+                    <input type="radio" value="true" name="overwriteC">是
+                </label>&emsp;
+                <label>
+                    <input type="radio" checked value="false" name="overwriteC">否
                 </label>
 
             </div>
         </div>
+        <!--开发者-->
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">接口开发者：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="idev" id="idev">
+                    <select class="select" size="1" name="iDev" id="iDev">
                         <option value="" selected>请选择</option>
                     </select>
 				</span>
             </div>
         </div>
+        <!--提交与重置-->
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
                         onclick="importInterfaces()"><i class="icon-ok"></i> 导入
                 </button>
-                <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel"
+                <button type="reset" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel"
                         onclick=""><i class="icon-ok"></i> 重置
                 </button>
+                <!--                <input type="submit">
+                                <input type="reset">-->
+
             </div>
         </div>
     </form>
@@ -128,132 +166,10 @@
     </form>
 </div>
 
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
-
-<!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="lib/select2/select2.full.js"></script>
-<script type="text/javascript" src="lib/select2/pinyin.js"></script>
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
-
 <script type="text/javascript">
-
+    var max_size = 2 * 1024 * 1024;//限制上传文件不可超过2M
     var seditorSet = null;
     var id;
-
-    function setMatchValue() {
-        var ele = $("#serviceid").select2('data')[0].element;
-        var url = $(ele).data('url');
-        id = $(ele).data('id');
-        $("#swaggerUrl").val(url);
-        var editor = $(ele).data('editor');
-        set_select_checked("iDev", editor);
-    }
-
-    function set_select_checked(selectId, checkValue) {
-        var select = $("#" + selectId).select2();    //获取selectid
-        select.val(checkValue).trigger("change");    //设置 value 为four的 option 为选中状态
-        select.change();//告诉select2代码已经更新，需要重载  默认选择有值得第一个
-    }
-
-    function importInterfaces() {
-        clearResult();
-        var serviceId = $("#serviceid").val().split("&")[0];
-        var envId = $("#serviceid").val().split("&")[1];
-        var overwrite = $('input[name="cover"]:checked').val();
-        var iDev = $("#idev").val();
-        var serviceDetailId = document.getElementById("serviceid").getAttribute("tiserviceDetailId");
-
-        if (serviceId == null || serviceId == "") {
-            layer.msg("请选择服务！");
-            return;
-        } else {
-            var layerIndex = layer.load(1, {shade: [1.01, '#fff']});
-            $.ajax({
-                type: "post",
-                url: "/import/interfaceImport",
-                data: {
-                    serviceDetailId: id,
-                    overwrite: overwrite,
-                    iDev: iDev
-                },
-                dataType: "json",
-                success: function (data) {
-                    layer.close(layerIndex); //完成加载后关闭loading
-                    var status = data.status;
-                    if (status == 0) {
-                        displayResult(data.data);
-                    } else {
-                        layer.alert(data.msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        });
-                    }
-
-                },
-                fail: function (data) {
-                    layer.close(layerIndex); //完成加载后关闭loading
-                    layer.alert(JSON.stringify(data), {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    });
-                },
-                error: function (xhr) {
-                    // report error
-                    layer.alert('Error' + JSON.stringify(xhr), {
-                        icon: 2,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-            });
-        }
-
-    }
-
-    function clearResult() {
-        $("#importResult").hide();
-        $("#serviceIdResult").text("");
-        $("#serviceNameResult").text("");
-        $("#iCountResult").text("");
-        $("#importList").html("");
-    }
-
-    function displayResult(data) {
-        $("#importResult").show();
-        $("#serviceIdResult").text(data.serviceId);
-        $("#serviceNameResult").text(data.serviceName);
-        $("#iCountResult").text(data.totalCount);
-        $("#insertCount").text("新增接口(" + data.insertCount + ")");
-        $("#updateCount").text("更新接口(" + data.updateCount + ")");
-        $("#failCount").text("失败接口(" + data.failCount + ")");
-        $("#deleteCount").text("删除接口(" + data.deleteCount + ")");
-
-        var maxRow = 0;
-        var html = "";
-        maxRow = data.insertCount > data.updateCount ? data.insertCount : data.updateCount;
-        maxRow = maxRow > data.failCount ? maxRow : data.failCount;
-        maxRow = maxRow > data.deleteCount ? maxRow : data.deleteCount;
-        for (var i = 0; i < maxRow; i++) {
-            var insertItem = data.insertList[i] == undefined ? "" : data.insertList[i];
-            var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
-            var failItem = data.failList[i] == undefined ? "" : data.failList[i];
-            var deleteItem = data.deleteList[i] == undefined ? "" : data.deleteList[i];
-            var rowHtml = "<tr class=\"text-c\">\n" +
-                "<td style=\"text-align:left;\">" + insertItem + "</td>\n" +
-                "<td style=\"text-align:left;\">" + updateItem + "</td>\n" +
-                "<td style=\"text-align:left;\">" + failItem + "</td>\n" +
-                "<td style=\"text-align:left;\">" + deleteItem + "</td>\n" +
-                "</tr>";
-            html = html + rowHtml;
-        }
-        $("#importList").append(html);
-    }
-
     $(document).ready(function () {
         //获取服务环境列表
         $.ajax({
@@ -272,8 +188,8 @@
                         var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
                         html = html + rowHtml;
                     }
-                    $("#serviceid").append(html);
-                    $("#serviceid").select2();
+                    $("#serviceId").append(html);
+                    $("#serviceId").select2();
                 } else {
                     layer.alert(JSON.stringify(data), {
                         icon: 0,
@@ -327,8 +243,8 @@
                             htmldev = htmldev + rowHtml;
                         }
                     }
-                    $("#idev").append(htmldev);
-                    $("#idev").select2();
+                    $("#iDev").append(htmldev);
+                    $("#iDev").select2();
                 } else {
                     layer.alert(msg, {
                         icon: 0,
@@ -350,6 +266,127 @@
             }
         });
     });
+
+    function setMatchValue() {
+        var ele = $("#serviceId").select2('data')[0].element;
+        var url = $(ele).data('url');
+        id = $(ele).data('id');
+        $("#swaggerUrl").val(url);
+        var editor = $(ele).data('editor');
+        set_select_checked("iDev", editor);
+    }
+
+    function set_select_checked(selectId, checkValue) {
+        var select = $("#" + selectId).select2();    //获取selectid
+        select.val(checkValue).trigger("change");    //设置 value 为four的 option 为选中状态
+        select.change();//告诉select2代码已经更新，需要重载  默认选择有值得第一个
+    }
+
+    function importInterfaces() {
+        clearResult();
+        var serviceId = $("#serviceId").val().split("&")[0];
+        var envId = $("#serviceId").val().split("&")[1];
+        var overwriteI = $('input[name="overwriteI"]:checked').val();
+        var overwriteC = $("input[name=\"overwriteC\"]:checked").val();
+        var iDev = $("#iDev").val();
+        var userName = $.cookie("realnameCookie");
+        var jsonFile = $("#jsonFile").prop("files")[0];
+
+        if (serviceId == null || serviceId == "") {
+            layer.msg("请选择服务！");
+            return;
+        } else if (jsonFile.size > max_size) {
+            layer.msg("上传文件不可超过2M");
+            return;
+        } else {
+            var formData = new FormData();
+            formData.append("serviceId", serviceId);
+            formData.append("envId", envId);
+            formData.append("overwriteI", overwriteI);
+            formData.append("overwriteC", overwriteC);
+            formData.append("iDev", iDev);
+            formData.append("cAuthor", userName);
+            formData.append("jsonFile", jsonFile);
+
+            var layerIndex = layer.load(1, {shade: [1.01, '#fff']});
+
+            $.ajax({
+                type: "post",
+                url: "/import/interfaceImportFromPostman",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    layer.close(layerIndex); //完成加载后关闭loading
+                    var status = data.status;
+                    if (status == 0) {
+                        displayResult(data.data);
+                    } else {
+                        layer.alert(data.msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+
+                },
+                fail: function (data) {
+                    layer.close(layerIndex); //完成加载后关闭loading
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+                error: function (xhr) {
+                    // report error
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            });
+        }
+
+    }
+
+    function clearResult() {
+        $("#importResult").hide();
+        $("#serviceIdResult").text("");
+        $("#serviceNameResult").text("");
+        $("#iCountResult").text("");
+        $("#importList").html("");
+    }
+
+    function displayResult(data) {
+        $("#importResult").show();
+        $("#serviceIdResult").text(data.serviceId);
+        $("#serviceNameResult").text(data.serviceName);
+        $("#iCountResult").text(data.totalCount);
+        $("#insertCount").text("新增接口(" + data.insertCount + ")");
+        $("#updateCount").text("更新接口(" + data.updateCount + ")");
+        $("#failCount").text("失败接口(" + data.failCount + ")");
+        $("#deleteCount").text("删除接口(" + data.deleteCount + ")");
+
+        var html = "";
+        var maxRow = data.insertCount > data.updateCount ? data.insertCount : data.updateCount;
+        maxRow = maxRow > data.failCount ? maxRow : data.failCount;
+        maxRow = maxRow > data.deleteCount ? maxRow : data.deleteCount;
+        for (var i = 0; i < maxRow; i++) {
+            var insertItem = data.insertList[i] == undefined ? "" : data.insertList[i];
+            var updateItem = data.updateList[i] == undefined ? "" : data.updateList[i];
+            var failItem = data.failList[i] == undefined ? "" : data.failList[i];
+            var deleteItem = data.deleteList[i] == undefined ? "" : data.deleteList[i];
+            var rowHtml = "<tr class=\"text-c\">\n" +
+                "<td style=\"text-align:left;\">" + insertItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + updateItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + failItem + "</td>\n" +
+                "<td style=\"text-align:left;\">" + deleteItem + "</td>\n" +
+                "</tr>";
+            html = html + rowHtml;
+        }
+        $("#importList").append(html);
+    }
+
 
 </script>
 

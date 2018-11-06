@@ -33,7 +33,7 @@
 					<h4> 很容易自动化测试平台</h4>
 				</span>
             </nav>
-                <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
+            <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl" style="font-size:16px;">
                     <li>当前用户：</li>
                     <li class="dropDown dropDown_hover">
@@ -53,7 +53,9 @@
                             <li><a href="javascript:;" data-val="orange" title="橙色">橙色</a></li>
                         </ul>
                     </li>
-                    <li id="helpMean"><a target="_blank"  href="../help.html" title="帮助"><i class="Hui-iconfont" style="font-size:18px">&#xe633;</i></a></li>
+                    <li id="helpMean"><a target="_blank" href="../help.html" title="帮助"><i class="Hui-iconfont"
+                                                                                           style="font-size:18px">&#xe633;</i></a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -74,8 +76,10 @@
             <dd>
                 <ul>
                     <li><a data-href="tservice-list.html" data-title="服务管理" href="javascript:void(0)">服务管理</a></li>
-                    <li><a data-href="tservicedetail.html" data-title="服务与环境映射管理" href="javascript:void(0)">服务与环境映射</a></li>
-                    <li hidden><a data-href="tclass-list.html" data-title="测试类管理" href="javascript:void(0)">测试类管理</a></li>
+                    <li><a data-href="tservicedetail.html" data-title="服务与环境映射管理" href="javascript:void(0)">服务与环境映射</a>
+                    </li>
+                    <li hidden><a data-href="tclass-list.html" data-title="测试类管理" href="javascript:void(0)">测试类管理</a>
+                    </li>
                 </ul>
             </dd>
         </dl>
@@ -84,7 +88,9 @@
             <dd>
                 <ul>
                     <li><a data-href="ti-list.html" data-title="接口管理" href="javascript:void(0)">接口管理</a></li>
-                    <li><a data-href="ti-import.html" data-title="一键导入" href="javascript:void(0)">一键导入</a></li>
+                    <li><a data-href="ti-import.html" data-title="swagger导入" href="javascript:void(0)">swagger导入</a>
+                    </li>
+                    <li><a data-href="ti-import-postman.html" data-title="本地导入(postman)" href="#">本地导入(postman)</a></li>
                 </ul>
             </dd>
         </dl>
@@ -100,7 +106,8 @@
             <dt><i class="Hui-iconfont">&#xe6e6;</i> 我的测试<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li id="customTest"><a data-href="custom-list.html" data-title="定制测试" href="javascript:;">定制测试</a></li>
+                    <li id="customTest"><a data-href="custom-list.html" data-title="定制测试" href="javascript:;">定制测试</a>
+                    </li>
                     <li id="report"><a data-href="treport-list.html" data-title="测试报告" href="javascript:;">测试报告</a></li>
                 </ul>
             </dd>
@@ -110,7 +117,8 @@
             <dd>
                 <ul>
                     <li id="userList"><a data-href="tuser-list.html" data-title="用户列表" href="javascript:;">用户列表</a></li>
-                    <li id="updatePassword"><a data-href="tuser-updatePassword.html" data-title="修改密码" href="javascript:;">修改密码</a></li>
+                    <li id="updatePassword"><a data-href="tuser-updatePassword.html" data-title="修改密码"
+                                               href="javascript:;">修改密码</a></li>
                 </ul>
             </dd>
         </dl>
@@ -118,7 +126,7 @@
             <dt><i class="Hui-iconfont">&#xe633;</i> 帮助<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li id="helpList"><a target="_blank"  href="../help.html">帮助</a></li>
+                    <li id="helpList"><a target="_blank" href="../help.html">帮助</a></li>
                 </ul>
             </dd>
         </dl>
@@ -126,8 +134,10 @@
             <dt><i class="Hui-iconfont">&#xe623;</i> 工作管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li id="workContentList"><a data-href="workContent-list.html" data-title="每日工作内容" href="javascript:;">每日工作内容</a></li>
-                    <li id="allWorkReport"><a data-href="allWork-report.html" data-title="上海质量部日报表汇总" href="javascript:;">上海质量部日报表汇总</a></li>
+                    <li id="workContentList"><a data-href="workContent-list.html" data-title="每日工作内容"
+                                                href="javascript:;">每日工作内容</a></li>
+                    <li id="allWorkReport"><a data-href="allWork-report.html" data-title="上海质量部日报表汇总"
+                                              href="javascript:;">上海质量部日报表汇总</a></li>
                 </ul>
             </dd>
         </dl>
@@ -236,20 +246,20 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
-    function openHelper(url,title){
-        creatIframe(url,title)
+    function openHelper(url, title) {
+        creatIframe(url, title)
     }
 
     $(document).ready(function () {
 
-        var loginName=$.cookie('identityCookie');
-        var realName=$.cookie('realnameCookie');
-        var groupId=$.cookie('groupidCookie');
+        var loginName = $.cookie('identityCookie');
+        var realName = $.cookie('realnameCookie');
+        var groupId = $.cookie('groupidCookie');
         $("#userName").append(realName);
-        if(groupId != 11){
+        if (groupId != 11) {
             $("#menu-workInfo").hide();
         }
-        if(groupId != 1){
+        if (groupId != 1) {
             $("#menu-comments").hide();
             $("#menu-member").hide();
             $("#menu-admin").hide();
@@ -261,38 +271,37 @@
     });
 
     //退出
-    function login_out(){
+    function login_out() {
         $.ajax({
             type: "post",
             url: "/user/logout",
-            data: {
-
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var msg=data.msg;
-                if(status == 0){
-                    $.cookie('identityCookie', '', { expires: -1 }); // 删除 cookie
-                    $.cookie('realnameCookie', '', { expires: -1 });
-                    $.cookie('groupidCookie', '', { expires: -1 });
+                var status = data.status;
+                var msg = data.msg;
+                if (status == 0) {
+                    $.cookie('identityCookie', '', {expires: -1}); // 删除 cookie
+                    $.cookie('realnameCookie', '', {expires: -1});
+                    $.cookie('groupidCookie', '', {expires: -1});
                     //document.location.reload();
                     $(location).attr('href', 'login.html');
-                }else{
+                } else {
                     alert(msg);
                 }
 
             },
-            fail:function (data) {
+            fail: function (data) {
                 alert(JSON.stringify(data));
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert('error:' + JSON.stringify(xhr));
             }
         });
 
 
     }
+
     function win_open() {
         window.open("../help.html");
 
@@ -310,8 +319,6 @@
             content: '<div>管理员信息</div>'
         });
     }*/
-
-
 
 
 </script>
