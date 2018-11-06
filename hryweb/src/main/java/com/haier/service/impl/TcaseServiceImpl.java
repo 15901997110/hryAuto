@@ -5,9 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.PackageEnum;
-import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.SortEnum;
+import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
+import com.haier.exception.HryException;
 import com.haier.mapper.TcaseCustomMapper;
 import com.haier.mapper.TcaseMapper;
 import com.haier.po.*;
@@ -331,9 +332,23 @@ public class TcaseServiceImpl implements TcaseService {
         if (StringUtils.isBlank(testClassName)) {
             testClassName = tservice.getClassname();
         }
+        String longClassname = PackageEnum.TEST.getPackageName() + "." + testClassName;
+
+        //校验测试类存在并且包含此接口的测试方法
+        try {
+            Class<?> testClass = Class.forName(longClassname);
+            testClass.getMethod(methodName, HryTest.class);
+        } catch (ClassNotFoundException e) {
+            throw new HryException(StatusCodeEnum.RUN_ERROR, "测试类不存在(" + longClassname + "),请联系管理员");
+        } catch (NoSuchMethodException e) {
+            throw new HryException(StatusCodeEnum.RUN_ERROR, "测试方法不存在(" + methodName + "),请联系管理员");
+        }
 
         //定义一个测试类
-        XmlClass xmlClass = new XmlClass(PackageEnum.TEST.getPackageName() + "." + testClassName);
+        XmlClass xmlClass = new XmlClass(longClassname);
+
+        //校验测试类存在 ,并且此接口的测试方法
+
 
         //方法选择器
         XmlInclude include = new XmlInclude(methodName);
