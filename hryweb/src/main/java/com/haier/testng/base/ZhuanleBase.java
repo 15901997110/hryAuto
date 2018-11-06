@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/10/22 15:52:34
+ * @Date: 2018/11/06 16:53:31
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
@@ -96,11 +96,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/bank/remove-bankCard", desc = "removeBankCard")
-    public String _bank_remove_bankCard(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/bank/single-bind-quickPayBank", desc = "singleBindQuickPayBank")
     public String _bank_single_bind_quickPayBank(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -131,11 +126,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/bid/invest/balance-check", desc = "balanceCheck")
-    public String _bid_invest_balance_check(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/bid/list-by-category/v2", desc = "listBidByCategory")
     public String _bid_list_by_category_v2(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -143,6 +133,11 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/bid/query-by-discount", desc = "根据优惠券搜索支持的标的")
     public String _bid_query_by_discount(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/bid/query-by-rebate", desc = "根据优惠信息搜索支持的标的")
+    public String _bid_query_by_rebate(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -166,7 +161,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/cash-flow/list", desc = "查询资金流水列表-v3.0.2")
+    @Uri(value = "/cash-flow/list", desc = "查询资金流水列表")
     public String _cash_flow_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -216,7 +211,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/consumer-finance/reservation/hot-products", desc = "查询预约计划列表-v3.0.2")
+    @Uri(value = "/consumer-finance/reservation/hot-products", desc = "查询预约计划列表")
     public String _consumer_finance_reservation_hot_products(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -226,7 +221,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/consumer-finance/reservation/matched-bid-detail", desc = "查询匹配的标的详情-v3.0.2")
+    @Uri(value = "/consumer-finance/reservation/matched-bid-detail", desc = "查询匹配的标的详情")
     public String _consumer_finance_reservation_matched_bid_detail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -273,11 +268,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/coupon/getCouponList", desc = "根据状态(1：未使用；2：已使用；3：已过期)查询我的理财券")
     public String _coupon_getCouponList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/coupon/getCouponScreening", desc = "getCouponScreening")
-    public String _coupon_getCouponScreening(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -396,7 +386,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/depository/reserved-phone-change/prepare", desc = "准备发起更新手机请求-v3.0.2")
+    @Uri(value = "/depository/reserved-phone-change/prepare", desc = "准备发起更新手机请求")
     public String _depository_reserved_phone_change_prepare(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -413,6 +403,11 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/depository/user-active/prepare", desc = "准备发起激活存管请求")
     public String _depository_user_active_prepare(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/depository/withdraw/conditions", desc = "提现操作前的条件查询")
+    public String _depository_withdraw_conditions(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -433,106 +428,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/finance/getMybids", desc = "用户投资列表")
     public String _finance_getMybids(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-query-benefit", desc = "queryFundBenefit")
-    public String _fund_fund_query_benefit(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-query-order", desc = "queryFundOrder")
-    public String _fund_fund_query_order(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-query-profitDate", desc = "queryProfitDate")
-    public String _fund_fund_query_profitDate(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-query-rate", desc = "queryFundRate")
-    public String _fund_fund_query_rate(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-turnout-account", desc = "fundTurnOutToAccount")
-    public String _fund_fund_turnout_account(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/fund-turnout-bank", desc = "fundTurnOutToBank")
-    public String _fund_fund_turnout_bank(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/getBalanceSetting", desc = "getBalSetting")
-    public String _fund_getBalanceSetting(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/h5hry/open", desc = "openAccount4h5")
-    public String _fund_h5hry_open(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/open-fundaccount", desc = "openFundAccount")
-    public String _fund_open_fundaccount(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/queryFundBill", desc = "queryFundBill")
-    public String _fund_queryFundBill(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/queryMyFund", desc = "queryMyFund")
-    public String _fund_queryMyFund(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/queryOrderDetail", desc = "queryOrderDetail")
-    public String _fund_queryOrderDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/queryTtjLimit", desc = "queryTtjLimit")
-    public String _fund_queryTtjLimit(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/shift-new", desc = "shiftNewFund")
-    public String _fund_shift_new(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/summary", desc = "queryFundSummary")
-    public String _fund_summary(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/transfer/qualification", desc = "查询用户是否可以把天天聚转入存管账户")
-    public String _fund_transfer_qualification(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/updateBalanceSetting", desc = "updateBalSetting")
-    public String _fund_updateBalanceSetting(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/v2/fund-in", desc = "newFundIn")
-    public String _fund_v2_fund_in(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/v2/fund-query-order", desc = "queryFundOrderForV2")
-    public String _fund_v2_fund_query_order(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/fund/v2/updateBalanceSetting", desc = "updateBalSettingV2")
-    public String _fund_v2_updateBalanceSetting(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -571,7 +466,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/home-dispatch/hot-bid-list", desc = "热门推荐标的列表查询-v3.0.2")
+    @Uri(value = "/home-dispatch/hot-bid-list", desc = "热门推荐标的列表查询")
     public String _home_dispatch_hot_bid_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -593,6 +488,11 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/home-dispatch/top-area-dashboard", desc = "查询顶部banner和运营活动区信息")
     public String _home_dispatch_top_area_dashboard(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/home-dispatch/ue-wrappers", desc = "优易智投推荐列表")
+    public String _home_dispatch_ue_wrappers(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -631,68 +531,18 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/huijin/bid/detail", desc = "债权投资人查看债权详情")
-    public String _huijin_bid_detail(HryTest test) {
+    @Uri(value = "/investment-record/dashboard", desc = "我的投资主页")
+    public String _investment_record_dashboard(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/huijin/bid/list", desc = "queryHuijinBidList")
-    public String _huijin_bid_list(HryTest test) {
+    @Uri(value = "/investment-record/normal-bid-list", desc = "散标列表查询")
+    public String _investment_record_normal_bid_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/huijin/bid/prebuy", desc = "prebuy")
-    public String _huijin_bid_prebuy(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/bid/purchase-result", desc = "queryInvestOrder")
-    public String _huijin_bid_purchase_result(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/bid/purchase/prepare", desc = "拾财计划申购")
-    public String _huijin_bid_purchase_prepare(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/bid/recommend-list", desc = "queryTop3BidList")
-    public String _huijin_bid_recommend_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/cancel", desc = "cancel")
-    public String _huijin_cancel(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/publish", desc = "发起转让申请")
-    public String _huijin_publish(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/queryHuijinRecord", desc = "queryHuijinRecord")
-    public String _huijin_queryHuijinRecord(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/queryHuijinRecordDetail", desc = "拾财计划发起人查询计划详情")
-    public String _huijin_queryHuijinRecordDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/queryMyBuybackSummary", desc = "queryMyBuybackSummary")
-    public String _huijin_queryMyBuybackSummary(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/queryPlan", desc = "queryPlan")
-    public String _huijin_queryPlan(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/huijin/queryPublishInfo", desc = "转让发起人查询用于转让的计划")
-    public String _huijin_queryPublishInfo(HryTest test) {
+    @Uri(value = "/investment-record/settled-bid-list", desc = "我的出借:结清和撤销的记录查询")
+    public String _investment_record_settled_bid_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -756,7 +606,7 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/acct-attrs", desc = "查询用户的账户属性信息-v3.0.2")
+    @Uri(value = "/member/acct-attrs", desc = "查询用户的账户属性信息")
     public String _member_acct_attrs(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -791,27 +641,22 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/app-list", desc = "我的应用列表-V3.0.2")
-    public String _member_homepage_app_list(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/homepage/app-list/v3", desc = "我的应用列表-V3.0.2")
+    @Uri(value = "/member/homepage/app-list/v3", desc = "我的应用列表")
     public String _member_homepage_app_list_v3(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/asset-allocation", desc = "查询账户资产配置信息-v3.0.2")
+    @Uri(value = "/member/homepage/asset-allocation", desc = "查询账户资产配置信息")
     public String _member_homepage_asset_allocation(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/brief-account-info", desc = "查询账户简要信息-v3.0.2")
+    @Uri(value = "/member/homepage/brief-account-info", desc = "查询账户简要信息")
     public String _member_homepage_brief_account_info(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/homepage/my-assets", desc = "我的总资产-v3.0.2")
+    @Uri(value = "/member/homepage/my-assets", desc = "我的总资产")
     public String _member_homepage_my_assets(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
@@ -838,11 +683,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/member/risk-assessment/questions", desc = "queryRiskAssessmentTopics")
     public String _member_risk_assessment_questions(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/upgradingAccount", desc = "upgradeAccount")
-    public String _member_upgradingAccount(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1051,6 +891,46 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/ue/authorize/cancel", desc = "优易智投授权撤销")
+    public String _ue_authorize_cancel(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/authorize/perform", desc = "优易智投授权申请")
+    public String _ue_authorize_perform(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/authorize/prepare", desc = "准备发起授权申请")
+    public String _ue_authorize_prepare(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/details", desc = "优易智投详情查询")
+    public String _ue_details(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/invest-details", desc = "优易智投投资详情")
+    public String _ue_invest_details(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/matched-bid-detail", desc = "查询匹配的标的详情")
+    public String _ue_matched_bid_detail(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/matched-bid-list", desc = "查询匹配的标的列表")
+    public String _ue_matched_bid_list(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/ue/wrapper-list", desc = "优易智投列表查询")
+    public String _ue_wrapper_list(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/v2/register", desc = "注册并且设置登陆密码")
     public String _v2_register(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1076,11 +956,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/withdraw/queryFundoutLimit", desc = "queryFundoutLimit")
-    public String _withdraw_queryFundoutLimit(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/withdraw/queryNeedBankBranch", desc = "queryNeedBankBranch")
     public String _withdraw_queryNeedBankBranch(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1088,11 +963,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/withdraw/withdraw-card", desc = "withdrawToCard")
     public String _withdraw_withdraw_card(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/ym-account/aip/create", desc = "创建(或修改)定投计划")
-    public String _ym_account_aip_create(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

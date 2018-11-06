@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: EamBase
  * @Author: 自动生成
- * @Date: 2018/10/22 15:52:34
+ * @Date: 2018/11/06 16:53:31
  */
 @SKey("Eam")
 public class EamBase extends Base {
