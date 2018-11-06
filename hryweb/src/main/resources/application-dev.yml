@@ -2,7 +2,7 @@ zdy:
   reportPath: C:/testngReport/
   resourcePathPattern: /test-output/
   autoCodeDir: C:/autoCode/
-  debug: true
+  debug: false
 server:
   port: 8885
 logging:

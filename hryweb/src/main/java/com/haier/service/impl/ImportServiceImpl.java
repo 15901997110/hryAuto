@@ -4,12 +4,11 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.ContentTypeEnum;
+import com.haier.enums.RequestMethodTypeEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.mapper.TserviceMapper;
-import com.haier.po.ImportInterfaceResult;
-import com.haier.po.Ti;
-import com.haier.service.ImportService;
-import com.haier.service.TiService;
+import com.haier.po.*;
+import com.haier.service.*;
 import com.haier.util.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -32,6 +32,15 @@ public class ImportServiceImpl implements ImportService {
 
     @Autowired
     TiService tiService;
+
+    @Autowired
+    TcaseService tcaseService;
+
+    @Autowired
+    TserviceService tserviceService;
+
+    @Autowired
+    TservicedetailService tservicedetailService;
 
     @Override
     public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite, String iDev) {
@@ -201,6 +210,158 @@ public class ImportServiceImpl implements ImportService {
         return result;
     }
 
+    @Override
+    public ImportInterfaceResult importInterface(Integer serviceId, Integer envId, JSONObject postmanJson, Boolean overwriteI, Boolean overwriteC, String dev, String cAuthor) {
+        Tservice tservice = tserviceService.selectOne(serviceId);
+        ImportInterfaceResult result = new ImportInterfaceResult();
+        result.setServiceId(serviceId);
+        result.setServiceKey(tservice.getServicekey());
+        result.setServiceName(tservice.getServicename());
+        List<String> insertList = new ArrayList<>();
+        List<String> updateList = new ArrayList<>();
+        List<String> deleteList = new ArrayList<>();
+        List<String> failList = new ArrayList<>();
+
+        JSONArray is = postmanJson.getJSONArray("item");
+        if (is == null || is.size() == 0) {
+            return result;
+        }
+
+        Tservicedetail tservicedetail = tservicedetailService.selectOne(serviceId, envId);
+
+
+        String hostInfo = tservicedetail.getHostinfo();
+
+
+        Map<String, Ti> i_map = new HashMap<>();
+        Map<String, List<Tcase>> c_map = new HashMap<>();
+
+        collectTiTcase(serviceId, dev, cAuthor, is, hostInfo, i_map, c_map);
+
+        /**
+         * 根据是否覆盖的需求 ,入库
+         */
+
+        Ti condition = new Ti();
+        condition.setServiceid(serviceId);
+        List<Ti> tis = tiService.selectByCondition(condition);
+        List<String> existIUri = tis.stream().map(Ti::getIuri).collect(Collectors.toList());
+        Map<String, Ti> existTi = tis.stream().collect(Collectors.toMap(Ti::getIuri, ti -> ti));
+
+
+        for (Map.Entry<String, Ti> entry : i_map.entrySet()) {
+            String iUri = entry.getKey();
+            Ti ti = entry.getValue();
+
+            //如果新接口不在已存在的接口列表中,则直接插入
+            if (!existTi.containsKey(iUri)) {
+                Integer newTiId = tiService.insertOne(ti);
+                insertList.add(ti.getIuri());
+                List<Tcase> tcases = c_map.get(iUri);
+                for (Tcase tcase : tcases) {
+                    tcase.setIid(newTiId);
+                    tcaseService.insertOne(tcase);
+                }
+            } else {//数据库中包含本条要插入的接口
+                if (overwriteI) {//如果覆盖此接口,则此接口的用例也会覆盖
+                    //1.删除老的接口,老的用例
+                    tiService.deleteOne(existTi.get(iUri).getId());
+                    deleteList.add(iUri + "(老接口)");
+                    //2.新增此接口及对应用例
+                    Integer newTiId = tiService.insertOne(ti);
+                    insertList.add(iUri);
+                    List<Tcase> tcases = c_map.get(iUri);
+                    for (Tcase tcase : tcases) {
+                        tcase.setIid(newTiId);
+                        tcaseService.insertOne(tcase);
+                    }
+                } else {//不覆盖接口
+                    ti.setId(existTi.get(iUri).getId());
+                    /*tiService.updateOne(ti);*///不对接口进行更新
+                    if (overwriteC) {//如果覆盖用例,则将新用例插入,老用例删除,否则 ,不对用例做处理
+                        updateList.add(iUri + "(只更新用例)");
+                        Tcase conditionTcase = new Tcase();
+                        conditionTcase.setIid(ti.getId());
+                        tcaseService.deleteByCondition(conditionTcase);
+                        List<Tcase> tcases = c_map.get(iUri);
+                        for (Tcase tcase : tcases) {
+                            tcase.setIid(ti.getId());
+                            tcaseService.insertOne(tcase);
+                        }
+                    } else {
+                        failList.add(iUri + "(您选择不覆盖接口及用例)");
+                    }
+                }
+            }
+        }
+
+        result.setTotalCount(i_map.size());
+        result.setInsertList(insertList);
+        result.setInsertCount(insertList.size());
+        result.setUpdateList(updateList);
+        result.setUpdateCount(updateList.size());
+        result.setDeleteList(deleteList);
+        result.setDeleteCount(deleteList.size());
+        result.setFailList(failList);
+        result.setFailCount(failList.size());
+        return result;
+    }
+
+    public void collectTiTcase(Integer serviceId, String dev, String cAuthor, JSONArray is, String hostInfo, Map<String, Ti> i_map, Map<String, List<Tcase>> c_map) {
+        for (int i = 0; i < is.size(); i++) {
+            JSONObject iObj = is.getJSONObject(i);
+            if (iObj == null) {
+                continue;
+            }
+
+            String iName = iObj.getString("name");
+            JSONArray cs = iObj.getJSONArray("item");
+            for (int j = 0; j < cs.size(); j++) {
+                JSONObject cObj = cs.getJSONObject(j);
+                String cName = cObj.getString("name");
+                JSONObject cRequest = cObj.getJSONObject("request");
+                String method = cRequest.getString("method");
+                //JSONArray header = cRequest.getJSONArray("header");
+                JSONObject body = cRequest.getJSONObject("body");
+                String cParam = body.getString("raw");
+                JSONObject url = cRequest.getJSONObject("url");
+                String fullUrl = url.getString("raw");//http://10.255.12.173:8015/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfXszrLoan
+                String iUri = fullUrl.substring(fullUrl.indexOf(hostInfo) + hostInfo.length());//截取hostInfo后面的字符,即
+                if (!i_map.containsKey(iUri)) {
+                    Ti ti = new Ti();
+                    ti.setServiceid(serviceId);
+                    ti.setIuri(iUri);
+                    ti.setRemark(iName);
+                    ti.setIrequestmethod(RequestMethodTypeEnum.getId(method));
+                    if (StringUtils.isNotBlank(dev)) {
+                        ti.setIdev(dev);
+                    }
+
+                    i_map.put(iUri, ti);
+                }
+                Tcase tcase = new Tcase();
+                tcase.setServiceid(serviceId);
+                tcase.setCasename(cName);
+                tcase.setRequestparam(cParam);
+                tcase.setAuthor(cAuthor);
+                if (!c_map.containsKey(iUri)) {
+                    c_map.put(iUri, Arrays.asList(tcase));
+                } else {
+                    /*
+                    //java.lang.UnsupportedOperationException
+                    c_map.get(iUri).add(tcase);
+                    */
+                    List newList = new ArrayList();
+                    newList.addAll(c_map.get(iUri));
+                    newList.add(tcase);
+                    c_map.put(iUri, newList);
+                }
+
+            }
+        }
+    }
+
+
     //ref内层嵌套json解析
     private static void parseRef(String ref, JSONObject definitions, StringBuilder paramsamples) {
         if (ref == null || ref.length() == 0) {
@@ -237,15 +398,15 @@ public class ImportServiceImpl implements ImportService {
                     paramsamples.append("\"").append("\",");
                 } else if ("boolean".equals(paramValueType)) {
                     paramsamples.append("true,");
-                }else if ("object".equals(paramValueType)) {
+                } else if ("object".equals(paramValueType)) {
                     JSONObject additionalPropertiesobj = paramValueJSONObject.getJSONObject("additionalProperties");
                     String objectPropertiestype = additionalPropertiesobj.getString("type");
-                    if("object".equals(objectPropertiestype)||"array".equals(objectPropertiestype)){
+                    if ("object".equals(objectPropertiestype) || "array".equals(objectPropertiestype)) {
                         paramsamples.append("{},");
                     }
-                } else if(StringUtils.isBlank(paramValueType)) {
+                } else if (StringUtils.isBlank(paramValueType)) {
                     String propertiesref = paramValueJSONObject.getString("$ref");
-                    if (StringUtils.isNotBlank(propertiesref)){
+                    if (StringUtils.isNotBlank(propertiesref)) {
                         parseRef(propertiesref, definitions, paramsamples);
                         paramsamples.replace(paramsamples.lastIndexOf("}"), paramsamples.lastIndexOf("}") + 1, "},");
                     }
@@ -255,7 +416,7 @@ public class ImportServiceImpl implements ImportService {
                 paramsamples.replace(paramsamples.lastIndexOf(","), paramsamples.lastIndexOf(",") + 1, "");
                 paramsamples.append("}");
             }
-        }else if ("object".equals(type) && Objects.isNull(propertiesJSONObject)){
+        } else if ("object".equals(type) && Objects.isNull(propertiesJSONObject)) {
             paramsamples.append(" ");
         }
     }
