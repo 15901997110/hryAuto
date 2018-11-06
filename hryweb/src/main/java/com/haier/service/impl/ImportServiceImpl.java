@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.enums.ContentTypeEnum;
 import com.haier.enums.RequestMethodTypeEnum;
+import com.haier.enums.StatusCodeEnum;
 import com.haier.enums.StatusEnum;
+import com.haier.exception.HryException;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
 import com.haier.service.*;
@@ -245,7 +247,7 @@ public class ImportServiceImpl implements ImportService {
         Ti condition = new Ti();
         condition.setServiceid(serviceId);
         List<Ti> tis = tiService.selectByCondition(condition);
-        List<String> existIUri = tis.stream().map(Ti::getIuri).collect(Collectors.toList());
+//        List<String> existIUri = tis.stream().map(Ti::getIuri).collect(Collectors.toList());
         Map<String, Ti> existTi = tis.stream().collect(Collectors.toMap(Ti::getIuri, ti -> ti));
 
 
@@ -320,6 +322,9 @@ public class ImportServiceImpl implements ImportService {
             for (int j = 0; j < cs.size(); j++) {
                 JSONObject cObj = cs.getJSONObject(j);
                 String cName = cObj.getString("name");
+                if (cName.length() > 50) {
+                    throw new HryException(StatusCodeEnum.CHECK_ERROR, "caseName过长,不允许超过50个字符,请检查postman中的用例名");
+                }
                 JSONObject cRequest = cObj.getJSONObject("request");
                 String method = cRequest.getString("method");
                 //JSONArray header = cRequest.getJSONArray("header");
@@ -327,7 +332,14 @@ public class ImportServiceImpl implements ImportService {
                 String cParam = body.getString("raw");
                 JSONObject url = cRequest.getJSONObject("url");
                 String fullUrl = url.getString("raw");//http://10.255.12.173:8015/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfXszrLoan
-                String iUri = fullUrl.substring(fullUrl.indexOf(hostInfo) + hostInfo.length());//截取hostInfo后面的字符,即
+                String iUri;//截取hostInfo后面的字符,即/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfXszrLoan
+
+                //iUri为空的,直接忽略
+                try {
+                    iUri = fullUrl.substring(fullUrl.indexOf(hostInfo) + hostInfo.length());
+                } catch (StringIndexOutOfBoundsException e) {
+                    continue;
+                }
                 if (!i_map.containsKey(iUri)) {
                     Ti ti = new Ti();
                     ti.setServiceid(serviceId);
