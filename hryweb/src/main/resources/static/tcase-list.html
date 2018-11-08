@@ -323,7 +323,7 @@
                                 expected = expected;
                             }
                         }
-
+                        var tiUrlHtml = "<a title=\"查看接口\" href=\"javascript:void(0);\" onclick=\"ti_list('接口管理','ti-list.html','" + row.iid + "')\">" + row.iuri+ "</a>"
                         var tiName = row.iuri + "(" + row.iremark + ")";
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
@@ -334,7 +334,7 @@
                             "<td>" + row.servicekey + "</td>\n" +
                             "<td>" + envKey + "</td>\n" +
                             "<td>" + row.iremark + "</td>\n" +
-                            "<td style=\"text-align:left\">" + row.iuri + "(" + row.iid + ")" + "</td>\n" +
+                            "<td style=\"text-align:left\">" + tiUrlHtml + "(" + row.iid + ")" + "</td>\n" +
                             "<td>" + assertName + "</td>\n" +
                             "<td><pre style='text-align: left;border: 0px'>" + expected + "</pre></td>\n" +
                             "<td>" + row.author + "</td>\n" +
@@ -419,6 +419,12 @@
         });
 
 
+    }
+
+    function ti_list(title, url, fromTiIid) {
+        url = url + "?fromTiIid=" + fromTiIid;
+        creatIframe(url, title);
+        min_titleList();
     }
 
     function userGroup() {
