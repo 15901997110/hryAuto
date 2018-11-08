@@ -6,8 +6,6 @@ import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
-import com.haier.anno.HryCookie;
-import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
 import com.haier.config.ZdyProperty;
 import com.haier.enums.*;
@@ -23,8 +21,11 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 封装httpClientUtil
@@ -137,32 +138,48 @@ public class HryHttpClientUtil {
 
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
 
-        //请求Header
-        Header[] headers = null;
+
+        Map<String, String> requestHeaderMap = null;
         String headerStr = test.getTcase().getRequestheader();
         if (StringUtils.isNotBlank(headerStr)) {
             JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
-            if (headerJSON != null) {
-                for (String key : headerJSON.keySet()) {//获取测试用例中的header,如果Header的值 为空,则忽略
-                    String value = headerJSON.getString(key);
-                    if (StringUtils.isNotBlank(value)) {
-                        headers = ArrayUtils.add(headers, new BasicHeader(key, value));
-                    }
-                }
+            if (headerJSON != null && headerJSON.size() > 0) {
+                requestHeaderMap = headerJSON.toJavaObject(Map.class);
             }
         }
 
         //获取测试对象中的Header和Cookie
-        Header[] entityHeader;
+        Map<String, String> entityHeaderMap = null;
         CookieStore entityCookieStore = null;
         if (entity != null) {
-            entityHeader = ReflectUtil.getFirstPublicFieldValueByAnnoAndFieldType(entity, HryHeader.class, Header[].class);
-            if (entityHeader != null) {
-                headers = ArrayUtils.addAll(headers, entityHeader);
+            Header[] entityHeaders = entity.headers;
+            if (entityHeaders != null && entityHeaders.length > 0) {
+                entityHeaderMap = Arrays.stream(entityHeaders).collect(Collectors.toMap(Header::getName, Header::getValue));
             }
-            entityCookieStore = ReflectUtil.getFirstPublicFieldValueByAnnoAndFieldType(entity, HryCookie.class, CookieStore.class);
+            entityCookieStore = entity.cookieStore;
         }
 
+        //合并header,如果requestHeader中的值为null,则尝试从entityHeader中取相应的值
+        Map<String, String> finalHeaderMap = new HashMap<>();
+        if (requestHeaderMap != null) {
+            if (entityHeaderMap != null) {
+                for (String requestHeaderKey : requestHeaderMap.keySet()) {
+                    if (requestHeaderMap.get(requestHeaderKey) == null && entityHeaderMap.get(requestHeaderKey) != null) {//requestHeaderValue为null时,才尝试从Entity中取值
+                        finalHeaderMap.put(requestHeaderKey, entityHeaderMap.get(requestHeaderKey));
+                        continue;
+                    }
+                    //如果requestHeaderValue不为null,或者虽然为null,但是在entity中也找不到同名的非null value,则保留原Header
+                    finalHeaderMap.put(requestHeaderKey, requestHeaderMap.get(requestHeaderKey));
+                }
+            } else {
+                finalHeaderMap = requestHeaderMap;
+            }
+        }
+        //合并用例中的Header和测试类中的Header
+        Header[] requestHeaders = null;
+        for (Map.Entry<String, String> entry : finalHeaderMap.entrySet()) {
+            requestHeaders = ArrayUtils.add(requestHeaders, new BasicHeader(entry.getKey(), entry.getValue()));
+        }
 
         //参数替换
         String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
@@ -173,7 +190,7 @@ public class HryHttpClientUtil {
                 test.getTi().getIcontenttype(),
                 test.getTi().getIparamtype(),
                 param,
-                headers,
+                requestHeaders,
                 entityCookieStore
         );
         ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
