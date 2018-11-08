@@ -170,6 +170,11 @@
         }
         $("#serviceKey").append(html);
 
+        var fromTiIid = null;
+        if (getParameter("fromTiIid") != null && getParameter("fromTiIid") != "") {//如果是链接跳转,这里选中
+            fromTiIid = getParameter("fromTiIid");
+            $("#id").val(fromTiIid);
+        }
         var dev = getUserList();
         var htmldev = "";
         for (var k = 0; k < dev.length; k++) {
