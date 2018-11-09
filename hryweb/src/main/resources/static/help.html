@@ -4,25 +4,26 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>帮助</title>
 </head>
 <body style="padding-left: 50px">
-<h2 >帮助一览列表</h2>
+<h2>帮助一览列表</h2>
 <div id="table-of-contents">
     <a href="#AssertType">1 - AssertType</a>
     <br>
@@ -33,10 +34,12 @@
 断言方式枚举:
 <p>
 <table class="table table-border table-bordered table-bg table-hover table-sort">
-    <thead><tr class="text-1">
+    <thead>
+    <tr class="text-1">
         <th width="10%">断言类型</th>
         <th width="20%">断言说明</th>
-    </tr></thead>
+    </tr>
+    </thead>
     <tbody>
     <tr class="text-l">
         <th width="10%">equal</th>
@@ -50,7 +53,8 @@
         <th width="10%">key-value</th>
         <th width="30%" align="left">实际值与相对应key的期望中的值相等,或忽略大小写比较相等,
             <br>或忽略空字符比较相等,或包含期望值,或匹配期望值的正则形式,
-            <br>所有的key-value对比较都为true,断言通过</th>
+            <br>所有的key-value对比较都为true,断言通过
+        </th>
     </tr>
     <tr class="text-l">
         <th width="10%">match</th>
@@ -59,22 +63,25 @@
     </tbody>
 </table>
 </p>
-<h3><a name="ReplaceRegex">2 - BeforeRegex</a></h3>
-<p>匹配替换功能正则表达式:</p>
+<h3><a name="ReplaceRegex">2 - ReplaceRegex</a></h3>
+<p>用例前置后置处理时能够识别的表达式及识别后的处理规则:</p>
 <table class="table table-border table-bordered table-bg table-hover table-sort">
-    <thead><tr class="text-1">
+    <thead>
+    <tr class="text-1">
         <th width="10%">正则表达式</th>
         <th width="30%">功能</th>
         <th width="30%">举例</th>
-    </tr></thead>
+    </tr>
+    </thead>
     <tbody>
     <tr class="text-1">
         <th>(?i)&lt;uuid\(?\d*\)?&gt;</th>
         <th>&lt;uuid(num)&gt; 随机唯一字符串随机唯一字符串
-            <br>参数:num-非必填,指定要截断的长度</th>
+            <br>参数:num-非必填,指定要截断的长度
+        </th>
         <th> &lt;uuid&gt;:随机生成32位唯一字符串 结果:599b255f7aaa41768108e77540d1249a
-            <br>&lt;uuid()&gt;:随机生成32位唯一字符串  结果:599b255f7aaa41768108e77540d1249a
-            <br>&lt;uuid(5)&gt;: 随机生成唯一字符串,但是只截取前5位   结果:599b2
+            <br>&lt;uuid()&gt;:随机生成32位唯一字符串 结果:599b255f7aaa41768108e77540d1249a
+            <br>&lt;uuid(5)&gt;: 随机生成唯一字符串,但是只截取前5位 结果:599b2
         </th>
     </tr>
     <tr class="text-1">
@@ -85,7 +92,8 @@
     <tr class="text-1">
         <th>(?i)&lt;date\(-?\d*\)&gt;</th>
         <th> &lt;date(num)&gt; 生成一个日期(默认今天),格式"yyyy-MM-dd"
-            <br>参数:num-非必填,指定日期按天的偏移量</th>
+            <br>参数:num-非必填,指定日期按天的偏移量
+        </th>
         <th>假设现在是2018-08-08
             <br>&lt;date()&gt;: 生成今天的日期,结果:2018-08-08
             <br>&lt;date(-1)&gt;:生成昨天的日期,结果:2018-08-07
@@ -95,14 +103,16 @@
     <tr class="text-1">
         <th>(?i)&lt;datetime\(-?\d*\)&gt;</th>
         <th> &lt;datetime(num)&gt;生成一个datetime,格式"yyyy-MM-dd HH:mm:ss"
-            <br>参数:num-非必填,指定datetime按小时的偏移量</th>
+            <br>参数:num-非必填,指定datetime按小时的偏移量
+        </th>
         <th>同上
         </th>
     </tr>
     <tr class="text-1">
         <th>(?i)&lt;time\(-?\d*\)</th>
         <th> &lt;time(num)&gt;生成一个时间,格式"HH:mm:ss"
-            <br>参数:num-非必填,指定时间按分钟的偏移量</th>
+            <br>参数:num-非必填,指定时间按分钟的偏移量
+        </th>
         <th>同上
         </th>
     </tr>
@@ -110,7 +120,8 @@
         <th>(?i)&lt;randomI\(\d*,?\d*\)&gt;</th>
         <th> &lt;randomI(min,max)&gt;在区间[min,max)中随机生成一个整数,注意max必须大于min
             <br>参数:min-非必填,指定随机范围的下限(包含)
-            <br>参数:max-非必填,指定随机范围的上限(不包含)</th>
+            <br>参数:max-非必填,指定随机范围的上限(不包含)
+        </th>
         <th>&lt;randomI()&gt;:不填写任何参数,将随机一个[0,100)中的整数
             <br>&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
         </th>
@@ -119,15 +130,17 @@
         <th>(?i)&lt;randomF\((\d+\.\d+)?,?(\d+\.\d+)?\)&gt;</th>
         <th> &lt;randomF(min,max)&gt;在区间[min,max)中随机生成一个浮点数,生成浮点数的精度将min的精度保持一致
             <br>参数:min-非必填,指定随机范围的下限(包含)
-            <br>参数:max-非必填,指定随机范围的上限(不包含)</th>
+            <br>参数:max-非必填,指定随机范围的上限(不包含)
+        </th>
         <th>&lt;randomF()&gt;:不填写任何参数,将从[0.01,1.00)中随机一个浮点数,结果:0.23
-            <br>&lt;randomI(0.123,20.456)&gt;:将从[10.123,20.456)区间中随机一个浮点数,浮点数的精度为0.001,结果:18.236
+            <br>&lt;randomI(10.123,20.456)&gt;:将从[10.123,20.456)区间中随机一个浮点数,浮点数的精度为0.001,结果:18.236
         </th>
     </tr>
     <tr class="text-1">
         <th>(?i)&lt;sql:[^<>]*&gt;</th>
         <th> &lt;sql:xxx&gt;执行sql并且使用执行结果替换此匹配项
-            <br>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句</th>
+            <br>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句
+        </th>
         <th>&lt;sql:select id from table&gt;:执行查询语句,并使用查询结果替换此处,结果:1
             <br>&lt;sql:update table t set t.status=-1 where t.id=1&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
         </th>
@@ -135,14 +148,16 @@
     <tr class="text-1">
         <th>(?i)&lt;var\([^<>]+\)&gt;</th>
         <th> &lt;var(fieldName)&gt;使用测试类中的字段值替换此匹配项
-            <br>参数:fieldName-必填,fieldName必须是测试类中维护的字段名</th>
+            <br>参数:fieldName-必填,fieldName必须是测试类中维护的字段名
+        </th>
         <th>&lt;var(requestNo)&gt;将从当前测试类中,获取可访问的字段名为requestNo的字段的值,替换当前匹配项
         </th>
     </tr>
     <tr class="text-1">
         <th>&lt;\$\d+\([^<>]*\)&gt;</th>
         <th> &lt;$index(xxx)&gt;将请求参数中此匹配项括号中的内容赋值给&lt;ref(index)
-            <br>参数:index-必填,index必须是整数,标记引用源</th>
+            <br>参数:index-必填,index必须是整数,标记引用源
+        </th>
         <th>&lt;$1(abc)&gt;将abc赋值到所有 &lt;ref(1)&gt;的位置,并且<$1(abc)>自动替换为abc
         </th>
     </tr>
