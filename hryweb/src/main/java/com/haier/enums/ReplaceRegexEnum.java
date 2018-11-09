@@ -64,6 +64,13 @@ public enum ReplaceRegexEnum {
      */
     RANDOM_F("(?i)<randomF\\((\\d+\\.\\d+)?,?(\\d+\\.\\d+)?\\)>", "<randomF(min,max)>"),
 
+
+    /**
+     * <pureSql(pureDmlSql)> 执行sql语句,pureDmlSql为纯sql,可直接去数据库中执行,不需要再进一步做处理的sql
+     */
+    PURE_SQL("(?i)<pureSql(.+)>","<pureSql(pureDmlSql)>"),
+
+
     /**
      * <sql:xxx> 执行sql并且使用执行结果替换此匹配项
      * 参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句,
