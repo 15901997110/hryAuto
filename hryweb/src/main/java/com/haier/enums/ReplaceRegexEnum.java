@@ -67,8 +67,9 @@ public enum ReplaceRegexEnum {
 
     /**
      * <pureSql(pureDmlSql)> 执行sql语句,pureDmlSql为纯sql,可直接去数据库中执行,不需要再进一步做处理的sql
+     * 懒惰匹配,匹配尽可能少的sql语句,碰到第一个)>就当成结尾,停止匹配
      */
-    PURE_SQL("(?i)<pureSql(.+)>","<pureSql(pureDmlSql)>"),
+    PURE_SQL("(?i)<pureSql\\((.+?)\\)>","<pureSql(pureDmlSql)>"),
 
 
     /**
