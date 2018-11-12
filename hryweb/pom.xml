@@ -119,6 +119,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
+        <!--在内存中编译并运行,引自https://github.com/michaelliao/compiler-->
+        <dependency>
+            <groupId>com.itranswarp</groupId>
+            <artifactId>compiler</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 
