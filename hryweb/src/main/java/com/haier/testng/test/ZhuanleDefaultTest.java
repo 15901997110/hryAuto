@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: ZhuanleDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @Slf4j
 public class ZhuanleDefaultTest extends ZhuanleBase{
@@ -525,12 +525,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/h5/asset/kjt-acct-balance", dataProvider = "provider", description = "queryKjtAndTtjBalance")
-    public void h5_asset_kjt_acct_balance(HryTest hryTest) {
-        String actual = super._h5_asset_kjt_acct_balance(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/h5/asset/summary", dataProvider = "provider", description = "顺逛资产查询")
     public void h5_asset_summary(HryTest hryTest) {
         String actual = super._h5_asset_summary(hryTest);
@@ -540,12 +534,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/h5/dep/account-info", dataProvider = "provider", description = "查询H5用户的账户信息")
     public void h5_dep_account_info(HryTest hryTest) {
         String actual = super._h5_dep_account_info(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/h5/investment/bid/benefit-permillion", dataProvider = "provider", description = "getBenefitPerMillion")
-    public void h5_investment_bid_benefit_permillion(HryTest hryTest) {
-        String actual = super._h5_investment_bid_benefit_permillion(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -612,12 +600,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/home/h5", dataProvider = "provider", description = "h5home")
     public void home_h5(HryTest hryTest) {
         String actual = super._home_h5(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/home/headers", dataProvider = "provider", description = "headers")
-    public void home_headers(HryTest hryTest) {
-        String actual = super._home_headers(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1140,30 +1122,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/version/check", dataProvider = "provider", description = "checkAppVersion")
     public void version_check(HryTest hryTest) {
         String actual = super._version_check(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/withdraw/queryAllProvCities", dataProvider = "provider", description = "queryAllProvinces")
-    public void withdraw_queryAllProvCities(HryTest hryTest) {
-        String actual = super._withdraw_queryAllProvCities(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/withdraw/queryBranches", dataProvider = "provider", description = "queryBranches")
-    public void withdraw_queryBranches(HryTest hryTest) {
-        String actual = super._withdraw_queryBranches(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/withdraw/queryNeedBankBranch", dataProvider = "provider", description = "queryNeedBankBranch")
-    public void withdraw_queryNeedBankBranch(HryTest hryTest) {
-        String actual = super._withdraw_queryNeedBankBranch(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/withdraw/withdraw-card", dataProvider = "provider", description = "withdrawToCard")
-    public void withdraw_withdraw_card(HryTest hryTest) {
-        String actual = super._withdraw_withdraw_card(hryTest);
         supperAssert(actual, hryTest);
     }
 

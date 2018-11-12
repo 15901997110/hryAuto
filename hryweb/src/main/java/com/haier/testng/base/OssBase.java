@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @SKey("Oss")
 public class OssBase extends Base {
@@ -246,6 +246,11 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/consolePromotionFacade/queryPromotionRewards", desc = "海融易推广活动奖励查询")
+    public String _consolePromotionFacade_queryPromotionRewards(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/consolePromotionFacade/saveInvestRankActivity", desc = "保存打榜活动")
     public String _consolePromotionFacade_saveInvestRankActivity(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -303,11 +308,6 @@ public class OssBase extends Base {
 
     @Uri(value = "/couponFacade/auditBatchCoupon", desc = "批量生成券审核")
     public String _couponFacade_auditBatchCoupon(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/couponFacade/batchSendThirdPartyCoupon", desc = "第三方券信息上传")
-    public String _couponFacade_batchSendThirdPartyCoupon(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -556,83 +556,8 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/juheFacade/getGasProductList", desc = "获取加油卡产品列表")
-    public String _juheFacade_getGasProductList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getPaymentResult", desc = "获取充值结果")
-    public String _juheFacade_getPaymentResult(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getPhoneCardProductList", desc = "获取手机充值产品列表")
-    public String _juheFacade_getPhoneCardProductList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getPhoneDataProductList", desc = "获取手机流量产品列表")
-    public String _juheFacade_getPhoneDataProductList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getProductDetailInfo", desc = "获取产品详细信息")
-    public String _juheFacade_getProductDetailInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getProductList", desc = "获取产品列表")
-    public String _juheFacade_getProductList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getRechargeCardNumberRecords", desc = "获取用户充值号码信息")
-    public String _juheFacade_getRechargeCardNumberRecords(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/getTradingRecords", desc = "获取交易记录（充值记录）")
-    public String _juheFacade_getTradingRecords(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/juheFacade/purchaseProduct", desc = "购买产品")
-    public String _juheFacade_purchaseProduct(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/loanUnderUmbrellaFacade/addLoansUnderUmbrellaRegisterInfo", desc = "增加伞下贷注册信息")
     public String _loanUnderUmbrellaFacade_addLoansUnderUmbrellaRegisterInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/drawLottery", desc = "抽奖")
-    public String _lotteryFacade_drawLottery(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/getLastLotteryRecord", desc = "最近获奖列表")
-    public String _lotteryFacade_getLastLotteryRecord(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/getLotteryQualification", desc = "查询摇奖资格信息")
-    public String _lotteryFacade_getLotteryQualification(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/getLotteryRecord", desc = "查询获奖记录")
-    public String _lotteryFacade_getLotteryRecord(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/getTopInvestmentList", desc = "用户年总投资金额排名列表")
-    public String _lotteryFacade_getTopInvestmentList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/lotteryFacade/getUserInvestmentForLottery", desc = "我的投资金额，根据当前抽奖活动决定时间范围")
-    public String _lotteryFacade_getUserInvestmentForLottery(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1316,46 +1241,6 @@ public class OssBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/shareActivityFacade/addShareActivity", desc = "新增送祝福活动")
-    public String _shareActivityFacade_addShareActivity(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/generateShareInfo", desc = "生成新的分享信息")
-    public String _shareActivityFacade_generateShareInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/getShareActivityInfo", desc = "查询祝福活动相关信息")
-    public String _shareActivityFacade_getShareActivityInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/getShareItemInfo", desc = "获取分享信息")
-    public String _shareActivityFacade_getShareItemInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/getShareResult", desc = "获取分享结果")
-    public String _shareActivityFacade_getShareResult(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/receiveSharedItem", desc = "收下祝福")
-    public String _shareActivityFacade_receiveSharedItem(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/recoverSharedItem", desc = "撤销分享")
-    public String _shareActivityFacade_recoverSharedItem(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/shareActivityFacade/updateShareActivity", desc = "修改送祝福活动")
-    public String _shareActivityFacade_updateShareActivity(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tpPromotionFacade/getChannelPromotionUri", desc = "根据用户获取推广码（链接）")
     public String _tpPromotionFacade_getChannelPromotionUri(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1418,6 +1303,16 @@ public class OssBase extends Base {
 
     @Uri(value = "/userFacade/getPersonalInvestRank", desc = "查询个人当前投资打榜信息")
     public String _userFacade_getPersonalInvestRank(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/userFacade/getUserInfoByLoginNames", desc = "批量查询投资用户基本信息")
+    public String _userFacade_getUserInfoByLoginNames(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/userFacade/getUserInfoByUserIds", desc = "批量查询投资用户基本信息")
+    public String _userFacade_getUserInfoByUserIds(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

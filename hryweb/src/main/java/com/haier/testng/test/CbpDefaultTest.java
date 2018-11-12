@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: CbpDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @Slf4j
 public class CbpDefaultTest extends CbpBase{
@@ -105,12 +105,6 @@ public class CbpDefaultTest extends CbpBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfCarLoan", dataProvider = "provider", description = "车贷借款申请")
-    public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_createCfCarLoan(HryTest hryTest) {
-        String actual = super._cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_createCfCarLoan(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanResource/createCfLoan", dataProvider = "provider", description = "2.1.1-P0007消金借款申请")
     public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_createCfLoan(HryTest hryTest) {
         String actual = super._cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_createCfLoan(hryTest);
@@ -152,4 +146,5 @@ public class CbpDefaultTest extends CbpBase{
         String actual = super._cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanResource_queryCfXszrLoan(hryTest);
         supperAssert(actual, hryTest);
     }
+
 }

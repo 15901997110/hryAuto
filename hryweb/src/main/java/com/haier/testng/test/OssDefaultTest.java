@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: OssDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @Slf4j
 public class OssDefaultTest extends OssBase{
@@ -303,6 +303,12 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/consolePromotionFacade/queryPromotionRewards", dataProvider = "provider", description = "海融易推广活动奖励查询")
+    public void consolePromotionFacade_queryPromotionRewards(HryTest hryTest) {
+        String actual = super._consolePromotionFacade_queryPromotionRewards(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/consolePromotionFacade/saveInvestRankActivity", dataProvider = "provider", description = "保存打榜活动")
     public void consolePromotionFacade_saveInvestRankActivity(HryTest hryTest) {
         String actual = super._consolePromotionFacade_saveInvestRankActivity(hryTest);
@@ -372,12 +378,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/couponFacade/auditBatchCoupon", dataProvider = "provider", description = "批量生成券审核")
     public void couponFacade_auditBatchCoupon(HryTest hryTest) {
         String actual = super._couponFacade_auditBatchCoupon(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/couponFacade/batchSendThirdPartyCoupon", dataProvider = "provider", description = "第三方券信息上传")
-    public void couponFacade_batchSendThirdPartyCoupon(HryTest hryTest) {
-        String actual = super._couponFacade_batchSendThirdPartyCoupon(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -675,99 +675,9 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/juheFacade/getGasProductList", dataProvider = "provider", description = "获取加油卡产品列表")
-    public void juheFacade_getGasProductList(HryTest hryTest) {
-        String actual = super._juheFacade_getGasProductList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getPaymentResult", dataProvider = "provider", description = "获取充值结果")
-    public void juheFacade_getPaymentResult(HryTest hryTest) {
-        String actual = super._juheFacade_getPaymentResult(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getPhoneCardProductList", dataProvider = "provider", description = "获取手机充值产品列表")
-    public void juheFacade_getPhoneCardProductList(HryTest hryTest) {
-        String actual = super._juheFacade_getPhoneCardProductList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getPhoneDataProductList", dataProvider = "provider", description = "获取手机流量产品列表")
-    public void juheFacade_getPhoneDataProductList(HryTest hryTest) {
-        String actual = super._juheFacade_getPhoneDataProductList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getProductDetailInfo", dataProvider = "provider", description = "获取产品详细信息")
-    public void juheFacade_getProductDetailInfo(HryTest hryTest) {
-        String actual = super._juheFacade_getProductDetailInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getProductList", dataProvider = "provider", description = "获取产品列表")
-    public void juheFacade_getProductList(HryTest hryTest) {
-        String actual = super._juheFacade_getProductList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getRechargeCardNumberRecords", dataProvider = "provider", description = "获取用户充值号码信息")
-    public void juheFacade_getRechargeCardNumberRecords(HryTest hryTest) {
-        String actual = super._juheFacade_getRechargeCardNumberRecords(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/getTradingRecords", dataProvider = "provider", description = "获取交易记录（充值记录）")
-    public void juheFacade_getTradingRecords(HryTest hryTest) {
-        String actual = super._juheFacade_getTradingRecords(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/juheFacade/purchaseProduct", dataProvider = "provider", description = "购买产品")
-    public void juheFacade_purchaseProduct(HryTest hryTest) {
-        String actual = super._juheFacade_purchaseProduct(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/loanUnderUmbrellaFacade/addLoansUnderUmbrellaRegisterInfo", dataProvider = "provider", description = "增加伞下贷注册信息")
     public void loanUnderUmbrellaFacade_addLoansUnderUmbrellaRegisterInfo(HryTest hryTest) {
         String actual = super._loanUnderUmbrellaFacade_addLoansUnderUmbrellaRegisterInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/drawLottery", dataProvider = "provider", description = "抽奖")
-    public void lotteryFacade_drawLottery(HryTest hryTest) {
-        String actual = super._lotteryFacade_drawLottery(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/getLastLotteryRecord", dataProvider = "provider", description = "最近获奖列表")
-    public void lotteryFacade_getLastLotteryRecord(HryTest hryTest) {
-        String actual = super._lotteryFacade_getLastLotteryRecord(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/getLotteryQualification", dataProvider = "provider", description = "查询摇奖资格信息")
-    public void lotteryFacade_getLotteryQualification(HryTest hryTest) {
-        String actual = super._lotteryFacade_getLotteryQualification(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/getLotteryRecord", dataProvider = "provider", description = "查询获奖记录")
-    public void lotteryFacade_getLotteryRecord(HryTest hryTest) {
-        String actual = super._lotteryFacade_getLotteryRecord(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/getTopInvestmentList", dataProvider = "provider", description = "用户年总投资金额排名列表")
-    public void lotteryFacade_getTopInvestmentList(HryTest hryTest) {
-        String actual = super._lotteryFacade_getTopInvestmentList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/lotteryFacade/getUserInvestmentForLottery", dataProvider = "provider", description = "我的投资金额，根据当前抽奖活动决定时间范围")
-    public void lotteryFacade_getUserInvestmentForLottery(HryTest hryTest) {
-        String actual = super._lotteryFacade_getUserInvestmentForLottery(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1587,54 +1497,6 @@ public class OssDefaultTest extends OssBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/shareActivityFacade/addShareActivity", dataProvider = "provider", description = "新增送祝福活动")
-    public void shareActivityFacade_addShareActivity(HryTest hryTest) {
-        String actual = super._shareActivityFacade_addShareActivity(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/generateShareInfo", dataProvider = "provider", description = "生成新的分享信息")
-    public void shareActivityFacade_generateShareInfo(HryTest hryTest) {
-        String actual = super._shareActivityFacade_generateShareInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/getShareActivityInfo", dataProvider = "provider", description = "查询祝福活动相关信息")
-    public void shareActivityFacade_getShareActivityInfo(HryTest hryTest) {
-        String actual = super._shareActivityFacade_getShareActivityInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/getShareItemInfo", dataProvider = "provider", description = "获取分享信息")
-    public void shareActivityFacade_getShareItemInfo(HryTest hryTest) {
-        String actual = super._shareActivityFacade_getShareItemInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/getShareResult", dataProvider = "provider", description = "获取分享结果")
-    public void shareActivityFacade_getShareResult(HryTest hryTest) {
-        String actual = super._shareActivityFacade_getShareResult(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/receiveSharedItem", dataProvider = "provider", description = "收下祝福")
-    public void shareActivityFacade_receiveSharedItem(HryTest hryTest) {
-        String actual = super._shareActivityFacade_receiveSharedItem(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/recoverSharedItem", dataProvider = "provider", description = "撤销分享")
-    public void shareActivityFacade_recoverSharedItem(HryTest hryTest) {
-        String actual = super._shareActivityFacade_recoverSharedItem(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/shareActivityFacade/updateShareActivity", dataProvider = "provider", description = "修改送祝福活动")
-    public void shareActivityFacade_updateShareActivity(HryTest hryTest) {
-        String actual = super._shareActivityFacade_updateShareActivity(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/tpPromotionFacade/getChannelPromotionUri", dataProvider = "provider", description = "根据用户获取推广码（链接）")
     public void tpPromotionFacade_getChannelPromotionUri(HryTest hryTest) {
         String actual = super._tpPromotionFacade_getChannelPromotionUri(hryTest);
@@ -1710,6 +1572,18 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/userFacade/getPersonalInvestRank", dataProvider = "provider", description = "查询个人当前投资打榜信息")
     public void userFacade_getPersonalInvestRank(HryTest hryTest) {
         String actual = super._userFacade_getPersonalInvestRank(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/userFacade/getUserInfoByLoginNames", dataProvider = "provider", description = "批量查询投资用户基本信息")
+    public void userFacade_getUserInfoByLoginNames(HryTest hryTest) {
+        String actual = super._userFacade_getUserInfoByLoginNames(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/userFacade/getUserInfoByUserIds", dataProvider = "provider", description = "批量查询投资用户基本信息")
+    public void userFacade_getUserInfoByUserIds(HryTest hryTest) {
+        String actual = super._userFacade_getUserInfoByUserIds(hryTest);
         supperAssert(actual, hryTest);
     }
 

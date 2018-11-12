@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
@@ -431,11 +431,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/h5/asset/kjt-acct-balance", desc = "queryKjtAndTtjBalance")
-    public String _h5_asset_kjt_acct_balance(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/h5/asset/summary", desc = "顺逛资产查询")
     public String _h5_asset_summary(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -443,11 +438,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/h5/dep/account-info", desc = "查询H5用户的账户信息")
     public String _h5_dep_account_info(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/h5/investment/bid/benefit-permillion", desc = "getBenefitPerMillion")
-    public String _h5_investment_bid_benefit_permillion(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -503,11 +493,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/home/h5", desc = "h5home")
     public String _home_h5(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/home/headers", desc = "headers")
-    public String _home_headers(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -943,26 +928,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/version/check", desc = "checkAppVersion")
     public String _version_check(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/withdraw/queryAllProvCities", desc = "queryAllProvinces")
-    public String _withdraw_queryAllProvCities(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/withdraw/queryBranches", desc = "queryBranches")
-    public String _withdraw_queryBranches(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/withdraw/queryNeedBankBranch", desc = "queryNeedBankBranch")
-    public String _withdraw_queryNeedBankBranch(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/withdraw/withdraw-card", desc = "withdrawToCard")
-    public String _withdraw_withdraw_card(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

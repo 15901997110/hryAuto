@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: P2pBase
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @SKey("P2p")
 public class P2pBase extends Base {
@@ -18,6 +18,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/agreementFacade/addProductInstruction", desc = "增加产品说明书")
     public String _agreementFacade_addProductInstruction(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/agreementFacade/getAgreementListByBidId", desc = "查询标的对应的出借人协议列表")
+    public String _agreementFacade_getAgreementListByBidId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -76,8 +81,33 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/alterNativeRechargeFacade/queryAlterNativeList", desc = "查询代充值列表")
-    public String _alterNativeRechargeFacade_queryAlterNativeList(HryTest test) {
+    @Uri(value = "/alterNativeRechargeFacade/generateBatchProduct", desc = "批量发标")
+    public String _alterNativeRechargeFacade_generateBatchProduct(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/alterNativeRechargeFacade/generateProduct", desc = "发标接口")
+    public String _alterNativeRechargeFacade_generateProduct(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/alterNativeRechargeFacade/getBatchReleaseLog", desc = "批量发标记录查询")
+    public String _alterNativeRechargeFacade_getBatchReleaseLog(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/alterNativeRechargeFacade/queryAlterNativeRechargeList", desc = "查询代充值列表")
+    public String _alterNativeRechargeFacade_queryAlterNativeRechargeList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/alterNativeRechargeFacade/queryEntrustPayOrder", desc = "【console】查询委托支付授权订单")
+    public String _alterNativeRechargeFacade_queryEntrustPayOrder(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/alterNativeRechargeFacade/queryProductByCreditId", desc = "确认发标是否成功")
+    public String _alterNativeRechargeFacade_queryProductByCreditId(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -123,6 +153,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/bidFacade/getBidTypeList", desc = "获取标的Type")
     public String _bidFacade_getBidTypeList(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/bidFacade/getMatchBidDetailInfo", desc = "匹配详情页面信息")
+    public String _bidFacade_getMatchBidDetailInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -431,6 +466,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/ibsQueryFacade/getIbsInvestInfo", desc = "获取智能投标的投资信息")
+    public String _ibsQueryFacade_getIbsInvestInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/investFacade/createInvestOrder", desc = "投资下单")
     public String _investFacade_createInvestOrder(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -571,11 +611,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/loanFacade/loanByCommand", desc = "单独调用一个命令，慎用")
-    public String _loanFacade_loanByCommand(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/loanFacade/loanNotify", desc = "异步通知，仅供测试")
     public String _loanFacade_loanNotify(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -611,8 +646,8 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/messageFacade/messageFacade", desc = "发送消息")
-    public String _messageFacade_messageFacade(HryTest test) {
+    @Uri(value = "/messageFacade/sendMessage", desc = "发送消息")
+    public String _messageFacade_sendMessage(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -683,6 +718,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/offlinePlanFacade/queryOfflinePlan", desc = "分页查询计划")
     public String _offlinePlanFacade_queryOfflinePlan(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/offlinePlanFacade/resetOfflineOrderStatus", desc = "【傲融】认购计划重新发起扣款")
+    public String _offlinePlanFacade_resetOfflineOrderStatus(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -761,48 +801,23 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/productFacade/generateBatchProduct", desc = "批量发标")
-    public String _productFacade_generateBatchProduct(HryTest test) {
+    @Uri(value = "/queryTransferOfDebtFacades/getMyAssetByTransferOfDebt", desc = "获取我的债转投资资产信息")
+    public String _queryTransferOfDebtFacades_getMyAssetByTransferOfDebt(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/productFacade/generateProduct", desc = "发标接口")
-    public String _productFacade_generateProduct(HryTest test) {
+    @Uri(value = "/queryTransferOfDebtFacades/getRepaymentDetail", desc = "获取回款债转详情")
+    public String _queryTransferOfDebtFacades_getRepaymentDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/productFacade/getBatchReleaseLog", desc = "批量发标记录查询")
-    public String _productFacade_getBatchReleaseLog(HryTest test) {
+    @Uri(value = "/queryTransferOfDebtFacades/listMyTransferOfDebt", desc = "获取我的债转投资列表信息")
+    public String _queryTransferOfDebtFacades_listMyTransferOfDebt(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/productFacade/queryEntrustPayOrder", desc = "【console】查询委托支付授权订单")
-    public String _productFacade_queryEntrustPayOrder(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/productFacade/queryProductByCreditId", desc = "确认发标是否成功")
-    public String _productFacade_queryProductByCreditId(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/queryTransferOfDebtFacade/getMyAssetByTransferOfDebt", desc = "获取我的债转投资资产信息")
-    public String _queryTransferOfDebtFacade_getMyAssetByTransferOfDebt(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/queryTransferOfDebtFacade/getRepaymentDetail", desc = "获取回款债转详情")
-    public String _queryTransferOfDebtFacade_getRepaymentDetail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/queryTransferOfDebtFacade/listMyTransferOfDebt", desc = "获取我的债转投资列表信息")
-    public String _queryTransferOfDebtFacade_listMyTransferOfDebt(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/queryTransferOfDebtFacade/listRepaymentDetails", desc = "获取回款债转列表")
-    public String _queryTransferOfDebtFacade_listRepaymentDetails(HryTest test) {
+    @Uri(value = "/queryTransferOfDebtFacades/listRepaymentDetails", desc = "获取回款债转列表")
+    public String _queryTransferOfDebtFacades_listRepaymentDetails(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -826,13 +841,13 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/rechargeAndWithdrawFacade/directRecharge", desc = "自动充值")
-    public String _rechargeAndWithdrawFacade_directRecharge(HryTest test) {
+    @Uri(value = "/rechargeAndWithdrawFacade/directWithdraw", desc = "自动提现")
+    public String _rechargeAndWithdrawFacade_directWithdraw(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/rechargeAndWithdrawFacade/directWithdraw", desc = "自动提现")
-    public String _rechargeAndWithdrawFacade_directWithdraw(HryTest test) {
+    @Uri(value = "/rechargeAndWithdrawFacade/p2pDirectRecharge", desc = "自动充值")
+    public String _rechargeAndWithdrawFacade_p2pDirectRecharge(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -908,6 +923,16 @@ public class P2pBase extends Base {
 
     @Uri(value = "/regionFacade/regionInfo", desc = "查询地区信息接口")
     public String _regionFacade_regionInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/repaymentFacade/autoPrepayment", desc = "融资人提前代扣还款")
+    public String _repaymentFacade_autoPrepayment(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/repaymentFacade/financierAutoRepayment", desc = "融资人代扣还款")
+    public String _repaymentFacade_financierAutoRepayment(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1056,6 +1081,11 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
+    @Uri(value = "/repaymentFacade/queryUeBidRepaymentPlan", desc = "查询优易智投标的借款人还款计划（Console使用）")
+    public String _repaymentFacade_queryUeBidRepaymentPlan(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
     @Uri(value = "/repaymentFacade/queryUnpaidBidDetail", desc = "【console】查询待还款标的详情")
     public String _repaymentFacade_queryUnpaidBidDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1073,6 +1103,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/repaymentFacade/reserveRepayment", desc = "预约还款")
     public String _repaymentFacade_reserveRepayment(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/riskLevelFacade/listRiskLevelInfo", desc = "风险等级信息")
+    public String _riskLevelFacade_listRiskLevelInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1103,6 +1138,11 @@ public class P2pBase extends Base {
 
     @Uri(value = "/tenderFacade/addBidLabel", desc = "新增标的的标签")
     public String _tenderFacade_addBidLabel(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/tenderFacade/addCarBidDetail", desc = "保存车抵押表抵押物信息")
+    public String _tenderFacade_addCarBidDetail(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1251,11 +1291,6 @@ public class P2pBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/tenderFacade/syncBidEnclosureHistoryData", desc = "同步历史附件信息至新表")
-    public String _tenderFacade_syncBidEnclosureHistoryData(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/tenderFacade/updateBidExtraInfo", desc = "更新标的附加信息")
     public String _tenderFacade_updateBidExtraInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -1273,6 +1308,51 @@ public class P2pBase extends Base {
 
     @Uri(value = "/tenderFacade/updateTenderBidInfo", desc = "更新标的信息")
     public String _tenderFacade_updateTenderBidInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/getMatchBidRemarkByIds", desc = "根据标的Id集合获取对应流标退标备注(管理后台使用)")
+    public String _uePlanFacade_getMatchBidRemarkByIds(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/getUeMatchedInfo", desc = "根据优易智投授权订单获取匹配信息 - (uePlan系统)")
+    public String _uePlanFacade_getUeMatchedInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/listAuthOrderProfitAmount", desc = "根据授权码集合,获取对应的收益")
+    public String _uePlanFacade_listAuthOrderProfitAmount(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/listBidByUeAuthRequestNo", desc = "根据优易智投授权订单获取匹配标的列表 - (前端)")
+    public String _uePlanFacade_listBidByUeAuthRequestNo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/listMatchingBid", desc = "获取待匹配的标的信息")
+    public String _uePlanFacade_listMatchingBid(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/listMyStandardBid", desc = "获取我的散标 - （前端，我的出借）")
+    public String _uePlanFacade_listMyStandardBid(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/listUeBidStatisticsInfo", desc = "获取优易智投下标的统计信息 - (uePlan系统)")
+    public String _uePlanFacade_listUeBidStatisticsInfo(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/queryUeMatchedBidHkjh", desc = "查询优易匹配标的还款计划/匹配详情 - (前端)")
+    public String _uePlanFacade_queryUeMatchedBidHkjh(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/uePlanFacade/queryUeMatchedBidInfo", desc = "优易智投标的信息查询(供ueplan使用)")
+    public String _uePlanFacade_queryUeMatchedBidInfo(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -1298,6 +1378,16 @@ public class P2pBase extends Base {
 
     @Uri(value = "/yyTradeStatFacade/queryBidOrderByOrderId", desc = "根据投资订单号（orderId）查询投资订单）")
     public String _yyTradeStatFacade_queryBidOrderByOrderId(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/yyTradeStatFacade/queryInvestmentRecord", desc = "根据客户端ID,加密后的user id,查询该用户的所有投资记录")
+    public String _yyTradeStatFacade_queryInvestmentRecord(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/yyTradeStatFacade/queryTenderRecordRecord", desc = "根据客户端ID,加密后的user id,查询该用户的散标投资记录")
+    public String _yyTradeStatFacade_queryTenderRecordRecord(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

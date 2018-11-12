@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: MemberDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @Slf4j
 public class MemberDefaultTest extends MemberBase{
@@ -270,6 +270,12 @@ public class MemberDefaultTest extends MemberBase{
     @Test(testName = "/sessionFacade/getCurrentMember", dataProvider = "provider", description = "根据token从Session中获取用户信息")
     public void sessionFacade_getCurrentMember(HryTest hryTest) {
         String actual = super._sessionFacade_getCurrentMember(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/sessionFacade/getUserIdByToken", dataProvider = "provider", description = "根据token从Session中获取用户信息")
+    public void sessionFacade_getUserIdByToken(HryTest hryTest) {
+        String actual = super._sessionFacade_getUserIdByToken(hryTest);
         supperAssert(actual, hryTest);
     }
 
