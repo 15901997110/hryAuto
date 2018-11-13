@@ -19,7 +19,7 @@ public enum ReplaceRegexEnum {
     /**
      * <longdate>,当前时间戳,以1970-1-1 00:00:00 GMT标准计算出的毫秒数
      */
-    LONGDATE("(?i)<longdate>", "<longdate>"),
+    LONGDATE("(?i)<longDate\\(?\\)?>", "<longDate()>"),
 
     /**
      * <date(num)> 生成一个日期(默认今天),格式"yyyy-MM-dd"
