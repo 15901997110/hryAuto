@@ -5,6 +5,8 @@ import com.alibaba.fastjson.parser.Feature;
 import com.haier.anno.HryCookie;
 import com.haier.anno.HryHeader;
 import com.haier.config.SpringContextHolder;
+import com.haier.po.Tcase;
+import com.haier.po.Ti;
 import com.haier.po.Tservice;
 import com.haier.po.Tservicedetail;
 import com.haier.service.RunService;
@@ -17,6 +19,8 @@ import org.apache.http.client.CookieStore;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -39,6 +43,8 @@ public class Base extends AbstractTestNGSpringContextTests {
     public JSONObject i_c_zdy_JSONObject;//{"methodName":list<Tcase>}
     public Tservice tservice;
     public Tservicedetail tservicedetail;
+    public List<Ti> tis;
+    public Map<String,Ti> iUri_ti;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
     public String testingId;//标记某次测试活动,一个测试报告中的所有测试,作为一个测试活动,
 

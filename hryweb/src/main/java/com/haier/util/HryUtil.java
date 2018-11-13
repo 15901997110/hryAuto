@@ -8,6 +8,7 @@ import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
+import com.haier.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
@@ -148,6 +149,9 @@ public class HryUtil {
         return collectHtyTest(tservice, tservicedetail, ti, tcases);
     }
 
+    /*public static Object[] getTests(Base base,String iUri){
+
+    }*/
     public static Object[] collectHtyTest(Tservice tservice, Tservicedetail tservicedetail, Ti ti, List<Tcase> customCases) {
         Object[] ret = new Object[customCases.size()];
         for (int i = 0; i < customCases.size(); i++) {

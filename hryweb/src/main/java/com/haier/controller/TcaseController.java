@@ -146,32 +146,6 @@ public class TcaseController {
         return ResultUtil.success(tcaseService.selectOne(id));
     }
 
-    /**
-     * 运行单条case
-     */
-    /*@PostMapping("/runCaseOne")
-    public Result runCaseOne(Tcase tcase) throws HttpProcessException {
-        ReflectUtil.setInvalidFieldToNull(tcase, false);
-        if (tcase == null || tcase.getIid() == null || tcase.getEnvid() == null) {
-            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "在新增和编辑页面运行Case时,IId(接口),EnvId(环境)是必须的!");
-        }
-        return ResultUtil.success(tcaseService.runOne(tcase));
-    }*/
-
-    /**
-     * 运行单条case,传入caseid,适用于case列表页运行时调用此接口
-     */
-    /*@PostMapping("/runCaseOneById")
-    public Result runCaseOneById(@RequestParam("id") Integer id) throws HttpProcessException {
-        Tcase tcase = tcaseService.selectOne(id);
-        if (tcase == null) {
-            throw new HryException(StatusCodeEnum.NOT_FOUND, "在用例列表页面运行Case时,CaseID是必须!");
-        }
-        if (tcase.getEnvid() == null || tcase.getEnvid() == 0) {
-            throw new HryException(911, "此用例未指定测试环境,无法运行!");
-        }
-        return this.runCaseOne(tcase);
-    }*/
 
     /**
      * 用例新增和编辑页面运行单条用例(新)

@@ -1,6 +1,7 @@
 package com.haier.controller;
 
 import com.haier.po.UnionLoginConfig;
+import com.haier.service.GenerateService;
 import com.haier.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class TestController {
     @Autowired
     UnionLoginConfig unionLoginConfig;
 
+    @Autowired
+    GenerateService generateService;
+
     @GetMapping("/get")
     public void get() {
 
@@ -31,5 +35,10 @@ public class TestController {
     @PostMapping("/getClassName")
     public List<String> getClassName(String packageName) {
         return ClassUtil.getClassName("com.haier.testng.test", false);
+    }
+
+    @PostMapping("/gen")
+    public String gen(Integer caseId) {
+        return generateService.generateBase(caseId);
     }
 }
