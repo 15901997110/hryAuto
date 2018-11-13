@@ -26,6 +26,10 @@
             padding: 20px;
         }
 
+        table i {
+            padding-left: 30px;
+        }
+
         table span {
             color: #f72e2b;
             font-weight: bold;
@@ -87,22 +91,22 @@
     <tr class="text-1">
         <td>(?i)&lt;uuid\(?\d*\)?&gt;</td>
         <td>&lt;uuid(num)&gt; 随机唯一字符串随机唯一字符串
-            <br>参数:num-非必填,指定要截断的长度
+            <br><i>参数:num-非必填,指定要截断的长度</i>
         </td>
         <td>
-            &lt;uuid()&gt;:随机生成32位唯一字符串 结果:599b255f7aaa41768108e77540d1249a
-            <br>&lt;uuid(5)&gt;: 随机生成唯一字符串,但是只截取前5位 结果:599b2
+            &lt;uuid()&gt;:随机生成32位唯一字符串(16进制) 结果:599b255f7aaa41768108e77540d1249a
+            <br>&lt;uuid(5)&gt;:将生成的唯一字符串截取前5位 结果:599b2,<span>(注意:截取后的字符串不再保证唯一性)</span>
         </td>
     </tr>
     <tr class="text-1">
-        <td>(?i)&lt;longdate&gt;</td>
-        <td>当前时间戳,以1970-1-1 00:00:00 GMT标准计算出的毫秒数</td>
-        <td> &lt;longdate&gt;:1536715432573</td>
+        <td>(?i)&lt;longDate()&gt;</td>
+        <td>返回以1970-1-1 00:00:00 GMT 计算出的毫秒数</td>
+        <td> &lt;longDate()&gt;:1536715432573</td>
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;date\(-?\d*\)&gt;</td>
-        <td> &lt;date(num)&gt; 生成一个日期(默认今天),格式"yyyy-MM-dd"
-            <br>参数:num-非必填,指定日期按天的偏移量
+        <td> &lt;date(num)&gt; 生成一个日期(默认今天),<span>格式"yyyy-MM-dd"</span>
+            <br><i>参数:num-非必填,指定日期<span>按天的偏移量</span></i>
         </td>
         <td>假设现在是2018-08-08
             <br>&lt;date()&gt;: 生成今天的日期,结果:2018-08-08
@@ -112,25 +116,27 @@
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;datetime\(-?\d*\)&gt;</td>
-        <td> &lt;datetime(num)&gt;生成一个datetime,格式"yyyy-MM-dd HH:mm:ss"
-            <br>参数:num-非必填,指定datetime按小时的偏移量
+        <td> &lt;datetime(num)&gt;生成一个datetime,<span>格式"yyyy-MM-dd HH:mm:ss"</span>
+            <br><i>参数:num-非必填,指定datetime<span>按小时的偏移量</span></i>
         </td>
         <td>同上
         </td>
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;time\(-?\d*\)</td>
-        <td> &lt;time(num)&gt;生成一个时间,格式"HH:mm:ss"
-            <br>参数:num-非必填,指定时间按分钟的偏移量
+        <td> &lt;time(num)&gt;生成一个时间,<span>格式"HH:mm:ss"</span>
+            <br><i>参数:num-非必填,指定时间<span>按分钟的偏移量</span></i>
         </td>
         <td>同上
         </td>
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;randomI\(\d*,?\d*\)&gt;</td>
-        <td> &lt;randomI(min,max)&gt;在区间[min,max)中随机生成一个整数,注意max必须大于min
-            <br>参数:min-非必填,指定随机范围的下限(包含)
-            <br>参数:max-非必填,指定随机范围的上限(不包含)
+        <td> &lt;randomI(min,max)&gt;在区间[min,max)中随机生成一个整数,<span>注意max必须大于min</span>
+
+            <br><i>参数:min-非必填,指定随机范围的下限(包含)</i>
+            <br><i>参数:max-非必填,指定随机范围的上限(不包含)</i>
+
         </td>
         <td>&lt;randomI()&gt;:不填写任何参数,将随机一个[0,100)中的整数
             <br>&lt;randomI(100,999)&gt;:随机一个整数,范围[100,999)
@@ -138,9 +144,11 @@
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;randomF\((\d+\.\d+)?,?(\d+\.\d+)?\)&gt;</td>
-        <td> &lt;randomF(min,max)&gt;在区间[min,max)中随机生成一个浮点数,生成浮点数的精度将min的精度保持一致
-            <br>参数:min-非必填,指定随机范围的下限(包含),随机数的精度与此参数的精度保持一致
-            <br>参数:max-非必填,指定随机范围的上限(不包含)
+        <td> &lt;randomF(min,max)&gt;在区间[min,max)中随机生成一个浮点数,<span>生成浮点数的精度将与min参数的精度保持一致</span>
+
+            <br><i>参数:min-非必填,指定随机范围的下限(包含),随机数的精度与此参数的精度保持一致</i>
+            <br><i>参数:max-非必填,指定随机范围的上限(不包含)</i>
+
         </td>
         <td>&lt;randomF()&gt;:不填写任何参数,将从[0.01,1.00)中随机一个浮点数,结果:0.23
             <br>&lt;randomI(2.00,5.00)&gt;:将从[2.00,5.00)区间中随机一个浮点数,浮点数的精度与min参数保持一致,此例中将保留两位小数,结果:3.16
@@ -149,7 +157,7 @@
     <tr class="text-1">
         <td>(?i)&lt;pureSql\(.+\)&gt;</td>
         <td> &lt;pureSql(pureDmlSql)&gt;执行pureDmlSql并且使用执行结果替换此匹配项
-            <br>参数:pureDmlSql-必填,pureDmlSql为<span>可直接在数据库中执行</span>的sql,不可再包含其它替换规则,否则可能会执行失败,
+            <br><i>参数:pureDmlSql-必填,pureDmlSql为<span>可直接在数据库中执行</span>的sql,不可再包含其它替换规则,否则可能会执行失败</i>
         </td>
         <td>&lt;pureSql(select id from table)&gt;:执行查询语句,并使用查询结果替换此处,结果:1
             <br>&lt;pureSql(update table t set t.status=-1 where t.id=1)&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
@@ -158,7 +166,7 @@
     <tr class="text-1">
         <td>(?i)&lt;sql:[^<>]*&gt;</td>
         <td> &lt;sql:xxx&gt;执行sql并且使用执行结果替换此匹配项
-            <br>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句
+            <br><i>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句</i>
         </td>
         <td>&lt;sql:select id from table&gt;:执行查询语句,并使用查询结果替换此处,结果:1
             <br>&lt;sql:update table t set t.status=-1 where t.id=1&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
@@ -167,7 +175,7 @@
     <tr class="text-1">
         <td>(?i)&lt;var\([^<>]+\)&gt;</td>
         <td> &lt;var(fieldName)&gt;使用测试类中的字段值替换此匹配项
-            <br>参数:fieldName-必填,fieldName必须是测试类中维护的字段名
+            <br><i>参数:fieldName-必填,fieldName必须是测试类中维护的字段名</i>
         </td>
         <td>&lt;var(requestNo)&gt;将从当前测试类中,获取可访问的字段名为requestNo的字段的值,替换当前匹配项
         </td>
@@ -175,7 +183,7 @@
     <tr class="text-1">
         <td>&lt;\$\d+\([^<>]*\)&gt;</td>
         <td> &lt;$index(xxx)&gt;将请求参数中此匹配项括号中的内容赋值给&lt;ref(index)
-            <br>参数:index-必填,index必须是整数,标记引用源
+            <br><i>参数:index-必填,index必须是整数,标记引用源</i>
         </td>
         <td>&lt;$1(abc)&gt;将abc赋值到所有 &lt;ref(1)&gt;的位置,并且<$1(abc)>自动替换为abc
         </td>
@@ -189,10 +197,9 @@
         <td>(?i)&lt;put\(\w+,[^<>]*\)&gt;</td>
         <td>
             &lt;put(key,value)&gt; 将key,value存储到临时变量中,并且此表达式使用value替换,使用&lt;get(key)&gt;可取得此值<br/>
-            参数:<br/>
-            key-必填,只能由单词字符组成[a-zA-Z_0-9],待存储的临时值的名称<br/>
-            value-必填,待存储的值<br/>
-            注意:<br/>
+            <i>参数:key-必填,只能由单词字符组成[a-zA-Z_0-9],待存储的临时值的名称</i><br/>
+            <i>参数:value-必填,待存储的值</i><br/>
+            注意:
             value有两种特殊写法,表明从当前测试结果(JSONObject)中取值,分别是:<br/>
             \$\w+&emsp;:&emsp; 例:$responseCode,从当前测试用例的测试返回结果中,找到第一个非null的responseCode的值<br/>
             \$\(\{\w+|\[\d+)+&emsp;:&emsp; 例:${resultList[1{name,从当前测试用例的测试返回结果中,按此路径查找name的值<br/>
