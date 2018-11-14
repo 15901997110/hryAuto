@@ -79,7 +79,8 @@ public enum ReplaceRegexEnum {
      * <sql:select id from table>:执行查询语句,并使用查询结果替换此处,结果:1
      * <sql:update table t set t.status=-1 where t.id=1>:执行更新语句,并使用更新返回结果替换此处,结果:1
      */
-    SQL("(?i)<sql:[^<>]*>", "<sql:dmlSql>"),
+    SQL("(?i)<sql\\(([^<>]+)\\)>", "<sql(dmlSql)>"),
+
 
     /**
      * <var(fieldName)>  使用测试类中的字段值替换此匹配项

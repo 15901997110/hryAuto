@@ -6,6 +6,7 @@ import com.haier.config.SpringContextHolder;
 import com.haier.enums.DBInfoKeyEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.enums.ReplaceRegexEnum;
+import com.haier.po.SqlExecuteResult;
 import com.haier.po.Temp;
 import com.haier.service.TempService;
 import com.haier.testng.base.Base;
@@ -13,12 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.testng.Reporter;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -130,8 +136,8 @@ public class ReplaceUtil {
         /**
          * 匹配到<pureSql(dmlSql)>,执行纯sql,注意dmlSql只能是纯sql,此sql将直接在数据库中执行,不可包含其余替换规则
          */
-        if(base.matches(".*"+ReplaceRegexEnum.PURE_SQL.getPattern()+".*")){
-            base=replacePureSql(base,dbinfo);
+        if (base.matches(".*" + ReplaceRegexEnum.PURE_SQL.getPattern() + ".*")) {
+            base = replacePureSql(base, dbinfo);
         }
 
         /**
@@ -385,7 +391,7 @@ public class ReplaceUtil {
     /**
      * 执行纯sql
      */
-    public static String replacePureSql(String base,String dbinfo){
+    public static String replacePureSql(String base, String dbinfo) {
         String queryResult;
         JSONObject dbinfoJsonObject = null;
         try {
@@ -399,7 +405,7 @@ public class ReplaceUtil {
 
         while (matcher.find()) {
             //String re = matcher.group();//<sql:xxx>
-            String sql=matcher.group(1);
+            String sql = matcher.group(1);
             //String sql = re.substring(re.indexOf(":") + 1, re.lastIndexOf(">")).trim();
             if (dbinfoJsonObject == null || jdbcTemplate == null) {
                 queryResult = "［异常:数据库连接异常,dbinfo为空,或者dbinfo不为空,但是连接时出现异常］,dbInfo=" + dbinfo;
@@ -416,37 +422,17 @@ public class ReplaceUtil {
     }
 
 
-
     /**
      * 将"<sql:xxx>"替换,使用Sql执行结果替换匹配到的正则项
      */
     public static String replaceSql(String base, String dbinfo) {
-        String queryResult;
-        JSONObject dbinfoJsonObject = null;
-        try {
-            dbinfoJsonObject = JSON.parseObject(dbinfo);
-        } catch (Exception e) {
-        }
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.SQL.getPattern());
         Matcher matcher = pattern.matcher(base);
-        //连接数据库
-        JdbcTemplate jdbcTemplate = getJdbcTemplate(dbinfoJsonObject);
-
         while (matcher.find()) {
-            String re = matcher.group();//<sql:xxx>
-            String sql = re.substring(re.indexOf(":") + 1, re.lastIndexOf(">")).trim();
-            if (dbinfoJsonObject == null || jdbcTemplate == null) {
-                queryResult = "［异常:数据库连接异常,dbinfo为空,或者dbinfo不为空,但是连接时出现异常］,dbInfo=" + dbinfo;
-                base = matcher.replaceFirst(queryResult);
-                matcher.reset(base);
-                continue;
-            }
-            queryResult = executeSql(jdbcTemplate, sql);
-
-            base = matcher.replaceFirst(queryResult == null ? "null" : queryResult);
-            matcher.reset(base);//重置匹配器
+            String re = matcher.group();//<sql(xxx)>
+            String sql = matcher.group(1);
+            SqlExecuteResult  = DBUtil.query(dbinfo, sql);
         }
-        return base;
     }
 
     public static <T extends Base> String replacePut(String base, T entity, String responseBody, Boolean isAfter) {
@@ -521,46 +507,5 @@ public class ReplaceUtil {
         }
         return base;
     }
-
-
-
-
-
-    public static JdbcTemplate getJdbcTemplate(JSONObject dbInfoJsonObject) {
-        JdbcTemplate jdbcTemplate = null;
-        try {
-            //解析dbinfo
-            String driver = dbInfoJsonObject.getString(DBInfoKeyEnum.DRIVER.name().toLowerCase());
-            String url = dbInfoJsonObject.getString(DBInfoKeyEnum.URL.name().toLowerCase());
-            String username = dbInfoJsonObject.getString(DBInfoKeyEnum.USERNAME.name().toLowerCase());
-            String password = dbInfoJsonObject.getString(DBInfoKeyEnum.PASSWORD.name().toLowerCase());
-            jdbcTemplate = DBUtil.getJdbcTemplate(driver, url, username, password);
-        } catch (RuntimeException e) {
-            log.info("dbinfo信息:" + dbInfoJsonObject.toJSONString());
-            log.error("", e);
-        }
-        return jdbcTemplate;
-    }
-    public static String executeSql(JdbcTemplate jdbcTemplate, String sql) {
-        String queryResult;
-        try {
-            if (sql.matches(RegexEnum.SELECT_REGEX.getRegex())) {
-                queryResult = DBUtil.query(jdbcTemplate, sql);
-            } else if (sql.matches(RegexEnum.INSERT_REGEX.getRegex())) {
-                queryResult = DBUtil.insert(jdbcTemplate, sql) + "";
-            } else if (sql.matches(RegexEnum.UPDATE_REGEX.getRegex())) {
-                queryResult = DBUtil.update(jdbcTemplate, sql) + "";
-            } else {
-                queryResult = "［异常:sql未执行,sql不是以select/insert/update开头,无法执行］";
-            }
-        } catch (Exception e) {
-            log.error("", e);
-            log.info("要执行的sql语句:" + sql);
-            queryResult = "［异常:执行sql异常］";
-        }
-        return queryResult;
-    }
-
-
 
 }
