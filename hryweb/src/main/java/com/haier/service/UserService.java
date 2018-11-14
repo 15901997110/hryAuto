@@ -43,4 +43,7 @@ public interface UserService {
     List<User> selectDever(Integer groupid);
 
     User selectByIdentity(String identity);
+
+    //用例设计人员,用于用例列表筛选下拉框数据填充
+    List<User> selectCaseDesigners();
 }
