@@ -640,7 +640,7 @@
             suffix = (suffix = this.getOpt('suffix')) === "" ? suffix : suffix || "";
             content += suffix;
             content = content.replace("&lt;","<").replace("&gt;",">");
-            debugger;
+            //debugger;
             text = "" + startStr + content + (source.slice(this.query['endPos'] || 0));
             text = text.replace(/(\s*$)/g, "");
             $inputor.val(text);
