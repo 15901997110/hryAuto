@@ -330,7 +330,7 @@
         //设置请求参数
         var iparamsample = selectedTi.iparamsample;
         var iparamtype = selectedTi.iparamtype;
-        setrequestParameter();
+        setRequestParameter();
         if (copyFlag) {//复制
             if (iparamtype == 1) {//接口参数类型为JSON,格式化后填充
                 try {
@@ -389,53 +389,6 @@
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return decodeURI(r[2]);
         return null;
-    }
-
-    //获取replaceEnumExamplesList
-    function getreplaceEnumList() {
-        var replaceEnumList = null;
-        $.ajaxSetup({async: false});
-        $.ajax({
-            type: "get",
-            url: "/enum/replaceEnumExamples",
-            data: {},
-            dataType: "json",
-            success: function (data) {
-                replaceEnumList = data;
-            },
-            fail: function (data) {
-                alert(JSON.stringify(data));
-            },
-            error: function (xhr) {
-                alert('error:' + JSON.stringify(xhr));
-            }
-        });
-        return replaceEnumList;
-    }
-    //设置requestParam的<触发事件
-    function setrequestParameter() {
-        var names = getreplaceEnumList();
-        var replaceObj=getreplaceEnumList();
-
-        for(var i = 0;i < replaceObj.length; i++){
-            // names[i] = names[i].replace("<","").replace(">","");
-            replaceObj[i].example = replaceObj[i].example.replace("<","&lt;").replace(">","&gt;");
-         }
-        var names = $.map(replaceObj, function (replaceObj, i) {
-            //return {'id':i, 'name':"<"+value+">", 'email': value};
-            return {'id':i, 'name':replaceObj.example, 'email':replaceObj.desc};
-        });
-        var at_config = {
-            at: "<",
-            data: names,
-            headerTpl: '<div class="atwho-header">正则表达式:</div>',
-            insertTpl: '${name}',
-            displayTpl: "<li>${name} <small>${email}</small></li>",
-            limit: 200
-        }
-        $inputor = $('#requestParam').atwho(at_config);
-        $inputor = $('#cafter').atwho(at_config);
-        $inputor.focus().atwho('run');
     }
 
     //接口改变处理

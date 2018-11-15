@@ -871,6 +871,56 @@ function cancelTi(tiId) {
 
 }
 
+/**
+ * 获取replaceEnumExamplesList
+ * */
+function getReplaceEnumList() {
+    var replaceEnumList = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "get",
+        url: "/enum/replaceEnumExamples",
+        data: {},
+        dataType: "json",
+        success: function (data) {
+            replaceEnumList = data;
+        },
+        fail: function (data) {
+            alert(JSON.stringify(data));
+        },
+        error: function (xhr) {
+            alert('error:' + JSON.stringify(xhr));
+        }
+    });
+    return replaceEnumList;
+}
+
+/**
+ * 设置requestParam的<触发事件
+ * */
+function setRequestParameter() {
+    var replaceObj=getReplaceEnumList();
+    for(var i = 0;i < replaceObj.length; i++){
+        // names[i] = names[i].replace("<","").replace(">","");
+        replaceObj[i].example = replaceObj[i].example.replace("<","&lt;").replace(">","&gt;");
+    }
+    var names = $.map(replaceObj, function (replaceObj, i) {
+        //return {'id':i, 'name':"<"+value+">", 'email': value};
+        return {'id':i, 'name':replaceObj.example, 'email':replaceObj.desc};
+    });
+    var at_config = {
+        at: "<",
+        data: names,
+        headerTpl: '<div class="atwho-header">正则表达式:</div>',
+        insertTpl: '${name}',
+        displayTpl: "<li>${name} <small>${email}</small></li>",
+        limit: 200
+    }
+    $inputor = $('#requestParam').atwho(at_config);
+    $inputor = $('#cafter').atwho(at_config);
+    $inputor.focus().atwho('run');
+}
+
 /*关闭弹出框口*/
 function layer_close() {
     var index = parent.layer.getFrameIndex(window.name);
