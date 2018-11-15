@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: ZhuanleDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/12 14:21:00
+ * @Date: 2018/11/15 14:56:54
  */
 @Slf4j
 public class ZhuanleDefaultTest extends ZhuanleBase{
@@ -99,12 +99,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/bank/bind-QuickPayBank", dataProvider = "provider", description = "bindQuickPayBank")
-    public void bank_bind_QuickPayBank(HryTest hryTest) {
-        String actual = super._bank_bind_QuickPayBank(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/bank/get-cardBin", dataProvider = "provider", description = "根据卡号获取卡Bin信息")
     public void bank_get_cardBin(HryTest hryTest) {
         String actual = super._bank_get_cardBin(hryTest);
@@ -120,12 +114,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/bank/querySupportBankList", dataProvider = "provider", description = "querySupportBankList")
     public void bank_querySupportBankList(HryTest hryTest) {
         String actual = super._bank_querySupportBankList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/bank/single-bind-quickPayBank", dataProvider = "provider", description = "singleBindQuickPayBank")
-    public void bank_single_bind_quickPayBank(HryTest hryTest) {
-        String actual = super._bank_single_bind_quickPayBank(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -240,24 +228,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/consumer-finance/reservation-detail", dataProvider = "provider", description = "我的预约记录详情")
     public void consumer_finance_reservation_detail(HryTest hryTest) {
         String actual = super._consumer_finance_reservation_detail(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumer-finance/reservation/create-apply", dataProvider = "provider", description = "创建预约单")
-    public void consumer_finance_reservation_create_apply(HryTest hryTest) {
-        String actual = super._consumer_finance_reservation_create_apply(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumer-finance/reservation/frozen-share-detail", dataProvider = "provider", description = "queryFrozenShareDetail4Reservation")
-    public void consumer_finance_reservation_frozen_share_detail(HryTest hryTest) {
-        String actual = super._consumer_finance_reservation_frozen_share_detail(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/consumer-finance/reservation/frozen-share-list", dataProvider = "provider", description = "queryFrozenShares4Reservation")
-    public void consumer_finance_reservation_frozen_share_list(HryTest hryTest) {
-        String actual = super._consumer_finance_reservation_frozen_share_list(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -669,12 +639,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/login", dataProvider = "provider", description = "会员登录，建议使用/sign-in接口")
-    public void login(HryTest hryTest) {
-        String actual = super._login(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/logout", dataProvider = "provider", description = "退出")
     public void logout(HryTest hryTest) {
         String actual = super._logout(hryTest);
@@ -753,12 +717,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/member/get-bank-CardList", dataProvider = "provider", description = "getBankCardList")
-    public void member_get_bank_CardList(HryTest hryTest) {
-        String actual = super._member_get_bank_CardList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/member/homepage/app-list/v3", dataProvider = "provider", description = "我的应用列表")
     public void member_homepage_app_list_v3(HryTest hryTest) {
         String actual = super._member_homepage_app_list_v3(hryTest);
@@ -780,12 +738,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/member/homepage/my-assets", dataProvider = "provider", description = "我的总资产")
     public void member_homepage_my_assets(HryTest hryTest) {
         String actual = super._member_homepage_my_assets(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/member/p2p/check-account", dataProvider = "provider", description = "p2pCheckAccount")
-    public void member_p2p_check_account(HryTest hryTest) {
-        String actual = super._member_p2p_check_account(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -813,12 +765,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/member/v2/get-accountInfo", dataProvider = "provider", description = "getAccountInfoV2")
-    public void member_v2_get_accountInfo(HryTest hryTest) {
-        String actual = super._member_v2_get_accountInfo(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/member/verify-account", dataProvider = "provider", description = "verifyAccount")
     public void member_verify_account(HryTest hryTest) {
         String actual = super._member_verify_account(hryTest);
@@ -828,18 +774,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/member/verify-idCard", dataProvider = "provider", description = "verifyIdCard")
     public void member_verify_idCard(HryTest hryTest) {
         String actual = super._member_verify_idCard(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/member/verify-phone-bind-status", dataProvider = "provider", description = "checkWhetherPhoneWasBound")
-    public void member_verify_phone_bind_status(HryTest hryTest) {
-        String actual = super._member_verify_phone_bind_status(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/member/ym/check-account", dataProvider = "provider", description = "ymcheckAccount")
-    public void member_ym_check_account(HryTest hryTest) {
-        String actual = super._member_ym_check_account(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -909,18 +843,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/operation/queryInvestStat4Wakeup", dataProvider = "provider", description = "queryInvestStat4Wakeup")
-    public void operation_queryInvestStat4Wakeup(HryTest hryTest) {
-        String actual = super._operation_queryInvestStat4Wakeup(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/operation/queryWakeupList", dataProvider = "provider", description = "queryWakeupList")
-    public void operation_queryWakeupList(HryTest hryTest) {
-        String actual = super._operation_queryWakeupList(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/operation/recommendActivity", dataProvider = "provider", description = "queryRecommendActivity")
     public void operation_recommendActivity(HryTest hryTest) {
         String actual = super._operation_recommendActivity(hryTest);
@@ -948,12 +870,6 @@ public class ZhuanleDefaultTest extends ZhuanleBase{
     @Test(testName = "/operation/scratch/query", dataProvider = "provider", description = "scratchQueryAdaptor")
     public void operation_scratch_query(HryTest hryTest) {
         String actual = super._operation_scratch_query(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/operation/taskList", dataProvider = "provider", description = "taskList")
-    public void operation_taskList(HryTest hryTest) {
-        String actual = super._operation_taskList(hryTest);
         supperAssert(actual, hryTest);
     }
 

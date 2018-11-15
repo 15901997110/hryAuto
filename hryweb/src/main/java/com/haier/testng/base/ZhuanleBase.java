@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: ZhuanleBase
  * @Author: 自动生成
- * @Date: 2018/11/12 14:21:00
+ * @Date: 2018/11/15 14:56:54
  */
 @SKey("Zhuanle")
 public class ZhuanleBase extends Base {
@@ -76,11 +76,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/bank/bind-QuickPayBank", desc = "bindQuickPayBank")
-    public String _bank_bind_QuickPayBank(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/bank/get-cardBin", desc = "根据卡号获取卡Bin信息")
     public String _bank_get_cardBin(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -93,11 +88,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/bank/querySupportBankList", desc = "querySupportBankList")
     public String _bank_querySupportBankList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/bank/single-bind-quickPayBank", desc = "singleBindQuickPayBank")
-    public String _bank_single_bind_quickPayBank(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -193,21 +183,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/consumer-finance/reservation-detail", desc = "我的预约记录详情")
     public String _consumer_finance_reservation_detail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumer-finance/reservation/create-apply", desc = "创建预约单")
-    public String _consumer_finance_reservation_create_apply(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumer-finance/reservation/frozen-share-detail", desc = "queryFrozenShareDetail4Reservation")
-    public String _consumer_finance_reservation_frozen_share_detail(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/consumer-finance/reservation/frozen-share-list", desc = "queryFrozenShares4Reservation")
-    public String _consumer_finance_reservation_frozen_share_list(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -551,11 +526,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/login", desc = "会员登录，建议使用/sign-in接口")
-    public String _login(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/logout", desc = "退出")
     public String _logout(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -621,11 +591,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/get-bank-CardList", desc = "getBankCardList")
-    public String _member_get_bank_CardList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/member/homepage/app-list/v3", desc = "我的应用列表")
     public String _member_homepage_app_list_v3(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -643,11 +608,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/member/homepage/my-assets", desc = "我的总资产")
     public String _member_homepage_my_assets(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/p2p/check-account", desc = "p2pCheckAccount")
-    public String _member_p2p_check_account(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -671,11 +631,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/member/v2/get-accountInfo", desc = "getAccountInfoV2")
-    public String _member_v2_get_accountInfo(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/member/verify-account", desc = "verifyAccount")
     public String _member_verify_account(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -683,16 +638,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/member/verify-idCard", desc = "verifyIdCard")
     public String _member_verify_idCard(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/verify-phone-bind-status", desc = "checkWhetherPhoneWasBound")
-    public String _member_verify_phone_bind_status(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/member/ym/check-account", desc = "ymcheckAccount")
-    public String _member_ym_check_account(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
@@ -751,16 +696,6 @@ public class ZhuanleBase extends Base {
         return HryHttpClientUtil.send(test, this);
     }
 
-    @Uri(value = "/operation/queryInvestStat4Wakeup", desc = "queryInvestStat4Wakeup")
-    public String _operation_queryInvestStat4Wakeup(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/operation/queryWakeupList", desc = "queryWakeupList")
-    public String _operation_queryWakeupList(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
     @Uri(value = "/operation/recommendActivity", desc = "queryRecommendActivity")
     public String _operation_recommendActivity(HryTest test) {
         return HryHttpClientUtil.send(test, this);
@@ -783,11 +718,6 @@ public class ZhuanleBase extends Base {
 
     @Uri(value = "/operation/scratch/query", desc = "scratchQueryAdaptor")
     public String _operation_scratch_query(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/operation/taskList", desc = "taskList")
-    public String _operation_taskList(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

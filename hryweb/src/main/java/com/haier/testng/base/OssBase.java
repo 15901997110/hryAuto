@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: OssBase
  * @Author: 自动生成
- * @Date: 2018/11/12 14:21:00
+ * @Date: 2018/11/15 14:56:54
  */
 @SKey("Oss")
 public class OssBase extends Base {
@@ -893,11 +893,6 @@ public class OssBase extends Base {
 
     @Uri(value = "/promotionFacade/addActivateUserRule", desc = "新增唤醒好友活动规则")
     public String _promotionFacade_addActivateUserRule(HryTest test) {
-        return HryHttpClientUtil.send(test, this);
-    }
-
-    @Uri(value = "/promotionFacade/addPaymentRebateRule", desc = "新增投资完成抽奖活动规则")
-    public String _promotionFacade_addPaymentRebateRule(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 
