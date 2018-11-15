@@ -63,54 +63,58 @@ public class DBUtil {
             } else {
                 SqlExecuteResult<String> ret = new SqlExecuteResult<>();
                 ret.setSqlExecuted(SqlExecuted.FAIL);
-                ret.setResult("【不支持的sql,非select/insert/update开头】");
+                ret.setResult("【不支持的sql,非select|insert|update开头】");
                 return ret;
             }
         }
     }
 
     public static SqlExecuteResult query(JdbcTemplate jdbcTemplate, String sql) {
+        log.info("执行Sql:" + sql);
         try {
             Map<String, Object> map = jdbcTemplate.queryForMap(sql);
-            if (map == null || map.size() == 0) {
-                SqlExecuteResult<String> ret = new SqlExecuteResult<>();
-                ret.setSqlExecuted(SqlExecuted.SUCCESS);
-                ret.setSqlType(SqlTypeEnum.SELECT);
-                ret.setSqlQueryCols(SqlQueryCols.ONE);
-                ret.setResult("【查询无结果】");
-                return ret;
-            } else if (map.size() == 1) {
-                SqlExecuteResult<String> ret = new SqlExecuteResult<>();
-                ret.setSqlExecuted(SqlExecuted.SUCCESS);
-                ret.setSqlType(SqlTypeEnum.SELECT);
-                ret.setSqlQueryCols(SqlQueryCols.ONE);
-                ret.setResult(map.values().toArray()[0].toString());
-                return ret;
-            } else {
-                SqlExecuteResult<Map<String, Object>> ret = new SqlExecuteResult<>();
-                ret.setSqlExecuted(SqlExecuted.SUCCESS);
-                ret.setSqlType(SqlTypeEnum.SELECT);
-                ret.setSqlQueryCols(SqlQueryCols.MORE);
-                ret.setResult(map);
-                return ret;
-            }
+            SqlExecuteResult<Map<String, Object>> ret = new SqlExecuteResult<>();
+            ret.setSqlExecuted(SqlExecuted.SUCCESS);
+            ret.setSqlType(SqlTypeEnum.SELECT);
+            ret.setResult(map);
+            return ret;
         } catch (Exception e) {
-            log.info("查询sql执行异常:", e);
+            log.error("查询sql执行异常:", e);
             SqlExecuteResult<String> ret = new SqlExecuteResult<>();
             ret.setSqlExecuted(SqlExecuted.FAIL);
             ret.setSqlType(SqlTypeEnum.SELECT);
-            ret.setSqlQueryCols(SqlQueryCols.ONE);
-            ret.setResult("【sql执行失败】");
+            ret.setResult("【sql执行异常(select)】");
             return ret;
         }
     }
 
     public static SqlExecuteResult insert(JdbcTemplate jdbcTemplate, String sql) {
-        return null;
+        SqlExecuteResult<String> ret = new SqlExecuteResult<>();
+        ret.setSqlType(SqlTypeEnum.INSERT);
+        try {
+            int insertResult = jdbcTemplate.update(sql);
+            ret.setSqlExecuted(SqlExecuted.SUCCESS);
+            ret.setResult(insertResult + "");
+        } catch (Exception e) {
+            log.error("更新语句执行失败:", e);
+            ret.setSqlExecuted(SqlExecuted.FAIL);
+            ret.setResult("【Sql执行异常(insert)】");
+        }
+        return ret;
     }
 
     public static SqlExecuteResult update(JdbcTemplate jdbcTemplate, String sql) {
-        return null;
+        SqlExecuteResult<String> ret = new SqlExecuteResult<>();
+        ret.setSqlType(SqlTypeEnum.UPDATE);
+        try {
+            int updateResult = jdbcTemplate.update(sql);
+            ret.setSqlExecuted(SqlExecuted.SUCCESS);
+            ret.setResult(updateResult + "");
+        } catch (Exception e) {
+            ret.setSqlExecuted(SqlExecuted.FAIL);
+            ret.setResult("【Sql执行异常(update)】");
+        }
+        return ret;
     }
 /*    //查询
     public static String query(JdbcTemplate jdbcTemplate, String querySql) {
@@ -118,9 +122,9 @@ public class DBUtil {
     }*/
 
 
-    public Map<String, Object> queryForMap(JdbcTemplate jdbctemplate, String querySql) {
+/*    public Map<String, Object> queryForMap(JdbcTemplate jdbctemplate, String querySql) {
         return jdbctemplate.queryForMap(querySql);
-    }
+    }*/
 
 /*    public static Integer insert(JdbcTemplate jdbcTemplate, String insertSql) {
         return update(jdbcTemplate, insertSql);

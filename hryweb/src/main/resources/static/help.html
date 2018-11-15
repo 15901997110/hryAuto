@@ -34,6 +34,11 @@
             color: #f72e2b;
             font-weight: bold;
         }
+        table img{
+            padding:2px;
+            margin: 1px;
+            background-color:#0a6999;
+        }
     </style>
 </head>
 <body>
@@ -164,12 +169,21 @@
         </td>
     </tr>
     <tr class="text-1">
-        <td>(?i)&lt;sql:[^<>]*&gt;</td>
-        <td> &lt;sql:xxx&gt;执行sql并且使用执行结果替换此匹配项
-            <br><i>参数:xxx-必填,xxx中不可包含<>,符合语法规范的sql语句</i>
+        <td>(?i)&lt;sql([^<>]*)&gt;</td>
+        <td> &lt;sql(dmlSql)&gt;执行sql语句,<span>无论何时,必须确保执行结果返回仅一行(rows=1)</span><br/>
+            当返回结果仅一列时(columns=1时),直接使用此列值替换&lt;sql(dmlSql)&gt;表达式,当返回结果为多列时(columns>1),将使用各列的值替换当前列的引用项
+            <br><i>参数:dmlSql-必填,dmlSql中不可包含&lt;或&gt;</i>
         </td>
-        <td>&lt;sql:select id from table&gt;:执行查询语句,并使用查询结果替换此处,结果:1
-            <br>&lt;sql:update table t set t.status=-1 where t.id=1&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
+        <td>例1:&lt;sql(SELECT o.`request_no` FROM trade_pay_to_account_order o ORDER BY o.`created_time`DESC limit 1)&gt;<br/>
+            sql执行如图<img src="img/sql_select_result_oneColumn.png">,此时查询结果仅返回一列,系统将使用值"2436988321625276626"替换当前匹配到的sql表达式<br/>
+            <br/>
+            例2:&lt;sql(SELECT * FROM trade_pay_to_account_order o LIMIT 1)&gt;<br/>
+            sql执行如图<img src="img/sql_select_result_moreColumn.png"><br/>
+            此时系统将使用各个列的值替换整个文本域的$(key),比如参数中如果填写了$(request_no),$(pay_channel),则会分别替换为201805291509,KJTPAY
+            <br/>
+            <br/>
+            例3:&lt;sql(update table t set t.status=-1 where t.id=1)&gt;执行更新语句,并使用更新返回结果替换此处,结果:1
+
         </td>
     </tr>
     <tr class="text-1">
