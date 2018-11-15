@@ -72,10 +72,10 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖接口：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <label title="当待导入的接口已经存在于系统中时,则删除已经存在的接口和其关联的用例,再新增此条接口和Postman中保留的用例">
-                    <input type="radio" value="true" name="overwriteI">是
+                    <input type="radio"id = "overwriteTrue" value="true" name="overwriteI">是
                 </label>&emsp;
                 <label title="当待导入的接口已经存在于系统中时,则忽略">
-                    <input type="radio" checked value="false" name="overwriteI">否
+                    <input type="radio" id ="overwriteFalse" checked value="false" name="overwriteI">否
                 </label>
             </div>
         </div>
@@ -110,11 +110,8 @@
                         onclick="importInterfaces()"><i class="icon-ok"></i> 导入
                 </button>
                 <button type="reset" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel"
-                        onclick=""><i class="icon-ok"></i> 重置
+                        onclick="empty()"><i class="icon-ok"></i> 重置
                 </button>
-                <!--                <input type="submit">
-                                <input type="reset">-->
-
             </div>
         </div>
     </form>
@@ -191,7 +188,12 @@
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
-                        var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        if( row.swaggerurl ==""|| row.swaggerurl==null){
+                            var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + null + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        }else {
+                            var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        }
+
                         html = html + rowHtml;
                     }
                     $("#serviceId").append(html);
@@ -362,6 +364,18 @@
     }
 
     function clearResult() {
+        $("#importResult").hide();
+        $("#serviceIdResult").text("");
+        $("#serviceNameResult").text("");
+        $("#iCountResult").text("");
+        $("#importList").html("");
+    }
+    function empty() {
+        $("#serviceId").val(null).trigger("change");
+        $("#overwriteFalse").prop("checked",true);
+        $("#owC_false").prop("checked",true);
+        $("#iDev").val(null).trigger("change");
+
         $("#importResult").hide();
         $("#serviceIdResult").text("");
         $("#serviceNameResult").text("");
