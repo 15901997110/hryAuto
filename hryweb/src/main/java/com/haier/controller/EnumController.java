@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,12 +96,7 @@ public class EnumController {
     }
 
     @GetMapping("/replaceEnumExamples")
-    public List<String> getReplaceEnumExamples() {
-        List<String> list = new ArrayList<>();
-        ReplaceRegexEnum[] values = ReplaceRegexEnum.values();
-        for (ReplaceRegexEnum value : values) {
-            list.add(value.getExample());
-        }
-        return list;
+    public List<Map<String, Object>> getReplaceEnumExamples() {
+        return EnumUtil.getEnumList(ReplaceRegexEnum.values());
     }
 }
