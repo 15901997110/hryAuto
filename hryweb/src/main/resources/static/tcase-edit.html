@@ -15,6 +15,7 @@
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/At.js-master/css/jquery.atwho.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
     <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
@@ -141,6 +142,8 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/At.js-master/js/jquery.atwho.js"></script>
+<script type="text/javascript" src="lib/At.js-master/js/jquery.caret.js"></script>
 <script type="text/javascript">
     var layerIndex;
     //loading
@@ -169,7 +172,6 @@
         $("#id").val(cId);
         var assertTypeList = getAssertType();
         var envList = getTenvList();
-
         $.ajax({
             type: "post",
             url: "/tcase/selectOne",
@@ -229,6 +231,7 @@
 
                     //请求参数
                     var requestparam = "";
+                    setRequestParameter();
                     if (tcase.requestparam != null) {
                         requestparam = tcase.requestparam;
                     }
