@@ -8,7 +8,7 @@ import com.haier.util.HryHttpClientUtil;
 /**
  * @Description: MemberBase
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @SKey("Member")
 public class MemberBase extends Base {
@@ -218,6 +218,11 @@ public class MemberBase extends Base {
 
     @Uri(value = "/sessionFacade/getCurrentMember", desc = "根据token从Session中获取用户信息")
     public String _sessionFacade_getCurrentMember(HryTest test) {
+        return HryHttpClientUtil.send(test, this);
+    }
+
+    @Uri(value = "/sessionFacade/getUserIdByToken", desc = "根据token从Session中获取用户信息")
+    public String _sessionFacade_getUserIdByToken(HryTest test) {
         return HryHttpClientUtil.send(test, this);
     }
 

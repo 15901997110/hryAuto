@@ -19,7 +19,7 @@ public enum ReplaceRegexEnum {
     /**
      * <longdate>,当前时间戳,以1970-1-1 00:00:00 GMT标准计算出的毫秒数
      */
-    LONGDATE("(?i)<longdate>", "<longdate>"),
+    LONGDATE("(?i)<longDate\\(?\\)?>", "<longDate()>"),
 
     /**
      * <date(num)> 生成一个日期(默认今天),格式"yyyy-MM-dd"
@@ -63,6 +63,14 @@ public enum ReplaceRegexEnum {
      * <randomF(10.123,20.456)>:将从[10.123,20.456)区间中随机一个浮点数,浮点数的精度为0.001,结果:18.236
      */
     RANDOM_F("(?i)<randomF\\((\\d+\\.\\d+)?,?(\\d+\\.\\d+)?\\)>", "<randomF(min,max)>"),
+
+
+    /**
+     * <pureSql(pureDmlSql)> 执行sql语句,pureDmlSql为纯sql,可直接去数据库中执行,不需要再进一步做处理的sql
+     * 懒惰匹配,匹配尽可能少的sql语句,碰到第一个)>就当成结尾,停止匹配
+     */
+    PURE_SQL("(?i)<pureSql\\((.+?)\\)>","<pureSql(pureDmlSql)>"),
+
 
     /**
      * <sql:xxx> 执行sql并且使用执行结果替换此匹配项

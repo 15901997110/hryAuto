@@ -38,6 +38,11 @@ public interface TcaseService {
     Integer statisticCase(Tcase tcase);
 
     /**
+     * 查询用例设计人员列表
+     */
+    List<String> selectCaseDesigners();
+
+    /**
      * 运行单条Case
      */
     //RunOneResult runOne(Tcase tcase) throws HttpProcessException;

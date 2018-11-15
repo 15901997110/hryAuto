@@ -744,6 +744,43 @@ function getUserList() {
     return dev;
 }
 
+/**
+ * 获取case设计人员列表
+ */
+function getCaseDesigners() {
+    var ret = null;
+    $.ajax({
+        type: "post",
+        url: "/user/selectCaseDesigners",
+        dataType: "json",
+        success: function (response) {
+            if (response.status == 0) {
+                ret = response.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(response.msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return ret;
+}
 
 /**
  *根据接口id查询用例数量

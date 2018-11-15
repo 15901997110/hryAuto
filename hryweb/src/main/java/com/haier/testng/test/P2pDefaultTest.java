@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: P2pDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/06 16:53:31
+ * @Date: 2018/11/12 14:21:00
  */
 @Slf4j
 public class P2pDefaultTest extends P2pBase{
@@ -30,6 +30,12 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/agreementFacade/addProductInstruction", dataProvider = "provider", description = "增加产品说明书")
     public void agreementFacade_addProductInstruction(HryTest hryTest) {
         String actual = super._agreementFacade_addProductInstruction(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/agreementFacade/getAgreementListByBidId", dataProvider = "provider", description = "查询标的对应的出借人协议列表")
+    public void agreementFacade_getAgreementListByBidId(HryTest hryTest) {
+        String actual = super._agreementFacade_getAgreementListByBidId(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -99,9 +105,39 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/alterNativeRechargeFacade/queryAlterNativeList", dataProvider = "provider", description = "查询代充值列表")
-    public void alterNativeRechargeFacade_queryAlterNativeList(HryTest hryTest) {
-        String actual = super._alterNativeRechargeFacade_queryAlterNativeList(hryTest);
+    @Test(testName = "/alterNativeRechargeFacade/generateBatchProduct", dataProvider = "provider", description = "批量发标")
+    public void alterNativeRechargeFacade_generateBatchProduct(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_generateBatchProduct(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/alterNativeRechargeFacade/generateProduct", dataProvider = "provider", description = "发标接口")
+    public void alterNativeRechargeFacade_generateProduct(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_generateProduct(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/alterNativeRechargeFacade/getBatchReleaseLog", dataProvider = "provider", description = "批量发标记录查询")
+    public void alterNativeRechargeFacade_getBatchReleaseLog(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_getBatchReleaseLog(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/alterNativeRechargeFacade/queryAlterNativeRechargeList", dataProvider = "provider", description = "查询代充值列表")
+    public void alterNativeRechargeFacade_queryAlterNativeRechargeList(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_queryAlterNativeRechargeList(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/alterNativeRechargeFacade/queryEntrustPayOrder", dataProvider = "provider", description = "【console】查询委托支付授权订单")
+    public void alterNativeRechargeFacade_queryEntrustPayOrder(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_queryEntrustPayOrder(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/alterNativeRechargeFacade/queryProductByCreditId", dataProvider = "provider", description = "确认发标是否成功")
+    public void alterNativeRechargeFacade_queryProductByCreditId(HryTest hryTest) {
+        String actual = super._alterNativeRechargeFacade_queryProductByCreditId(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -156,6 +192,12 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/bidFacade/getBidTypeList", dataProvider = "provider", description = "获取标的Type")
     public void bidFacade_getBidTypeList(HryTest hryTest) {
         String actual = super._bidFacade_getBidTypeList(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/bidFacade/getMatchBidDetailInfo", dataProvider = "provider", description = "匹配详情页面信息")
+    public void bidFacade_getMatchBidDetailInfo(HryTest hryTest) {
+        String actual = super._bidFacade_getMatchBidDetailInfo(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -525,6 +567,12 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/ibsQueryFacade/getIbsInvestInfo", dataProvider = "provider", description = "获取智能投标的投资信息")
+    public void ibsQueryFacade_getIbsInvestInfo(HryTest hryTest) {
+        String actual = super._ibsQueryFacade_getIbsInvestInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/investFacade/createInvestOrder", dataProvider = "provider", description = "投资下单")
     public void investFacade_createInvestOrder(HryTest hryTest) {
         String actual = super._investFacade_createInvestOrder(hryTest);
@@ -693,12 +741,6 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/loanFacade/loanByCommand", dataProvider = "provider", description = "单独调用一个命令，慎用")
-    public void loanFacade_loanByCommand(HryTest hryTest) {
-        String actual = super._loanFacade_loanByCommand(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/loanFacade/loanNotify", dataProvider = "provider", description = "异步通知，仅供测试")
     public void loanFacade_loanNotify(HryTest hryTest) {
         String actual = super._loanFacade_loanNotify(hryTest);
@@ -741,9 +783,9 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/messageFacade/messageFacade", dataProvider = "provider", description = "发送消息")
-    public void messageFacade_messageFacade(HryTest hryTest) {
-        String actual = super._messageFacade_messageFacade(hryTest);
+    @Test(testName = "/messageFacade/sendMessage", dataProvider = "provider", description = "发送消息")
+    public void messageFacade_sendMessage(HryTest hryTest) {
+        String actual = super._messageFacade_sendMessage(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -828,6 +870,12 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/offlinePlanFacade/queryOfflinePlan", dataProvider = "provider", description = "分页查询计划")
     public void offlinePlanFacade_queryOfflinePlan(HryTest hryTest) {
         String actual = super._offlinePlanFacade_queryOfflinePlan(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/offlinePlanFacade/resetOfflineOrderStatus", dataProvider = "provider", description = "【傲融】认购计划重新发起扣款")
+    public void offlinePlanFacade_resetOfflineOrderStatus(HryTest hryTest) {
+        String actual = super._offlinePlanFacade_resetOfflineOrderStatus(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -921,57 +969,27 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/productFacade/generateBatchProduct", dataProvider = "provider", description = "批量发标")
-    public void productFacade_generateBatchProduct(HryTest hryTest) {
-        String actual = super._productFacade_generateBatchProduct(hryTest);
+    @Test(testName = "/queryTransferOfDebtFacades/getMyAssetByTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资资产信息")
+    public void queryTransferOfDebtFacades_getMyAssetByTransferOfDebt(HryTest hryTest) {
+        String actual = super._queryTransferOfDebtFacades_getMyAssetByTransferOfDebt(hryTest);
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/productFacade/generateProduct", dataProvider = "provider", description = "发标接口")
-    public void productFacade_generateProduct(HryTest hryTest) {
-        String actual = super._productFacade_generateProduct(hryTest);
+    @Test(testName = "/queryTransferOfDebtFacades/getRepaymentDetail", dataProvider = "provider", description = "获取回款债转详情")
+    public void queryTransferOfDebtFacades_getRepaymentDetail(HryTest hryTest) {
+        String actual = super._queryTransferOfDebtFacades_getRepaymentDetail(hryTest);
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/productFacade/getBatchReleaseLog", dataProvider = "provider", description = "批量发标记录查询")
-    public void productFacade_getBatchReleaseLog(HryTest hryTest) {
-        String actual = super._productFacade_getBatchReleaseLog(hryTest);
+    @Test(testName = "/queryTransferOfDebtFacades/listMyTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资列表信息")
+    public void queryTransferOfDebtFacades_listMyTransferOfDebt(HryTest hryTest) {
+        String actual = super._queryTransferOfDebtFacades_listMyTransferOfDebt(hryTest);
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/productFacade/queryEntrustPayOrder", dataProvider = "provider", description = "【console】查询委托支付授权订单")
-    public void productFacade_queryEntrustPayOrder(HryTest hryTest) {
-        String actual = super._productFacade_queryEntrustPayOrder(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/productFacade/queryProductByCreditId", dataProvider = "provider", description = "确认发标是否成功")
-    public void productFacade_queryProductByCreditId(HryTest hryTest) {
-        String actual = super._productFacade_queryProductByCreditId(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/queryTransferOfDebtFacade/getMyAssetByTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资资产信息")
-    public void queryTransferOfDebtFacade_getMyAssetByTransferOfDebt(HryTest hryTest) {
-        String actual = super._queryTransferOfDebtFacade_getMyAssetByTransferOfDebt(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/queryTransferOfDebtFacade/getRepaymentDetail", dataProvider = "provider", description = "获取回款债转详情")
-    public void queryTransferOfDebtFacade_getRepaymentDetail(HryTest hryTest) {
-        String actual = super._queryTransferOfDebtFacade_getRepaymentDetail(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/queryTransferOfDebtFacade/listMyTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资列表信息")
-    public void queryTransferOfDebtFacade_listMyTransferOfDebt(HryTest hryTest) {
-        String actual = super._queryTransferOfDebtFacade_listMyTransferOfDebt(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/queryTransferOfDebtFacade/listRepaymentDetails", dataProvider = "provider", description = "获取回款债转列表")
-    public void queryTransferOfDebtFacade_listRepaymentDetails(HryTest hryTest) {
-        String actual = super._queryTransferOfDebtFacade_listRepaymentDetails(hryTest);
+    @Test(testName = "/queryTransferOfDebtFacades/listRepaymentDetails", dataProvider = "provider", description = "获取回款债转列表")
+    public void queryTransferOfDebtFacades_listRepaymentDetails(HryTest hryTest) {
+        String actual = super._queryTransferOfDebtFacades_listRepaymentDetails(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -999,15 +1017,15 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/rechargeAndWithdrawFacade/directRecharge", dataProvider = "provider", description = "自动充值")
-    public void rechargeAndWithdrawFacade_directRecharge(HryTest hryTest) {
-        String actual = super._rechargeAndWithdrawFacade_directRecharge(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/rechargeAndWithdrawFacade/directWithdraw", dataProvider = "provider", description = "自动提现")
     public void rechargeAndWithdrawFacade_directWithdraw(HryTest hryTest) {
         String actual = super._rechargeAndWithdrawFacade_directWithdraw(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/rechargeAndWithdrawFacade/p2pDirectRecharge", dataProvider = "provider", description = "自动充值")
+    public void rechargeAndWithdrawFacade_p2pDirectRecharge(HryTest hryTest) {
+        String actual = super._rechargeAndWithdrawFacade_p2pDirectRecharge(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1098,6 +1116,18 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/regionFacade/regionInfo", dataProvider = "provider", description = "查询地区信息接口")
     public void regionFacade_regionInfo(HryTest hryTest) {
         String actual = super._regionFacade_regionInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/repaymentFacade/autoPrepayment", dataProvider = "provider", description = "融资人提前代扣还款")
+    public void repaymentFacade_autoPrepayment(HryTest hryTest) {
+        String actual = super._repaymentFacade_autoPrepayment(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/repaymentFacade/financierAutoRepayment", dataProvider = "provider", description = "融资人代扣还款")
+    public void repaymentFacade_financierAutoRepayment(HryTest hryTest) {
+        String actual = super._repaymentFacade_financierAutoRepayment(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1275,6 +1305,12 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
+    @Test(testName = "/repaymentFacade/queryUeBidRepaymentPlan", dataProvider = "provider", description = "查询优易智投标的借款人还款计划（Console使用）")
+    public void repaymentFacade_queryUeBidRepaymentPlan(HryTest hryTest) {
+        String actual = super._repaymentFacade_queryUeBidRepaymentPlan(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
     @Test(testName = "/repaymentFacade/queryUnpaidBidDetail", dataProvider = "provider", description = "【console】查询待还款标的详情")
     public void repaymentFacade_queryUnpaidBidDetail(HryTest hryTest) {
         String actual = super._repaymentFacade_queryUnpaidBidDetail(hryTest);
@@ -1296,6 +1332,12 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/repaymentFacade/reserveRepayment", dataProvider = "provider", description = "预约还款")
     public void repaymentFacade_reserveRepayment(HryTest hryTest) {
         String actual = super._repaymentFacade_reserveRepayment(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/riskLevelFacade/listRiskLevelInfo", dataProvider = "provider", description = "风险等级信息")
+    public void riskLevelFacade_listRiskLevelInfo(HryTest hryTest) {
+        String actual = super._riskLevelFacade_listRiskLevelInfo(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1332,6 +1374,12 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/tenderFacade/addBidLabel", dataProvider = "provider", description = "新增标的的标签")
     public void tenderFacade_addBidLabel(HryTest hryTest) {
         String actual = super._tenderFacade_addBidLabel(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/tenderFacade/addCarBidDetail", dataProvider = "provider", description = "保存车抵押表抵押物信息")
+    public void tenderFacade_addCarBidDetail(HryTest hryTest) {
+        String actual = super._tenderFacade_addCarBidDetail(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1509,12 +1557,6 @@ public class P2pDefaultTest extends P2pBase{
         supperAssert(actual, hryTest);
     }
 
-    @Test(testName = "/tenderFacade/syncBidEnclosureHistoryData", dataProvider = "provider", description = "同步历史附件信息至新表")
-    public void tenderFacade_syncBidEnclosureHistoryData(HryTest hryTest) {
-        String actual = super._tenderFacade_syncBidEnclosureHistoryData(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
     @Test(testName = "/tenderFacade/updateBidExtraInfo", dataProvider = "provider", description = "更新标的附加信息")
     public void tenderFacade_updateBidExtraInfo(HryTest hryTest) {
         String actual = super._tenderFacade_updateBidExtraInfo(hryTest);
@@ -1536,6 +1578,60 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/tenderFacade/updateTenderBidInfo", dataProvider = "provider", description = "更新标的信息")
     public void tenderFacade_updateTenderBidInfo(HryTest hryTest) {
         String actual = super._tenderFacade_updateTenderBidInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/getMatchBidRemarkByIds", dataProvider = "provider", description = "根据标的Id集合获取对应流标退标备注(管理后台使用)")
+    public void uePlanFacade_getMatchBidRemarkByIds(HryTest hryTest) {
+        String actual = super._uePlanFacade_getMatchBidRemarkByIds(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/getUeMatchedInfo", dataProvider = "provider", description = "根据优易智投授权订单获取匹配信息 - (uePlan系统)")
+    public void uePlanFacade_getUeMatchedInfo(HryTest hryTest) {
+        String actual = super._uePlanFacade_getUeMatchedInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/listAuthOrderProfitAmount", dataProvider = "provider", description = "根据授权码集合,获取对应的收益")
+    public void uePlanFacade_listAuthOrderProfitAmount(HryTest hryTest) {
+        String actual = super._uePlanFacade_listAuthOrderProfitAmount(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/listBidByUeAuthRequestNo", dataProvider = "provider", description = "根据优易智投授权订单获取匹配标的列表 - (前端)")
+    public void uePlanFacade_listBidByUeAuthRequestNo(HryTest hryTest) {
+        String actual = super._uePlanFacade_listBidByUeAuthRequestNo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/listMatchingBid", dataProvider = "provider", description = "获取待匹配的标的信息")
+    public void uePlanFacade_listMatchingBid(HryTest hryTest) {
+        String actual = super._uePlanFacade_listMatchingBid(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/listMyStandardBid", dataProvider = "provider", description = "获取我的散标 - （前端，我的出借）")
+    public void uePlanFacade_listMyStandardBid(HryTest hryTest) {
+        String actual = super._uePlanFacade_listMyStandardBid(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/listUeBidStatisticsInfo", dataProvider = "provider", description = "获取优易智投下标的统计信息 - (uePlan系统)")
+    public void uePlanFacade_listUeBidStatisticsInfo(HryTest hryTest) {
+        String actual = super._uePlanFacade_listUeBidStatisticsInfo(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/queryUeMatchedBidHkjh", dataProvider = "provider", description = "查询优易匹配标的还款计划/匹配详情 - (前端)")
+    public void uePlanFacade_queryUeMatchedBidHkjh(HryTest hryTest) {
+        String actual = super._uePlanFacade_queryUeMatchedBidHkjh(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/uePlanFacade/queryUeMatchedBidInfo", dataProvider = "provider", description = "优易智投标的信息查询(供ueplan使用)")
+    public void uePlanFacade_queryUeMatchedBidInfo(HryTest hryTest) {
+        String actual = super._uePlanFacade_queryUeMatchedBidInfo(hryTest);
         supperAssert(actual, hryTest);
     }
 
@@ -1566,6 +1662,18 @@ public class P2pDefaultTest extends P2pBase{
     @Test(testName = "/yyTradeStatFacade/queryBidOrderByOrderId", dataProvider = "provider", description = "根据投资订单号（orderId）查询投资订单）")
     public void yyTradeStatFacade_queryBidOrderByOrderId(HryTest hryTest) {
         String actual = super._yyTradeStatFacade_queryBidOrderByOrderId(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/yyTradeStatFacade/queryInvestmentRecord", dataProvider = "provider", description = "根据客户端ID,加密后的user id,查询该用户的所有投资记录")
+    public void yyTradeStatFacade_queryInvestmentRecord(HryTest hryTest) {
+        String actual = super._yyTradeStatFacade_queryInvestmentRecord(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/yyTradeStatFacade/queryTenderRecordRecord", dataProvider = "provider", description = "根据客户端ID,加密后的user id,查询该用户的散标投资记录")
+    public void yyTradeStatFacade_queryTenderRecordRecord(HryTest hryTest) {
+        String actual = super._yyTradeStatFacade_queryTenderRecordRecord(hryTest);
         supperAssert(actual, hryTest);
     }
 

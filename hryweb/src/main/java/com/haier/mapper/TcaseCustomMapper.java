@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface TcaseCustomMapper {
     List<TcaseCustom> selectByCondition(TcaseCustom tcaseCustom);
+    List<String> selectCaseDesigners();
 }

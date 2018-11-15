@@ -233,6 +233,11 @@ public class TcaseServiceImpl implements TcaseService {
         return longCount.intValue();
     }
 
+    @Override
+    public List<String> selectCaseDesigners() {
+        return tcaseCustomMapper.selectCaseDesigners();
+    }
+
 
 /*    @Override
     public RunOneResult runOne(Tcase tcase) {

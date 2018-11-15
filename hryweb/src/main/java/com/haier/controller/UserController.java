@@ -99,6 +99,10 @@ public class UserController {
         return ResultUtil.success(userService.selectByCondition(user));
     }
 
+    @PostMapping("/selectCaseDesigners")
+    public Result selectCaseDesigners() {
+        return ResultUtil.success(userService.selectCaseDesigners());
+    }
 
     //根据GroupId查询相应组的用户列表
     @PostMapping("/selectByGroupId")
