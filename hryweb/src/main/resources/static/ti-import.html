@@ -64,14 +64,13 @@
                 <label>
                     <input id="overwrite_false" type="radio" checked value="false" name="cover">否
                 </label>
-
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">接口开发者：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="idev" id="idev">
+                    <select class="select" size="1" name="iDev" id="iDev">
                         <option value="" selected>请选择</option>
                     </select>
 				</span>
@@ -83,7 +82,7 @@
                         onclick="importInterfaces()"><i class="icon-ok"></i> 导入
                 </button>
                 <button type="button" class="btn btn-success radius" id="admin-role-cancel" name="admin-role-cancel"
-                        onclick=""><i class="icon-ok"></i> 重置
+                        onclick="empty()"><i class="icon-ok"></i> 重置
                 </button>
             </div>
         </div>
@@ -147,6 +146,7 @@
     var id;
 
     function setMatchValue() {
+        debugger;
         var ele = $("#serviceid").select2('data')[0].element;
         var url = $(ele).data('url');
         id = $(ele).data('id');
@@ -166,7 +166,7 @@
         var serviceId = $("#serviceid").val().split("&")[0];
         var envId = $("#serviceid").val().split("&")[1];
         var overwrite = $('input[name="cover"]:checked').val();
-        var iDev = $("#idev").val();
+        var iDev = $("#iDev").val();
         var serviceDetailId = document.getElementById("serviceid").getAttribute("tiserviceDetailId");
 
         if (serviceId == null || serviceId == "") {
@@ -228,6 +228,19 @@
         $("#iCountResult").text("");
         $("#importList").html("");
     }
+    //重置按钮
+    function empty() {
+        $("#serviceid").val(null).trigger("change");
+        $("#swaggerUrl").val("");
+        $("#iDev").val(null).trigger("change");
+        $("#overwrite_false").prop("checked",true);
+
+        $("#importResult").hide();
+        $("#serviceIdResult").text("");
+        $("#serviceNameResult").text("");
+        $("#iCountResult").text("");
+        $("#importList").html("");
+    }
 
     function displayResult(data) {
         $("#importResult").show();
@@ -275,7 +288,11 @@
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
-                        var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        if( row.swaggerurl ==""|| row.swaggerurl==null){
+                            var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + null + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        }else {
+                            var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
+                        }
                         html = html + rowHtml;
                     }
                     $("#serviceid").append(html);
@@ -333,8 +350,8 @@
                             htmldev = htmldev + rowHtml;
                         }
                     }
-                    $("#idev").append(htmldev);
-                    $("#idev").select2();
+                    $("#iDev").append(htmldev);
+                    $("#iDev").select2();
                 } else {
                     layer.alert(msg, {
                         icon: 0,
