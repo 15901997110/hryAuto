@@ -6,9 +6,10 @@ zdy:
 server:
   port: 8885
 logging:
-  file: hryweb.log
+  file: hryAuto.log
   level:
     com.haier.mapper.*: debug
+  path: /opt/logs/hryAuto
 spring:
   application:
     name: hryweb
