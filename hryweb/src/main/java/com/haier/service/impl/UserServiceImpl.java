@@ -6,6 +6,7 @@ import com.haier.enums.RegexEnum;
 import com.haier.mapper.UserMapper;
 import com.haier.po.User;
 import com.haier.po.UserExample;
+import com.haier.service.TcaseService;
 import com.haier.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -149,6 +151,17 @@ public class UserServiceImpl implements UserService {
             }
         }
         return null;
+    }
+
+    @Autowired
+    TcaseService tcaseService;
+
+    @Override
+    public List<User> selectCaseDesigners() {
+        List<String> caseDesigners = tcaseService.selectCaseDesigners();
+        List<User> allUsers = this.selectAllUser(null);
+        List<User> caseDesignersUser = allUsers.stream().filter(user -> caseDesigners.contains(user.getRealname())).collect(Collectors.toList());
+        return caseDesignersUser;
     }
 
 }

@@ -6,7 +6,7 @@ zdy:
 server:
   port: 8885
 logging:
-  file: hryweb.log
+  file: hryAuto.log
   level:
     com.haier.aspect: debug
     com.haier.config: debug
@@ -16,6 +16,7 @@ logging:
     com.haier.service.impl: debug
     com.haier.util: debug
     com.haier.testng.*: debug
+  path: c:/logs/hryAuto
 #    com.haier.mapper.*: debug
 spring:
   application:

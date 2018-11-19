@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: XindaiyyDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/12 14:21:00
+ * @Date: 2018/11/15 14:56:54
  */
 @Slf4j
 public class XindaiyyDefaultTest extends XindaiyyBase{
@@ -42,6 +42,12 @@ public class XindaiyyDefaultTest extends XindaiyyBase{
     @Test(testName = "/cbp-web/book/queryBookList.json", dataProvider = "provider", description = "查询预约列表")
     public void cbp_web_book_queryBookList_json(HryTest hryTest) {
         String actual = super._cbp_web_book_queryBookList_json(hryTest);
+        supperAssert(actual, hryTest);
+    }
+
+    @Test(testName = "/cbp-web/book/queryUeProductList.json", dataProvider = "provider", description = "查询UE产品列表")
+    public void cbp_web_book_queryUeProductList_json(HryTest hryTest) {
+        String actual = super._cbp_web_book_queryUeProductList_json(hryTest);
         supperAssert(actual, hryTest);
     }
 

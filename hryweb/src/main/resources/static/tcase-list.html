@@ -185,8 +185,9 @@
         $("#serviceKey").append(html);
 
         var author = $.cookie('realnameCookie');
-        var dev = getUserList();
-        var htmldev = "";
+        var dev = getCaseDesigners();
+        console.log(dev);
+        var htmlDev = "";
         for (var k = 0; k < dev.length; k++) {
             var rowHtml = "";
             var row = dev[k];
@@ -195,9 +196,9 @@
             } else {
                 rowHtml = "<option value=\"" + row.realname + "\">" + row.realname + "</option>";
             }
-            htmldev = htmldev + rowHtml;
+            htmlDev = htmlDev + rowHtml;
         }
-        $("#author").append(htmldev);
+        $("#author").append(htmlDev);
         $("#author").select2();
 
         // var realName=$.cookie('realnameCookie');

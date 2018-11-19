@@ -744,6 +744,43 @@ function getUserList() {
     return dev;
 }
 
+/**
+ * 获取case设计人员列表
+ */
+function getCaseDesigners() {
+    var ret = null;
+    $.ajax({
+        type: "post",
+        url: "/user/selectCaseDesigners",
+        dataType: "json",
+        success: function (response) {
+            if (response.status == 0) {
+                ret = response.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(response.msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return ret;
+}
 
 /**
  *根据接口id查询用例数量
@@ -832,6 +869,56 @@ function cancelTi(tiId) {
         }
     });
 
+}
+
+/**
+ * 获取replaceEnumExamplesList
+ * */
+function getReplaceEnumList() {
+    var replaceEnumList = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "get",
+        url: "/enum/replaceEnumExamples",
+        data: {},
+        dataType: "json",
+        success: function (data) {
+            replaceEnumList = data;
+        },
+        fail: function (data) {
+            alert(JSON.stringify(data));
+        },
+        error: function (xhr) {
+            alert('error:' + JSON.stringify(xhr));
+        }
+    });
+    return replaceEnumList;
+}
+
+/**
+ * 设置requestParam的<触发事件
+ * */
+function setRequestParameter() {
+    var replaceObj=getReplaceEnumList();
+    for(var i = 0;i < replaceObj.length; i++){
+        // names[i] = names[i].replace("<","").replace(">","");
+        replaceObj[i].example = replaceObj[i].example.replace("<","&lt;").replace(">","&gt;");
+    }
+    var names = $.map(replaceObj, function (replaceObj, i) {
+        //return {'id':i, 'name':"<"+value+">", 'email': value};
+        return {'id':i, 'name':replaceObj.example, 'email':replaceObj.desc};
+    });
+    var at_config = {
+        at: "<",
+        data: names,
+        headerTpl: '<div class="atwho-header">正则表达式:</div>',
+        insertTpl: '${name}',
+        displayTpl: "<li>${name} <small>${email}</small></li>",
+        limit: 200
+    }
+    $inputor = $('#requestParam').atwho(at_config);
+    $inputor = $('#cafter').atwho(at_config);
+    $inputor.focus().atwho('run');
 }
 
 /*关闭弹出框口*/

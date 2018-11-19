@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * @Description: OssDefaultTest
  * @Author: 自动生成
- * @Date: 2018/11/12 14:21:00
+ * @Date: 2018/11/15 14:56:54
  */
 @Slf4j
 public class OssDefaultTest extends OssBase{
@@ -1080,12 +1080,6 @@ public class OssDefaultTest extends OssBase{
     @Test(testName = "/promotionFacade/addActivateUserRule", dataProvider = "provider", description = "新增唤醒好友活动规则")
     public void promotionFacade_addActivateUserRule(HryTest hryTest) {
         String actual = super._promotionFacade_addActivateUserRule(hryTest);
-        supperAssert(actual, hryTest);
-    }
-
-    @Test(testName = "/promotionFacade/addPaymentRebateRule", dataProvider = "provider", description = "新增投资完成抽奖活动规则")
-    public void promotionFacade_addPaymentRebateRule(HryTest hryTest) {
-        String actual = super._promotionFacade_addPaymentRebateRule(hryTest);
         supperAssert(actual, hryTest);
     }
 
