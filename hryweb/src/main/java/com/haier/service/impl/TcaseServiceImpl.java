@@ -320,16 +320,6 @@ public class TcaseServiceImpl implements TcaseService {
         String methodName = HryUtil.iUri2MethodName(ti.getIuri());
         Map<String, List<Tcase>> testCase = new HashMap<>();
         testCase.put(methodName, Arrays.asList(tcase));
-        /*String i_c_zdy = JSON.toJSONString(testCase);*/
-
-
-/*        //测试类初始化参数
-        Map<String, String> initParam = new HashMap<>();
-        initParam.put(ParamKeyEnum.SERVICEID.getKey(), tservice.getId() + "");
-        initParam.put(ParamKeyEnum.ENVID.getKey(), tenv.getId() + "");
-        initParam.put(ParamKeyEnum.DESIGNER.getKey(), "");
-        initParam.put(ParamKeyEnum.I_C.getKey(), "");
-        initParam.put(ParamKeyEnum.I_C_ZDY.getKey(), i_c_zdy);*/
 
         Map<String, String> initParam = HryUtil.install_S_Params(tservice.getId(), tenv.getId(), null, null, testCase);
 
@@ -351,9 +341,6 @@ public class TcaseServiceImpl implements TcaseService {
 
         //定义一个测试类
         XmlClass xmlClass = new XmlClass(longClassname);
-
-        //校验测试类存在 ,并且此接口的测试方法
-
 
         //方法选择器
         XmlInclude include = new XmlInclude(methodName);
@@ -392,7 +379,7 @@ public class TcaseServiceImpl implements TcaseService {
         Integer reportId = treportService.insertOne(treport);
 
         log.info("即将运行单条用例的测试:");
-        log.info("启动测试类:" + PackageEnum.TEST.getPackageName() + "." + tcase.getTestclass());
+        log.info("启动测试类:" + longClassname);
         log.info("传给测试类的参数:" + initParam);
 
         runner.run(reportId, reportName, "", xmlSuite);

@@ -45,11 +45,13 @@ public class Base extends AbstractTestNGSpringContextTests {
     public Tservice tservice;
     public Tservicedetail tservicedetail;
     public List<Ti> tis;
-    public Map<String,Ti> iUri_ti;
+    public Map<String, Ti> iUri_ti;
     public RunService runService;//RunService bean的获取放到初始化中,如果放到这里就初始化,如果是外部调用测试,此时Spring还未启动,此测试类会报错
     public String testingId;//标记某次测试活动,一个测试报告中的所有测试,作为一个测试活动,
 
-    public Base(){}
+    public Base() {
+    }
+
     public Base(Tcase tcase) {
 
     }
@@ -82,12 +84,8 @@ public class Base extends AbstractTestNGSpringContextTests {
     @HryHeader
     public Header[] headers;
 
+    @DataProvider(name = "provider")
     public Object[] provider(Method method) {
         return HryUtil.getTests(tservice, tservicedetail, caseDesigner, i_c_JSONObject, i_c_zdy_JSONObject, method);
-    }
-
-    @DataProvider(name = "provider2")
-    public Object[] provider2(Method method){
-        return null;
     }
 }
