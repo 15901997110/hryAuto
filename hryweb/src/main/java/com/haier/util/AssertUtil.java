@@ -1,6 +1,5 @@
 package com.haier.util;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
@@ -15,6 +14,8 @@ import org.testng.Reporter;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -45,7 +46,7 @@ public class AssertUtil {
             //2.assertType=contain,实际值中包含期望值
             case 2:
                 if (!StringUtils.containsIgnoreCase(actual, expected)) {
-                    throw new AssertionError("断言失败:实际值中不包含期望值(忽略大小写)并且实际值中匹配不到期望值的正则");
+                    throw new AssertionError("断言失败:实际值中不包含期望值(忽略大小写)");
                 }
                 break;
             //3.assertType=key-value,实际值中抽取出的key-value与指定值中提取的key-value相等,包含,或者正则匹配
@@ -87,17 +88,41 @@ public class AssertUtil {
             //assert-type=match
             case 4:
                 try {
-                    if (!actual.matches(expected)) {
+/*                    if (!actual.matches(expected)) {
+                        throw new AssertionError("断言失败:实际值中未匹配到期望的正则表达式");
+                    }*/
+                    Pattern p = Pattern.compile(expected);
+                    Matcher m = p.matcher(actual);
+                    Boolean flag = false;
+                    while (m.find()) {//实际值匹配到期望的正则表达式
+                        flag = true;
+                        break;
+                    }
+                    if (!flag) {
                         throw new AssertionError("断言失败:实际值中未匹配到期望的正则表达式");
                     }
                 } catch (PatternSyntaxException e) {
                     throw new AssertionError("期望值中的正则表达式填写错误", e);
                 }
                 break;
+            //assert-type=excuted
+            case 5:
+                try {
+                    Pattern p = Pattern.compile(expected);
+                    Matcher m = p.matcher(actual);
+                    if (m.find()) {
+                        throw new AssertionError("实际值中匹配到不期望出现的期望值");
+                    }
+                } catch (PatternSyntaxException e) {
+                    throw new AssertionError("期望值中的正则表达式填写错误", e);
+                }
+
+                break;
+
 
             //以上情况都未匹配
             default:
-                throw new AssertionError("断言失败:断言类型未指定,无法提供断言!!!");
+                throw new AssertionError("断言失败:断言类型未指定,不能提供断言!!!");
         }
     }
 

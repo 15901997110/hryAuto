@@ -4,24 +4,28 @@
     <meta charset="utf-8">
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="lib/html5shiv.js"></script>
     <script type="text/javascript" src="lib/respond.min.js"></script>
     <![endif]-->
-    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
-    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
-    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
     <!--[if IE 6]>
-    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>柱状图统计</title>
 </head>
 <body>
+<nav class="breadcrumb"> 报表统计<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                           href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <div id="container1" style="min-width:700px;height:400px;margin-top: 3%"></div>
 </div>
@@ -47,16 +51,16 @@
             url: "/statistic/realtime",
             dataType: "json",
             success: function (data) {
-                var status=data.status;
-                var arrayList=data.data;
-                console.log("data:"+arrayList);
+                var status = data.status;
+                var arrayList = data.data;
+                console.log("data:" + arrayList);
                 itotalArr = [];
                 ctotalArr = [];
                 itotalByCaseArr = [];
                 itotalNoCaseArr = [];
                 irateArr = [];
                 cfinenessArr = [];
-                if(status == 0){
+                if (status == 0) {
                     for (var i in arrayList) {
                         //save categories
                         options1.xAxis.categories.push(arrayList[i].serviceKey);
@@ -82,20 +86,20 @@
                     $('#container2').highcharts(options2);
                     $('#container3').highcharts(options3);
 
-                }else{
+                } else {
                     layer.alert(JSON.stringify(data.msg), {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 }
             },
-            fail:function (data) {
+            fail: function (data) {
                 layer.alert(JSON.stringify(data), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 layer.alert('Error' + JSON.stringify(xhr), {
                     icon: 2,
                     skin: 'layer-ext-moon'
@@ -134,11 +138,11 @@
             },
             series: [{
                 name: '接口数'
-            },{
+            }, {
                 name: '用例数'
-            },{
+            }, {
                 name: '用例覆盖接口'
-            },{
+            }, {
                 name: '未设计用例接口'
             }]
         }

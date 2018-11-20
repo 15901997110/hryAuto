@@ -56,28 +56,32 @@
     <thead>
     <tr class="text-1">
         <th width="10%">断言类型</th>
-        <th width="20%">断言说明</th>
+        <th width="30%">断言说明</th>
     </tr>
     </thead>
     <tbody>
     <tr class="text-l">
-        <td width="10%">equal</td>
-        <td width="30%" align="left">实际值与期望值完全相等</td>
+        <td>equal</td>
+        <td>实际值与期望值完全相等</td>
     </tr>
     <tr class="text-l">
-        <td width="10%">contain</td>
-        <td width="30%" align="left">实际值包含期望值(忽略大小写)</td>
+        <td>contain</td>
+        <td>实际值包含期望值(忽略大小写)</td>
     </tr>
     <tr class="text-l">
-        <td width="10%">key-value</td>
-        <td width="30%" align="left">实际值与相对应key的期望中的值相等,或忽略大小写比较相等,
+        <td>key-value</td>
+        <td>实际值与相对应key的期望中的值相等,或忽略大小写比较相等,
             <br>或忽略空字符比较相等,或包含期望值,或匹配期望值的正则形式,
             <br>所有的key-value对比较都为true,断言通过
         </td>
     </tr>
     <tr class="text-l">
-        <td width="10%">match</td>
-        <td width="30%" align="left">实际值中匹配到期望值的正则表达式</td>
+        <td>match</td>
+        <td>实际值中匹配到期望值的正则表达式</td>
+    </tr>
+    <tr class="text-l">
+        <td>exclude</td>
+        <td>实际值中不期望匹配到的正则表达式</td>
     </tr>
     </tbody>
 </table>

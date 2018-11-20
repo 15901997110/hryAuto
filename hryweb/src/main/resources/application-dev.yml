@@ -17,9 +17,6 @@ logging:
     com.haier.util: debug
     com.haier.testng.*: debug
     com.haier.mapper.*: debug
-  #path: c:/logs/hryAuto  日志路径配置时,需要注意file与path的意义
-  #参考:https://www.cnblogs.com/nuccch/p/6221255.html
-
 spring:
   application:
     name: hryweb
