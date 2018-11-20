@@ -4,14 +4,17 @@ import com.haier.anno.SKey;
 import com.haier.po.HryTest;
 import com.haier.testng.base.Base;
 import com.haier.util.HryHttpClientUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.Test;
 
 import static com.haier.util.AssertUtil.supperAssert;
 
 @SKey("Pgw")
+@Slf4j
 public class PgwDefaultTest extends Base {
     public PgwDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
+        log.info("PgwDefaultTest带参构造器执行!");
     }
 
     //@Uri(value = "/accountBalanceQueryFacade/accountBalanceQuery", desc = "账户余额查询")
