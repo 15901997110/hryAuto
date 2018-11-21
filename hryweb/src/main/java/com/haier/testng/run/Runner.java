@@ -1,5 +1,6 @@
 package com.haier.testng.run;
 
+import com.haier.config.ZdyProperty;
 import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.StatusEnum;
 import com.haier.po.Tcustomdetail;
@@ -8,7 +9,6 @@ import com.haier.service.TreportService;
 import com.haier.testng.listener.HryReporter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.testng.ITestNGListener;
@@ -27,8 +27,11 @@ import java.util.*;
 @Slf4j
 @Component
 public class Runner {
-    @Value("${zdy.reportPath}")
-    String reportPath;
+
+    @Autowired
+    ZdyProperty zdyProperty;
+/*    @Value("${zdy.reportPath}")
+    String reportPath;*/
 
     @Autowired
     TreportService treportService;
@@ -41,7 +44,7 @@ public class Runner {
      * @param customName 测试报告名称(一般传定制名称即可,单个case运行可传null)
      * @param xmlSuite   待测试的suite
      */
-    //@Async("asyncServiceExecutor")
+    @Async("asyncServiceExecutor")
     public void run(Integer reportId, String reportName, String customName, XmlSuite xmlSuite) {
         //构建唯一的testingId
         String testingId = UUID.randomUUID().toString().replaceAll("-", "");
@@ -52,7 +55,7 @@ public class Runner {
         TestNG ng = new TestNG();
         ng.setUseDefaultListeners(false);
         ng.setXmlSuites(Arrays.asList(xmlSuite));
-        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
+        ITestNGListener reporter = new HryReporter(zdyProperty.getReportPath(), reportName, customName);
         ng.addListener(reporter);
 
         ng.run();
@@ -87,7 +90,7 @@ public class Runner {
         suite.setTests(tests);
         ng.setXmlSuites(Arrays.asList(suite));
 
-        ITestNGListener reporter = new HryReporter(reportPath, reportName, customName);
+        ITestNGListener reporter = new HryReporter(zdyProperty.getReportPath(), reportName, customName);
         ng.addListener(reporter);
         ng.run();
 
@@ -122,7 +125,7 @@ public class Runner {
         suite.setTests(xmlTests);
 
         testNG.setXmlSuites(Arrays.asList(suite));
-        ITestNGListener reporter = new HryReporter(reportPath, reportName, "单一Case验证");
+        ITestNGListener reporter = new HryReporter(zdyProperty.getReportPath(), reportName, "单一Case验证");
         testNG.addListener(reporter);
         testNG.run();
 
