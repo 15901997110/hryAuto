@@ -8,7 +8,6 @@ import com.haier.enums.ParamKeyEnum;
 import com.haier.enums.RegexEnum;
 import com.haier.po.*;
 import com.haier.service.RunService;
-import com.haier.testng.base.Base;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
@@ -59,6 +58,12 @@ public class HryUtil {
         return ret;
     }
 
+    /**
+     * list去重
+     * @param list
+     * @param <T>
+     * @return
+     */
     public static <T> List<T> distinct(List<T> list) {
         if (list == null) {
             return null;
@@ -149,9 +154,15 @@ public class HryUtil {
         return collectHtyTest(tservice, tservicedetail, ti, tcases);
     }
 
-    /*public static Object[] getTests(Base base,String iUri){
 
-    }*/
+    /**
+     * 收集tservice,tservicedetail,ti,List<Tcase>,返回List<Tcase>长度的数组对象 ,数组中元素类型为HryTest
+     * @param tservice
+     * @param tservicedetail
+     * @param ti
+     * @param customCases
+     * @return
+     */
     public static Object[] collectHtyTest(Tservice tservice, Tservicedetail tservicedetail, Ti ti, List<Tcase> customCases) {
         Object[] ret = new Object[customCases.size()];
         for (int i = 0; i < customCases.size(); i++) {
@@ -165,17 +176,19 @@ public class HryUtil {
         return ret;
     }
 
+    /**
+     * 将iUri转换成方法名
+     * 如果iUri以"/"开头,则会忽略第一个"/",从第2个字符开始转换
+     * iUri中所有的非单词字符都将被转换成下划线
+     *
+     * @param iUri
+     * @return
+     */
     public static String iUri2MethodName(String iUri) {
         if (StringUtils.isBlank(iUri)) {
             return iUri;
         }
-        String testMethodName;//对应测试类中的测试方法名
-        if (iUri.startsWith("/")) {
-            testMethodName = iUri.substring(1).replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
-        } else {
-            testMethodName = iUri.replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
-        }
-        return testMethodName;
+        return (iUri.startsWith("/") ? iUri.substring(1) : iUri).replaceAll(RegexEnum.INVALID_CHAR_REGEX.getRegex(), "_");
     }
 
     /**
@@ -196,5 +209,16 @@ public class HryUtil {
         ret.put(ParamKeyEnum.I_C.getKey(), iName_cIdList != null && iName_cIdList.size() > 0 ? JSON.toJSONString(iName_cIdList) : "");
         ret.put(ParamKeyEnum.I_C_ZDY.getKey(), iName_CaseList != null ? JSON.toJSONString(iName_CaseList) : "");
         return ret;
+    }
+
+    /**
+     * 随机一个uuid
+     *
+     * @param subSize 从uuid中截断的长度
+     * @return 随机uuid, 截断从index=0开始,subSize长度的字符串
+     */
+    public static String generateUUID(Integer subSize) {
+        return UUID.randomUUID().toString().replaceAll("-", "").substring(0,
+                subSize == null || subSize == 0 || Math.abs(subSize) > 32 ? 32 : Math.abs(subSize));
     }
 }
