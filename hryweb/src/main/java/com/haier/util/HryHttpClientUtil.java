@@ -38,7 +38,7 @@ public class HryHttpClientUtil {
 
     static {
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
-        if (bean.debug.equalsIgnoreCase("true")) {
+        if (bean.getDebug().equalsIgnoreCase("true")) {
             DEBUG = true;
         } else {
             DEBUG = false;
