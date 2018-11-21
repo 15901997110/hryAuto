@@ -8,17 +8,11 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import static com.haier.util.AssertUtil.supperAssert;
-@SKey("AceSa")
-public class AceSaDefaultTest extends Base{
+@SKey("Test")
+public class TestDefaultTest extends Base{
     @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy", "testingId"})
-    public AceSaDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
+    public TestDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
-    }
-
-    @Test(testName = "/sa/login", dataProvider = "provider", description = "SA登录")
-    public void sa_login(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
     }
 
 }

@@ -1,60 +1,48 @@
 package com.haier.testng.test;
 
+import com.haier.anno.SKey;
 import com.haier.po.HryTest;
-import com.haier.testng.base.XindaiyyBase;
-import static com.haier.util.AssertUtil.supperAssert;
-import lombok.extern.slf4j.Slf4j;
-import org.testng.annotations.DataProvider;
+import com.haier.testng.base.Base;
+import com.haier.util.HryHttpClientUtil;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.Method;
-
-/**
- * @Description: XindaiyyDefaultTest
- * @Author: 自动生成
- * @Date: 2018/11/15 14:56:54
- */
-@Slf4j
-public class XindaiyyDefaultTest extends XindaiyyBase{
-    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy" ,"testingId"})
+import static com.haier.util.AssertUtil.supperAssert;
+@SKey("Xindaiyy")
+public class XindaiyyDefaultTest extends Base{
+    @Parameters({"serviceId", "envId", "caseDesigner", "i_c", "i_c_zdy", "testingId"})
     public XindaiyyDefaultTest(Integer serviceId, Integer envId, String caseDesigner, String i_c, String i_c_zdy, String testingId) {
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
-    @DataProvider(name = "provider")
-    public Object[] getCase(Method method) {
-        return provider(method);
-    }
-
     @Test(testName = "/cbp-web/book/addBookInfo.json", dataProvider = "provider", description = "新建预约")
-    public void cbp_web_book_addBookInfo_json(HryTest hryTest) {
-        String actual = super._cbp_web_book_addBookInfo_json(hryTest);
-        supperAssert(actual, hryTest);
+    public void cbp_web_book_addBookInfo_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
     }
 
     @Test(testName = "/cbp-web/book/audit.json", dataProvider = "provider", description = "审核预约")
-    public void cbp_web_book_audit_json(HryTest hryTest) {
-        String actual = super._cbp_web_book_audit_json(hryTest);
-        supperAssert(actual, hryTest);
+    public void cbp_web_book_audit_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
     }
 
     @Test(testName = "/cbp-web/book/queryBookList.json", dataProvider = "provider", description = "查询预约列表")
-    public void cbp_web_book_queryBookList_json(HryTest hryTest) {
-        String actual = super._cbp_web_book_queryBookList_json(hryTest);
-        supperAssert(actual, hryTest);
+    public void cbp_web_book_queryBookList_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
     }
 
     @Test(testName = "/cbp-web/book/queryUeProductList.json", dataProvider = "provider", description = "查询UE产品列表")
-    public void cbp_web_book_queryUeProductList_json(HryTest hryTest) {
-        String actual = super._cbp_web_book_queryUeProductList_json(hryTest);
-        supperAssert(actual, hryTest);
+    public void cbp_web_book_queryUeProductList_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
     }
 
     @Test(testName = "/cbp-web/book/review.json", dataProvider = "provider", description = "复核预约")
-    public void cbp_web_book_review_json(HryTest hryTest) {
-        String actual = super._cbp_web_book_review_json(hryTest);
-        supperAssert(actual, hryTest);
+    public void cbp_web_book_review_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
     }
 
 }
