@@ -10,7 +10,8 @@ public enum GenReplaceKWEnum {
     URI("\\$\\{uri\\}", "${uri}"),
     CLASS_NAME("\\$\\{className\\}", "${className}"),
     DESC("\\$\\{desc\\}", "${desc}"),
-    METHOD_NAME("\\$\\{methodName\\}", "${methodName}"),;
+    METHOD_NAME("\\$\\{methodName\\}", "${methodName}"),
+    PROVIDER("\\$\\{provider\\}","${provider}");
     private String regex;
     private String sample;
 

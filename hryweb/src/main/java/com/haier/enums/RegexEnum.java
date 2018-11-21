@@ -16,7 +16,7 @@ public enum RegexEnum {
 
     CLASSNAME_REGEX("[A-Z][A-Za-z0-9_]*", "测试类名,首字符必须是大写字母,其余部分只能由字母或数字或下划线组成"),
 
-    INVALID_CHAR_REGEX("/|-|\\.", "匹配字符串中的'/'或者'-'或者'.'字符,iUri转测试方法时 需要将这类字符串替换成下划线"),
+    INVALID_CHAR_REGEX("\\W", "非单词字符,用于iUri转换成MethodName "),
 
     SELECT_REGEX("^(?i)\\s*select.+", "查询语句(以select开头)"),
 

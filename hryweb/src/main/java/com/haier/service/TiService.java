@@ -29,6 +29,8 @@ public interface TiService {
 
     List<Ti> selectByCondition(Ti ti);
 
+    List<Ti> selectByServiceId(Integer serviceId);
+
     List<Ti> selectByCondition(Ti ti,Boolean hasCase);
 
     List<Ti> selectAllStatusByCondition(Ti ti);
