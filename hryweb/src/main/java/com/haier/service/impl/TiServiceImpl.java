@@ -20,7 +20,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -109,6 +112,13 @@ public class TiServiceImpl implements TiService {
     @Override
     public List<Ti> selectByCondition(Ti ti) {
         return this.selectByCondition(ti, false);
+    }
+
+    @Override
+    public List<Ti> selectByServiceId(Integer serviceId) {
+        Ti condition = new Ti();
+        condition.setServiceid(serviceId);
+        return selectByCondition(condition);
     }
 
     @Override

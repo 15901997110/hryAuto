@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * @Description: TserviceService实现类
@@ -140,44 +144,29 @@ public class TserviceServiceImpl implements TserviceService {
         Map<String, List<String>> ret = new HashMap<>();
         List<String> baseClassNames = ClassUtil.getClassName(PackageEnum.BASE.getPackageName());
         List<String> testClassNames = ClassUtil.getClassName(PackageEnum.TEST.getPackageName());
-        //循环base类,找到Skey
-        for (String baseClassName : baseClassNames) {
-            List<String> list = new ArrayList<>();
-            String baseClassSkeyValue = null;
+
+        Consumer<String> consumer = className -> {
             try {
-                Class<?> baseClass = Class.forName(baseClassName);
-                try {
-                    baseClassSkeyValue = baseClass.getAnnotation(SKey.class).value();
-
-                    //循环test类
-                    for (String testClassName : testClassNames) {
-                        String simpleTestClassName;
-                        try {
-                            Class<?> testClass = Class.forName(testClassName);
-                            simpleTestClassName = testClass.getSimpleName();
-                            try {
-                                String testClassSkeyValue = testClass.getAnnotation(SKey.class).value();
-                                if (testClassSkeyValue.equals(baseClassSkeyValue)) {
-                                    list.add(simpleTestClassName);
-                                }
-                            } catch (NullPointerException e) {
-
-                            }
-                        } catch (ClassNotFoundException e) {
-
-                        }
-                    }
-                } catch (NullPointerException e) {
-
+                Class<?> clazz = Class.forName(className);
+                String value = clazz.getAnnotation(SKey.class).value();
+                String simpleClassName = clazz.getSimpleName();
+                if (StringUtils.isBlank(value)) {
+                    return;
                 }
-
+                if (ret.containsKey(value)) {
+                    ret.get(value).add(simpleClassName);
+                } else {
+                    List<String> l = new ArrayList<>();
+                    l.add(simpleClassName);
+                    ret.put(value, l);
+                }
             } catch (ClassNotFoundException e) {
+            } catch (NullPointerException e) {
+            }
+        };
+        baseClassNames.stream().forEach(consumer);
+        testClassNames.stream().forEach(consumer);
 
-            }
-            if (StringUtils.isNotBlank(baseClassSkeyValue)) {
-                ret.put(baseClassSkeyValue, list);
-            }
-        }
         return ret;
     }
 
