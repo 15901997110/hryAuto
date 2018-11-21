@@ -11,5 +11,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class ZdyProperty {
     @Value("${zdy.debug}")
-    public String debug;
+    private String debug;
+
+    @Value("${zdy.autoCodeDir}")
+    private String autoCodeDir;
+
+    @Value("${zdy.reportPath}")
+    private String reportPath;
+
+    @Value("${zdy.resourcePathPattern}")
+    private String resourcePathPattern;
+
+    public String getDebug() {
+        return debug;
+    }
+
+    public void setDebug(String debug) {
+        this.debug = debug;
+    }
+
+    public String getAutoCodeDir() {
+        return autoCodeDir;
+    }
+
+    public void setAutoCodeDir(String autoCodeDir) {
+        this.autoCodeDir = autoCodeDir;
+    }
+
+    public String getReportPath() {
+        return reportPath;
+    }
+
+    public void setReportPath(String reportPath) {
+        this.reportPath = reportPath;
+    }
+
+    public String getResourcePathPattern() {
+        return resourcePathPattern;
+    }
+
+    public void setResourcePathPattern(String resourcePathPattern) {
+        this.resourcePathPattern = resourcePathPattern;
+    }
 }
