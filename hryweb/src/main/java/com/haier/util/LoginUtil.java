@@ -4,14 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.arronlong.httpclientutil.HttpClientUtil;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
-import com.haier.anno.HryCookie;
+import com.haier.anno.SKey;
 import com.haier.config.SpringContextHolder;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
 import com.haier.testng.base.Base;
-import com.haier.testng.base.XindaiyyBase;
-import com.haier.testng.base.ZhuanleBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.Header;
@@ -38,11 +36,14 @@ public class LoginUtil {
     private static UnionLoginConfig unionLoginConfig = SpringContextHolder.getBean(UnionLoginConfig.class);
 
     public static <T extends Base> void loginInit(T entity) {
-        if (entity instanceof ZhuanleBase) {
+        String sKey = entity.getClass().getAnnotation(SKey.class).value();
+        if ("Zhuanle".equalsIgnoreCase(sKey)) {
             zhuanleLogin(entity, "/sign-in");
+            return;
         }
-        if (entity instanceof XindaiyyBase) {
+        if ("Xindaiyy".equalsIgnoreCase(sKey)) {
             unionLogin(entity, "cbp");
+            return;
         }
     }
 
@@ -191,6 +192,6 @@ public class LoginUtil {
             return;
         }
         //设置登录cookie到测试类中,后续测试类执行测试时将会优先检查cookie
-        entity.cookieStore=cookieStore;
+        entity.cookieStore = cookieStore;
     }
 }
