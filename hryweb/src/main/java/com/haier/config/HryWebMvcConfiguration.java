@@ -1,7 +1,6 @@
 package com.haier.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -14,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class HryWebMvcConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
-    ZdyProperty
+    ZdyProperty zdyProperty;
     /*    @Value("${zdy.reportPath}")
     String reportPath;
 
@@ -26,7 +25,7 @@ public class HryWebMvcConfiguration extends WebMvcConfigurerAdapter {
         /**
          * /test-output/**
          */
-        registry.addResourceHandler(resourcePathPattern + "**").addResourceLocations("file:" + reportPath);
+        registry.addResourceHandler(zdyProperty.getResourcePathPattern() + "**").addResourceLocations("file:" + zdyProperty.getReportPath());
         super.addResourceHandlers(registry);
     }
 
