@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.haier.config.ZdyProperty;
 import com.haier.po.UnionLoginConfig;
 import com.haier.service.GenerateService;
 import com.haier.util.ClassUtil;
@@ -40,5 +41,12 @@ public class TestController {
     @PostMapping("/gen")
     public String gen(Integer caseId) {
         return generateService.generateBase(caseId);
+    }
+
+    @Autowired
+    ZdyProperty zdyProperty;
+    @PostMapping("/zdyProperty")
+    public void ZdyPropretyTest(){
+        System.out.println(zdyProperty.getDebug());
     }
 }

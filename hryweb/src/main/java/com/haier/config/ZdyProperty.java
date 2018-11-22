@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ZdyProperty {
     @Value("${zdy.debug}")
-    private String debug;
+    private Boolean debug;
 
     @Value("${zdy.autoCodeDir}")
     private String autoCodeDir;
@@ -22,11 +22,11 @@ public class ZdyProperty {
     @Value("${zdy.resourcePathPattern}")
     private String resourcePathPattern;
 
-    public String getDebug() {
+    public Boolean getDebug() {
         return debug;
     }
 
-    public void setDebug(String debug) {
+    public void setDebug(Boolean debug) {
         this.debug = debug;
     }
 
