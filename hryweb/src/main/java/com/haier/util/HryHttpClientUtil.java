@@ -125,12 +125,10 @@ public class HryHttpClientUtil {
 
     public static <T extends Base> String send(HryTest test, T entity) {
         if (debugFlag) {
-            log.info("--------------------httpClient  start---------------------");
             log.info(test.getTservice().getServicekey() + "(" + test.getTservice().getId() + ")");
             log.info(test.getTi().getIuri() + "(" + test.getTi().getId() + ")");
             log.info(test.getTcase().getCasename() + "(" + test.getTcase().getId() + ")");
-            log.info("--------------------httpClient  end------------------------");
-            log.info("");
+            log.info("------------------------------------------------------");
             return "";
         }
 
