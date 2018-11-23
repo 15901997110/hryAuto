@@ -117,7 +117,6 @@
             layerIndex: -1,
             beforeSend: function () { //插件加载前
                 this.layerIndex = layer.load(1, {shade: [0.01, '#fff']});
-                //$('#submit').val("正在加载请稍等...")
             },
             complete: function () { //完成加载后执行
                 layer.close(this.layerIndex); //完成加载后关闭loading
@@ -226,12 +225,11 @@
         });*/
 
     });
-
     function pageSkip(index) {
         if (index == 0) {
             return;
         }
-
+        //flag=true;
         //查询条件
         var query_id = $("#query_custom_id").val();
         var query_customName = $("#query_custom_name").val();
@@ -270,7 +268,7 @@
                             "<td>" + custom.strategy + "</td>\n" +
                             "<td> " + custom.username + "</td>" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"custom_run(" + custom.id + ",'" + custom.customname + "')\" class=\"ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
+                            "<a id =\"butRun\" title=\"运行\" href=\"javascript:;\" customId=\""+custom.id+"\" customName=\""+custom.customname+"\" class=\"yunxing ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
                             "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html'," + custom.id + ",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
                             "<a title=\"删除\" href=\"javascript:;\" onclick=\"custom_del(this," + custom.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
@@ -321,15 +319,24 @@
 
     }
 
-    //运行
-    function custom_run(customId, customname) {
-        var userid = $.cookie('uidCookie');
+    // 运行
+    $("#table").on("click",".yunxing",function(){
+        // layer.load(1, {
+        //     shade: [10,'#fff'] //0.1透明度的白色背景
+        // });
+        var $this = $(this);
+        var customId = $this.attr("customId");
+        var customName = $this.attr("customName");
+        var userId = $.cookie('uidCookie');
+        $this.attr("disabled",true);
+        $this.css("pointer-events","none");
         $.ajax({
             type: "post",
             url: "/tcustom/runByTcustomId",
+            async:false,
             data: {
                 customId: customId,
-                executeUserId: userid
+                executeUserId: userId
             },
             dataType: "json",
             success: function (data) {
@@ -337,17 +344,17 @@
                 var msg = data.msg;
                 var url = data.data;
                 if (status == 0) {
-                    url = encodeURI("../report-loading.html?reportname=" + url + "&customname=" + customname);
+                    url = encodeURI("../report-loading.html?reportName=" + url + "&customName=" + customName);
                     window.open(url);
-
                 } else {
-
                     layer.alert(msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 }
-
+                setTimeout(function(){
+                    $this.css("pointer-events","auto");
+                },10000);
             },
             fail: function (data) {
                 layer.close(layerIndex);
@@ -355,6 +362,9 @@
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
+                setTimeout(function(){
+                    $this.css("pointer-events","auto");
+                },10000);
             },
             error: function (xhr) {
                 layer.close(layerIndex);
@@ -362,11 +372,12 @@
                     icon: 2,
                     skin: 'layer-ext-moon'
                 });
+                setTimeout(function(){
+                    $this.css("pointer-events","auto");
+                },10000);
             }
         });
-
-
-    }
+    });
 
     //清空查询条件
     function empty() {
@@ -375,7 +386,6 @@
         $("#query_custom_env").val("");
         $("#query_custom_user").val(null).trigger("change");
     }
-
 </script>
 </body>
 </html>
