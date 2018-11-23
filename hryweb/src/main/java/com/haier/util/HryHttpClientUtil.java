@@ -34,15 +34,11 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class HryHttpClientUtil {
-    private static Boolean DEBUG;
+    private static Boolean debugFlag;
 
     static {
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
-        if (bean.getDebug().equalsIgnoreCase("true")) {
-            DEBUG = true;
-        } else {
-            DEBUG = false;
-        }
+        debugFlag = bean.getDebug();
     }
 
     /**
@@ -128,11 +124,11 @@ public class HryHttpClientUtil {
 
 
     public static <T extends Base> String send(HryTest test, T entity) {
-        if (DEBUG) {
+        if (debugFlag) {
             log.info(test.getTservice().getServicekey() + "(" + test.getTservice().getId() + ")");
             log.info(test.getTi().getIuri() + "(" + test.getTi().getId() + ")");
             log.info(test.getTcase().getCasename() + "(" + test.getTcase().getId() + ")");
-            log.info("--------------------------------------------------------------------------");
+            log.info("------------------------------------------------------");
             return "";
         }
 

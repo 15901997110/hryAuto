@@ -3,6 +3,7 @@ package com.haier.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
+import com.haier.config.ZdyProperty;
 import com.haier.enums.AssertTypeEnum;
 import com.haier.po.HryTest;
 import com.haier.po.Tcase;
@@ -133,6 +134,10 @@ public class AssertUtil {
     }
 
     public static void supperAssert(String actual, HryTest test) {
+        ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
+        if (bean.getDebug()) {
+            return;
+        }
         supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
     }
 

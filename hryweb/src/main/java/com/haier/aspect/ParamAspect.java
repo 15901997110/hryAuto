@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 /**
- * @Description: 使用aop对发送请求的参数进行前置增加
+ * @Description: 使用aop对发送请求的参数进行前置增强
  * @Author: luqiwei
  * @Date: 2018/6/12 20:22
  */
