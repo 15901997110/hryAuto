@@ -34,6 +34,7 @@ public class DBUtil {
         try {
             jsonObject = JSON.parseObject(dbInfo);
         } catch (Exception e) {
+            log.error("解析dbInfo异常", e);
             return null;
         }
         String driver = jsonObject.getString(DBInfoKeyEnum.DRIVER.name().toLowerCase());
@@ -41,11 +42,18 @@ public class DBUtil {
         String username = jsonObject.getString(DBInfoKeyEnum.USERNAME.name().toLowerCase());
         String password = jsonObject.getString(DBInfoKeyEnum.PASSWORD.name().toLowerCase());
         if (StringUtils.isAnyBlank(driver, url, username, password)) {
+            log.error("driver, url, username, password有一个为空");
             return null;
         }
         return getJdbcTemplate(driver, url, username, password);
     }
 
+    /**
+     * 执行sql总入口
+     * @param dbInfo
+     * @param sql
+     * @return
+     */
     public static SqlExecuteResult executeSql(String dbInfo, String sql) {
         JdbcTemplate jdbcTemplate = getJdbcTemplate(dbInfo);
         if (jdbcTemplate == null) {
@@ -54,6 +62,7 @@ public class DBUtil {
             ret.setResult("【数据库连接异常】");
             return ret;
         } else {
+            //根据sql类型进行分发
             if (sql.matches(RegexEnum.SELECT_REGEX.getRegex())) {
                 return query(jdbcTemplate, sql);
             } else if (sql.matches(RegexEnum.INSERT_REGEX.getRegex())) {
