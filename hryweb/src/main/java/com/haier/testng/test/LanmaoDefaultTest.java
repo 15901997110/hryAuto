@@ -15,12 +15,6 @@ public class LanmaoDefaultTest extends Base{
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
-    @Test(testName = "/accountFacade/accountRecharge", dataProvider = "provider", description = "调账充值接口:一键从天天聚迁移至存管余额使用")
-    public void accountFacade_accountRecharge(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/accountFacade/activateStockedUser", dataProvider = "provider", description = "会员激活")
     public void accountFacade_activateStockedUser(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -177,6 +171,12 @@ public class LanmaoDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/queryFacade/queryProtocolSign", dataProvider = "provider", description = "查询用户的协议签约信息")
+    public void queryFacade_queryProtocolSign(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/queryFacade/queryRechargeTransaction", dataProvider = "provider", description = "充值交易查询")
     public void queryFacade_queryRechargeTransaction(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -225,26 +225,20 @@ public class LanmaoDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/rechargeAndWithdrawFacade/cancelWithdraw", dataProvider = "provider", description = "取消提现")
-    public void rechargeAndWithdrawFacade_cancelWithdraw(HryTest test) {
+    @Test(testName = "/rechargeAndWithdrawFacade/confirmProtocolSign", dataProvider = "provider", description = "协议支付签约确认")
+    public void rechargeAndWithdrawFacade_confirmProtocolSign(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/rechargeAndWithdrawFacade/confirmWithdraw", dataProvider = "provider", description = "提现确认")
-    public void rechargeAndWithdrawFacade_confirmWithdraw(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/rechargeAndWithdrawFacade/directRecharge", dataProvider = "provider", description = "自动充值")
+    @Test(testName = "/rechargeAndWithdrawFacade/directRecharge", dataProvider = "provider", description = "绑定卡还款")
     public void rechargeAndWithdrawFacade_directRecharge(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/rechargeAndWithdrawFacade/interceptWithdraw", dataProvider = "provider", description = "提现拦截")
-    public void rechargeAndWithdrawFacade_interceptWithdraw(HryTest test) {
+    @Test(testName = "/rechargeAndWithdrawFacade/protocolSign", dataProvider = "provider", description = "协议支付签约(该接口只支持个人身份证用户)")
+    public void rechargeAndWithdrawFacade_protocolSign(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -305,12 +299,6 @@ public class LanmaoDefaultTest extends Base{
 
     @Test(testName = "/tradeFacade/debentureSale", dataProvider = "provider", description = "单笔债权出让")
     public void tradeFacade_debentureSale(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/tradeFacade/establishProject", dataProvider = "provider", description = "创建标的")
-    public void tradeFacade_establishProject(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

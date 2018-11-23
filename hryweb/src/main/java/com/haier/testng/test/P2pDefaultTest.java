@@ -471,20 +471,8 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/huijinPlanFacade/applyDebtSale", dataProvider = "provider", description = "申请单笔债权出让")
-    public void huijinPlanFacade_applyDebtSale(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/huijinPlanFacade/changeDebtType", dataProvider = "provider", description = "改变债权类型，用于债权转让")
     public void huijinPlanFacade_changeDebtType(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/huijinPlanFacade/freezeAndApplyDebtSale", dataProvider = "provider", description = "冻结债权并且申请单笔债权出让")
-    public void huijinPlanFacade_freezeAndApplyDebtSale(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -507,32 +495,8 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/huijinPlanFacade/getTradingRepayment", dataProvider = "provider", description = "获取债权转让后P2P还款详细信息")
-    public void huijinPlanFacade_getTradingRepayment(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/huijinPlanFacade/lockDebt", dataProvider = "provider", description = "锁定/解锁债权")
     public void huijinPlanFacade_lockDebt(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/huijinPlanFacade/loseDebt", dataProvider = "provider", description = "债权丧权")
-    public void huijinPlanFacade_loseDebt(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/huijinPlanFacade/transferDebt", dataProvider = "provider", description = "债权转让接口")
-    public void huijinPlanFacade_transferDebt(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/huijinPlanFacade/unfreezeAndCancelDebtSale", dataProvider = "provider", description = "解冻债权并且取消单笔债权出让")
-    public void huijinPlanFacade_unfreezeAndCancelDebtSale(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
