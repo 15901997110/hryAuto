@@ -7,8 +7,8 @@ server:
   port: 8885
 logging:
   file: /opt/logs/hryAuto/hryAuto.log
-  level:
-    com.haier.mapper.*: debug
+#  level:
+#    com.haier.mapper.*: debug
 spring:
   application:
     name: hryweb
