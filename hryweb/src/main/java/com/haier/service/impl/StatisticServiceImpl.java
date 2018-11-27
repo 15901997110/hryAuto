@@ -1,6 +1,7 @@
 package com.haier.service.impl;
 
 import com.haier.mapper.StatisticMapper;
+import com.haier.po.AutoRateStatistic;
 import com.haier.po.RealtimeStatistic;
 import com.haier.po.Tservice;
 import com.haier.service.StatisticService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -31,7 +33,7 @@ public class StatisticServiceImpl implements StatisticService {
      *
      * @return
      */
-    @Override
+/*    @Override
     public List<RealtimeStatistic> statisticCurrentOld() {
         List<RealtimeStatistic> list = new ArrayList<>();
 
@@ -70,7 +72,7 @@ public class StatisticServiceImpl implements StatisticService {
             list.add(realtimeStatistic);
         }
         return list;
-    }
+    }*/
 
     @Override
     public List<RealtimeStatistic> statisticCurrent() {
@@ -126,6 +128,31 @@ public class StatisticServiceImpl implements StatisticService {
             rs.setCFineness(cFineness);
 
             ret.add(rs);
+        }
+        return ret;
+    }
+
+    @Override
+    public List<AutoRateStatistic> statisticCustomRate() {
+        List<AutoRateStatistic> ret = new ArrayList<>();
+        List<Tservice> tservices = tserviceService.selectByCondition(null);
+        List<Map<String, Integer>> countTi = statisticMapper.statisticCountTi();
+        List<Map<String, Integer>> countCustomDetail = statisticMapper.statisticCountCustomdetailDistinctClientID();
+        Map<Integer, Integer> s_countTi = countTi.stream().collect(Collectors.toMap(map -> map.get("serviceid"), map -> map.get("count")));
+        Map<Integer, Integer> s_countCustomDetail = countCustomDetail.stream().collect(Collectors.toMap(a -> a.get("serviceid"), a -> a.get("count")));
+
+        for (Tservice s : tservices) {
+            Integer cTi = s_countTi.get(s.getId());
+            if (cTi.equals(0)) {
+                continue;
+            }
+            AutoRateStatistic auto = new AutoRateStatistic();
+            auto.setServiceKey(s.getServicekey());
+            auto.setServiceName(s.getServicename());
+            auto.setITotal(cTi);
+            auto.setCustomTotal(s_countCustomDetail.get(s.getId()) == null ? 0 : s_countCustomDetail.get(s.getId()));
+            auto.setRate(String.format("%.4f", auto.getCustomTotal().doubleValue() / auto.getITotal()));
+            ret.add(auto);
         }
         return ret;
     }

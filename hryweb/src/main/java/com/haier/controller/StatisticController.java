@@ -1,5 +1,6 @@
 package com.haier.controller;
 
+import com.haier.po.AutoRateStatistic;
 import com.haier.po.RealtimeStatistic;
 import com.haier.response.Result;
 import com.haier.service.StatisticService;
@@ -22,18 +23,36 @@ public class StatisticController {
     @Autowired
     StatisticService statisticService;
 
+    /*
+     */
+
     /**
      * 实时统计
      *
      * @return
-     */
+     *//*
+
     @GetMapping("/realtimeOld")
     public Result<List<RealtimeStatistic>> realtimeStatisticsOld() {
         return ResultUtil.success(statisticService.statisticCurrentOld());
     }
+*/
 
+    /**
+     * 实时统计
+     * @return
+     */
     @GetMapping("/realtime")
     public Result<List<RealtimeStatistic>> realtimeStatistics() {
         return ResultUtil.success(statisticService.statisticCurrent());
+    }
+
+    /**
+     * 自动化覆盖率统计
+     * @return
+     */
+    @GetMapping("/autoRate")
+    public Result<List<AutoRateStatistic>> autoRate() {
+        return ResultUtil.success(statisticService.statisticCustomRate());
     }
 }
