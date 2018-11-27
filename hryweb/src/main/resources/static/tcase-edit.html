@@ -166,9 +166,11 @@
 
     var iId;
     var cId;
+    var skip;
     //页面加载处理
     $(document).ready(function () {
         cId = getParameter('id');
+        skip = getParameter('skip');
         $("#id").val(cId);
         var assertTypeList = getAssertType();
         var envList = getTenvList();
@@ -370,7 +372,9 @@
 
                     if (status == 0) {
                         //parent.window.location.reload();
-                        window.parent.pageSkip(1);
+                        if (skip != '1') {
+                            window.parent.pageSkip(1);
+                        }
                         var index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else {
