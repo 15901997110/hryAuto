@@ -253,7 +253,8 @@
                         "<dt>\n" +
                         "<input type='text' id='pc_" + tcase.id + "' value='0' style='height:16px'/>" +
                         "<label style='font-size:12px;'>" +
-                        "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\"" + tcase.id + "\" name=\"tcase-" + serviceId + "-" + row.id + "\" id=\"caseBox-" + tcase.id + "\" onclick='caseChecked(this," + row.id + "," + serviceId + ")'>" + tcase.casename + "(" + tcase.id + ")</label>\n" +
+                        "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\"" + tcase.id + "\" name=\"tcase-" + serviceId + "-" + row.id + "\" id=\"caseBox-" + tcase.id + "\" onclick='caseChecked(this," + row.id + "," + serviceId + ")'>"
+                        + tcase.casename + "("+"<a title=\"用例编辑\" href=\"javascript:void(0);\" onclick=\"tcase_edit('用例编辑','tcase-edit.html','" + row.id + "','1')\" style=\"text-decoration: underline;color:#0000ff;\" >" + tcase.id + "</a>" + "-" + tcase.author +")</label>\n" +
                         "</dt>\n" +
                         "</dl>\n" +
                         "</dd>";
@@ -360,6 +361,12 @@
         if (obj.checked == false) {
             $("#service-" + serviceId + " :checkbox").prop("checked", false);
         }
+    }
+
+    /*用例-编辑*/
+    function tcase_edit(title, url, id,skip) {
+        url = url + "?id=" + id+"&skip="+skip;
+        layer_show(title, url);
     }
 
 
