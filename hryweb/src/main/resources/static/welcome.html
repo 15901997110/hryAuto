@@ -21,20 +21,31 @@
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
     <title>柱状图统计</title>
+    <style>
+        .page-container>div {
+            min-width: 700px;
+            height: 400px;
+            margin-top: 3%
+        }
+    </style>
 </head>
 <body>
 <nav class="breadcrumb"> 报表统计<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-                           href="javascript:location.replace(location.href);" title="刷新"><i
+                                href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div id="container1" style="min-width:700px;height:400px;margin-top: 3%"></div>
+    <div id="container1"></div>
 </div>
 <div class="page-container">
-    <div id="container2" style="min-width:700px;height:400px;margin-top: 3%"></div>
+    <div id="container2"></div>
 </div>
+<!--<div class="page-container">
+    <div id="container3"></div>
+</div>-->
 <div class="page-container">
-    <div id="container3" style="min-width:700px;height:400px;margin-top: 3%"></div>
+    <div id="container4"></div>
 </div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -84,7 +95,8 @@
                     options3.series[0].data = cfinenessArr;
                     $('#container1').highcharts(options1);
                     $('#container2').highcharts(options2);
-                    $('#container3').highcharts(options3);
+                   //用例粒度报表暂时不用
+                    /* $('#container3').highcharts(options3);*/
 
                 } else {
                     layer.alert(JSON.stringify(data.msg), {
@@ -106,6 +118,7 @@
                 })
             }
         });
+
         var options1 = {
             chart: {
                 type: 'column'
@@ -184,7 +197,6 @@
             }
             ]
         }
-
         var options3 = {
             chart: {
                 type: 'column'
@@ -219,6 +231,82 @@
                 name: '用例粒度'
             }]
         }
+        var options4 = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '自动化率(接口定制数/总接口数)'
+            },
+            xAxis: {
+                categories: []
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '百分比'
+                },
+                labels: {
+                    format: '{value} %'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: '自动化率'
+            }
+            ]
+        }
+
+        $.ajax({
+                type: "get",
+                url: "/statistic/autoRate",
+                dataType: "json",
+                success: function (data) {
+                    var status = data.status;
+                    if (status == 0) {
+                        var list = data.data;
+                        var autoRate = [];
+                        for (var i in list) {
+                            options4.xAxis.categories.push(list[i].serviceKey);
+                            autoRate.push(parseFloat(list[i].rate) * 100)
+                        }
+                        options4.series[0].data = autoRate;
+                        $('#container4').highcharts(options4);
+                    } else {
+                        layer.alert(JSON.stringify(data.msg), {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+                },
+                fail: function (data) {
+                    layer.alert(JSON.stringify(data), {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+                error: function (xhr) {
+                    layer.alert('Error' + JSON.stringify(xhr), {
+                        icon: 2,
+                        skin: 'layer-ext-moon'
+                    })
+                }
+            }
+        );
+
     });
 </script>
 </body>

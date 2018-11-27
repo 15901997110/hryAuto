@@ -5,21 +5,21 @@
         <result column="serviceid" jdbcType="INTEGER" property="serviceid" javaType="Integer"/>
         <result column="count" jdbcType="INTEGER" property="count" javaType="Integer"/>
     </resultMap>
-    <select id="statisticTiByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(i.id)
-        FROM ti i
-        WHERE i.serviceId = #{serviceId} AND i.iStatus > 0
-    </select>
-    <select id="statisticTcaseByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(c.id)
-        FROM tcase c
-        WHERE c.serviceId = #{serviceId} AND c.status > 0;
-    </select>
-    <select id="statisticTcaseDistinctIidByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(DISTINCT (c.iId))
-        FROM tcase c
-        WHERE c.serviceId = #{serviceId} AND c.status > 0;
-    </select>
+    <!--    <select id="statisticTiByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+            SELECT COUNT(i.id)
+            FROM ti i
+            WHERE i.serviceId = #{serviceId} AND i.iStatus > 0
+        </select>
+        <select id="statisticTcaseByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+            SELECT COUNT(c.id)
+            FROM tcase c
+            WHERE c.serviceId = #{serviceId} AND c.status > 0;
+        </select>
+        <select id="statisticTcaseDistinctIidByServiceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+            SELECT COUNT(DISTINCT (c.iId))
+            FROM tcase c
+            WHERE c.serviceId = #{serviceId} AND c.status > 0;
+        </select>-->
 
     <select id="statisticCountTi" resultMap="BaseResultMap">
         SELECT
@@ -46,5 +46,13 @@
         WHERE c.`status` > 0
         GROUP BY c.`serviceId`;
 
+    </select>
+    <select id="statisticCountCustomdetailDistinctClientID" resultMap="BaseResultMap">
+        SELECT
+            d.`parentClientId`             `serviceid`,
+            COUNT(DISTINCT (d.`clientId`)) `count`
+        FROM tcustomdetail d
+        WHERE d.`clientLevel` = 2 AND d.`status` > 0
+        GROUP BY d.`parentClientId`
     </select>
 </mapper>
