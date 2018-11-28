@@ -36,12 +36,17 @@ public class ReplaceUtil {
         tempService = SpringContextHolder.getBean(TempService.class);
     }
 
+    private static void rLog(String regex, String replacement) {
+        log.info("匹配项: " + regex + " 替换成: " + replacement);
+    }
+
     /**
      * 自动将参数中符合BeforeRegexEnum匹配规则的字符串替换
      */
     public static <T extends Base> String replaceBefore(String base, String dbinfo, T entity) {
         if (StringUtils.isNotBlank(base)) {
             Reporter.log("用例设计参数:" + base.replaceAll("<", "＜").replaceAll(">", "＞"));
+            log.info("用例设计参数:", base);
             base = base.replaceAll("\\n", " ");//所有的换行替换成空格
             while (isNeedReplace(base)) {
                 base = replaceAll(base, dbinfo, entity, null, null);
@@ -49,6 +54,7 @@ public class ReplaceUtil {
             return base;
         } else {
             Reporter.log("用例设计参数:null");
+            log.info("用例设计参数:null");
             return base;
         }
     }
@@ -203,6 +209,7 @@ public class ReplaceUtil {
             }
             //替换原字符串中
             base = matcher.replaceFirst(date);
+            rLog(re, date);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -212,7 +219,9 @@ public class ReplaceUtil {
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.LONGDATE.getPattern());
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
-            base = matcher.replaceFirst(System.currentTimeMillis() + "");
+            long currentTimeMillis = System.currentTimeMillis();
+            base = matcher.replaceFirst(currentTimeMillis + "");
+            rLog(matcher.group(), currentTimeMillis + "");
             matcher.reset(base);
         }
         return base;
@@ -242,6 +251,7 @@ public class ReplaceUtil {
             }
             //替换原字符串中的<<<date:xxx>>>
             base = matcher.replaceFirst(date);
+            rLog(re, date);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -271,6 +281,7 @@ public class ReplaceUtil {
             }
             //替换原字符串
             base = matcher.replaceFirst(date);
+            rLog(re, date);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -298,6 +309,7 @@ public class ReplaceUtil {
                 uuid = uuid.substring(0, cutLength);
             }
             base = matcher.replaceFirst(uuid);
+            rLog(uuidRegex, uuid);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -315,11 +327,14 @@ public class ReplaceUtil {
             String sourceIndex = sourceRegex.substring(sourceRegex.indexOf("$") + 1, sourceRegex.indexOf("("));
             String sourceValue = sourceRegex.substring(sourceRegex.indexOf("(") + 1, sourceRegex.lastIndexOf(")"));
             base = matcher.replaceFirst(sourceValue);
+            //然后处理<ref(1)>
             Pattern refPattern = Pattern.compile("<ref\\(" + sourceIndex + "\\)>");
             Matcher refMatcher = refPattern.matcher(base);
             if (refMatcher.find()) {
                 base = refMatcher.replaceAll(sourceValue);
+                rLog("<ref\\(" + sourceIndex + "\\)>", sourceValue);
             }
+            rLog(sourceRegex, sourceValue);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -334,17 +349,22 @@ public class ReplaceUtil {
         while (matcher.find()) {
             String re = matcher.group();
             String params = re.substring(re.indexOf("(") + 1, re.lastIndexOf(")")).replaceAll("\\s", "");
+            String replacement;
             if (params.contains(",")) {
                 try {
                     int start = Integer.parseInt(params.substring(0, params.indexOf(",")));
                     int end = Integer.parseInt(params.substring(params.indexOf(",") + 1));
-                    base = matcher.replaceFirst(RandomUtils.nextInt(start, end) + "");
+                    replacement = RandomUtils.nextInt(start, end) + "";
+                    base = matcher.replaceFirst(replacement);
                 } catch (RuntimeException e) {
-                    base = matcher.replaceFirst(RandomUtils.nextInt(0, 100) + "");
+                    replacement = RandomUtils.nextInt(0, 100) + "";
+                    base = matcher.replaceFirst(replacement);
                 }
             } else {
-                base = matcher.replaceFirst(RandomUtils.nextInt(0, 100) + "");
+                replacement = RandomUtils.nextInt(0, 100) + "";
+                base = matcher.replaceFirst(replacement);
             }
+            rLog(re, replacement);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -376,6 +396,7 @@ public class ReplaceUtil {
             }
             String replacedStr = String.format("%." + pointLong + "f", f);//%.3f  %.:表示小数点前任意数,3:3位小数,f:浮点数
             base = matcher.replaceFirst(replacedStr);
+            rLog(re, replacedStr);
             matcher.reset(base);//重置匹配器
         }
         return base;
@@ -412,32 +433,38 @@ public class ReplaceUtil {
                         for (Map.Entry<String, Object> entry : result.entrySet()) {
                             //将当前匹配到的sql替换
                             base = matcher.replaceFirst(entry.getValue() + "");
+                            rLog(matcher.group(), entry.getValue() + "");
                             //将所有$(key)替换成value
                             Pattern p = Pattern.compile("(?i)\\$\\(" + entry.getKey() + "\\)");
                             Matcher m = p.matcher(base);
                             if (m.find()) {
                                 base = m.replaceAll(entry.getValue() + "");
+                                rLog(m.group(), entry.getValue() + "");
                             }
                         }
                     } else {
                         //查询结果有多个字段
                         //首先将匹配项替换成 【查询sql执行成功(多字段)】
                         base = matcher.replaceFirst("【查询sql执行成功(多字段)】");
+                        rLog(matcher.group(), "【查询sql执行成功(多字段)】");
                         //然后将所有所有$(key)替换成value
                         for (Map.Entry<String, Object> entry : result.entrySet()) {
                             Pattern p = Pattern.compile("(?i)\\$\\(" + entry.getKey() + "\\)");
                             Matcher m = p.matcher(base);
                             if (m.find()) {
                                 base = m.replaceAll(entry.getValue() + "");
+                                rLog(m.group(), entry.getValue() + "");
                                 m.reset(base);
                             }
                         }
                     }
                 } else {//sql执行失败
                     base = matcher.replaceFirst(sqlExecuteResult.getResult() + "");
+                    rLog(matcher.group(), sqlExecuteResult.getResult() + "");
                 }
             } else {//非查询
                 base = matcher.replaceFirst(sqlExecuteResult.getResult() + "");
+                rLog(matcher.group(), sqlExecuteResult.getResult() + "");
             }
             matcher.reset(base);
         }
@@ -474,6 +501,7 @@ public class ReplaceUtil {
             tempService.insertOne(temp);
 
             base = matcher.replaceFirst(value);
+            rLog(group, value + ", 并且将此值已经存入临时表");
             matcher.reset(base);
         }
         return base;
@@ -499,6 +527,7 @@ public class ReplaceUtil {
             tempService.insertOne(temp);
 
             base = matcher.replaceFirst("");
+            rLog(group, "空" + "value=" + value + "已经存入临时表");
             matcher.reset(base);
         }
         return base;
@@ -512,6 +541,7 @@ public class ReplaceUtil {
             String key = group.substring(group.indexOf("(") + 1, group.indexOf(")"));
             String tempValue = tempService.getTempValue(entity.testingId, key);
             base = matcher.replaceFirst(tempValue);
+            rLog(group, tempValue);
             matcher.reset(base);
         }
         return base;

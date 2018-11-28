@@ -101,9 +101,9 @@ public class HryHttpClientUtil {
         }
 
         //打印日志
-        log.info("--------------------start----------------------------------------");
+
         Reporter.log("实际请求参数:" + param);
-        log.info("请求参数:" + param);
+        log.info("实际请求参数:" + param);
         log.info("请求Url:" + config.url());
         Reporter.log("请求Url:" + config.url());
         log.info("请求方式:" + config.method().getName());
@@ -118,7 +118,7 @@ public class HryHttpClientUtil {
             }
         }
         log.info("响应实体:" + responseEntity);
-        log.info("---------------------end-----------------------------------------");
+
         return responseEntity;
     }
 
@@ -131,10 +131,9 @@ public class HryHttpClientUtil {
             log.info("------------------------------------------------------");
             return "";
         }
-
+        log.info("");
+        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "开始------------------");
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
-
-
         Map<String, String> requestHeaderMap = null;
         String headerStr = test.getTcase().getRequestheader();
         if (StringUtils.isNotBlank(headerStr)) {
@@ -178,8 +177,10 @@ public class HryHttpClientUtil {
         }
 
         //参数替换
+        log.info("--------前置处理Start-----------");
         String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
-
+        log.info("--------前置处理End-------------");
+        log.info("--------httpClientStart--------");
         String responseBody = send(
                 url,
                 test.getTi().getIrequestmethod(),
@@ -189,8 +190,13 @@ public class HryHttpClientUtil {
                 requestHeaders,
                 entityCookieStore
         );
+        log.info("--------httpClientEnd----------");
+        log.info("--------后置处理Start-----------");
         ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
+        log.info("--------后置处理End-------------");
+        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "结束------------------");
         return responseBody;
+
     }
 
     public static <T> String send(String url, Integer requestMethod, T param) throws HttpProcessException {
