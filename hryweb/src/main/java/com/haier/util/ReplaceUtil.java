@@ -219,9 +219,10 @@ public class ReplaceUtil {
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.LONGDATE.getPattern());
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
+            String re = matcher.group();
             long currentTimeMillis = System.currentTimeMillis();
             base = matcher.replaceFirst(currentTimeMillis + "");
-            rLog(matcher.group(), currentTimeMillis + "");
+            rLog(re, currentTimeMillis + "");
             matcher.reset(base);
         }
         return base;
@@ -332,7 +333,7 @@ public class ReplaceUtil {
             Matcher refMatcher = refPattern.matcher(base);
             if (refMatcher.find()) {
                 base = refMatcher.replaceAll(sourceValue);
-                rLog("<ref\\(" + sourceIndex + "\\)>", sourceValue);
+                rLog("<ref(" + sourceIndex + ")>", sourceValue);
             }
             rLog(sourceRegex, sourceValue);
             matcher.reset(base);//重置匹配器
@@ -439,7 +440,7 @@ public class ReplaceUtil {
                             Matcher m = p.matcher(base);
                             if (m.find()) {
                                 base = m.replaceAll(entry.getValue() + "");
-                                rLog(m.group(), entry.getValue() + "");
+                                rLog("$(" + entry.getKey() + ")", entry.getValue() + "");
                             }
                         }
                     } else {
@@ -453,7 +454,7 @@ public class ReplaceUtil {
                             Matcher m = p.matcher(base);
                             if (m.find()) {
                                 base = m.replaceAll(entry.getValue() + "");
-                                rLog(m.group(), entry.getValue() + "");
+                                rLog("$(" + entry.getKey() + ")", entry.getValue() + "");
                                 m.reset(base);
                             }
                         }
