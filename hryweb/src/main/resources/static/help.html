@@ -160,7 +160,7 @@
 
         </td>
         <td>&lt;randomF()&gt;:不填写任何参数,将从[0.01,1.00)中随机一个浮点数,结果:0.23
-            <br>&lt;randomI(2.00,5.00)&gt;:将从[2.00,5.00)区间中随机一个浮点数,浮点数的精度与min参数保持一致,此例中将保留两位小数,结果:3.16
+            <br>&lt;randomF(2.00,5.00)&gt;:将从[2.00,5.00)区间中随机一个浮点数,浮点数的精度与min参数保持一致,此例中将保留两位小数,结果:3.16
         </td>
     </tr>
     <tr class="text-1">
@@ -174,7 +174,7 @@
     </tr>
     <tr class="text-1">
         <td>(?i)&lt;sql([^<>]*)&gt;</td>
-        <td> &lt;sql(dmlSql)&gt;执行sql语句,<span>无论何时,必须确保执行结果返回仅一行(rows=1)</span><br/>
+        <td> &lt;sql(dmlSql)&gt;执行sql语句,<span>无论何时,必须确保执行结果返回有且仅有一行(rows=1)</span><br/>
             当返回结果仅一列时(columns=1时),直接使用此列值替换&lt;sql(dmlSql)&gt;表达式,当返回结果为多列时(columns>1),将使用各列的值替换当前列的引用项
             <br><i>参数:dmlSql-必填,dmlSql中不可包含&lt;或&gt;</i>
         </td>
