@@ -93,12 +93,6 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/alterNativeRechargeFacade/generateBatchProduct", dataProvider = "provider", description = "批量发标")
-    public void alterNativeRechargeFacade_generateBatchProduct(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/alterNativeRechargeFacade/generateProduct", dataProvider = "provider", description = "发标接口")
     public void alterNativeRechargeFacade_generateProduct(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -675,12 +669,6 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/loanFacade/loanNotify", dataProvider = "provider", description = "异步通知，仅供测试")
-    public void loanFacade_loanNotify(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/loanFacade/queryLoanBid", dataProvider = "provider", description = "查询待放款标的信息")
     public void loanFacade_queryLoanBid(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -803,12 +791,6 @@ public class P2pDefaultTest extends Base{
 
     @Test(testName = "/offlinePlanFacade/queryOfflinePlan", dataProvider = "provider", description = "分页查询计划")
     public void offlinePlanFacade_queryOfflinePlan(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/offlinePlanFacade/resetOfflineOrderStatus", dataProvider = "provider", description = "【傲融】认购计划重新发起扣款")
-    public void offlinePlanFacade_resetOfflineOrderStatus(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -1263,20 +1245,8 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/repaymentFacade/reserveRepayment", dataProvider = "provider", description = "预约还款")
-    public void repaymentFacade_reserveRepayment(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/riskLevelFacade/listRiskLevelInfo", dataProvider = "provider", description = "风险等级信息")
     public void riskLevelFacade_listRiskLevelInfo(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/stockPrepaymentApplyFacade/applyStockPrepayment", dataProvider = "provider", description = "存量数据申请提前还款")
-    public void stockPrepaymentApplyFacade_applyStockPrepayment(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -1307,12 +1277,6 @@ public class P2pDefaultTest extends Base{
 
     @Test(testName = "/tenderFacade/addBidLabel", dataProvider = "provider", description = "新增标的的标签")
     public void tenderFacade_addBidLabel(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/tenderFacade/addCarBidDetail", dataProvider = "provider", description = "保存车抵押表抵押物信息")
-    public void tenderFacade_addCarBidDetail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -1379,12 +1343,6 @@ public class P2pDefaultTest extends Base{
 
     @Test(testName = "/tenderFacade/getBidExtraInfo", dataProvider = "provider", description = "查询标的附加信息")
     public void tenderFacade_getBidExtraInfo(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/tenderFacade/getCbpLoanInfoByLoanId", dataProvider = "provider", description = "查询信贷信息")
-    public void tenderFacade_getCbpLoanInfoByLoanId(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

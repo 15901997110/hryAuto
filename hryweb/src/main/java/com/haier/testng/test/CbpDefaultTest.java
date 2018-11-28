@@ -27,6 +27,12 @@ public class CbpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/queryCfBuyBack", dataProvider = "provider", description = "提前回购查询")
+    public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_queryCfBuyBack(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/queryCfPrepay", dataProvider = "provider", description = "2.3.1-P0010提前还款资金查询")
     public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_queryCfPrepay(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

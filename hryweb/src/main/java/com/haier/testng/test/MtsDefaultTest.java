@@ -219,18 +219,6 @@ public class MtsDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/wechatPublicAccountFacade/addWechatMessageTemplate", dataProvider = "provider", description = "新增微信公众号消息模版,系统内部使用的模版")
-    public void wechatPublicAccountFacade_addWechatMessageTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/deleteWechatMessageTemplate", dataProvider = "provider", description = "删除微信公众号消息模版,系统内部使用的模版")
-    public void wechatPublicAccountFacade_deleteWechatMessageTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/wechatPublicAccountFacade/fetchWechatMessageTemplate", dataProvider = "provider", description = "查询微信公众号中配置的消息模版列表")
     public void wechatPublicAccountFacade_fetchWechatMessageTemplate(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
