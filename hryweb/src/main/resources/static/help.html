@@ -34,10 +34,11 @@
             color: #f72e2b;
             font-weight: bold;
         }
-        table img{
-            padding:2px;
+
+        table img {
+            padding: 2px;
             margin: 1px;
-            background-color:#0a6999;
+            background-color: #0a6999;
         }
     </style>
 </head>
@@ -224,7 +225,7 @@
         </td>
         <td>
             &lt;put(title,我是一个标题)&gt; : 将(title=我是一个标题)存入临时表中<br/>
-            &lt;put(title,$title)&gt; : 首先根据$title去返回结果中找值,然后存入临时表中<br/>
+            &lt;put(title,$title)&gt; : 首先根据$title去返回结果中找值(找到第一个title不为null的值),然后存入临时表中<br/>
             &lt;put(title,${resultList[0{id)&gt;:首先根据${resultList[0{id)去返回结果中找值,然后存入临时表中
         </td>
     </tr>
