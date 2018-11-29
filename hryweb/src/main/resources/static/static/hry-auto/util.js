@@ -744,6 +744,41 @@ function getUserList() {
     return dev;
 }
 
+function getCustomUsers() {
+    var ret = null;
+    $.ajax({
+        type: "post",
+        url: "/user/selectCustomUsers",
+        dataType: "json",
+        success: function (response) {
+            if (response.status == 0) {
+                ret = response.data;
+            } else {
+                layer.close(layerIndex);
+                layer.alert(response.msg, {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                })
+            }
+        },
+        fail: function (data) {
+            layer.close(layerIndex);
+            layer.alert(JSON.stringify(data), {
+                icon: 0,
+                skin: 'layer-ext-moon'
+            });
+        },
+        error: function (xhr) {
+            layer.close(layerIndex);
+            layer.alert('Error' + JSON.stringify(xhr), {
+                icon: 2,
+                skin: 'layer-ext-moon'
+            })
+        }
+    });
+    return ret;
+}
+
 /**
  * 获取case设计人员列表
  */
@@ -972,7 +1007,7 @@ function service_selectEle_init(html_serviceId) {
  * @param html_userId-必填,用户下拉框元素id
  */
 function user_selectEle_init(html_userId) {
-    var users = getUserList();
+    var users = getCustomUsers();
     var user_select_options = null;
     for (var i = 0; i < users.length; i++) {
         user_select_options += "<option value='" + users[i].id + "'>" + users[i].realname + "</option>";
