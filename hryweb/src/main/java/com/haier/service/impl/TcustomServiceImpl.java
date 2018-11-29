@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.PackageEnum;
 import com.haier.enums.SortEnum;
+import com.haier.mapper.TcustomCustomMapper;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
 import com.haier.service.*;
@@ -40,6 +41,8 @@ public class TcustomServiceImpl implements TcustomService {
     @Autowired
     TcustomMapper tcustomMapper;
 
+    @Autowired
+    TcustomCustomMapper tcustomCustomMapper;
     @Autowired
     TserviceService tserviceService;
 
@@ -264,6 +267,12 @@ public class TcustomServiceImpl implements TcustomService {
 
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
         return treport.getReportname();
+    }
+
+
+    @Override
+    public List<String> selectCustomUsers() {
+        return tcustomCustomMapper.selectCustomUsers();
     }
 
     public XmlSuite collectSuite(CustomVO vo) {

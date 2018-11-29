@@ -42,5 +42,5 @@ public interface TcustomService {
 
     String run(Integer customId, Integer executeUserId);
 
-
+    List<String> selectCustomUsers();
 }
