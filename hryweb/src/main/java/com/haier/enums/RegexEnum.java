@@ -26,14 +26,13 @@ public enum RegexEnum {
 
     NOTBLANK("[^\\s]*", "非空校验,校验不包含非空字符"),
 
-    SIMPLE_JSONKEY("^\\$(\\w+)","$后面紧跟json key,如:$title"),
+    SIMPLE_JSONKEY("^\\$(\\w+)", "$后面紧跟json key,如:$title"),
 
-    HARD_JSONKEY("^\\$(\\{\\w+|\\[\\d+)+","根据JSON路径获取相应的值,如:${aaa[0{title   ,  ${aaa{bbb 等"),
+    HARD_JSONKEY("^\\$(\\{\\w+|\\[\\d+)+", "根据JSON路径获取相应的值,如:${aaa[0{title   ,  ${aaa{bbb 等"),
 
-    META_PATH("(\\{\\w+)|(\\[\\d+)","JSON中的元路径,{xxx或者[xxx"),
-    ;
+    META_PATH("(\\{\\w+)|(\\[\\d+)", "JSON中的元路径,{xxx或者[xxx"),
 
-
+    VIRTUAL_INTERFACE("(?i)^\\/virtual\\/\\w+$", "虚拟接口,/virtual/xxx");
 
 
     private String regex;

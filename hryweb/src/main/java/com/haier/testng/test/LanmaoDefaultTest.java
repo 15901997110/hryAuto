@@ -243,12 +243,6 @@ public class LanmaoDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/tradeFacade/cancelUserAuthorization", dataProvider = "provider", description = "取消用户授权")
-    public void tradeFacade_cancelUserAuthorization(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/tradeFacade/freezePreTransaction", dataProvider = "provider", description = "冻结预处理")
     public void tradeFacade_freezePreTransaction(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

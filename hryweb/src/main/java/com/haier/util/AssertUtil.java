@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.haier.config.SpringContextHolder;
 import com.haier.config.ZdyProperty;
 import com.haier.enums.AssertTypeEnum;
+import com.haier.enums.RegexEnum;
 import com.haier.po.HryTest;
 import com.haier.po.Tcase;
 import com.haier.po.Ti;
@@ -136,6 +137,11 @@ public class AssertUtil {
     public static void supperAssert(String actual, HryTest test) {
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
         if (bean.getDebug()) {
+            Reporter.log("debug模式时直接断言通过!");
+            return;
+        }
+        if (test.getTi().getIuri().matches(RegexEnum.VIRTUAL_INTERFACE.getRegex())) {
+            Reporter.log("虚拟接口直接断言通过!");
             return;
         }
         supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());

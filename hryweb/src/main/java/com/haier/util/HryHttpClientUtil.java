@@ -131,29 +131,68 @@ public class HryHttpClientUtil {
             log.info("------------------------------------------------------");
             return "";
         }
+
+        //是否虚拟接口标记,如果为虚拟接口,将只执行
+        Boolean virtualInterfaceFlag = false;
+        if (test.getTi().getIuri().matches(RegexEnum.VIRTUAL_INTERFACE.getRegex())) {
+            virtualInterfaceFlag = true;
+        }
+
+        /**
+         * 接口测试开始
+         */
         log.info("");
         log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "开始------------------");
+
+
+        /**
+         * 前置处理
+         */
+        log.info("--------前置处理Start-----------");
+        String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
+        log.info("--------前置处理End-------------");
+        log.info("--------httpClientStart--------");
+        //如果是虚拟接口,则只进行前置处理,不会发送http请求和后置处理
+        if (virtualInterfaceFlag) {
+            Reporter.log("实际请求参数:" + param);
+            return "虚拟接口前置处理成功";
+        }
+
+        /**
+         * 发送http请求
+         */
         String url = HttpTypeEnum.getValue(test.getTservice().getHttptype()) + "://" + test.getTservicedetail().getHostinfo() + test.getTi().getIuri();
-        Map<String, String> requestHeaderMap = null;
-        String headerStr = test.getTcase().getRequestheader();
-        if (StringUtils.isNotBlank(headerStr)) {
-            JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
-            if (headerJSON != null && headerJSON.size() > 0) {
-                requestHeaderMap = headerJSON.toJavaObject(Map.class);
-            }
-        }
+        //处理请求headers
+        Map<String, String> requestHeaderMap = getHeadersFromCase(test);
+        Map<String, String> entityHeaderMap = getHeadersFromEntity(entity);
+        Header[] requestHeaders = mergeHeaders(requestHeaderMap, entityHeaderMap);
 
-        //获取测试对象中的Header和Cookie
-        Map<String, String> entityHeaderMap = null;
-        CookieStore entityCookieStore = null;
-        if (entity != null) {
-            Header[] entityHeaders = entity.headers;
-            if (entityHeaders != null && entityHeaders.length > 0) {
-                entityHeaderMap = Arrays.stream(entityHeaders).collect(Collectors.toMap(Header::getName, Header::getValue));
-            }
-            entityCookieStore = entity.cookieStore;
-        }
+        String responseBody = send(
+                url,
+                test.getTi().getIrequestmethod(),
+                test.getTi().getIcontenttype(),
+                test.getTi().getIparamtype(),
+                param,
+                requestHeaders,
+                entity == null ? null : entity.cookieStore
+        );
 
+
+        /**
+         * 后置处理
+         */
+        log.info("--------httpClientEnd----------");
+        log.info("--------后置处理Start-----------");
+        ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
+        log.info("--------后置处理End-------------");
+        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "结束------------------");
+
+
+        return responseBody;
+
+    }
+
+    public static Header[] mergeHeaders(Map<String, String> requestHeaderMap, Map<String, String> entityHeaderMap) {
         //合并header,如果requestHeader中的值为null,则尝试从entityHeader中取相应的值
         Map<String, String> finalHeaderMap = new HashMap<>();
         if (requestHeaderMap != null) {
@@ -175,28 +214,31 @@ public class HryHttpClientUtil {
         for (Map.Entry<String, String> entry : finalHeaderMap.entrySet()) {
             requestHeaders = ArrayUtils.add(requestHeaders, new BasicHeader(entry.getKey(), entry.getValue()));
         }
+        return requestHeaders;
+    }
 
-        //参数替换
-        log.info("--------前置处理Start-----------");
-        String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
-        log.info("--------前置处理End-------------");
-        log.info("--------httpClientStart--------");
-        String responseBody = send(
-                url,
-                test.getTi().getIrequestmethod(),
-                test.getTi().getIcontenttype(),
-                test.getTi().getIparamtype(),
-                param,
-                requestHeaders,
-                entityCookieStore
-        );
-        log.info("--------httpClientEnd----------");
-        log.info("--------后置处理Start-----------");
-        ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
-        log.info("--------后置处理End-------------");
-        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "结束------------------");
-        return responseBody;
+    public static <T extends Base> Map<String, String> getHeadersFromEntity(T entity) {
+        //获取测试对象中的Header和Cookie
+        Map<String, String> entityHeaderMap = null;
+        if (entity != null) {
+            Header[] entityHeaders = entity.headers;
+            if (entityHeaders != null && entityHeaders.length > 0) {
+                entityHeaderMap = Arrays.stream(entityHeaders).collect(Collectors.toMap(Header::getName, Header::getValue));
+            }
+        }
+        return entityHeaderMap;
+    }
 
+    public static Map<String, String> getHeadersFromCase(HryTest test) {
+        Map<String, String> requestHeaderMap = null;
+        String headerStr = test.getTcase().getRequestheader();
+        if (StringUtils.isNotBlank(headerStr)) {
+            JSONObject headerJSON = JSONUtil.str2JSONObj(headerStr);
+            if (headerJSON != null && headerJSON.size() > 0) {
+                requestHeaderMap = headerJSON.toJavaObject(Map.class);
+            }
+        }
+        return requestHeaderMap;
     }
 
     public static <T> String send(String url, Integer requestMethod, T param) throws HttpProcessException {

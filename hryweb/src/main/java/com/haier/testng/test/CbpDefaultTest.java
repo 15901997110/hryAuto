@@ -15,6 +15,12 @@ public class CbpDefaultTest extends Base{
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
+    @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/createCfBuyBack", dataProvider = "provider", description = "提前回购申请")
+    public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_createCfBuyBack(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/createCfPrepay", dataProvider = "provider", description = "2.3.2-P0010提前还款申请")
     public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_createCfPrepay(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -29,6 +35,12 @@ public class CbpDefaultTest extends Base{
 
     @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/queryCfBuyBack", dataProvider = "provider", description = "提前回购查询")
     public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_queryCfBuyBack(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/cbp-api/resource/com.cbp.biz.cfLoan.facade.rs.CfLoanPrepayResource/queryCfBuyBackResult", dataProvider = "provider", description = "提前回购结果查询")
+    public void cbp_api_resource_com_cbp_biz_cfLoan_facade_rs_CfLoanPrepayResource_queryCfBuyBackResult(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

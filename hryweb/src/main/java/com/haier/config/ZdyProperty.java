@@ -1,14 +1,14 @@
 package com.haier.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @Description:
  * @Author: luqiwei
  * @Date: 2018/10/30 15:11
  */
-@Component
+@Configuration
 public class ZdyProperty {
     @Value("${zdy.debug}")
     private Boolean debug;

@@ -51,4 +51,16 @@ public class XindaiyyDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/cbp-web/sign/getHryAvailBalance.json", dataProvider = "provider", description = "【海尔云贷】获取签约代表账户余额")
+    public void cbp_web_sign_getHryAvailBalance_json(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql语句")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
 }

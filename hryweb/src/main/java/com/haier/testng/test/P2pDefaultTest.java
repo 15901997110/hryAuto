@@ -93,26 +93,8 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/alterNativeRechargeFacade/generateProduct", dataProvider = "provider", description = "发标接口")
-    public void alterNativeRechargeFacade_generateProduct(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/alterNativeRechargeFacade/queryAlterNativeRechargeList", dataProvider = "provider", description = "查询代充值列表")
     public void alterNativeRechargeFacade_queryAlterNativeRechargeList(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/alterNativeRechargeFacade/queryEntrustPayOrder", dataProvider = "provider", description = "【console】查询委托支付授权订单")
-    public void alterNativeRechargeFacade_queryEntrustPayOrder(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/alterNativeRechargeFacade/queryProductByCreditId", dataProvider = "provider", description = "确认发标是否成功")
-    public void alterNativeRechargeFacade_queryProductByCreditId(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -885,14 +867,14 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/queryTransferOfDebtFacades/getMyAssetByTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资资产信息")
-    public void queryTransferOfDebtFacades_getMyAssetByTransferOfDebt(HryTest test) {
+    @Test(testName = "/productFacade/generateProduct", dataProvider = "provider", description = "发标接口")
+    public void productFacade_generateProduct(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/queryTransferOfDebtFacades/getRepaymentDetail", dataProvider = "provider", description = "获取回款债转详情")
-    public void queryTransferOfDebtFacades_getRepaymentDetail(HryTest test) {
+    @Test(testName = "/queryTransferOfDebtFacades/getMyAssetByTransferOfDebt", dataProvider = "provider", description = "获取我的债转投资资产信息")
+    public void queryTransferOfDebtFacades_getMyAssetByTransferOfDebt(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
