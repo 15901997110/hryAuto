@@ -324,13 +324,13 @@
                                 expected = expected;
                             }
                         }
-                        var tiUrlHtml = "<a title=\"查看接口\" href=\"javascript:void(0);\" onclick=\"ti_list('接口管理','ti-list.html','" + row.iid + "')\"style=\"text-decoration: underline;color:#0000ff;\" >" + row.iuri+ "</a>"
+                        var tiUrlHtml = "<a title=\"查看接口\" href=\"javascript:void(0);\" onclick=\"ti_list('接口管理','ti-list.html','" + row.iid + "')\"style=\"text-decoration: underline;color:#0000ff;\" >" + row.iuri + "</a>"
                         var tiName = row.iuri + "(" + row.iremark + ")";
 
                         var rowHtml = "<tr class=\"text-c\">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
                             "<td>" + row.id + "</td>\n" +
-                            "<td>" + row.casename + "</td>\n" +
+                            "<td style='text-align: left'>" + row.casename + "</td>\n" +
                             "<td>" + remark + "</td>\n" +
                             "<td>" + row.servicekey + "</td>\n" +
                             "<td>" + envKey + "</td>\n" +
