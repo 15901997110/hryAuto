@@ -104,6 +104,11 @@ public class UserController {
         return ResultUtil.success(userService.selectCaseDesigners());
     }
 
+    @PostMapping("/selectCustomUsers")
+    public Result selectCustomUsers() {
+        return ResultUtil.success(userService.selectCustomUsers());
+    }
+
     //根据GroupId查询相应组的用户列表
     @PostMapping("/selectByGroupId")
     public Result selectByGroupId(Integer groupId) {

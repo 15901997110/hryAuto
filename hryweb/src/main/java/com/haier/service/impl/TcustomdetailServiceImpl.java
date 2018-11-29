@@ -132,4 +132,10 @@ public class TcustomdetailServiceImpl implements TcustomdetailService {
         tcustomdetail.setClientlevel(clientLevel);
         return this.selectByCondition(tcustomdetail);
     }
+
+    @Override
+    public List<Tcustomdetail> selectByCustomIds(List<Integer> ids) {
+        return batchMapper.selectByTcustomIds(ids);
+    }
+
 }

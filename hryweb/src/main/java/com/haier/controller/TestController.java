@@ -30,11 +30,10 @@ public class TestController {
 
     @GetMapping("/get")
     public void get() {
-
     }
 
     @PostMapping("/getClassName")
-    public List<String> getClassName(String packageName) {
+    public List<String> getClassName() {
         return ClassUtil.getClassName("com.haier.testng.test", false);
     }
 
@@ -45,8 +44,9 @@ public class TestController {
 
     @Autowired
     ZdyProperty zdyProperty;
+
     @PostMapping("/zdyProperty")
-    public void ZdyPropretyTest(){
+    public void ZdyPropretyTest() {
         System.out.println(zdyProperty.getDebug());
     }
 }

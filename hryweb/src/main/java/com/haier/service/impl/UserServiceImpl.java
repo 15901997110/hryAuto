@@ -7,6 +7,7 @@ import com.haier.mapper.UserMapper;
 import com.haier.po.User;
 import com.haier.po.UserExample;
 import com.haier.service.TcaseService;
+import com.haier.service.TcustomService;
 import com.haier.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -164,4 +165,14 @@ public class UserServiceImpl implements UserService {
         return caseDesignersUser;
     }
 
+    @Autowired
+    TcustomService tcustomService;
+
+    @Override
+    public List<User> selectCustomUsers() {
+        List<String> customUsers = tcustomService.selectCustomUsers();
+        List<User> allUsers = this.selectAllUser(null);
+        List<User> ret = allUsers.stream().filter(user -> customUsers.contains(user.getRealname())).collect(Collectors.toList());
+        return ret;
+    }
 }
