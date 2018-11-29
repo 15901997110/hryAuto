@@ -248,11 +248,15 @@
                 var caseHtml = "";
                 for (var k = 0; k < tcases.length; k++) {
                     var tcase = tcases[k];
+                    var tcastreamark = tcase.remark;
+                    if (tcastreamark==null){
+                        tcastreamark="";
+                    }
                     caseHtml += "<dd>\n" +
                         "<dl id='case-" + tcase.id + "' style=''\n" +
                         "<dt>\n" +
                         "<input type='text' id='pc_" + tcase.id + "' value='0' style='height:16px'/>" +
-                        "<label style='font-size:12px;'>" +
+                        "<label style='font-size:12px;' title=' "+ tcastreamark +"'>" +
                         "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\"" + tcase.id + "\" name=\"tcase-" + serviceId + "-" + row.id + "\" id=\"caseBox-" + tcase.id + "\" onclick='caseChecked(this," + row.id + "," + serviceId + ")'>"
                         + tcase.casename + "("+"<a title=\"用例编辑\" href=\"javascript:void(0);\" onclick=\"tcase_edit('用例编辑','tcase-edit.html','" + tcase.id + "','1')\" style=\"text-decoration: underline;color:#0000ff;\" >" + tcase.id + "</a>" + "-" + tcase.author +")</label>\n" +
                         "</dt>\n" +
