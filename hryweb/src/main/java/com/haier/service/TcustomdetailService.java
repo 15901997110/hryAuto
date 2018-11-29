@@ -31,4 +31,5 @@ public interface TcustomdetailService {
 
     List<Tcustomdetail> selectByCondition(Integer customId, Integer clientLevel);
 
+    List<Tcustomdetail> selectByCustomIds(List<Integer> ids);
 }

@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface TcustomdetailBatchMapper {
     Integer insertBatch(List<Tcustomdetail> tcustomdetails);
+
+    List<Tcustomdetail> selectByTcustomIds(List<Integer> ids);
 }

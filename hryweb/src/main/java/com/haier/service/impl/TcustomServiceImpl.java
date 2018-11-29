@@ -174,8 +174,24 @@ public class TcustomServiceImpl implements TcustomService {
     @Override
     public PageInfo<TcustomCustom> selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<TcustomCustom> tcustomCustoms = this.selectTcustomCustomList(tcustom);
-        PageInfo<TcustomCustom> pageInfo = new PageInfo<>(tcustomCustoms);
+        List<Tcustom> tcustoms = this.selectTcustomList(tcustom);
+        PageInfo pageInfo = new PageInfo(tcustoms);
+        List<Integer> customIds = tcustoms.stream().map(Tcustom::getId).collect(Collectors.toList());
+        if (customIds.size() == 0) {
+            return pageInfo;
+        }
+
+        List<Tcustomdetail> tcustomdetails = tcustomdetailService.selectByCustomIds(customIds);
+        Map<Integer, List<Tcustomdetail>> customId_customdetails = tcustomdetails.stream().collect(Collectors.groupingBy(Tcustomdetail::getCustomid));
+
+        List<TcustomCustom> list = new ArrayList<>();
+        for (Tcustom custom : tcustoms) {
+            TcustomCustom t = new TcustomCustom();
+            ReflectUtil.cloneParentToChild(custom, t);
+            t.setTcustomdetails(customId_customdetails.get(custom.getId()));
+            list.add(t);
+        }
+        pageInfo.setList(list);
         return pageInfo;
     }
 
