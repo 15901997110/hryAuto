@@ -477,6 +477,12 @@ public class P2pDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/ibsQueryFacade/getBiddingBids", dataProvider = "provider", description = "获取投资中的标的")
+    public void ibsQueryFacade_getBiddingBids(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/ibsQueryFacade/getIbsInvestInfo", dataProvider = "provider", description = "获取智能投标的投资信息")
     public void ibsQueryFacade_getIbsInvestInfo(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -1505,6 +1511,12 @@ public class P2pDefaultTest extends Base{
 
     @Test(testName = "/uePlanFacade/queryUeMatchedBidInfo", dataProvider = "provider", description = "优易智投标的信息查询(供ueplan使用)")
     public void uePlanFacade_queryUeMatchedBidInfo(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql")
+    public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

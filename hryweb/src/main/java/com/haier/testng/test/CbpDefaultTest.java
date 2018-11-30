@@ -153,4 +153,10 @@ public class CbpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
 }
