@@ -3,10 +3,7 @@ package com.haier.service.impl;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.haier.enums.ContentTypeEnum;
-import com.haier.enums.RequestMethodTypeEnum;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.enums.StatusEnum;
+import com.haier.enums.*;
 import com.haier.exception.HryException;
 import com.haier.mapper.TserviceMapper;
 import com.haier.po.*;
@@ -45,7 +42,7 @@ public class ImportServiceImpl implements ImportService {
     TservicedetailService tservicedetailService;
 
     @Override
-    public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite, String iDev) {
+    public ImportInterfaceResult importInterface(Integer serviceId, JSONObject jsonObject, Boolean overwrite, Boolean isDelete, String iDev) {
         String serviceKey = jsonObject.getJSONObject("info").getString("title");
         String serviceName = jsonObject.getJSONObject("info").getString("description");
 
@@ -164,8 +161,8 @@ public class ImportServiceImpl implements ImportService {
                 }
 
 
-                //如果此接口已经作废,并且此接口不在有效接口的列表中,则直接忽略,
-                if (invalidIuri.size() > 0 && invalidIuri.contains(iUri) && (existIuri.size() == 0 || !existIuri.contains(iUri))) {
+                //如果此接口已经作废,则直接忽略引接口
+                if (invalidIuri.size() > 0 && invalidIuri.contains(iUri) /*&& (existIuri.size() == 0 || !existIuri.contains(iUri))*/) {
                     failList.add(iUri + "(已作废)");
                     continue;
                 }
@@ -190,11 +187,17 @@ public class ImportServiceImpl implements ImportService {
             }
         }
         List<String> deleteList = new ArrayList<>();
-        //如果existIuri没有被remove,则说明这些Iuri没有存在于最新的swagger文档中,此时,将删除这些接口
-        for (int i = 0; i < existIuri.size(); i++) {
-            Integer deleteId = existIuriId.get(existIuri.get(i));
-            tiService.deleteOne(deleteId);
-            deleteList.add(existIuri.get(i));
+        //如果existIuri没有被remove,则说明这些Iuri没有存在于最新的swagger文档中,如果用户选择删除这些接口,则将这些接口删除
+        if (isDelete) {
+            for (int i = 0; i < existIuri.size(); i++) {
+                //如果此接口是虚拟接口,则忽略
+                if (existIuri.get(i).matches(RegexEnum.VIRTUAL_INTERFACE.getRegex())) {
+                    continue;
+                }
+                Integer deleteId = existIuriId.get(existIuri.get(i));
+                tiService.deleteOne(deleteId);
+                deleteList.add(existIuri.get(i));
+            }
         }
 
 

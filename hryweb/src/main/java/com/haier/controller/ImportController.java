@@ -40,12 +40,15 @@ public class ImportController {
     TservicedetailService tservicedetailService;
 
     @PostMapping("/interfaceImport")
-    public Result interfaceImport(Integer serviceDetailId, Boolean overwrite, String iDev) {
+    public Result interfaceImport(Integer serviceDetailId, Boolean overwrite, Boolean isDelete, String iDev) {
         if (serviceDetailId == null || serviceDetailId == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "tserviceDetail.id必传");
         }
         if (overwrite == null) {
             overwrite = false;
+        }
+        if (isDelete == null) {
+            isDelete = false;
         }
         //1.找到swaggerUrl
         Tservicedetail tservicedetail = tservicedetailService.selectOne(serviceDetailId);
@@ -64,7 +67,7 @@ public class ImportController {
         }
 
         //3.解析json,插入数据到ti表
-        ImportInterfaceResult importInterfaceResult = importService.importInterface(tservicedetail.getServiceid(), jsonObject, overwrite, iDev);
+        ImportInterfaceResult importInterfaceResult = importService.importInterface(tservicedetail.getServiceid(), jsonObject, overwrite,isDelete, iDev);
         return ResultUtil.success(importInterfaceResult);
     }
 
