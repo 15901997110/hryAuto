@@ -184,6 +184,7 @@ public class ImportServiceImpl implements ImportService {
                 }
             } catch (Exception e) {
                 log.error(iUri + "解析json错误", e);
+                throw new HryException(StatusCodeEnum.PARSE_JSON_ERROR, "解析json错误");
             }
         }
         List<String> deleteList = new ArrayList<>();
