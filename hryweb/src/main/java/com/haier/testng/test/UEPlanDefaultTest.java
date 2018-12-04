@@ -15,6 +15,12 @@ public class UEPlanDefaultTest extends Base{
         super(serviceId, envId, caseDesigner, i_c, i_c_zdy, testingId);
     }
 
+    @Test(testName = "/ibsToUePlanFacade/getSalesUeProducts", dataProvider = "provider", description = "获取上架的优易智投产品")
+    public void ibsToUePlanFacade_getSalesUeProducts(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/p2pToUePlanFacade/getUeAuthOrderInfo", dataProvider = "provider", description = "获取Ue系统授权订单信息")
     public void p2pToUePlanFacade_getUeAuthOrderInfo(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

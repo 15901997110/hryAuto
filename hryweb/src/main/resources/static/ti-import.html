@@ -32,8 +32,9 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 接口管理 <span
-        class="c-gray en">&gt;</span> swagger导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
-                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="c-gray en">&gt;</span> swagger导入 <a class="btn btn-success radius r"
+                                                   style="line-height:1.6em;margin-top:3px"
+                                                   href="javascript:location.replace(location.href);" title="刷新"><i
         class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
     <form method="post" class="form form-horizontal" id="form-admin-role-add">
@@ -58,22 +59,23 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否覆盖：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <label>
+                <label for="overwrite_true" title="接口地址相同时则更新">
                     <input id="overwrite_true" type="radio" value="true" name="cover">是
                 </label>&emsp;
-                <label>
+                <label for="overwrite_false" title="接口地址相同时忽略">
                     <input id="overwrite_false" type="radio" checked value="false" name="cover">否
                 </label>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否删除swagger中不存在的接口：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否删除：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <label>
-                    <input id="swagger_true" type="radio" value="true" name="swaggerDelete">是
+                <label for="delete_true" title="swagger中不存在的历史接口将被删除">
+                    <input id="delete_true" type="radio" value="true" name="isDelete">是
                 </label>&emsp;
-                <label>
-                    <input id="swagger_false" type="radio" checked value="false" name="swaggerDelete">否
+                <label for="delete_false" title="swagger中不存在的历史接口保留">
+                    <input id="delete_false" type="radio" checked value="false" name="isDelete"
+                    >否
                 </label>
             </div>
         </div>
@@ -177,6 +179,7 @@
         var serviceId = $("#serviceid").val().split("&")[0];
         var envId = $("#serviceid").val().split("&")[1];
         var overwrite = $('input[name="cover"]:checked').val();
+        var isDelete = $("input[name='isDelete']:checked").val();
         var iDev = $("#iDev").val();
         var serviceDetailId = document.getElementById("serviceid").getAttribute("tiserviceDetailId");
 
@@ -191,6 +194,7 @@
                 data: {
                     serviceDetailId: id,
                     overwrite: overwrite,
+                    isDelete: isDelete,
                     iDev: iDev
                 },
                 dataType: "json",
@@ -200,7 +204,7 @@
                     var msg = data.msg;
                     if (status == 0) {
                         displayResult(data.data);
-                    }else if(msg == null){
+                    } else if (msg == null) {
                         layer.alert("未知异常", {
                             icon: 0,
                             skin: 'layer-ext-moon'
@@ -239,12 +243,13 @@
         $("#iCountResult").text("");
         $("#importList").html("");
     }
+
     //重置按钮
     function empty() {
         $("#serviceid").val(null).trigger("change");
         $("#swaggerUrl").val("");
         $("#iDev").val(null).trigger("change");
-        $("#overwrite_false").prop("checked",true);
+        $("#overwrite_false").prop("checked", true);
 
         $("#importResult").hide();
         $("#serviceIdResult").text("");
@@ -299,9 +304,9 @@
                     for (var i in arrayList) {
                         var row = arrayList[i];
                         seditorSet.add(row.seditor);
-                        if( row.swaggerurl ==""|| row.swaggerurl==null){
+                        if (row.swaggerurl == "" || row.swaggerurl == null) {
                             var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + null + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
-                        }else {
+                        } else {
                             var rowHtml = "<option value=" + row.serviceid + "&" + row.envid + " data-url=" + row.swaggerurl + " data-editor=" + row.seditor + " data-id=" + row.id + ">" + row.servicekey + "(" + row.envkey + ")</option>";
                         }
                         html = html + rowHtml;
