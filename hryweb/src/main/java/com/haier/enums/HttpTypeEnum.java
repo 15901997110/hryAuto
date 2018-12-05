@@ -1,8 +1,8 @@
 package com.haier.enums;
 
 public enum HttpTypeEnum {
-    HTTP(1, "Http"),
-    HTTPS(2, "Https");
+    HTTP(1, "http"),
+    HTTPS(2, "https");
     private int id;
     private String value;
 
