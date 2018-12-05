@@ -134,9 +134,101 @@
 
     //初始化处理
     $(document).ready(function () {
-        //onclick='checkAllservice("+row.id+")'
-        var serviceList = getServiceList();
+        var skip = getParameter('skip');
+        var cId = getParameter('id');
+        debugger;
+        if(skip == 1){
+            var obj = new Object();
+            obj.id = cId;
+            var json = JSON.stringify(obj);
+            $.ajax({
+                type: "post",
+                url: "/tcustom/selectOne",
+                data: json,
+                dataType: "json",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    var status = data.status;
+                    var msg = data.msg;
+                    var serviceList = getServiceList();
+                    if (status == 0) {
+                        var resData = data.data;
+                        $("#customname").val(resData.customname);
+                        env_selectEle_init("env");
+                        $("#env").val(resData.envid);
+                        $("#intersect").val(resData.intersect);
+                        $("#strategy").val(resData.strategy);
+                        $("#customUser").val(resData.username);
+                        debugger;
+                        var services = "";
+                        for (var i = 0; i < serviceList.length; i++) {
+                            var row = serviceList[i];
+                            var tClassList = getTClassListByServiceKey(row.servicekey);
+                            var tClassHtml = "";
+                            for (var m = 0; m < tClassList.length; m++) {
+                                tClassHtml += "<option>" + tClassList[m] + "</option>\n";
+                            }
+                            var rowHtml = "<dl class=\"permission-list\" id='service-" + row.id + "' style='width: 80%;'>\n" +
+                                "<dt>\n" +
+                                "<input type='text' id='ps_" + row.id + "' value='0'/>" +
+                                "<label style='width:100px;display:inline-block;'>" +
+                                "<input type=\"checkbox\" value=\"" + row.id + "\" name=\"service\" id=\"serviceBox-" + row.id + "\" onclick='clearAll(this," + row.id + ")'/>" + row.servicekey + "</label>\n" +
+                                "<select id='tClass-" + row.id + "'><option>请选择测试类</option>" + tClassHtml + "</select>\n" +
+                                "<label id='show-" + row.id + "'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread(" + row.id + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
+                                "</dt>\n" +
+                                "</dl>";
+                            services = services + rowHtml;
+                        }
+                        $("#services").append(services);
 
+                        var tCustomDetails = resData.tcustomdetails;
+                        //先将服务展开,并且选中服务和测试类
+                        for (var j = 0; j < tCustomDetails.length; j++) {
+                            var tCustomDetail = tCustomDetails[j];
+                            if (tCustomDetail.clientlevel == 1) {
+                                var serviceId = tCustomDetail.clientid;
+                                var hasChild = tCustomDetail.haschild;
+                                if (hasChild) {
+                                    spread(serviceId);
+                                }
+                                $("#ps_" + serviceId).val(tCustomDetail.priority);
+                                $("#serviceBox-" + serviceId + "").prop("checked", true);
+                                var tClass = tCustomDetail.classname;
+                                $("#tClass-" + serviceId + "").children("option").each(function () {
+                                    var temp_value = $(this).val();
+                                    if (temp_value == tClass) {
+                                        $(this).attr("selected", "selected");
+                                    }
+                                });
+                            }
+                        }
+
+                        //选中接口和用例
+                        for (var j = 0; j < tCustomDetails.length; j++) {
+                            var tCustomDetail = tCustomDetails[j];
+                            var clientId = tCustomDetail.clientid;
+                            if (tCustomDetail.clientlevel == 2) {
+                                $("#pi_" + clientId).val(tCustomDetail.priority);
+                                $("#tiBox-" + clientId + "").prop("checked", true);
+                            } else if (tCustomDetail.clientlevel == 3) {
+                                $("#pc_" + clientId).val(tCustomDetail.priority);
+                                $("#caseBox-" + clientId + "").prop("checked", true);
+                            }
+                        }
+
+                        layer.close(layerIndex);
+
+                    } else {
+                        layer.close(layerIndex);
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        })
+                    }
+                }
+            });
+        }
+        var serviceList = getServiceList();
         env_selectEle_init("env");
         var services = "";
         for (var i = 0; i < serviceList.length; i++) {
