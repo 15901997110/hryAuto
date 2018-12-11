@@ -93,16 +93,4 @@ public class ContractDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/mergeParamsDefinition/list", dataProvider = "provider", description = "测试")
-    public void mergeParamsDefinition_list(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/mergeParamsDefinition/templateParamsDaifei", dataProvider = "provider", description = "达飞消费金融模板参数")
-    public void mergeParamsDefinition_templateParamsDaifei(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
 }

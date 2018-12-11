@@ -141,12 +141,6 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/bid/query-by-discount", dataProvider = "provider", description = "根据优惠券搜索支持的标的")
-    public void bid_query_by_discount(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/bid/query-by-rebate", dataProvider = "provider", description = "根据优惠信息搜索支持的标的")
     public void bid_query_by_rebate(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
