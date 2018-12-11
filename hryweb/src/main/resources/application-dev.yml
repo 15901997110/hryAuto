@@ -42,7 +42,8 @@ spring:
       filters: stat,log4j
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
-
+  quartz:
+    job-store-type: jdbc
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
