@@ -39,7 +39,7 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
-      filters: stat,wall,log4j
+      filters: stat,log4j
       pool-prepared-statements: true
       max-pool-prepared-statement-per-connection-size: 20
 
