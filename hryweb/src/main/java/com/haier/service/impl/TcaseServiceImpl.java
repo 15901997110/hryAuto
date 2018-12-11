@@ -313,6 +313,13 @@ public class TcaseServiceImpl implements TcaseService {
         Ti ti = tiService.selectOne(tcase.getIid());
         Tservice tservice = tserviceService.selectOne(ti.getServiceid());
         Tenv tenv = tenvService.selectOne(tcase.getEnvid());
+
+        //校验是否存在服务与环境映射
+        Tservicedetail tservicedetail = tservicedetailService.selectOne(tservice.getId(), tenv.getId());
+        if (tservicedetail == null) {
+            throw new HryException(StatusCodeEnum.NO_SERVICE_ENV_MAP, "服务=" + tservice.getServicekey() + " , 环境=" + tenv.getEnvkey() + " 未配置映射");
+        }
+
         User user = userService.selectOne(userId);
         String date = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(LocalDateTime.now());
         String reportName = "r_uid" + userId + "_sid" + tservice.getId() + "_iid" + ti.getId() + "_" + date + ".html";

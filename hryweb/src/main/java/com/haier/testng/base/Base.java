@@ -70,7 +70,10 @@ public class Base extends AbstractTestNGSpringContextTests {
         runService = SpringContextHolder.getBean(RunService.class);
         tservice = runService.getTservice(this.serviceId);
         tservicedetail = runService.getTservicedetail(this.serviceId, this.envId);
-
+/*        if (tservicedetail == null) {
+            Tenv tenv = SpringContextHolder.getBean(TenvService.class).selectOne(envId);
+            throw new HryException(StatusCodeEnum.NO_SERVICE_ENV_MAP, "服务=" + tservice.getServicekey() + ",环境=" + tenv.getEnvkey() + "无映射,请先维护服务与环境映射");
+        }*/
 
         LoginUtil.loginInit(this);
 

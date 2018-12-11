@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.haier.enums.ClientLevelEnum;
 import com.haier.enums.PackageEnum;
 import com.haier.enums.SortEnum;
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.mapper.TcustomCustomMapper;
 import com.haier.mapper.TcustomMapper;
 import com.haier.po.*;
@@ -204,65 +206,11 @@ public class TcustomServiceImpl implements TcustomService {
         List<XmlTest> xmlTestList = new ArrayList<>();*/
 
         CustomVO vo = this.selectOne(customId); //VO包含Tcustom 和 Tcustomdetail
+        //映射校验
+        verify_Service_Env_Mapping(vo);
+
         XmlSuite xmlSuite = collectSuite(vo);
 
-        /* List<Tcustomdetail> ls = customVO.getTcustomdetails();*/
-
-        /*      *//**
-         * 将定制详情分组,groupingBy(Tcustomdetail.clientlevel)
-         *//*
-        Map<Integer, List<Tcustomdetail>> levelGroups = ls.stream().collect(Collectors.groupingBy(Tcustomdetail::getClientlevel));
-        List<Tcustomdetail> ss = levelGroups.get(ClientLevelEnum.SERVICE.getLevel());//定制的服务,服务是一定有的
-        List<Tcustomdetail> is = levelGroups.containsKey(ClientLevelEnum.INTERFACE.getLevel()) ?
-                levelGroups.get(ClientLevelEnum.INTERFACE.getLevel()) : new ArrayList<>();//定制的接口,可能有,可能没有
-        List<Tcustomdetail> cs = levelGroups.containsKey(ClientLevelEnum.CASE.getLevel()) ?
-                levelGroups.get(ClientLevelEnum.CASE.getLevel()) : new ArrayList<>();//定制的用例,可能有,可能没有
-
-        Map<Integer, Tcustomdetail> s_sList = ss.stream().collect(Collectors.toMap(Tcustomdetail::getClientid, p -> p));
-        Map<Integer, List<Tcustomdetail>> s_iList = is == null ? new HashMap<>() : is.stream().collect(Collectors.groupingBy(Tcustomdetail::getParentclientid));
-        Map<Integer, List<Tcustomdetail>> i_cList = cs == null ? new HashMap<>() : cs.stream().collect(Collectors.groupingBy(Tcustomdetail::getParentclientid));
-
-        //自定义比较器-按优先级(priority)倒序,所有的list通过此比较器排序
-        Comparator<Tcustomdetail> sortByPriorityDesc = Comparator.comparingInt(Tcustomdetail::getPriority).reversed();*/
-
-/*        Consumer<Tcustomdetail> s_consumer = s -> {
-            XmlClass xmlClass = new XmlClass();
-            xmlClass.setName(PackageEnum.TEST.getPackageName() + "." + s.getClassname());
-            List<XmlInclude> xmlIncludeList = new ArrayList<>();
-            Map<String, List<Integer>> iName_cIdList = new HashMap<>();
-            List<Tcustomdetail> iList = s_iList.get(s.getClientid());
-            if (iList != null && iList.size() > 0) {
-                iList.stream().sorted(sortByPriorityDesc).forEach(i -> {
-                    String methodName = HryUtil.iUri2MethodName(i.getClientname());
-                    xmlIncludeList.add(new XmlInclude(methodName, 0 - i.getPriority()));//XmlInclude按index升序的顺序执行测试
-                    List<Tcustomdetail> cList = i_cList.get(i.getClientid());
-                    if (cList != null && cList.size() > 0) {
-                        iName_cIdList.put(methodName, cList.stream().sorted(sortByPriorityDesc).map(Tcustomdetail::getClientid).collect(Collectors.toList()));
-                    }
-                });
-            }
-            if (xmlIncludeList.size() > 0) {
-                xmlClass.setIncludedMethods(xmlIncludeList);
-            }
-            Map<String, String> params = new HashMap<>();
-            params.put(ParamKeyEnum.SERVICEID.getKey(), s.getClientid() + "");
-            params.put(ParamKeyEnum.ENVID.getKey(), customVO.getEnvid() + "");
-            params.put(ParamKeyEnum.DESIGNER.getKey(), "");
-            params.put(ParamKeyEnum.I_C.getKey(), iName_cIdList.size() > 0 ? JSON.toJSONString(iName_cIdList) : "");
-            params.put(ParamKeyEnum.I_C_ZDY.getKey(), "");
-
-            XmlTest xmlTest = new XmlTest(suite);
-            xmlTest.setName(s.getClassname());
-            xmlTest.setParameters(params);
-            xmlTest.setClasses(Arrays.asList(xmlClass));
-
-            xmlTestList.add(xmlTest);
-
-        };*/
-        /*        ss.stream().sorted(sortByPriorityDesc).forEach(s_consumer);*/
-
-
-        /*        suite.setTests(xmlTestList);*/
         Treport treport = treportService.insertOne(vo);
 
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
@@ -460,5 +408,26 @@ public class TcustomServiceImpl implements TcustomService {
         suite.setTests(xmlTestList);
 
         return suite;
+    }
+
+    public void verify_Service_Env_Mapping(CustomVO vo) {
+        if (vo == null) {
+            throw new HryException(StatusCodeEnum.RUN_ERROR, "定制不存在");
+        }
+
+        List<Tcustomdetail> tcustomdetails = vo.getTcustomdetails();
+        List<Tcustomdetail> customServices = tcustomdetails.stream().filter(tcustomdetail -> tcustomdetail.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel())).collect(Collectors.toList());
+        //将定制的服务及环境转换为:(String)serviceId_envId,如"2_5"表示serviceId=2,envId=5
+        List<String> custom_s_e = customServices.stream().map(tcustomdetail -> tcustomdetail.getClientid() + "_" + vo.getEnvid()).collect(Collectors.toList());
+
+        List<TservicedetailCustom> s_e_s = tservicedetailService.selectByCondition(null);
+        List<String> all_S_E_Mapping = s_e_s.stream().map(p -> p.getServiceid() + "_" + p.getEnvid()).collect(Collectors.toList());
+        custom_s_e.stream().forEach(se -> {
+            if (!all_S_E_Mapping.contains(se)) {
+                String[] split = se.split("_");
+                List<Tcustomdetail> s = customServices.stream().filter(aaa -> aaa.getClientid().toString().equals(split[0])).collect(Collectors.toList());
+                throw new HryException(StatusCodeEnum.NO_SERVICE_ENV_MAP, "服务=" + s.get(0).getClientname() + " , 环境=" + vo.getEnvkey() + " 未配置映射");
+            }
+        });
     }
 }

@@ -21,7 +21,8 @@ public enum StatusCodeEnum {
     HTTP_ERROR(100, "发送http请求时异常"),
     PARSE_JSON_ERROR(101, "JSON转换异常"),
 
-    RUN_ERROR(201,"运行测试异常"),
+    RUN_ERROR(201, "运行测试异常"),
+    NO_SERVICE_ENV_MAP(202, "服务与环境未映射"),
 
     NOT_FOUND(1000, "查询记录不存在！"),
     CHECK_ERROR(1001, "校验不满足条件"),
