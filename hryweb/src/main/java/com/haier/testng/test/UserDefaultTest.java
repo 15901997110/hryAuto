@@ -771,6 +771,12 @@ public class UserDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/weChatFacade/bindOpenIdAndUserId", dataProvider = "provider", description = "绑定微信openId和userId")
     public void weChatFacade_bindOpenIdAndUserId(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

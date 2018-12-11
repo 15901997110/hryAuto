@@ -249,6 +249,12 @@ public class CdpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/whiteListFacade/putWhiteListData", dataProvider = "provider", description = "白名单-导入白名单数据接口")
     public void whiteListFacade_putWhiteListData(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

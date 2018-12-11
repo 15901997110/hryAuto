@@ -153,18 +153,6 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/bill/detail", dataProvider = "provider", description = "queryDetail")
-    public void bill_detail(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/bill/getUnionBillList", dataProvider = "provider", description = "getUnionBillList")
-    public void bill_getUnionBillList(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/bindPromotionCode", dataProvider = "provider", description = "绑定推广码")
     public void bindPromotionCode(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -177,30 +165,6 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/checkin/home", dataProvider = "provider", description = "home")
-    public void checkin_home(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/checkin/perform", dataProvider = "provider", description = "doCheckIn")
-    public void checkin_perform(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/checkin/records", dataProvider = "provider", description = "queryCheckInRecords")
-    public void checkin_records(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/checkin/rules", dataProvider = "provider", description = "queryCheckInRules")
-    public void checkin_rules(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/consumer-finance/my-reservations", dataProvider = "provider", description = "queryUserReservationList")
     public void consumer_finance_my_reservations(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -209,12 +173,6 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/consumer-finance/reservation-detail", dataProvider = "provider", description = "我的预约记录详情")
     public void consumer_finance_reservation_detail(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/consumer-finance/reservation/hot-products", dataProvider = "provider", description = "查询预约计划列表")
-    public void consumer_finance_reservation_hot_products(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -239,12 +197,6 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/consumer-finance/reservation/plan-detail", dataProvider = "provider", description = "查询预约详情")
     public void consumer_finance_reservation_plan_detail(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/consumer-finance/reservation/plan-list", dataProvider = "provider", description = "查询预约计划列表")
-    public void consumer_finance_reservation_plan_list(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -299,12 +251,6 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/coupon/queryCoupon4Grab", dataProvider = "provider", description = "queryCoupon4Grab")
     public void coupon_queryCoupon4Grab(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/customer-service/customer-info", dataProvider = "provider", description = "showCustomerInfo")
-    public void customer_service_customer_info(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -971,6 +917,12 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/version/check", dataProvider = "provider", description = "checkAppVersion")
     public void version_check(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

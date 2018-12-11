@@ -57,12 +57,6 @@ public class MemberDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/customerFacade/getUserIdByToken", dataProvider = "provider", description = "根据token获取用户hryId和kjtId")
-    public void customerFacade_getUserIdByToken(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/customerFacade/getUserRiskAssessmentLevel", dataProvider = "provider", description = "获取用户风险测评结果")
     public void customerFacade_getUserRiskAssessmentLevel(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -275,6 +269,12 @@ public class MemberDefaultTest extends Base{
 
     @Test(testName = "/sessionFacade/initUserByUserInfo", dataProvider = "provider", description = "初始化用户信息")
     public void sessionFacade_initUserByUserInfo(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
