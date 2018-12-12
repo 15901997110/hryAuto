@@ -6,6 +6,8 @@ import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.SKey;
 import com.haier.config.SpringContextHolder;
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
@@ -71,6 +73,7 @@ public class LoginUtil {
         }
 
         if (ti == null) {
+            log.error("zhuanle登录失败,未找到登录接口");
             return;
         }
 
@@ -93,6 +96,7 @@ public class LoginUtil {
             }
         }
         if (tcase == null) {
+            log.error("");
             return;
         }
 
