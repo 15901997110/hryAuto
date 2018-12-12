@@ -21,3 +21,10 @@ unionlogin:
       url: http://10.255.104.1:8211/hry-uni-login/login
       username: supper2
       password: kjt123
+
+    -
+      #腾讯云准生产
+      envId: 9
+      url: http://10.26.8.63:8211/hry-uni-login/login
+      username: supper2
+      password: kjt123
