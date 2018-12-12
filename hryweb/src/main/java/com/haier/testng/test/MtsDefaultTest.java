@@ -195,6 +195,12 @@ public class MtsDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/wechatAlarmFacade/queryWechatAlarm", dataProvider = "provider", description = "查询微信报警信息详情")
     public void wechatAlarmFacade_queryWechatAlarm(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -215,42 +221,6 @@ public class MtsDefaultTest extends Base{
 
     @Test(testName = "/wechatAlarmFacade/sendWechatAlarmUseTemplate", dataProvider = "provider", description = "发送微信报警,使用模板")
     public void wechatAlarmFacade_sendWechatAlarmUseTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/fetchWechatMessageTemplate", dataProvider = "provider", description = "查询微信公众号中配置的消息模版列表")
-    public void wechatPublicAccountFacade_fetchWechatMessageTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/getWechatAccessToken", dataProvider = "provider", description = "获取微信公众号access_token")
-    public void wechatPublicAccountFacade_getWechatAccessToken(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/getWechatMessageTemplate", dataProvider = "provider", description = "查看mts已配置的微信公众号消息模版详情")
-    public void wechatPublicAccountFacade_getWechatMessageTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/queryWechatMessageTemplate", dataProvider = "provider", description = "查询mts已配置的微信公众号消息模版列表")
-    public void wechatPublicAccountFacade_queryWechatMessageTemplate(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/sendWechatTemplateMessage", dataProvider = "provider", description = "发送微信公众号模版消息")
-    public void wechatPublicAccountFacade_sendWechatTemplateMessage(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/wechatPublicAccountFacade/updateWechatMessageTemplate", dataProvider = "provider", description = "修改微信公众号消息模版,系统内部使用的模版")
-    public void wechatPublicAccountFacade_updateWechatMessageTemplate(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

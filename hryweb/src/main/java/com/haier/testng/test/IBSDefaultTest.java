@@ -147,4 +147,10 @@ public class IBSDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口")
+    public void virtual_sql(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
 }
