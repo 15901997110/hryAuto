@@ -3,6 +3,7 @@ package com.haier.controller;
 import com.haier.job.HelloJob;
 import com.haier.response.Result;
 import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
@@ -24,10 +25,12 @@ public class QuartzController {
 
     @PostMapping("/addJob")
     public Result addJob() throws SchedulerException {
+        /*SchedulerFactory factory=new StdSchedulerFactory();*/
+        /*Scheduler scheduler=factory.getScheduler();*/
         JobDetail jobDetail= JobBuilder.newJob(HelloJob.class).withIdentity("myClassName","myGroupName")
                 .build();
         SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("triggerName", "triggerGroup").startNow()
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).withRepeatCount(10))
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).withRepeatCount(1000))
                 .build();
         scheduler.scheduleJob(jobDetail,trigger);
         scheduler.start();
