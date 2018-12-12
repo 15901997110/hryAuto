@@ -46,7 +46,7 @@ public class ReplaceUtil {
     public static <T extends Base> String replaceBefore(String base, String dbinfo, T entity) {
         if (StringUtils.isNotBlank(base)) {
             Reporter.log("用例设计参数:" + base.replaceAll("<", "＜").replaceAll(">", "＞"));
-            log.info("用例设计参数:", base);
+            log.info("用例设计参数:" + base);
             base = base.replaceAll("\\n", " ");//所有的换行替换成空格
             while (isNeedReplace(base)) {
                 base = replaceAll(base, dbinfo, entity, null, null);
