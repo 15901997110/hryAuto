@@ -57,8 +57,26 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/auto-bidding/match-dashboard", dataProvider = "provider", description = "自动投标计划的汇总信息-v3.0.6")
+    public void auto_bidding_match_dashboard(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/auto-bidding/matching-list", dataProvider = "provider", description = "快速匹配明细")
     public void auto_bidding_matching_list(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/auto-bidding/plan-list", dataProvider = "provider", description = "自动投标计划列表-v3.0.6")
+    public void auto_bidding_plan_list(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/auto-bidding/plan/matched-bids", dataProvider = "provider", description = "自动投标计划匹配的标的-v3.0.6")
+    public void auto_bidding_plan_matched_bids(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -459,6 +477,12 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/home-dispatch/marquee", dataProvider = "provider", description = "走马灯")
+    public void home_dispatch_marquee(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/home-dispatch/news", dataProvider = "provider", description = "新闻列表")
     public void home_dispatch_news(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -501,6 +525,12 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/home/headers", dataProvider = "provider", description = "headers")
+    public void home_headers(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/home/queryHryStat", dataProvider = "provider", description = "queryHryStat")
     public void home_queryHryStat(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -521,6 +551,12 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/home/v2", dataProvider = "provider", description = "home")
     public void home_v2(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/huijin/bid/detail", dataProvider = "provider", description = "债权投资人查看债权详情")
+    public void huijin_bid_detail(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -753,6 +789,12 @@ public class ZhuanleDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/operation/query-scratch", dataProvider = "provider", description = "queryScratchAfterInvest")
+    public void operation_query_scratch(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/operation/recommendActivity", dataProvider = "provider", description = "queryRecommendActivity")
     public void operation_recommendActivity(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -761,6 +803,24 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/operation/recommendProfit", dataProvider = "provider", description = "queryRecommendProfit")
     public void operation_recommendProfit(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/operation/scratch-ticket", dataProvider = "provider", description = "scratchTicket")
+    public void operation_scratch_ticket(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/operation/scratch/perform", dataProvider = "provider", description = "scratchTicketAdaptor")
+    public void operation_scratch_perform(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/operation/scratch/query", dataProvider = "provider", description = "scratchQueryAdaptor")
+    public void operation_scratch_query(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -785,6 +845,18 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/password/update-password", dataProvider = "provider", description = "updatePassword")
     public void password_update_password(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/popup/home-page/adv", dataProvider = "provider", description = "首页广告弹窗")
+    public void popup_home_page_adv(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/popup/view-resource", dataProvider = "provider", description = "预览登记")
+    public void popup_view_resource(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -917,6 +989,18 @@ public class ZhuanleDefaultTest extends Base{
 
     @Test(testName = "/version/check", dataProvider = "provider", description = "checkAppVersion")
     public void version_check(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/hat_trick", dataProvider = "provider", description = "虚拟接口（三）")
+    public void virtual_hat_trick(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/Rakhim", dataProvider = "provider", description = "虚拟接口（二）")
+    public void virtual_Rakhim(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
