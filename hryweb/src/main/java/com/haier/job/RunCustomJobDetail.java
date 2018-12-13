@@ -15,14 +15,15 @@ public class RunCustomJobDetail {
     @Autowired
     TcustomService tcustomService;
 
-    @Autowired
+    /*@Autowired*/
 
-    public JobDetailFactoryBean createJobDetailFactoryBean(Integer customId,Integer executeUserId){
+    public JobDetailFactoryBean createJobDetailFactoryBean(Integer customId, Integer executeUserId) {
 
-        JobDetailFactoryBean factory=new JobDetailFactoryBean();
+/*        JobDetailFactoryBean factory=new JobDetailFactoryBean();
         factory.setName(jobName);
         factory.setGroup(jobGroup);
         Map<>
-        factory.set
+        factory.set*/
+        return null;
     }
 }
