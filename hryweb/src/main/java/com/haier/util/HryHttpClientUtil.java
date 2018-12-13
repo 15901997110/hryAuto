@@ -77,9 +77,11 @@ public class HryHttpClientUtil {
 
 
         HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(requestHeaders);
+
         if (context != null) {
             config.context(context);
         }
+
         //设置请求参数
         if (StringUtils.isNotBlank(param) && requestParamType != null) {
             if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
@@ -93,12 +95,14 @@ public class HryHttpClientUtil {
 
         //发送请求
         String responseEntity;
+        long startTime = System.currentTimeMillis();
         try {
             responseEntity = HttpClientUtil.send(config);
         } catch (HttpProcessException e) {
             log.error("", e);
             responseEntity = e.getMessage();
         }
+        long endTime = System.currentTimeMillis();
 
         //打印日志
 
@@ -117,6 +121,8 @@ public class HryHttpClientUtil {
                 Reporter.log("  " + h.getName() + ":" + h.getValue());
             }
         }
+        log.info("请求耗时(ms):" + (endTime - startTime));
+        Reporter.log("请求耗时(ms):" + (endTime - startTime));
         log.info("响应实体:" + responseEntity);
 
         return responseEntity;
