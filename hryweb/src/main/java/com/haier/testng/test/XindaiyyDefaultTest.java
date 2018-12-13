@@ -63,6 +63,18 @@ public class XindaiyyDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/virtual/hat_trick", dataProvider = "provider", description = "虚拟接口（三）")
+    public void virtual_hat_trick(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/virtual/Rakhim", dataProvider = "provider", description = "虚拟接口（二）")
+    public void virtual_Rakhim(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/virtual/sql", dataProvider = "provider", description = "虚拟接口执行sql语句")
     public void virtual_sql(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
