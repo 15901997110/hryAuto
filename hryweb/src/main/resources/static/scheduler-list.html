@@ -67,7 +67,7 @@
 			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
                     class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 			<a class="btn btn-primary radius" href="javascript:;"
-               onclick="custom_add('添加定制测试','custom-add.html','100%','100%')"><i class="Hui-iconfont">&#xe600;</i> 添加定制</a>
+               onclick="custom_add('添加任务','scheduler-add.html','100%','100%')"><i class="Hui-iconfont">&#xe600;</i> 添加任务</a>
 		</span>
         <span class="r">共有数据：<strong id="total"></strong> 条</span>
     </div>
@@ -138,89 +138,6 @@
 
         pageSkip(1);
 
-        //老的未分页的代码
-        /*$.ajax({
-            type: "post",
-            url: "/tcustom/selectTcustomCustomByCondition",
-            data: {
-                userid: userId
-            },
-            dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-
-                if (status == 0) {
-                    if (data.data == null) {
-                        var h = "<tr><td colspan='13' style='color:red;font-size:16px;text-align:center;border:0px'>没有数据！</td></td></tr>";
-                        $("#table").append(h);
-                        return;
-                    }
-                    var list = data.data;
-                    var total = list.length;
-                    //console.log(data);
-                    var html = "";
-                    for (var i = 0; i < list.length; i++) {
-                        var row = list[i];
-                        var customDetails = row.tcustomdetails;
-                        var ul = "";
-                        for (var k = 0; k < customDetails.length; k++) {
-                            var customDetail = customDetails[k];
-                            var serviceKey = "";
-                            var className = "";
-                            if (customDetail.classname != null) {
-                                className = customDetail.classname;
-                            }
-                            if (customDetail.clientlevel == 1) {
-                                //99%的情况 都不太可能直接定制整个类,所以"有定制"的说明暂时去掉
-                                //modify by luqiwei 20181015
-                                /!*                                if (customDetail.haschild == true) {
-                                                                    serviceKey = customDetail.clientname + "(有定制)-" + className;
-                                                                } else {
-                                                                    serviceKey = customDetail.clientname + "-" + className;
-                                                                }*!/
-                                serviceKey = customDetail.clientname + "-" + className;
-
-                            }
-                            var li = "<li>" + serviceKey + "</li>";
-                            ul = ul + li;
-                        }
-
-                        var strategy = "";
-                        if (row.strategy != null) {
-                            strategy = row.strategy;
-                        }
-
-
-                        var rowHtml = "<tr class=\"text-c\">\n" +
-                            "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>\n" +
-                            "<td>" + row.id + "</td>\n" +
-                            "<td>" + row.customname + "</td>\n" +
-                            /!* "<td>"+service+"</td>\n" +*!/
-                            "<td style='text-align: left;'><ul id='serv'>" + ul + "</ul></td>\n" +
-                            "<td>" + row.envkey + "</td>\n" +
-                            "<td>" + strategy + "</td>\n" +
-                            "<td> " + row.username + "</td>" +
-                            "<td class=\"f-14\">" +
-                            "<a title=\"运行\" href=\"javascript:;\" onclick=\"custom_run(" + row.id + ",'" + row.customname + "')\" class=\"ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html'," + row.id + ",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"custom_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
-                            "</td>\n" +
-                            "</tr>";
-                        html = html + rowHtml;
-                    }
-                    $("#total").append(total);
-                    $("#table").append(html);
-
-                } else {
-                    layer.alert(msg, {
-                        icon: 0,
-                        skin: 'layer-ext-moon'
-                    })
-                }
-                $("tr:odd").css("background-color", "AliceBlue");
-            }
-        });*/
 
     });
     function pageSkip(index) {
