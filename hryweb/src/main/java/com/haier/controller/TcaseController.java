@@ -176,6 +176,4 @@ public class TcaseController {
         Tcase tcase = tcaseService.selectOne(id);
         return this.runCase(tcase, userId);
     }
-
-
 }
