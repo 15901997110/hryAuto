@@ -160,6 +160,7 @@ public class TcaseController {
         if (tcase == null || tcase.getEnvid() == null) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行单条Case时,必须指定运行的环境");
         }
+        verifyJSON(tcase);
         return ResultUtil.success(tcaseService.runOne(tcase, userId));
     }
 
@@ -175,6 +176,4 @@ public class TcaseController {
         Tcase tcase = tcaseService.selectOne(id);
         return this.runCase(tcase, userId);
     }
-
-
 }

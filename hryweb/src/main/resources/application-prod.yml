@@ -1,7 +1,7 @@
 zdy:
-  reportPath: /opt/app_java1.8/testngReport/
+  reportPath: /opt/app/hryAuto/testngReport/
   resourcePathPattern: /test-output/
-  autoCodeDir: /opt/app_java1.8/autoCode/
+  autoCodeDir: /opt/app/hryAuto/autoCode/
   debug: false
 server:
   port: 8885
