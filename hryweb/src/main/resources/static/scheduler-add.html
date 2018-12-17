@@ -26,7 +26,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="customId" id="customId">
-                        <!--<option value="" selected>&#45;&#45;选择定制&#45;&#45;</option>-->
+                        <option value="" selected>--选择定制--</option>
                     </select>
 				</span>
             </div>
@@ -99,7 +99,14 @@
 
     //提交表单
     $("#submit").click(function(){
-        $("")
+        var customId=$("#customId").val();
+        var group=$("#jobGroup").val();
+        var cronExp=$("#cronExp").val();
+        layerIndex = layer.load(1, {shade: [0.01, '#fff']});
+        $.ajax({
+            type:"post",
+            url:"/"
+        });
     });
 
     //初始化处理
