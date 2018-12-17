@@ -32,7 +32,7 @@
 </nav>
 <div class="page-container">
     <!--查询条件Html-->
-    <div style="margin-left:10px;margin-top: 10px">
+   <!-- <div style="margin-left:10px;margin-top: 10px">
         <label style="margin-left:30px;">id：</label>
         <input type="number" name="query_custom_id" id="query_custom_id"
                placeholder=" 定制id" style="width:5%"
@@ -44,13 +44,13 @@
         <label style="margin-left:30px;">环境：</label>
         <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="query_custom_env" id="query_custom_env">
-                    <option value="" selected>--请选择--</option>
+                    <option value="" selected>&#45;&#45;请选择&#45;&#45;</option>
                 </select>
             </span>
         <label style="margin-left:30px;">定制人：</label>
         <span class="select-box" style="width:8%">
                 <select class="select" size="1" name="query_custom_user" id="query_custom_user">
-                    <option value="" selected>--请选择--</option>
+                    <option value="" selected>&#45;&#45;请选择&#45;&#45;</option>
                 </select>
             </span>
         <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button"
@@ -60,14 +60,14 @@
                 onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空
         </button>
     </div>
-
+-->
     <!--列表表头及分页Html-->
     <div class="cl pd-5 bg-1 bk-gray mt-10">
 		<span class="l">
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
+			<a href="javascript:;" class="btn btn-danger radius"><i
                     class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 			<a class="btn btn-primary radius" href="javascript:;"
-               onclick="custom_add('添加任务','scheduler-add.html','100%','100%')"><i class="Hui-iconfont">&#xe600;</i> 添加任务</a>
+               onclick="custom_add('添加任务','scheduler-add.html','60%','60%')"><i class="Hui-iconfont">&#xe600;</i> 添加任务</a>
 		</span>
         <span class="r">共有数据：<strong id="total"></strong> 条</span>
     </div>
@@ -129,7 +129,7 @@
     });
 
     //初始化
-    $(document).ready(function () {
+   /* $(document).ready(function () {
         env_selectEle_init("query_custom_env");
         user_selectEle_init("query_custom_user");
         var userId = $.cookie('uidCookie');
@@ -139,7 +139,7 @@
         pageSkip(1);
 
 
-    });
+    });*/
     function pageSkip(index) {
         if (index == 0) {
             return;

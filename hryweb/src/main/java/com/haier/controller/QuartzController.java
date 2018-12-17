@@ -27,13 +27,13 @@ public class QuartzController {
     public Result addJob() throws SchedulerException {
         /*SchedulerFactory factory=new StdSchedulerFactory();*/
         /*Scheduler scheduler=factory.getScheduler();*/
-        JobDetail jobDetail= JobBuilder.newJob(HelloJob.class).withIdentity("myClassName","myGroupName")
+/*        JobDetail jobDetail= JobBuilder.newJob(HelloJob.class).withIdentity("myClassName","myGroupName")
                 .build();
         SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("triggerName", "triggerGroup").startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).withRepeatCount(1000))
                 .build();
         scheduler.scheduleJob(jobDetail,trigger);
-        scheduler.start();
+        scheduler.start();*/
         return null;
     }
 

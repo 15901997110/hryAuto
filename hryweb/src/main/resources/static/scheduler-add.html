@@ -14,80 +14,45 @@
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin"/>
     <link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css"/>
+    <link rel="stylesheet" href="lib/select2/select2.min.css">
 
-
-    <style type="text/css">
-        dl input[type=text] {
-            width: 45px;
-            height: 22px;
-            margin-right: 10px;
-            font-size: medium;
-        }
-
-        dl input[type=checkbox] {
-            width: 22px;
-            height: 22px;
-        }
-
-        dl select {
-            margin-left: 100px;
-            font-size: 15px;
-            width: 180px;
-            height: 30px;
-        }
-    </style>
     <title>新增任务</title>
 </head>
 <body>
 <article class="page-container">
-    <form method="post" class="form form-horizontal" id="form-admin-role-add">
+    <form class="form form-horizontal" id="form-admin-role-add">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>定制名称：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="customname" name="customname">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>定制：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>任务：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
-                    <select class="select" size="1" name="env" id="env">
-                        <option value="" selected>请选择环境</option>
+                    <select class="select" size="1" name="customId" id="customId">
+                        <!--<option value="" selected>&#45;&#45;选择定制&#45;&#45;</option>-->
                     </select>
 				</span>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>运行方式：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>任务组：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <span class="select-box">
-                    <select class="select" size="1" name="intersect" id="intersect">
-                        <option value="0" selected>顺序</option>
-                        <option value="1">交叉</option>
-                    </select>
-				</span>
+                <input type="text" class="input-text" value="" placeholder="任务组" id="jobGroup" name="jobGroup">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">运行策略：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>CronExpression：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea id="strategy" name="strategy" cols="" rows="" class="textarea valid"
-                          placeholder="请输入运行策略..."></textarea>
+                <input type="text" class="input-text" value="" placeholder="Cron表达式" id="cronExp" name="cronExp">
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>服务-接口-用例：</label>
-            <div class="formControls col-xs-8 col-sm-9" id="services">
-            </div>
-        </div>
+
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
-                        onclick="addCustom()"><i class="icon-ok"></i> 提交
+                <button type="button" id="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
+                        ><i class="icon-ok"></i> 提交
                 </button>
                 <button type="button" class="btn btn-success radius" id="admin-role-close" name="admin-role-close"
                         onclick="layer_close()"><i class="icon-ok"></i> 关闭
                 </button>
+                <!--<button class="btn" data-dismiss="modal" aria-hidden="true" onclick="layer_close()">关闭</button>-->
             </div>
         </div>
     </form>
@@ -104,6 +69,8 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="lib/select2/select2.full.js"></script>
+<script type="text/javascript" src="lib/select2/pinyin.js"></script>
 
 <script type="text/javascript">
     //loading
@@ -123,132 +90,144 @@
         });
     });
 
-    //初始化处理
     $(document).ready(function () {
-        var skip = getParameter('skip');
-        var cId = getParameter('id');
-        debugger;
-        if(skip == 1){
-            var obj = new Object();
-            obj.id = cId;
-            var json = JSON.stringify(obj);
-            $.ajax({
-                type: "post",
-                url: "/tcustom/selectOne",
-                data: json,
-                dataType: "json",
-                contentType: 'application/json;charset=utf-8',
-                success: function (data) {
-                    var status = data.status;
-                    var msg = data.msg;
-                    var serviceList = getServiceList();
-                    if (status == 0) {
-                        var resData = data.data;
-                        $("#customname").val(resData.customname);
-                        env_selectEle_init("env");
-                        $("#env").val(resData.envid);
-                        $("#intersect").val(resData.intersect);
-                        $("#strategy").val(resData.strategy);
-                        $("#customUser").val(resData.username);
-                        debugger;
-                        var services = "";
-                        for (var i = 0; i < serviceList.length; i++) {
-                            var row = serviceList[i];
-                            var tClassList = getTClassListByServiceKey(row.servicekey);
-                            var tClassHtml = "";
-                            for (var m = 0; m < tClassList.length; m++) {
-                                tClassHtml += "<option>" + tClassList[m] + "</option>\n";
-                            }
-                            var rowHtml = "<dl class=\"permission-list\" id='service-" + row.id + "' style='width: 80%;'>\n" +
-                                "<dt>\n" +
-                                "<input type='text' id='ps_" + row.id + "' value='0'/>" +
-                                "<label style='width:100px;display:inline-block;'>" +
-                                "<input type=\"checkbox\" value=\"" + row.id + "\" name=\"service\" id=\"serviceBox-" + row.id + "\" onclick='clearAll(this," + row.id + ")'/>" + row.servicekey + "</label>\n" +
-                                "<select id='tClass-" + row.id + "'><option>请选择测试类</option>" + tClassHtml + "</select>\n" +
-                                "<label id='show-" + row.id + "'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread(" + row.id + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
-                                "</dt>\n" +
-                                "</dl>";
-                            services = services + rowHtml;
-                        }
-                        $("#services").append(services);
+        //初始化定制数据源
+        custom_selectEle_init("customId");
+        $("#jobGroup").val($.cookie("realnameCookie"));
+        layer.close(layerIndex);
+    });
 
-                        var tCustomDetails = resData.tcustomdetails;
-                        //先将服务展开,并且选中服务和测试类
-                        for (var j = 0; j < tCustomDetails.length; j++) {
-                            var tCustomDetail = tCustomDetails[j];
-                            if (tCustomDetail.clientlevel == 1) {
-                                var serviceId = tCustomDetail.clientid;
-                                var hasChild = tCustomDetail.haschild;
-                                if (hasChild) {
-                                    spread(serviceId);
+    //提交表单
+    $("#submit").click(function(){
+        $("")
+    });
+
+    //初始化处理
+    /*    $(document).ready(function () {
+            var skip = getParameter('skip');
+            var cId = getParameter('id');
+            debugger;
+            if(skip == 1){
+                var obj = new Object();
+                obj.id = cId;
+                var json = JSON.stringify(obj);
+                $.ajax({
+                    type: "post",
+                    url: "/tcustom/selectOne",
+                    data: json,
+                    dataType: "json",
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (data) {
+                        var status = data.status;
+                        var msg = data.msg;
+                        var serviceList = getServiceList();
+                        if (status == 0) {
+                            var resData = data.data;
+                            $("#customname").val(resData.customname);
+                            env_selectEle_init("env");
+                            $("#env").val(resData.envid);
+                            $("#intersect").val(resData.intersect);
+                            $("#strategy").val(resData.strategy);
+                            $("#customUser").val(resData.username);
+                            debugger;
+                            var services = "";
+                            for (var i = 0; i < serviceList.length; i++) {
+                                var row = serviceList[i];
+                                var tClassList = getTClassListByServiceKey(row.servicekey);
+                                var tClassHtml = "";
+                                for (var m = 0; m < tClassList.length; m++) {
+                                    tClassHtml += "<option>" + tClassList[m] + "</option>\n";
                                 }
-                                $("#ps_" + serviceId).val(tCustomDetail.priority);
-                                $("#serviceBox-" + serviceId + "").prop("checked", true);
-                                var tClass = tCustomDetail.classname;
-                                $("#tClass-" + serviceId + "").children("option").each(function () {
-                                    var temp_value = $(this).val();
-                                    if (temp_value == tClass) {
-                                        $(this).attr("selected", "selected");
+                                var rowHtml = "<dl class=\"permission-list\" id='service-" + row.id + "' style='width: 80%;'>\n" +
+                                    "<dt>\n" +
+                                    "<input type='text' id='ps_" + row.id + "' value='0'/>" +
+                                    "<label style='width:100px;display:inline-block;'>" +
+                                    "<input type=\"checkbox\" value=\"" + row.id + "\" name=\"service\" id=\"serviceBox-" + row.id + "\" onclick='clearAll(this," + row.id + ")'/>" + row.servicekey + "</label>\n" +
+                                    "<select id='tClass-" + row.id + "'><option>请选择测试类</option>" + tClassHtml + "</select>\n" +
+                                    "<label id='show-" + row.id + "'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread(" + row.id + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
+                                    "</dt>\n" +
+                                    "</dl>";
+                                services = services + rowHtml;
+                            }
+                            $("#services").append(services);
+
+                            var tCustomDetails = resData.tcustomdetails;
+                            //先将服务展开,并且选中服务和测试类
+                            for (var j = 0; j < tCustomDetails.length; j++) {
+                                var tCustomDetail = tCustomDetails[j];
+                                if (tCustomDetail.clientlevel == 1) {
+                                    var serviceId = tCustomDetail.clientid;
+                                    var hasChild = tCustomDetail.haschild;
+                                    if (hasChild) {
+                                        spread(serviceId);
                                     }
-                                });
+                                    $("#ps_" + serviceId).val(tCustomDetail.priority);
+                                    $("#serviceBox-" + serviceId + "").prop("checked", true);
+                                    var tClass = tCustomDetail.classname;
+                                    $("#tClass-" + serviceId + "").children("option").each(function () {
+                                        var temp_value = $(this).val();
+                                        if (temp_value == tClass) {
+                                            $(this).attr("selected", "selected");
+                                        }
+                                    });
+                                }
                             }
-                        }
 
-                        //选中接口和用例
-                        for (var j = 0; j < tCustomDetails.length; j++) {
-                            var tCustomDetail = tCustomDetails[j];
-                            var clientId = tCustomDetail.clientid;
-                            if (tCustomDetail.clientlevel == 2) {
-                                $("#pi_" + clientId).val(tCustomDetail.priority);
-                                $("#tiBox-" + clientId + "").prop("checked", true);
-                            } else if (tCustomDetail.clientlevel == 3) {
-                                $("#pc_" + clientId).val(tCustomDetail.priority);
-                                $("#caseBox-" + clientId + "").prop("checked", true);
+                            //选中接口和用例
+                            for (var j = 0; j < tCustomDetails.length; j++) {
+                                var tCustomDetail = tCustomDetails[j];
+                                var clientId = tCustomDetail.clientid;
+                                if (tCustomDetail.clientlevel == 2) {
+                                    $("#pi_" + clientId).val(tCustomDetail.priority);
+                                    $("#tiBox-" + clientId + "").prop("checked", true);
+                                } else if (tCustomDetail.clientlevel == 3) {
+                                    $("#pc_" + clientId).val(tCustomDetail.priority);
+                                    $("#caseBox-" + clientId + "").prop("checked", true);
+                                }
                             }
+
+                            layer.close(layerIndex);
+
+                        } else {
+                            layer.close(layerIndex);
+                            layer.alert(msg, {
+                                icon: 0,
+                                skin: 'layer-ext-moon'
+                            })
                         }
-
-                        layer.close(layerIndex);
-
-                    } else {
-                        layer.close(layerIndex);
-                        layer.alert(msg, {
-                            icon: 0,
-                            skin: 'layer-ext-moon'
-                        })
                     }
+                });
+            }
+            var serviceList = getServiceList();
+            env_selectEle_init("env");
+            var services = "";
+            for (var i = 0; i < serviceList.length; i++) {
+                var row = serviceList[i];
+                var tClassList = getTClassListByServiceKey(row.servicekey);
+                var tClassHtml = "";
+                for (var m = 0; m < tClassList.length; m++) {
+                    var tClass = tClassList[m];
+                    var tClassOption = "<option>" + tClass + "</option>";
+                    tClassHtml = tClassHtml + tClassOption;
+
                 }
-            });
-        }
-        var serviceList = getServiceList();
-        env_selectEle_init("env");
-        var services = "";
-        for (var i = 0; i < serviceList.length; i++) {
-            var row = serviceList[i];
-            var tClassList = getTClassListByServiceKey(row.servicekey);
-            var tClassHtml = "";
-            for (var m = 0; m < tClassList.length; m++) {
-                var tClass = tClassList[m];
-                var tClassOption = "<option>" + tClass + "</option>";
-                tClassHtml = tClassHtml + tClassOption;
+                var rowHtml = "<dl class=\"permission-list\" id='service-" + row.id + "' style='width: 80%;'>\n" +
+                    "<dt>\n" +
+                    "<input type='text' id='ps_" + row.id + "' value='0'/>" +
+                    "<label style=' width: 100px;display:inline-block;'>" +
+                    "<input type=\"checkbox\" value=\"" + row.id + "\" name=\"service\" id=\"serviceBox-" + row.id + "\" onclick='clearAll(this," + row.id + ")'>" + row.servicekey + "</label>\n" +
+                    "<select id='tClass-" + row.id + "'><option>请选择测试类</option>" + tClassHtml + "</select>\n" +
+                    "<label id='show-" + row.id + "'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread(" + row.id + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
+                    "</dt>\n" +
+                    "</dl>";
+                services = services + rowHtml;
 
             }
-            var rowHtml = "<dl class=\"permission-list\" id='service-" + row.id + "' style='width: 80%;'>\n" +
-                "<dt>\n" +
-                "<input type='text' id='ps_" + row.id + "' value='0'/>" +
-                "<label style=' width: 100px;display:inline-block;'>" +
-                "<input type=\"checkbox\" value=\"" + row.id + "\" name=\"service\" id=\"serviceBox-" + row.id + "\" onclick='clearAll(this," + row.id + ")'>" + row.servicekey + "</label>\n" +
-                "<select id='tClass-" + row.id + "'><option>请选择测试类</option>" + tClassHtml + "</select>\n" +
-                "<label id='show-" + row.id + "'><a title=\"展开\" href=\"javascript:0;\" onclick=\"spread(" + row.id + ")\" class=\"ml-5\" style=\"float:right;text-decoration:none;margin-right:8px;\"><i style='font-size: 18px;' class=\"Hui-iconfont\">&#xe698;</i></a></label>\n" +
-                "</dt>\n" +
-                "</dl>";
-            services = services + rowHtml;
+            $("#services").append(services);
 
-        }
-        $("#services").append(services);
+            layer.close(layerIndex);
 
-        layer.close(layerIndex);
-
-    });
+        });*/
 
     //展开处理
     function spread(serviceId) {
@@ -269,16 +248,16 @@
                 for (var k = 0; k < tcases.length; k++) {
                     var tcase = tcases[k];
                     var tcastreamark = tcase.remark;
-                    if (tcastreamark==null){
-                        tcastreamark="";
+                    if (tcastreamark == null) {
+                        tcastreamark = "";
                     }
                     caseHtml += "<dd>\n" +
                         "<dl id='case-" + tcase.id + "' style=''\n" +
                         "<dt>\n" +
                         "<input type='text' id='pc_" + tcase.id + "' value='0' style='height:16px'/>" +
-                        "<label style='font-size:12px;' title='"+ tcastreamark +"'>" +
+                        "<label style='font-size:12px;' title='" + tcastreamark + "'>" +
                         "<input style='width:16px;height: 16px;' type=\"checkbox\" value=\"" + tcase.id + "\" name=\"tcase-" + serviceId + "-" + row.id + "\" id=\"caseBox-" + tcase.id + "\" onclick='caseChecked(this," + row.id + "," + serviceId + ")'>"
-                        + tcase.casename + "("+"<a title=\"用例编辑\" href=\"javascript:void(0);\" onclick=\"tcase_edit('用例编辑','tcase-edit.html','" + tcase.id + "','1')\" style=\"text-decoration: underline;color:#0000ff;\" >" + tcase.id + "</a>" + "-" + tcase.author +")</label>\n" +
+                        + tcase.casename + "(" + "<a title=\"用例编辑\" href=\"javascript:void(0);\" onclick=\"tcase_edit('用例编辑','tcase-edit.html','" + tcase.id + "','1')\" style=\"text-decoration: underline;color:#0000ff;\" >" + tcase.id + "</a>" + "-" + tcase.author + ")</label>\n" +
                         "</dt>\n" +
                         "</dl>\n" +
                         "</dd>";
@@ -378,9 +357,10 @@
         }
 
     }
+
     /*用例-编辑*/
-    function tcase_edit(title, url, id,skip) {
-        url = url + "?id=" + id+"&skip="+skip;
+    function tcase_edit(title, url, id, skip) {
+        url = url + "?id=" + id + "&skip=" + skip;
         layer_show(title, url);
     }
 
@@ -394,11 +374,11 @@
     function addCustom() {
         var customname = $("#customname").val();
         var env = $("#env").val();
-        var envKey=$("#env").find("option:selected").text();
+        var envKey = $("#env").find("option:selected").text();
         var strategy = $("#strategy").val();
         var userid = $.cookie('uidCookie');
-        var userName=$.cookie("realnameCookie");
-        var intersect=$("#intersect").val();
+        var userName = $.cookie("realnameCookie");
+        var intersect = $("#intersect").val();
 
         var service = new Array();
         $("#services :checkbox:checked").each(function (i) {
@@ -413,8 +393,8 @@
                 s.clientlevel = 1;
                 s.clientid = value;
                 /*s.clientname=getServiceKey(value);*/
-                var ps=$("#ps_"+value).val();
-                s.priority=ps;
+                var ps = $("#ps_" + value).val();
+                s.priority = ps;
                 var innerText = document.getElementById("serviceBox-" + value).parentNode.innerText;
                 s.clientname = innerText;
                 s.classname = tClass;
@@ -434,8 +414,8 @@
                 s.clientid = value;
                 // s.clientname=ti.iuri;
                 // s.parentclientid=ti.serviceid;
-                var pi=$("#pi_"+value).val();
-                s.priority=pi;
+                var pi = $("#pi_" + value).val();
+                s.priority = pi;
                 var tiLabel = document.getElementById("tiBox-" + value);
                 var tiInnerText = tiLabel.parentNode.innerText;
                 var clientName = tiInnerText.substring(0, tiInnerText.indexOf("("));
@@ -461,8 +441,8 @@
                 s.clientid = value;
                 // s.clientname=tcase.casename;
                 // s.parentclientid=tcase.iid;
-                var pc=$("#pc_"+value).val();
-                s.priority=pc;
+                var pc = $("#pc_" + value).val();
+                s.priority = pc;
                 var tcaseLabel = document.getElementById("caseBox-" + value);
                 var tcaseInnerText = tcaseLabel.parentNode.innerText;
                 var tcaseclientname = tcaseInnerText.substring(0, tcaseInnerText.indexOf("("));
@@ -490,11 +470,11 @@
             var obj = new Object();
             obj.customname = customname;
             obj.userid = userid;
-            obj.username=userName;
+            obj.username = userName;
             obj.envid = env;
-            obj.envkey=envKey;
+            obj.envkey = envKey;
             obj.strategy = strategy;
-            obj.intersect=intersect;
+            obj.intersect = intersect;
             obj.tcustomdetails = service;
             var json = JSON.stringify(obj);
             console.log(json);

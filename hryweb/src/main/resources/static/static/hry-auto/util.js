@@ -670,6 +670,27 @@ function getEnvList() {
     return envList;
 }
 
+function getCustomList() {
+    var list = null;
+    $.ajaxSetup({async: false});
+    $.ajax({
+        type: "post",
+        url: "/tcustom/selectByCondition",
+        data: {},
+        dataType: "json",
+        success: function (resp) {
+            list = resp.data;
+        },
+        fail: function (resp) {
+            alert(JSON.stringify(resp));
+        },
+        error: function (resp) {
+            alert('error:' + JSON.stringify(resp));
+        }
+    });
+    return list;
+}
+
 
 /**
  * 用户相关的请求
@@ -934,14 +955,14 @@ function getReplaceEnumList() {
  * 设置requestParam的<触发事件
  * */
 function setRequestParameter() {
-    var replaceObj=getReplaceEnumList();
-    for(var i = 0;i < replaceObj.length; i++){
+    var replaceObj = getReplaceEnumList();
+    for (var i = 0; i < replaceObj.length; i++) {
         // names[i] = names[i].replace("<","").replace(">","");
-        replaceObj[i].example = replaceObj[i].example.replace("<","&lt;").replace(">","&gt;");
+        replaceObj[i].example = replaceObj[i].example.replace("<", "&lt;").replace(">", "&gt;");
     }
     var names = $.map(replaceObj, function (replaceObj, i) {
         //return {'id':i, 'name':"<"+value+">", 'email': value};
-        return {'id':i, 'name':replaceObj.example, 'email':replaceObj.desc};
+        return {'id': i, 'name': replaceObj.example, 'email': replaceObj.desc};
     });
     var at_config = {
         at: "<",
@@ -1001,6 +1022,7 @@ function service_selectEle_init(html_serviceId) {
     }
 }
 
+
 /**
  * 初始化用户下拉框列表,将option填充为<option value=userId>realName</option>,并且将select标签渲染为select2
  *
@@ -1008,18 +1030,38 @@ function service_selectEle_init(html_serviceId) {
  */
 function user_selectEle_init(html_userId) {
     var users = getCustomUsers();
-    var user_select_options = null;
+    var user_select_options = "";
     for (var i = 0; i < users.length; i++) {
         user_select_options += "<option value='" + users[i].id + "'>" + users[i].realname + "</option>";
     }
-    if (user_select_options != null) {
+    if (user_select_options != "") {
         try {
             $("#" + html_userId).append(user_select_options);
             $("#" + html_userId).select2();
         } catch (e) {
-            console.log("初始化用户列表抵账:" + e);
+            console.error("初始化用户列表失败:" + e);
         }
     }
+}
+
+function custom_selectEle_init(ele_customId) {
+    var customList = getCustomList();
+    var options = "";
+    for (var i = 0; i < customList.length; i++) {
+        options += "<option value='" + customList[i].id + "'>"
+            + "(" + customList[i].id + "_" + customList[i].username + "_" + customList[i].envkey + ")"
+            + customList[i].customname + "</option>";
+    }
+    if (options != "") {
+        try {
+            $("#" + ele_customId).append(options);
+            $("#" + ele_customId).select2();
+        }
+        catch (e) {
+            console.error("初始化定制列表下拉失败:" + e)
+        }
+    }
+
 }
 
 
