@@ -135,6 +135,7 @@ public class AssertUtil {
     }
 
     public static void supperAssert(String actual, HryTest test) {
+        log.info("---4.断言-开始");
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
         if (bean.getDebug()) {
             Reporter.log("debug模式时直接断言通过!");
@@ -145,6 +146,8 @@ public class AssertUtil {
             return;
         }
         supperAssert(test.getTcase().getAsserttype(), test.getTcase().getExpected(), actual, test.getTi().getIresponsetype());
+        log.info("---4.断言-结束");
+        log.info("+++++++++++++++++++++++++++++++++++++");
     }
 
     public static Boolean isMatch(JSONObject actual, Map<String, Object> expected) {

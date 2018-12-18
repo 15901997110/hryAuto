@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.DataProvider;
 
 import java.lang.reflect.Method;
@@ -36,7 +35,7 @@ import java.util.Map;
  * 需要想一想有没有兼容的办法...
  */
 //@SpringBootTest(classes = {Application.class})
-public class Base extends AbstractTestNGSpringContextTests {
+public class Base /*extends AbstractTestNGSpringContextTests*/ {
     public Integer serviceId;
     public Integer envId;
     public String caseDesigner;
@@ -77,7 +76,7 @@ public class Base extends AbstractTestNGSpringContextTests {
 
         LoginUtil.loginInit(this);
 
-        log.info("Base带参构造器执行完成!");
+        log.info("######测试类" + this.getClass().getSimpleName() + "初始化完成!!!######");
 
     }
 
