@@ -6,8 +6,6 @@ import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
 import com.haier.anno.SKey;
 import com.haier.config.SpringContextHolder;
-import com.haier.enums.StatusCodeEnum;
-import com.haier.exception.HryException;
 import com.haier.po.*;
 import com.haier.service.TcaseService;
 import com.haier.service.TiService;
@@ -160,7 +158,7 @@ public class LoginUtil {
         try {
             HttpClientUtil.post(config);
         } catch (HttpProcessException e) {
-            e.printStackTrace();
+            log.error("Xindaiyy请求登录接口异常:", e);
         }
 
         String hostinfo = tservicedetail.getHostinfo();
@@ -195,6 +193,7 @@ public class LoginUtil {
             log.error("联合登录失败");
             return;
         }
+        log.info("cbp联合登录成功!");
         //设置登录cookie到测试类中,后续测试类执行测试时将会优先检查cookie
         entity.cookieStore = cookieStore;
     }

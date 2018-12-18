@@ -121,8 +121,8 @@ public class HryHttpClientUtil {
                 Reporter.log("  " + h.getName() + ":" + h.getValue());
             }
         }
-        log.info("请求耗时(ms):" + (endTime - startTime));
-        Reporter.log("请求耗时(ms):" + (endTime - startTime));
+        log.info("请求耗时(s):" + (endTime - startTime) / 1000d);
+        Reporter.log("请求耗时(s):" + (endTime - startTime) / 1000d);
         log.info("响应实体:" + responseEntity);
 
         return responseEntity;
@@ -148,16 +148,18 @@ public class HryHttpClientUtil {
          * 接口测试开始
          */
         log.info("");
-        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "开始------------------");
-
+        log.info("+++++++++++++++++++++++++++++++++++++");
+        log.info("开始测试接口:" + test.getTi().getIuri());
+        log.info("接口所属服务:" + test.getTservice().getServicekey());
+        log.info("使用测试用例:" + test.getTcase().getId());
 
         /**
          * 前置处理
          */
-        log.info("--------前置处理Start-----------");
+        log.info("---1.前置处理-开始");
         String param = ReplaceUtil.replaceBefore(test.getTcase().getRequestparam(), test.getTservicedetail().getDbinfo(), entity);
-        log.info("--------前置处理End-------------");
-        log.info("--------httpClientStart--------");
+        log.info("---1.前置处理-结束");
+        log.info("---2.发送请求-开始");
         //如果是虚拟接口,则只进行前置处理,不会发送http请求和后置处理
         if (virtualInterfaceFlag) {
             Reporter.log("实际请求参数:" + param);
@@ -182,18 +184,16 @@ public class HryHttpClientUtil {
                 requestHeaders,
                 entity == null ? null : entity.cookieStore
         );
-
+        log.info("---2.发送请求-结束");
 
         /**
          * 后置处理
          */
-        log.info("--------httpClientEnd----------");
-        log.info("--------后置处理Start-----------");
+
+        log.info("---3.后置处理-开始");
         ReplaceUtil.replaceAfter(test.getTcase().getCafter(), responseBody, test.getTservicedetail().getDbinfo(), entity);
-        log.info("--------后置处理End-------------");
-        log.info("--------------s=" + test.getTservice().getServicekey() + " i=" + test.getTi().getIuri() + " c=" + test.getTcase().getId() + "结束------------------");
-
-
+        log.info("---3.后置处理-结束");
+//        log.info("+++++++++++++++++++++++++++++++++++++");
         return responseBody;
 
     }
