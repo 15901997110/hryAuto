@@ -196,8 +196,8 @@
         var id = $("#id").val();
         var serviceKey = $("#serviceKey").val();
         var remark = $("#remark").val();
-        var iuri = $("#iuri").val();
-        var idev = $("#idev").val();
+        var iUri = $("#iuri").val();
+        var iDev = $("#idev").val();
         var caseCount = $("#casecount").val();
         var allEnum = getAllEnum();
         var ContentTypeEnum = allEnum.ContentTypeEnum;
@@ -208,8 +208,8 @@
             url: "/ti/selectByCondition",
             data: {
                 id: id,
-                iuri: iuri,
-                idev: idev,
+                iuri: iUri,
+                idev: iDev,
                 casecount: caseCount,
                 serviceid: serviceKey,
                 remark: remark,
@@ -229,34 +229,35 @@
                     $("#interfaceList").html("");
 
                     for (var i = 0; i < list.length; i++) {
-                        var row = list[i];
-                        var irequestmethod = "";
-                        if (row.irequestmethod == 1) {
-                            irequestmethod = "post";
-                        } else if (row.irequestmethod == 2) {
-                            irequestmethod = "get";
+                        var ti = list[i];
+                        var iRequestMethod = "";
+                        if (ti.irequestmethod == 1) {
+                            iRequestMethod = "post";
+                        } else if (ti.irequestmethod == 2) {
+                            iRequestMethod = "get";
                         }
 
                         var remark = "";
-                        if (row.remark != null) {
-                            remark = row.remark;
+                        if (ti.remark != null) {
+                            remark = ti.remark;
                         }
 
                         var iContentType = "";
                         for (var m = 0; m < ContentTypeEnum.length; m++) {
                             var row1 = ContentTypeEnum[m];
-                            if (row.icontenttype == row1.id) {
+                            if (ti.icontenttype == row1.id) {
                                 iContentType = row1.value;
                             }
                         }
                         var trColor = "#f93e3e";
                         var trStyle = "";
-                        var caseCountHtml = "<a title=\"查看用例\" href=\"javascript:void(0);\" onclick=\"tcase_list('我的用例','tcase-list.html','" + row.id + "')\" style=\"text-decoration: underline;color:#0000ff;\" >" + row.casecount + "</a>"
-                        if (row.casecount == 0) {
+                        var caseCountHtml = "<a title=\"查看用例\" href=\"javascript:void(0);\" onclick=\"tcase_list('我的用例','tcase-list.html','" + ti.id + "')\" style=\"text-decoration: underline;color:#0000ff;\" >" + ti.casecount + "</a>"
+                        if (ti.casecount == 0) {
                             trStyle = "style=\"color: " + trColor + "\";";
-                            caseCountHtml = row.casecount;
+                            caseCountHtml = ti.casecount;
                         }
-
+                        var iDev = ti.idev == null ? "" : ti.idev;
+                        //console.log("iDev:"+iDev);
                         /** 请求参数类型和返回值类型由于现在100%都是JSON,所以在列表中隐藏这两个字段,详情页仍可见*/
                         /*var iParamType = "";
                         for (var n = 0; n < ResponseTypeEnum.length; n++) {
@@ -276,22 +277,22 @@
 
                         var rowHtml = "<tr class=\"text-c\" " + trStyle + ">\n" +
                             "<td><input name=\"\" type=\"checkbox\" value=\"\"></td>\n" +
-                            "<td>" + row.id + "</td>\n" +
-                            "<td>" + row.servicekey + "</td>\n" +
-                            "<td style=\"text-align:left;\">" + row.iuri + "</td>\n" +
+                            "<td>" + ti.id + "</td>\n" +
+                            "<td>" + ti.servicekey + "</td>\n" +
+                            "<td style=\"text-align:left;\">" + ti.iuri + "</td>\n" +
                             "<td >" + remark + "</td>\n" +
-                            "<td >" + irequestmethod + "</td>\n" +
+                            "<td >" + iRequestMethod + "</td>\n" +
                             "<td>" + iContentType + "</td>\n" +
                             /* "<td>" + iParamType + "</td>\n" +
                              "<td>" + iResponseType + "</td>\n" +*/
-                            "<td>" + (row.iDev == null ? "" : row.iDev) + "</td>\n" +
+                            "<td>" + iDev + "</td>\n" +
                             "<td>" + caseCountHtml + "</td>\n" +
-                            "<td>" + row.updatetime + "</td>\n" +
+                            "<td>" + ti.updatetime + "</td>\n" +
                             "<td class=\"f-14\">" +
-                            "<a title=\"新增用例\" href=\"javascript:;\" onclick=\"tcase_add('新增用例','tcase-add.html'," + row.serviceid + ",'" + row.id + "','" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6f2; </i></a>" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html'," + row.id + ",'" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>" +
-                            "<a title=\"作废\" href=\"javascript:;\" onclick=\"ti_cancel(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6a6;</i></a>" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this," + row.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+                            "<a title=\"新增用例\" href=\"javascript:;\" onclick=\"tcase_add('新增用例','tcase-add.html'," + ti.serviceid + ",'" + ti.id + "','" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6f2; </i></a>" +
+                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"ti_edit('接口编辑','ti-edit.html'," + ti.id + ",'" + width + "','" + height + "')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>" +
+                            "<a title=\"作废\" href=\"javascript:;\" onclick=\"ti_cancel(this," + ti.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6a6;</i></a>" +
+                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"ti_del(this," + ti.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
                             "</td>\n" +
                             "</tr>";
                         html = html + rowHtml;
