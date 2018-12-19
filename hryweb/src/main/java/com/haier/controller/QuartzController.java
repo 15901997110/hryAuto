@@ -1,6 +1,5 @@
 package com.haier.controller;
 
-import com.haier.job.HelloJob;
 import com.haier.response.Result;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
