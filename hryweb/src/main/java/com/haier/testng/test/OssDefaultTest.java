@@ -57,12 +57,6 @@ public class OssDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
-    @Test(testName = "/commonFacade/addBlcakList", dataProvider = "provider", description = "加入黑名单")
-    public void commonFacade_addBlcakList(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
     @Test(testName = "/commonFacade/executeTask", dataProvider = "provider", description = "执行任务")
     public void commonFacade_executeTask(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -281,12 +275,6 @@ public class OssDefaultTest extends Base{
 
     @Test(testName = "/consolePromotionFacade/getPromotionRewardsInfo", dataProvider = "provider", description = "查询推广活动奖励统计信息")
     public void consolePromotionFacade_getPromotionRewardsInfo(HryTest test) {
-        String actual = HryHttpClientUtil.send(test, this);
-        supperAssert(actual, test);
-    }
-
-    @Test(testName = "/consolePromotionFacade/queryBlackList", dataProvider = "provider", description = "查询黑名单")
-    public void consolePromotionFacade_queryBlackList(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }

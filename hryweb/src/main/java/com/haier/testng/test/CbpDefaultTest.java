@@ -189,6 +189,12 @@ public class CbpDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/cbp-api/resource/com.cbp.biz.dealerWill.facade.rs.DealerWillResource/createDealerWill", dataProvider = "provider", description = "万链数据推送")
+    public void cbp_api_resource_com_cbp_biz_dealerWill_facade_rs_DealerWillResource_createDealerWill(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/cbp-api/resource/com.cbp.biz.hryLoan.facade.rs.HryLoanResource/createHryLoan", dataProvider = "provider", description = "借款人融资申请")
     public void cbp_api_resource_com_cbp_biz_hryLoan_facade_rs_HryLoanResource_createHryLoan(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);

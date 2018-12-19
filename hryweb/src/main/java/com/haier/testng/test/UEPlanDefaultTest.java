@@ -99,6 +99,18 @@ public class UEPlanDefaultTest extends Base{
         supperAssert(actual, test);
     }
 
+    @Test(testName = "/uePlanConsoleFacade/getUeProductLimit", dataProvider = "provider", description = "查询优易智投服务某日限额信息")
+    public void uePlanConsoleFacade_getUeProductLimit(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/uePlanConsoleFacade/queryMatchInvestOrder", dataProvider = "provider", description = "查询优易智投匹配记录")
+    public void uePlanConsoleFacade_queryMatchInvestOrder(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
     @Test(testName = "/uePlanConsoleFacade/queryUeAuthOrderList", dataProvider = "provider", description = "查询授权订单信息列表")
     public void uePlanConsoleFacade_queryUeAuthOrderList(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
@@ -119,6 +131,12 @@ public class UEPlanDefaultTest extends Base{
 
     @Test(testName = "/uePlanConsoleFacade/queryUeMatchAndCancelOrderList", dataProvider = "provider", description = "查看授权订单匹配(撤销)的标的信息")
     public void uePlanConsoleFacade_queryUeMatchAndCancelOrderList(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/uePlanConsoleFacade/queryUeProducLimitRecordList", dataProvider = "provider", description = "查询优易智投预约推送记录")
+    public void uePlanConsoleFacade_queryUeProducLimitRecordList(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
@@ -185,6 +203,12 @@ public class UEPlanDefaultTest extends Base{
 
     @Test(testName = "/uePlanFrontFacade/listMyUeInvest", dataProvider = "provider", description = "我的出借 - 优易智投列表")
     public void uePlanFrontFacade_listMyUeInvest(HryTest test) {
+        String actual = HryHttpClientUtil.send(test, this);
+        supperAssert(actual, test);
+    }
+
+    @Test(testName = "/uePlanFrontFacade/listNoviceUeProduct", dataProvider = "provider", description = "获取新手优易智投服务列表")
+    public void uePlanFrontFacade_listNoviceUeProduct(HryTest test) {
         String actual = HryHttpClientUtil.send(test, this);
         supperAssert(actual, test);
     }
