@@ -40,7 +40,7 @@ public interface UserService {
     List<User> selectByGroupId(Integer groupid);
 
     //按groupId查询开发人员,上海组(11-19)返回上海开发组(12),杭州返回杭州开发组
-    List<User> selectDever(Integer groupid);
+    List<User> selectDever();
 
     User selectByIdentity(String identity);
 

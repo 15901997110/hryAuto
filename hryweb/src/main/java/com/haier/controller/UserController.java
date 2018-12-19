@@ -116,8 +116,8 @@ public class UserController {
     }
 
     @PostMapping("/selectDever")
-    public Result selectDever(Integer groupId) {
-        return ResultUtil.success(userService.selectDever(groupId));
+    public Result selectDever() {
+        return ResultUtil.success(userService.selectDever());
     }
 
     //修改用户密码

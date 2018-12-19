@@ -5,6 +5,7 @@ import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.Tcustom;
 import com.haier.po.Tcustomdetail;
+import com.haier.po.User;
 import com.haier.response.Result;
 import com.haier.service.TcustomService;
 import com.haier.util.ResultUtil;
@@ -152,11 +153,11 @@ public class TcustomController {
     }
 
     @PostMapping("/runByTcustomId")
-    public Result runByTcustomId(Integer customId, Integer executeUserId) {
+    public Result runByTcustomId(Integer customId, User user) {
         if (customId == null || customId == 0) {
             throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "运行定制测试时,定制测试id必填!");
         }
-        return ResultUtil.success(tcustomService.run(customId, executeUserId));
+        return ResultUtil.success(tcustomService.run(customId, user));
     }
 
     public void verifyTcustomdetail(Tcustomdetail tcustomdetail) {

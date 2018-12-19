@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.haier.po.Tcustom;
 import com.haier.po.TcustomCustom;
 import com.haier.po.Tcustomdetail;
+import com.haier.po.User;
 import com.haier.vo.CustomVO;
 
 import java.util.List;
@@ -40,7 +41,9 @@ public interface TcustomService {
 
     PageInfo<TcustomCustom> selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize);
 
-    String run(Integer customId, Integer executeUserId);
+    String run(Integer customId);
+
+    String run(Integer customId,User executeUser);
 
     List<String> selectCustomUsers();
 }

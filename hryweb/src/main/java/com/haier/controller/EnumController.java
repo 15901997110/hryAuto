@@ -25,7 +25,7 @@ public class EnumController {
         map.put(AssertTypeEnum.class.getSimpleName(), this.getAssertTypeEnum());
         map.put(ContentTypeEnum.class.getSimpleName(), this.getContentTypeEnum());
         /*map.put(EnvEnum.class.getSimpleName(), this.getEnvEnum());*/
-        map.put(GroupEnum.class.getSimpleName(), this.getGroupEnum());
+        map.put(UserGroup.class.getSimpleName(), this.getGroupEnum());
         map.put(HttpTypeEnum.class.getSimpleName(), this.getHttpTypeEnum());
         map.put(RequestMethodTypeEnum.class.getSimpleName(), this.getRequestMethodTypeEnum());
         map.put(ResponseTypeEnum.class.getSimpleName(), this.getResponseTypeEnum());
@@ -62,7 +62,7 @@ public class EnumController {
 
     @GetMapping("/groupEnum")
     public List<Map<String, Object>> getGroupEnum() {
-        return EnumUtil.getEnumList(GroupEnum.values());
+        return EnumUtil.getEnumList(UserGroup.values());
     }
 
     @GetMapping("/requestMethodTypeEnum")

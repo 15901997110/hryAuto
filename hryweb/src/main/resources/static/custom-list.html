@@ -336,6 +336,7 @@
         var customId = $this.attr("customId");
         var customName = $this.attr("customName");
         var userId = $.cookie('uidCookie');
+        var userName=$.cookie("realnameCookie");
         $this.attr("disabled",true);
         $this.css("pointer-events","none");
         $.ajax({
@@ -344,7 +345,8 @@
             async:false,
             data: {
                 customId: customId,
-                executeUserId: userId
+                id: userId,
+                realname:userName
             },
             dataType: "json",
             success: function (data) {

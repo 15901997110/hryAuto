@@ -3,6 +3,7 @@ package com.haier.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.haier.enums.RegexEnum;
+import com.haier.enums.UserGroup;
 import com.haier.mapper.UserMapper;
 import com.haier.po.User;
 import com.haier.po.UserExample;
@@ -131,14 +132,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectDever(Integer groupId) {
-        if (groupId.toString().matches(RegexEnum.GROUP_SH_REGEX.getRegex())) {//如果当前登录用户为上海组,则返回上海开发组
-            return this.selectByGroupId(12);
-        }
-        if (groupId.toString().matches(RegexEnum.GROUP_HZ_REGEX.getRegex())) {//如果当前登录用户为杭州组,则返回杭州开发组
-            return this.selectByGroupId(22);
-        }
-        return userMapper.selectByExample(null);//否则返回全部用户
+    public List<User> selectDever() {
+        return selectByGroupId(UserGroup.DEVER.getGroupId());
     }
 
     @Override

@@ -201,18 +201,21 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public String run(Integer customId, Integer executeUserId) {
-/*        XmlSuite suite = new XmlSuite();
-        List<XmlTest> xmlTestList = new ArrayList<>();*/
+    public String run(Integer customId) {
+        return this.run(customId, null);
+    }
 
+    @Override
+    public String run(Integer customId, User executeUser) {
         CustomVO vo = this.selectOne(customId); //VO包含Tcustom 和 Tcustomdetail
+        if (executeUser != null && executeUser.getId() != null && executeUser.getRealname() != null) {
+            vo.setUserid(executeUser.getId());
+            vo.setUsername(executeUser.getRealname());
+        }
         //映射校验
         verify_Service_Env_Mapping(vo);
-
         XmlSuite xmlSuite = collectSuite(vo);
-
         Treport treport = treportService.insertOne(vo);
-
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
         return treport.getReportname();
     }

@@ -337,9 +337,7 @@
         $.ajax({
             type: "post",
             url: "/user/selectDever ",
-            data: {
-                groupId: $.cookie('groupidCookie')
-            },
+            data: {},
             dataType: "json",
             success: function (data) {
                 var status = data.status;

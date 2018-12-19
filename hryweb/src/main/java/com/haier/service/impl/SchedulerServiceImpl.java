@@ -1,6 +1,8 @@
 package com.haier.service.impl;
 
+import com.haier.job.RunCustomJob;
 import com.haier.service.SchedulerService;
+import org.quartz.JobDataMap;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
-    @Override
-    public Boolean addJob(String jobName, String jobGroup, String cronExp) {
-        JobDetailFactoryBean jobDetailFactoryBean=new JobDetailFactoryBean();
+
+    public Boolean addJob(String jobName, String jobGroup,JobDataMap jobDataMap, String cronExp) {
+        JobDetailFactoryBean jobDetail=new JobDetailFactoryBean();
+
+        jobDetail.setName(jobName);
+        jobDetail.setGroup(jobGroup);
+        jobDetail.setJobClass(RunCustomJob.class);
+        jobDetail.setJobDataMap(jobDataMap);
+
+
 
         return null;
     }

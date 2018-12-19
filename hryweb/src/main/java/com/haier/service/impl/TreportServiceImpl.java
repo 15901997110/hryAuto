@@ -12,6 +12,7 @@ import com.haier.po.Treport;
 import com.haier.po.TreportExample;
 import com.haier.service.TreportService;
 import com.haier.vo.CustomVO;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,6 +45,15 @@ public class TreportServiceImpl implements TreportService {
     public Integer insertOne(Treport treport) {
         treportMapper.insertSelective(treport);
         return treport.getId();
+    }
+
+    @Override
+    public Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName) {
+        if (ObjectUtils.allNotNull(executeUserId, executeUserName)) {
+            customVO.setUserid(executeUserId);
+            customVO.setUsername(executeUserName);
+        }
+        return insertOne(customVO);
     }
 
     @Override
