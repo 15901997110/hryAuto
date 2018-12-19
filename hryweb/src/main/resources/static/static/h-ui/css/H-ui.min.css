@@ -2969,7 +2969,7 @@ table th {
 }
 
 .table th, .table td {
-    padding: 8px;
+    padding: 3px;
     line-height: 20px;
     word-break: break-all
 }
