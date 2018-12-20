@@ -18,6 +18,10 @@ public class HryException extends RuntimeException {
         this.code = code;
     }
 
+    public HryException() {
+        this(StatusCodeEnum.UNKNOW_ERROR);
+    }
+
     //继承exception,加入错误状态值
     public HryException(StatusCodeEnum statusCodeEnum) {
         super(statusCodeEnum.getMsg());

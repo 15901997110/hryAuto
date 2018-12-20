@@ -18,7 +18,7 @@ public enum StatusCodeEnum {
     REGEX_ERROR_PWD(9, "密码不符合规范"),
     DANGER_OPERATION(10, "危险操作不被允许"),
     REGEX_ERROR(11, "正则不匹配"),
-    CRON_ERROR(12,"Cron表达式错误"),
+    CRON_ERROR(12, "Cron表达式错误"),
     HTTP_ERROR(100, "发送http请求时异常"),
     PARSE_JSON_ERROR(101, "JSON转换异常"),
 
@@ -38,7 +38,8 @@ public enum StatusCodeEnum {
     PARSE_DATE_ERROR(9002, "时间转换出错！"),
     SYSTEM_MAINTAIN(9990, "第三方系统维护中！"),
     UNKNOWN_BIZ_ERROR(9997, "未知的业务异常！"),
-    NETWORK_ERROR(9998, "网络异常");
+    NETWORK_ERROR(9998, "网络异常"),
+    UNKNOW_ERROR(9999, "未知异常");
 
     private Integer code;
     private String msg;
