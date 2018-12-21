@@ -1,15 +1,19 @@
 package com.haier.controller;
 
-import com.haier.enums.JobParam;
+import com.haier.enums.JobDataMapKey;
+import com.haier.enums.StatusCodeEnum;
+import com.haier.exception.HryException;
 import com.haier.po.HryJob;
 import com.haier.response.Result;
 import com.haier.service.SchedulerService;
-import com.haier.service.impl.SchedulerServiceImpl;
 import com.haier.util.ResultUtil;
-import org.quartz.Job;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.quartz.CronExpression;
 import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,46 +28,89 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/scheduler")
+@Slf4j
 public class SchedulerController {
 
     @Resource
     SchedulerService schedulerService;
 
-//    @PostMapping("/addJob")
-//    public Result addJob() throws SchedulerException {
-//        JobDataMap jobDataMap=new JobDataMap();
-//        jobDataMap.put(JobParam.CUSTOM_ID.getKey(),127);
-//        jobDataMap.put(JobParam.EXECUTE_USER_ID.getKey(),193);
-//        jobDataMap.put(JobParam.EXECUTE_USER_NAME.getKey(),"scheduler");
-//        schedulerServiceImpl.addJob("测试JobName","测试JobGroup",jobDataMap,"*/10 * * * * ?");
-//        return null;
-//    }
+    /**
+     * @param hryJob jobName:约定传入定制ID
+     *               jobGroup:约定传入操作人姓名
+     *               desc:约定传入"(定制ID)(定制人)(运行环境)定制名称"
+     *               JobDataMap-customId:定制ID
+     *               JobDataMap-executeUserID:操作人ID
+     *               JobDataMap-executeUserName:操作人Name
+     *               cronExp:运行策略
+     * @return
+     * @throws SchedulerException
+     */
     @PostMapping("/addJob")
-    public Result addJob(@RequestBody HryJob hryJob) throws SchedulerException {
-        schedulerService.addJob(hryJob.getJobName(),hryJob.getJobGroup(),null,hryJob.getCronExp());
+    public Result addJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
+        String jobName = hryJob.getJobName();
+        String jobGroup = hryJob.getJobGroup();
+        String desc = hryJob.getDesc();
+        JobDataMap jobDataMap = hryJob.getJobDataMap();
+        Integer customId = jobDataMap.getInt(JobDataMapKey.CUSTOM_ID.getKey());//定制ID
+        Integer executeUserId = jobDataMap.getInt(JobDataMapKey.EXECUTE_USER_ID.getKey());//执行用户ID
+        String executeUserName = jobDataMap.getString(JobDataMapKey.EXECUTE_USER_NAME.getKey());//执行用户RealName
+
+        if (!ObjectUtils.allNotNull(customId, executeUserId, executeUserName)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "新增任务时,customId,executeUserId,executeUserName必填");
+        }
+        if (!CronExpression.isValidExpression(hryJob.getCronExp())) {
+            throw new HryException(StatusCodeEnum.CRON_ERROR);
+        }
+        if (schedulerService.checkExists(jobName, jobGroup)) {
+            throw new HryException(StatusCodeEnum.EXIST_RECORD, "不可添加重复的任务");
+        }
+        if (StringUtils.isBlank(desc)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "任务描述必须,建议传入定制名称+环境组合");
+        }
+
+        schedulerService.addJob(jobName, jobGroup, desc, jobDataMap, hryJob.getCronExp());
         return ResultUtil.success("success");
     }
+
     @PostMapping("/pauseJob")
-    public Result pauseJob(@RequestBody HryJob hryJob) throws SchedulerException{
-        schedulerService.pauseJob(hryJob.getJobName(),hryJob.getJobGroup());
+    public Result pauseJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
+        schedulerService.pauseJob(hryJob.getJobName(), hryJob.getJobGroup());
         return ResultUtil.success("success");
     }
 
     @PostMapping("/resumeJob")
-    public Result resumeJob(@RequestBody HryJob hryJob) throws SchedulerException {
-        schedulerService.resumeJob(hryJob.getJobName(),hryJob.getJobGroup());
+    public Result resumeJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
+        schedulerService.resumeJob(hryJob.getJobName(), hryJob.getJobGroup());
         return ResultUtil.success("success");
     }
 
     @PostMapping("/updateJob")
-    public Result updateJob(@RequestBody HryJob hryJob) throws SchedulerException {
-        schedulerService.updateJob(hryJob.getJobName(),hryJob.getJobGroup(),hryJob.getCronExp());
+    public Result updateJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
+        String jobName = hryJob.getJobName();
+        String jobGroup = hryJob.getJobGroup();
+        String desc = hryJob.getDesc();
+        JobDataMap jobDataMap = hryJob.getJobDataMap();
+        Integer customId = jobDataMap.getInt(JobDataMapKey.CUSTOM_ID.getKey());//定制ID
+        Integer executeUserId = jobDataMap.getInt(JobDataMapKey.EXECUTE_USER_ID.getKey());//执行用户ID
+        String executeUserName = jobDataMap.getString(JobDataMapKey.EXECUTE_USER_NAME.getKey());//执行用户RealName
+
+        if (!ObjectUtils.allNotNull(customId, executeUserId, executeUserName)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "更新任务时,customId,executeUserId,executeUserName必填");
+        }
+        if (!CronExpression.isValidExpression(hryJob.getCronExp())) {
+            throw new HryException(StatusCodeEnum.CRON_ERROR);
+        }
+        if (StringUtils.isBlank(desc)) {
+            throw new HryException(StatusCodeEnum.PARAMETER_ERROR, "任务描述必须");
+        }
+
+        schedulerService.updateJob(jobName, jobGroup, desc, hryJob.getCronExp());
         return ResultUtil.success("success");
     }
 
     @PostMapping("/deleteJob")
-    public Result deleteJob(@RequestBody HryJob hryJob) throws SchedulerException {
-        schedulerService.deleteJob(hryJob.getJobName(),hryJob.getJobGroup());
+    public Result deleteJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
+        schedulerService.deleteJob(hryJob.getJobName(), hryJob.getJobGroup());
         return ResultUtil.success("success");
     }
 }

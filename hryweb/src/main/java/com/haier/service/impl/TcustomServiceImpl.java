@@ -201,12 +201,12 @@ public class TcustomServiceImpl implements TcustomService {
     }
 
     @Override
-    public String run(Integer customId) {
-        return this.run(customId, null);
+    public String run(Integer customId,Boolean isScheduler) {
+        return this.run(customId, null,isScheduler);
     }
 
     @Override
-    public String run(Integer customId, User executeUser) {
+    public String run(Integer customId, User executeUser,Boolean isScheduler) {
         CustomVO vo = this.selectOne(customId); //VO包含Tcustom 和 Tcustomdetail
         if (executeUser != null && executeUser.getId() != null && executeUser.getRealname() != null) {
             vo.setUserid(executeUser.getId());
@@ -215,7 +215,7 @@ public class TcustomServiceImpl implements TcustomService {
         //映射校验
         verify_Service_Env_Mapping(vo);
         XmlSuite xmlSuite = collectSuite(vo);
-        Treport treport = treportService.insertOne(vo);
+        Treport treport = treportService.insertOne(vo,isScheduler);
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
         return treport.getReportname();
     }

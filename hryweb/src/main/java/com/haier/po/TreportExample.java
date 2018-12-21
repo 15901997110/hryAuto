@@ -365,6 +365,66 @@ public class TreportExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsschedulerIsNull() {
+            addCriterion("isScheduler is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerIsNotNull() {
+            addCriterion("isScheduler is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerEqualTo(Integer value) {
+            addCriterion("isScheduler =", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerNotEqualTo(Integer value) {
+            addCriterion("isScheduler <>", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerGreaterThan(Integer value) {
+            addCriterion("isScheduler >", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerGreaterThanOrEqualTo(Integer value) {
+            addCriterion("isScheduler >=", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerLessThan(Integer value) {
+            addCriterion("isScheduler <", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerLessThanOrEqualTo(Integer value) {
+            addCriterion("isScheduler <=", value, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerIn(List<Integer> values) {
+            addCriterion("isScheduler in", values, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerNotIn(List<Integer> values) {
+            addCriterion("isScheduler not in", values, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerBetween(Integer value1, Integer value2) {
+            addCriterion("isScheduler between", value1, value2, "isscheduler");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsschedulerNotBetween(Integer value1, Integer value2) {
+            addCriterion("isScheduler not between", value1, value2, "isscheduler");
+            return (Criteria) this;
+        }
+
         public Criteria andUseridIsNull() {
             addCriterion("userId is null");
             return (Criteria) this;

@@ -41,9 +41,9 @@ public interface TcustomService {
 
     PageInfo<TcustomCustom> selectTcustomCustomPageInfo(Tcustom tcustom, Integer pageNum, Integer pageSize);
 
-    String run(Integer customId);
+    String run(Integer customId, Boolean isScheduler);
 
-    String run(Integer customId,User executeUser);
+    String run(Integer customId, User executeUser, Boolean isScheduler);
 
     List<String> selectCustomUsers();
 }

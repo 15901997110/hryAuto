@@ -15,9 +15,9 @@ public interface TreportService {
 
     Integer insertOne(Treport treport);
 
-    Treport insertOne(CustomVO customVO,Integer executeUserId,String executeUserName);
+    Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName, Boolean isScheduler);
 
-    Treport insertOne(CustomVO customVO);
+    Treport insertOne(CustomVO customVO, Boolean isScheduler);
 
     Integer updateOne(Treport treport);
 

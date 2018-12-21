@@ -1,16 +1,18 @@
 package com.haier.job;
 
 import com.haier.config.SpringContextHolder;
-import com.haier.enums.JobParam;
+import com.haier.enums.JobDataMapKey;
 import com.haier.po.User;
 import com.haier.service.TcustomService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+import org.quartz.TriggerKey;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 /**
- * @Description:
+ * @Description: 执行定制测试, 具体执行哪个定制, 由JobDataMap传CustomId决定
  * @Author: luqiwei
  * @Date: 2018/12/12 13:22
  */
@@ -19,24 +21,25 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunCustomJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        log.info("自定义Job执行了!!!!!!");
 
-/*        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
 
-        *//**
-         * customId,executeUserId,executeUserName 此三个参数要求必填,
-         * 此参数将会传到运行定制中去
-         *//*
-        Integer customId = jobDataMap.getInt(JobParam.CUSTOM_ID.getKey());//定制ID
-        Integer executeUserId = jobDataMap.getInt(JobParam.EXECUTE_USER_ID.getKey());//执行用户ID
-        String executeUserName = jobDataMap.getString(JobParam.EXECUTE_USER_NAME.getKey());//执行用户RealName
-
+        Integer customId = jobDataMap.getInt(JobDataMapKey.CUSTOM_ID.getKey());//定制ID
+        Integer executeUserId = jobDataMap.getInt(JobDataMapKey.EXECUTE_USER_ID.getKey());//执行用户ID
+        String executeUserName = jobDataMap.getString(JobDataMapKey.EXECUTE_USER_NAME.getKey());//执行用户RealName
+        TriggerKey triggerKey = context.getTrigger().getKey();
+        if (!ObjectUtils.allNotNull(customId, executeUserId, executeUserName)) {
+            log.error("triggerName=" + triggerKey + ",triggerGroup=" + triggerKey.getGroup());
+            log.error("JobDataMap入参有误,需要customId,executeUserId,executeUserName缺一不可");
+            return;
+        }
         User executeUser = new User();
         executeUser.setId(executeUserId);
-        executeUser.setRealname(executeUserName);*/
+        executeUser.setRealname(executeUserName);
 
-
-/*        TcustomService tcustomService = SpringContextHolder.getBean(TcustomService.class);
-        tcustomService.run(customId, executeUser);*/
+        TcustomService tcustomService = SpringContextHolder.getBean(TcustomService.class);
+        tcustomService.run(customId, executeUser, true);
+        log.info("triggerName=" + triggerKey + ",triggerGroup="
+                + triggerKey.getGroup() + "成功触发了定制Id=" + customId + "的执行");
     }
 }

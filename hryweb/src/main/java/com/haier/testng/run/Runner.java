@@ -30,8 +30,6 @@ public class Runner {
 
     @Autowired
     ZdyProperty zdyProperty;
-/*    @Value("${zdy.reportPath}")
-    String reportPath;*/
 
     @Autowired
     TreportService treportService;

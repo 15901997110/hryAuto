@@ -48,16 +48,16 @@ public class TreportServiceImpl implements TreportService {
     }
 
     @Override
-    public Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName) {
+    public Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName,Boolean isScheduler) {
         if (ObjectUtils.allNotNull(executeUserId, executeUserName)) {
             customVO.setUserid(executeUserId);
             customVO.setUsername(executeUserName);
         }
-        return insertOne(customVO);
+        return insertOne(customVO,isScheduler);
     }
 
     @Override
-    public Treport insertOne(CustomVO customVO) {
+    public Treport insertOne(CustomVO customVO, Boolean isScheduler) {
         List<Tcustomdetail> ss = customVO.getTcustomdetails().stream()
                 .filter(p -> p.getClientlevel().equals(ClientLevelEnum.SERVICE.getLevel()))
                 .collect(Collectors.toList());
@@ -69,6 +69,7 @@ public class TreportServiceImpl implements TreportService {
         Treport treport = new Treport();
         treport.setCustomid(customVO.getId());
         treport.setCustomname(customVO.getCustomname());
+        treport.setIsscheduler(isScheduler != null && isScheduler ? 1 : 0);
         treport.setEnvid(customVO.getEnvid());
         treport.setEnvkey(customVO.getEnvkey());
         treport.setServiceids(JSON.toJSONString(sIds));//[1,2,3]

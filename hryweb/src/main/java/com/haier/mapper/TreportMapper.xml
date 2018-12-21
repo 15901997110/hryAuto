@@ -6,6 +6,7 @@
     <result column="reportPath" jdbcType="VARCHAR" property="reportpath" />
     <result column="reportName" jdbcType="VARCHAR" property="reportname" />
     <result column="reportType" jdbcType="INTEGER" property="reporttype" />
+    <result column="isScheduler" jdbcType="INTEGER" property="isscheduler" />
     <result column="userId" jdbcType="INTEGER" property="userid" />
     <result column="userName" jdbcType="VARCHAR" property="username" />
     <result column="customId" jdbcType="INTEGER" property="customid" />
@@ -76,8 +77,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, reportPath, reportName, reportType, userId, userName, customId, customName, envId, 
-    envKey, serviceIds, serviceNames, testTime, status
+    id, reportPath, reportName, reportType, isScheduler, userId, userName, customId, 
+    customName, envId, envKey, serviceIds, serviceNames, testTime, status
   </sql>
   <select id="selectByExample" parameterType="com.haier.po.TreportExample" resultMap="BaseResultMap">
     select
@@ -114,15 +115,15 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into treport (reportPath, reportName, reportType, 
-      userId, userName, customId, 
-      customName, envId, envKey, 
-      serviceIds, serviceNames, testTime, 
-      status)
+      isScheduler, userId, userName, 
+      customId, customName, envId, 
+      envKey, serviceIds, serviceNames, 
+      testTime, status)
     values (#{reportpath,jdbcType=VARCHAR}, #{reportname,jdbcType=VARCHAR}, #{reporttype,jdbcType=INTEGER}, 
-      #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{customid,jdbcType=INTEGER}, 
-      #{customname,jdbcType=VARCHAR}, #{envid,jdbcType=INTEGER}, #{envkey,jdbcType=VARCHAR}, 
-      #{serviceids,jdbcType=VARCHAR}, #{servicenames,jdbcType=VARCHAR}, #{testtime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=INTEGER})
+      #{isscheduler,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, 
+      #{customid,jdbcType=INTEGER}, #{customname,jdbcType=VARCHAR}, #{envid,jdbcType=INTEGER}, 
+      #{envkey,jdbcType=VARCHAR}, #{serviceids,jdbcType=VARCHAR}, #{servicenames,jdbcType=VARCHAR}, 
+      #{testtime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.haier.po.Treport">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -138,6 +139,9 @@
       </if>
       <if test="reporttype != null">
         reportType,
+      </if>
+      <if test="isscheduler != null">
+        isScheduler,
       </if>
       <if test="userid != null">
         userId,
@@ -179,6 +183,9 @@
       </if>
       <if test="reporttype != null">
         #{reporttype,jdbcType=INTEGER},
+      </if>
+      <if test="isscheduler != null">
+        #{isscheduler,jdbcType=INTEGER},
       </if>
       <if test="userid != null">
         #{userid,jdbcType=INTEGER},
@@ -233,6 +240,9 @@
       <if test="record.reporttype != null">
         reportType = #{record.reporttype,jdbcType=INTEGER},
       </if>
+      <if test="record.isscheduler != null">
+        isScheduler = #{record.isscheduler,jdbcType=INTEGER},
+      </if>
       <if test="record.userid != null">
         userId = #{record.userid,jdbcType=INTEGER},
       </if>
@@ -274,6 +284,7 @@
       reportPath = #{record.reportpath,jdbcType=VARCHAR},
       reportName = #{record.reportname,jdbcType=VARCHAR},
       reportType = #{record.reporttype,jdbcType=INTEGER},
+      isScheduler = #{record.isscheduler,jdbcType=INTEGER},
       userId = #{record.userid,jdbcType=INTEGER},
       userName = #{record.username,jdbcType=VARCHAR},
       customId = #{record.customid,jdbcType=INTEGER},
@@ -299,6 +310,9 @@
       </if>
       <if test="reporttype != null">
         reportType = #{reporttype,jdbcType=INTEGER},
+      </if>
+      <if test="isscheduler != null">
+        isScheduler = #{isscheduler,jdbcType=INTEGER},
       </if>
       <if test="userid != null">
         userId = #{userid,jdbcType=INTEGER},
@@ -338,6 +352,7 @@
     set reportPath = #{reportpath,jdbcType=VARCHAR},
       reportName = #{reportname,jdbcType=VARCHAR},
       reportType = #{reporttype,jdbcType=INTEGER},
+      isScheduler = #{isscheduler,jdbcType=INTEGER},
       userId = #{userid,jdbcType=INTEGER},
       userName = #{username,jdbcType=VARCHAR},
       customId = #{customid,jdbcType=INTEGER},

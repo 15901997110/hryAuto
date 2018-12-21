@@ -5,7 +5,7 @@ package com.haier.enums;
  * @Author: luqiwei
  * @Date: 2018/12/18 14:03
  */
-public enum JobParam {
+public enum JobDataMapKey {
     CUSTOM_ID("customId"),
     EXECUTE_USER_ID("executeUserId"),
     EXECUTE_USER_NAME("executeUserName");
@@ -19,7 +19,7 @@ public enum JobParam {
 
     }
 
-    JobParam(String key) {
+    JobDataMapKey(String key) {
 
         this.key = key;
     }

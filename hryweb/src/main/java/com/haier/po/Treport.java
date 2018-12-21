@@ -11,6 +11,8 @@ public class Treport {
 
     private Integer reporttype;
 
+    private Integer isscheduler;
+
     private Integer userid;
 
     private String username;
@@ -61,6 +63,14 @@ public class Treport {
 
     public void setReporttype(Integer reporttype) {
         this.reporttype = reporttype;
+    }
+
+    public Integer getIsscheduler() {
+        return isscheduler;
+    }
+
+    public void setIsscheduler(Integer isscheduler) {
+        this.isscheduler = isscheduler;
     }
 
     public Integer getUserid() {
