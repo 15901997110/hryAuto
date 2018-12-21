@@ -47,6 +47,7 @@ spring:
     properties:
       org:
         quartz:
+          enabled: true
           scheduler:
             instanceName: hrySchdeuler
             instanceId: AUTO
@@ -58,7 +59,7 @@ spring:
             useProperties: false
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
-            threadCount: 5  #并发个数
+            threadCount: 10  #并发个数
             threadPriority: 5 #优先级
             threadsInheritContextClassLoaderOfInitializingThread: true
   jackson:
