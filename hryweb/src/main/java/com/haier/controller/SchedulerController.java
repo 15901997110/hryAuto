@@ -37,7 +37,7 @@ public class SchedulerController {
     /**
      * @param hryJob jobName:约定传入定制ID
      *               jobGroup:约定传入操作人姓名
-     *               desc:约定传入"(定制ID)(定制人)(运行环境)定制名称"
+     *               desc:约定传入"(定制ID_定制人_运行环境)定制名称"
      *               JobDataMap-customId:定制ID
      *               JobDataMap-executeUserID:操作人ID
      *               JobDataMap-executeUserName:操作人Name
