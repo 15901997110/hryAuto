@@ -48,12 +48,12 @@ public class TreportServiceImpl implements TreportService {
     }
 
     @Override
-    public Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName,Boolean isScheduler) {
+    public Treport insertOne(CustomVO customVO, Integer executeUserId, String executeUserName, Boolean isScheduler) {
         if (ObjectUtils.allNotNull(executeUserId, executeUserName)) {
             customVO.setUserid(executeUserId);
             customVO.setUsername(executeUserName);
         }
-        return insertOne(customVO,isScheduler);
+        return insertOne(customVO, isScheduler);
     }
 
     @Override
@@ -154,6 +154,9 @@ public class TreportServiceImpl implements TreportService {
             }
             if (treport.getReporttype() != null) {
                 criteria.andReporttypeEqualTo(treport.getReporttype());
+            }
+            if (treport.getIsscheduler() != null) {
+                criteria.andIsschedulerEqualTo(treport.getIsscheduler());
             }
         }
         if (startTime != null) {

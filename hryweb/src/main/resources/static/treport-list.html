@@ -47,6 +47,14 @@
                     <option value="2">定制测试</option>
                 </select>
             </span>
+            <label style="margin-left:30px;">isScheduler：</label>
+            <span class="select-box" style="width:8%">
+                <select class="select" size="1" name="isScheduler" id="isScheduler">
+                    <option value="">--请选择--</option>
+                    <option value="1">是</option>
+                    <option value="0">否</option>
+                </select>
+            </span>
             <label style="margin-left:30px;">执行人：</label>
             <!--<input type="text" name="username" id="username" placeholder=" " style="width:12%" class="input-text">-->
             <span class="select-box" style="width:8%">
@@ -98,6 +106,7 @@
                 <th width="15%">定制测试名称</th>
                 <th width="7%">环境</th>
                 <th width="7%">服务</th>
+                <th width="7%">调度测试</th>
                 <th width="10%">测试时间</th>
                 <th width="8%">状态</th>
                 <th width="8%">类型</th>
@@ -168,6 +177,7 @@
         $("#reportType option:first").prop("selected", "selected");
         $("#datemin").val("");
         $("#datemax").val("");
+        $("#isScheduler").val("");
     }
 
     //初始加载
@@ -214,6 +224,7 @@
         var status = $("#status").val();
         var startTime = $("#datemin").val();
         var endTime = $("#datemax").val();
+        var isScheduler = $("#isScheduler").val();
 
         $.ajax({
             type: "post",
@@ -227,6 +238,7 @@
                 status: status,
                 startTime: startTime,
                 endTime: endTime,
+                isscheduler: isScheduler,
                 pageNum: index,
                 pageSize: 10
             },
@@ -287,6 +299,7 @@
                             "<td >" + row.customname + "</td>\n" +
                             "<td>" + row.envkey + "</td>\n" +
                             "<td style='text-align: left;'><ul id='serv'>" + ul + "</ul></td>\n" +
+                            "<td>" + (row.isscheduler == 1 ? "是" : "否") + "</td>" +
                             "<td>" + row.testtime + "</td>\n" +
                             "<td>" + status + "</td>\n" +
                             "<td>" + reportType1 + "</td>" +
