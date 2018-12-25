@@ -32,6 +32,15 @@
         button {
             width: 80px;
         }
+        #table td{
+            padding-left:10px;
+            text-align: left;
+        }
+        #table td:last-child,#table td:first-child{/*最后一列,操作列*/
+            padding-left: 0px;
+            text-align: center;
+            font-size: 1.3em;
+        }
     </style>
 </head>
 <body>
@@ -80,14 +89,14 @@
         <table class="table table-border table-bordered table-hover table-bg">
             <thead>
             <tr class="text-c">
-                <th width="5%"><input type="checkbox" value="" name=""></th>
-                <th width="25%">任务名</th>
+                <th width="3%"><input type="checkbox" value="" name=""></th>
+                <th width="20%">任务名</th>
                 <th width="10%">任务组</th>
                 <th width="10%">cron表达式</th>
-                <th width="5%">状态</th>
+                <th width="8%">状态</th>
                 <th width="10%">上一次触发</th>
                 <th width="10%">下一次触发</th>
-                <th width="10%">操作</th>
+                <th width="8%">操作</th>
             </tr>
             </thead>
             <!--结果区-->
@@ -201,6 +210,13 @@
                                 state = triggerState[j].stateCN;
                             }
                         }
+                        var btnHtml = "";
+                        if (sched.trigger_state != "PAUSED") {
+                            btnHtml = "<a title='暂停运行' href='javascript:void(0);' onclick='pauseJob(" + sched.trigger_name + "," + sched.trigger_group + ")'><i class=\"Hui-iconfont\">&#xe6e5;</i></a>"
+                        } else {
+                            btnHtml = "<a title='恢复运行' href='javascript:void(0);' onclick='resumeJob(" + sched.trigger_name + "," + sched.trigger_group + ")'><i class=\"Hui-iconfont\">&#xe6e6;</i></a>"
+                        }
+
                         var tableHtmlTr = "<tr class=\"text-c\">" +
                             "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>" +
                             "<td>" + sched.description + "</td>" +
@@ -209,19 +225,10 @@
                             "<td>" + state + "</td>" +
                             "<td>" + formatDateTime(sched.prev_fire_time) + "</td>" +
                             "<td>" + formatDateTime(sched.next_fire_time) + "</td>" +
-                            "<td class=\"f-14\">" +
-                            "<a title='暂停运行' href='javascript:void(0);' onclick='pauseJob(" + sched.trigger_name + ",\"" + sched.trigger_group + "\")'><i class=\"Hui-iconfont\">&#xe6e5;</i></a>" +
-
-                            "<a title='编辑' href='javascript:void(0);' onclick=\"updateJob('编辑任务','scheduler-edit.html','" + sched.trigger_name + "','" + sched.trigger_group + "','70%','70%')\" style=\"text-decoration:none\">" +
-                            "<i class=\"Hui-iconfont\">&#xe6df;" +
-                            "</i>" +
-                            "</a>" +
-
-                            "<a title='恢复运行' href='javascript:void(0);' onclick=\"resumeJob('" + sched.trigger_name + "','" + sched.trigger_group + "')\" ><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
-
+                            "<td>" +
+                            "<a title='编辑' href='javascript:void(0);' onclick=\"updateJob('编辑任务','scheduler-edit.html','" + sched.trigger_name + "','" + sched.trigger_group + "','70%','70%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>" +
+                            btnHtml +
                             "<a title='删除' href='javascript:void(0);' onclick=\"deleteJob('" + sched.trigger_name + "','" + sched.trigger_group + "','" + sched.description + "')\" ><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
-
-
                             "</td>\n" +
                             "</tr>";
                         tableHtml += tableHtmlTr;
