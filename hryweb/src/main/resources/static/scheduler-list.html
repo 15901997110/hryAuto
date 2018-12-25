@@ -212,9 +212,9 @@
                         }
                         var btnHtml = "";
                         if (sched.trigger_state != "PAUSED") {
-                            btnHtml = "<a title='暂停运行' href='javascript:void(0);' onclick='pauseJob(" + sched.trigger_name + "," + sched.trigger_group + ")'><i class=\"Hui-iconfont\">&#xe6e5;</i></a>"
+                            btnHtml = "<a title='停止运行' href='javascript:void(0);' onclick='pauseJob(\"" + sched.trigger_name + "\",\"" + sched.trigger_group + "\")'><i class=\"Hui-iconfont\">&#xe6e4;</i></a>"
                         } else {
-                            btnHtml = "<a title='恢复运行' href='javascript:void(0);' onclick='resumeJob(" + sched.trigger_name + "," + sched.trigger_group + ")'><i class=\"Hui-iconfont\">&#xe6e6;</i></a>"
+                            btnHtml = "<a title='恢复运行' href='javascript:void(0);' onclick='resumeJob(\"" + sched.trigger_name + "\",\"" + sched.trigger_group + "\")'><i class=\"Hui-iconfont\">&#xe6e6;</i></a>"
                         }
 
                         var tableHtmlTr = "<tr class=\"text-c\">" +

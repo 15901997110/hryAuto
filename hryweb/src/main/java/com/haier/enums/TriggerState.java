@@ -6,8 +6,8 @@ package com.haier.enums;
  * @Date: 2018/12/25 11:55
  */
 public enum TriggerState {
-    ACQUIRED("ACQUIRED", "即将触发", "默认情况下，调度线程一次会拉取未来30s、过去60s之间还未fire的1个trigger。随后将这些triggers的状态由WAITING改为ACQUIRED，并插入fired_triggers表"),
-    WAITING("WAITING", "等待下次触发", "等待下次触发"),
+    ACQUIRED("ACQUIRED", "即将到我", "默认情况下，调度线程一次会拉取未来30s、过去60s之间还未fire的1个trigger。随后将这些triggers的状态由WAITING改为ACQUIRED，并插入fired_triggers表"),
+    WAITING("WAITING", "排队拿号", "等待下次触发"),
     EXECUTING("EXECUTING", "正在执行", "fire"),
     COMPLETE("COMPLETE", "已完成", "不再触发"),
     PAUSED("PAUSED", "已停止", "手动停止"),
