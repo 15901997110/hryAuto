@@ -46,10 +46,10 @@
                 AND main.`trigger_name`=#{trigger_name}
             </if>
             <if test="trigger_group!=null and trigger_group!=''">
-                AND main.`trigger_group`=#{trigger_group}
+                AND main.`trigger_group` LIKE CONCAT('%',#{trigger_group},'%')
             </if>
             <if test="description!=null and description!=''">
-                AND main.`description`=#{description}
+                AND main.`description` LIKE CONCAT('%',#{description},'%')
             </if>
             <if test="trigger_state!=null and trigger_state!=''">
                 AND main.`trigger_state`=#{trigger_state}
