@@ -195,10 +195,10 @@
                     var tableHtml = "";
                     for (var i = 0; i < list.length; i++) {
                         var sched = list[i];
-                        var trigger_state = "";
+                        var state = "";
                         for (var j = 0; j < triggerState.length; j++) {
-                            if (triggerState[i].state = sched.trigger_state) {
-                                trigger_state = triggerState[i].stateCN;
+                            if (triggerState[j].state == sched.trigger_state) {
+                                state = triggerState[j].stateCN;
                             }
                         }
                         var tableHtmlTr = "<tr class=\"text-c\">" +
@@ -206,7 +206,7 @@
                             "<td>" + sched.description + "</td>" +
                             "<td>" + sched.trigger_group + "</td>" +
                             "<td>" + sched.cron_expression + "</td>" +
-                            "<td>" + trigger_state + "</td>" +
+                            "<td>" + state + "</td>" +
                             "<td>" + formatDateTime(sched.prev_fire_time) + "</td>" +
                             "<td>" + formatDateTime(sched.next_fire_time) + "</td>" +
                             "<td class=\"f-14\">" +
@@ -253,6 +253,7 @@
                 layer.close(layerIndex);
                 if (res.status == 0) {//添加成功
                     layer.msg('操作成功!', {icon: 1, time: 3000});
+                    pageSkip(1);
                     //window.location.reload();
 
                 } else {
@@ -294,7 +295,7 @@
                 if (res.status == 0) {//添加成功
                     layer.msg('操作成功!', {icon: 1, time: 3000});
                     //window.location.reload();
-
+                    pageSkip(1);
                 } else {
                     layer.alert(res.msg, {
                         icon: 0,

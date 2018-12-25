@@ -33,12 +33,12 @@ public class RunCustomJob extends QuartzJobBean {
             log.error("JobDataMap入参有误,需要customId,executeUserId,executeUserName缺一不可");
             return;
         }
-/*        User executeUser = new User();
+        User executeUser = new User();
         executeUser.setId(executeUserId);
         executeUser.setRealname(executeUserName);
 
         TcustomService tcustomService = SpringContextHolder.getBean(TcustomService.class);
-        tcustomService.run(customId, executeUser, true);*/
+        tcustomService.run(customId, executeUser, true);
         log.info("triggerName=" + triggerKey.getName() + ",triggerGroup="
                 + triggerKey.getGroup() + ",成功触发了定制Id=" + customId + "的执行");
     }
