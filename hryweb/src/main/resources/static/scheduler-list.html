@@ -23,6 +23,16 @@
     <![endif]-->
     <title>定制测试</title>
     <script type="text/javascript" src="lib/loading.js"></script>
+    <style>
+        #table a {
+            text-decoration: none;
+            padding: 0 4px;
+        }
+
+        button {
+            width: 80px;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,39 +42,34 @@
 </nav>
 <div class="page-container">
     <!--查询条件Html-->
-    <!-- <div style="margin-left:10px;margin-top: 10px">
-         <label style="margin-left:30px;">id：</label>
-         <input type="number" name="query_custom_id" id="query_custom_id"
-                placeholder=" 定制id" style="width:5%"
-                class="input-text">
-         <label style="margin-left:30px;">定制名称：</label>
-         <input type="text" name="query_custom_name" id="query_custom_name"
-                placeholder=" 定制名称" style="width:12%"
-                class="input-text">
-         <label style="margin-left:30px;">环境：</label>
-         <span class="select-box" style="width:8%">
-                 <select class="select" size="1" name="query_custom_env" id="query_custom_env">
-                     <option value="" selected>&#45;&#45;请选择&#45;&#45;</option>
-                 </select>
-             </span>
-         <label style="margin-left:30px;">定制人：</label>
-         <span class="select-box" style="width:8%">
-                 <select class="select" size="1" name="query_custom_user" id="query_custom_user">
-                     <option value="" selected>&#45;&#45;请选择&#45;&#45;</option>
-                 </select>
-             </span>
-         <button name="find" id="find" style="margin-left:50px;width:80px" class="btn btn-success" type="button"
-                 onclick="pageSkip(1)"><i class="Hui-iconfont">&#xe665;</i> 搜索
-         </button>
-         <button name="empty" id="empty" style="margin-left:10px;width:80px" class="btn btn-success" type="button"
-                 onclick="empty()"><i class="Hui-iconfont">&#xe665;</i> 清空
-         </button>
-     </div>
- -->
+    <div style="margin-left:10px;margin-top: 10px">
+        <label style="margin-left:30px;">定制id：</label>
+        <input type="number" name="q_customId" id="q_customId"
+               placeholder=" 定制id" style="width:5%"
+               class="input-text">
+        <label style="margin-left:30px;">任务名：</label>
+        <input type="text" name="q_jobName" id="q_jobName"
+               placeholder=" 任务名称" style="width:8%"
+               class="input-text">
+        <label style="margin-left:30px;">任务组：</label>
+        <input type="text" name="q_jobGroup" id="q_jobGroup"
+               placeholder=" 任务所属组" style="width:8%"
+               class="input-text">
+        <label style="margin-left:30px;">任务状态：</label>
+        <span class="select-box" style="width:8%">
+                <select class="select" size="1" name="q_jobState" id="q_jobState">
+                    <option value="" selected>--请选择--</option>
+                </select>
+        </span>
+        <button name="search" id="search" class="btn btn-success" type="button">搜索
+        </button>
+        <button name="empty" id="empty" class="btn btn-warning" type="button">清空
+        </button>
+    </div>
     <!--列表表头及分页Html-->
     <div class="cl pd-5 bg-1 bk-gray mt-10">
 		<span class="l">
-			<a href="javascript:;" class="btn btn-danger radius"><i
+			<a href="javascript:void(0);" class="btn btn-danger radius"><i
                     class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
 			<a id="addJob" class="btn btn-primary radius" href="javascript:void(0);"><i
                     class="Hui-iconfont">&#xe600;</i> 添加任务</a>
@@ -76,14 +81,13 @@
             <thead>
             <tr class="text-c">
                 <th width="5%"><input type="checkbox" value="" name=""></th>
-                <th width="5%">id</th>
-                <th width="15%">定制名称</th>
-                <th width="20%">服务-测试类</th>
-                <th width="10%">环境</th>
-                <th width="10%">运行方式</th>
-                <th width="20%">运行策略</th>
-                <th width="5%">定制人</th>
-                <th width="15%">操作</th>
+                <th width="25%">任务</th>
+                <th width="10%">任务组</th>
+                <th width="10%">cron表达式</th>
+                <th width="5%">状态</th>
+                <th width="10%">上一次触发</th>
+                <th width="10%">下一次触发</th>
+                <th width="10%">操作</th>
             </tr>
             </thead>
             <!--结果区-->
@@ -129,163 +133,141 @@
     });
 
     //初始化
-    /* $(document).ready(function () {
-         env_selectEle_init("query_custom_env");
-         user_selectEle_init("query_custom_user");
-         var userId = $.cookie('uidCookie');
-         //默认选中当前登录人
-         $("#query_custom_user").val(userId).trigger("change");
-
-         pageSkip(1);
-
-
-     });*/
+    $(document).ready(function () {
+        jobStateInit();
+        pageSkip(1);
+    });
 
     $("#addJob").click(function () {
         layer_show1("添加任务", "scheduler-add.html", "60%", "80%");
     });
 
+    $("#search").click(function () {
+        pageSkip(1);
+    });
+
+    function jobStateInit() {
+        var triggerState = getTriggerState();
+        var options = "";
+        for (var i = 0; i < triggerState.length; i++) {
+            options += "<option value='" + triggerState[i].state + "'>" + triggerState[i].stateCN + "</option>"
+        }
+        $("#q_jobState").append(options);
+    }
+
     function pageSkip(index) {
         if (index == 0) {
             return;
         }
-        //flag=true;
-        //查询条件
-        var query_id = $("#query_custom_id").val();
-        var query_customName = $("#query_custom_name").val();
-        var query_env = $("#query_custom_env").val();
-        var query_user = $("#query_custom_user").val();
+        var hrySchedulerQueryDto = {};
+        var hryScheduler = {}
+        var q_customId = $("#q_customId").val();
+        var q_jobName = $("#q_jobName").val();
+        var q_jobGroup = $("#q_jobGroup").val();
+        var q_state = $("#q_jobState").val();
+        if (q_customId.trim() != "") {
+            hryScheduler.trigger_name = q_customId;
+        }
+        if (q_jobName.trim() != "") {
+            hryScheduler.description = q_jobName;
+        }
+        if (q_jobGroup.trigger != "") {
+            hryScheduler.trigger_group = q_jobGroup;
+        }
+        if (q_state.trim() != "") {
+            hryScheduler.trigger_state = q_state;
+        }
+        hrySchedulerQueryDto.hryScheduler = hryScheduler;
+        hrySchedulerQueryDto.pageNum = index;
 
+        var triggerState = getTriggerState();
+        //查询条件
         $.ajax({
             type: "post",
-            url: "/tcustom/selectTcustomCustomPageInfo",
-            data: {
-                id: query_id,
-                customname: query_customName,
-                envid: query_env,
-                userid: query_user,
-                pageNum: index,
-                pageSize: 10
-            },
+            url: "/scheduler/selectPageInfo",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(hrySchedulerQueryDto),
             dataType: "json",
-            success: function (response) {
-                if (response.status == 0) {
-                    var list = response.data.list;//数据列表
+            success: function (res) {
+                if (res.status == 0) {
+                    var list = res.data.list;//业务数据列表
 
                     var tableHtml = "";
                     for (var i = 0; i < list.length; i++) {
-                        var custom = list[i];
-                        var customDetails = list[i].tcustomdetails;
-                        var serviceColumnText = getServiceColumn(customDetails);
-
-                        var tableHtmlTr = "<tr class=\"text-c\">\n" +
-                            "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>\n" +
-                            "<td>" + custom.id + "</td>\n" +
-                            "<td>" + custom.customname + "</td>\n" +
-                            "<td style='text-align: left;'><ul>" + serviceColumnText + "</ul></td>\n" +
-                            "<td>" + custom.envkey + "</td>\n" +
-                            "<td>" + (custom.intersect == 0 ? "顺序" : "交叉") + "</td>" +
-                            "<td>" + custom.strategy + "</td>\n" +
-                            "<td>" + custom.username + "</td>" +
+                        var sched = list[i];
+                        var trigger_state = "";
+                        for (var j = 0; j < triggerState.length; j++) {
+                            if (triggerState[i].state = sched.trigger_state) {
+                                trigger_state = triggerState[i].stateCN;
+                            }
+                        }
+                        var tableHtmlTr = "<tr class=\"text-c\">" +
+                            "<td><input type=\"checkbox\" value=\"\" name=\"\"></td>" +
+                            "<td>" + sched.description + "</td>" +
+                            "<td>" + sched.trigger_group + "</td>" +
+                            "<td>" + sched.cron_expression + "</td>" +
+                            "<td>" + trigger_state + "</td>" +
+                            "<td>" + formatDateTime(sched.prev_fire_time) + "</td>" +
+                            "<td>" + formatDateTime(sched.next_fire_time) + "</td>" +
                             "<td class=\"f-14\">" +
-                            "<a id =\"butRun\" title=\"运行\" href=\"javascript:;\" customId=\"" + custom.id + "\" customName=\"" + custom.customname + "\" class=\"yunxing ml-5\" style=\"text-decoration:none;margin-right:8px;\"><i class=\"Hui-iconfont\">&#xe6e6;</i></a>" +
-                            "<a title=\"编辑\" href=\"javascript:;\" onclick=\"custom_edit('定制编辑','custom-edit.html'," + custom.id + ",'100%','100%')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6df;</i></a> \n" +
-                            "<a title=\"复制\" href=\"javascript:;\"  onclick=\"custom_copy('定制复制','custom-add.html','100%','100%'," + custom.id + ",'1')\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6ea;</i></a> \n" +
-                            "<a title=\"删除\" href=\"javascript:;\" onclick=\"custom_del(this," + custom.id + ")\" class=\"ml-5\" style=\"text-decoration:none\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+                            "<a title='暂停运行' href='javascript:void(0);' onclick='pauseJob(" + sched.trigger_name + ",\"" + sched.trigger_group + "\")'><i class=\"Hui-iconfont\">&#xe6e5;</i></a>" +
+
+                            "<a title='编辑' href='javascript:void(0);' onclick=\"updateJob('编辑任务','scheduler-edit.html','" + sched.trigger_name + "','" + sched.trigger_group + "','70%','70%')\" style=\"text-decoration:none\">" +
+                            "<i class=\"Hui-iconfont\">&#xe6df;" +
+                            "</i>" +
+                            "</a>" +
+
+                            "<a title='恢复运行' href='javascript:void(0);' onclick=\"resumeJob('" + sched.trigger_name + "','" + sched.trigger_group + "')\" ><i class=\"Hui-iconfont\">&#xe6e6;</i></a> \n" +
+
+                            "<a title='删除' href='javascript:void(0);' onclick=\"deleteJob('" + sched.trigger_name + "','" + sched.trigger_group + "','" + sched.description + "')\" ><i class=\"Hui-iconfont\">&#xe6e2;</i></a>" +
+
+
                             "</td>\n" +
                             "</tr>";
                         tableHtml += tableHtmlTr;
                     }
                     $("#table").empty();
                     $("#table").append(tableHtml);
-                    pagination(response);
+                    pagination(res);
                     layer.close(layerIndex);
 
                 } else {
                     layer_close(layerIndex);
-                    alert(response.msg);
+                    alert(res.msg);
                 }
             },
         });
     }
 
-    function getServiceColumn(customDetails) {
-        var ul = "";
-        for (var k = 0; k < customDetails.length; k++) {
-            var customDetail = customDetails[k];
-            if (customDetail.clientlevel == 1) {
-                ul += "<li>" + customDetail.clientname + (customDetail.classname == null ? "" : "-" + customDetail.classname) + "</li>";
-            }
-        }
-        return ul;
-    }
-
-    /*定制测试-复制*/
-    function custom_copy(title, url, w, h, id, skip) {
-        url = url + "?id=" + id + "&skip=" + skip;
-        layer_show1(title, url, w, h);
-    }
-
-    /*定制测试-编辑*/
-    function custom_edit(title, url, id, w, h) {
-        url = url + "?id=" + id;
-        layer_show1(title, url, w, h);
-
-    }
-
-    /*定制测试-删除*/
-    function custom_del(obj, id) {
-        var ms = "是否删除测试定制，请确认!";
-        del_json(obj, id, "/tcustom/deleteOne", ms);
-
-    }
-
-    // 运行
-    $("#table").on("click", ".yunxing", function () {
-        // layer.load(1, {
-        //     shade: [10,'#fff'] //0.1透明度的白色背景
-        // });
-        var $this = $(this);
-        var customId = $this.attr("customId");
-        var customName = $this.attr("customName");
-        var userId = $.cookie('uidCookie');
-        $this.attr("disabled", true);
-        $this.css("pointer-events", "none");
+    function pauseJob(jobName, jobGroup) {
+        var param = {};
+        param.jobName = jobName;
+        param.jobGroup = jobGroup;
         $.ajax({
             type: "post",
-            url: "/tcustom/runByTcustomId",
-            async: false,
-            data: {
-                customId: customId,
-                executeUserId: userId
-            },
+            url: "/scheduler/pauseJob",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(param),
             dataType: "json",
-            success: function (data) {
-                var status = data.status;
-                var msg = data.msg;
-                var url = data.data;
-                if (status == 0) {
-                    url = encodeURI("../report-loading.html?reportName=" + url + "&customName=" + customName);
-                    window.open(url);
+            success: function (res) {
+                layer.close(layerIndex);
+                if (res.status == 0) {//添加成功
+                    layer.msg('操作成功!', {icon: 1, time: 3000});
+                    //window.location.reload();
+
                 } else {
-                    layer.alert(msg, {
+                    layer.alert(res.msg, {
                         icon: 0,
                         skin: 'layer-ext-moon'
                     });
                 }
-                setTimeout(function () {
-                    $this.css("pointer-events", "auto");
-                }, 10000);
             },
-            fail: function (data) {
+            fail: function (res) {
                 layer.close(layerIndex);
-                layer.alert(JSON.stringify(data), {
+                layer.alert(JSON.stringify(res), {
                     icon: 0,
                     skin: 'layer-ext-moon'
                 });
-                setTimeout(function () {
-                    $this.css("pointer-events", "auto");
-                }, 10000);
             },
             error: function (xhr) {
                 layer.close(layerIndex);
@@ -293,19 +275,106 @@
                     icon: 2,
                     skin: 'layer-ext-moon'
                 });
-                setTimeout(function () {
-                    $this.css("pointer-events", "auto");
-                }, 10000);
             }
         });
-    });
+    }
+
+    function resumeJob(jobName, jobGroup) {
+        var param = {};
+        param.jobName = jobName;
+        param.jobGroup = jobGroup;
+        $.ajax({
+            type: "post",
+            url: "/scheduler/resumeJob",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function (res) {
+                layer.close(layerIndex);
+                if (res.status == 0) {//添加成功
+                    layer.msg('操作成功!', {icon: 1, time: 3000});
+                    //window.location.reload();
+
+                } else {
+                    layer.alert(res.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+            },
+            fail: function (res) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(res), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
+        });
+    }
+
+    /*定制测试-编辑*/
+    function updateJob(title, url, jobName, jobGroup, w, h) {
+        url = url + "?jobName=" + jobName + "&jobGroup=" + jobGroup;
+        layer_show1(title, url, w, h);
+    }
+
+    /*定制测试-删除*/
+    function deleteJob(jobName, jobGroup, jobDesc) {
+        layer.confirm("确认删除此任务?" + jobDesc, function () {
+            var param = {};
+            param.jobName = jobName;
+            param.jobGroup = jobGroup;
+            $.ajax({
+                type: 'POST',
+                url: "/scheduler/deleteJob",
+                data: JSON.stringify(param),
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                success: function (res) {
+                    var status = res.status;
+                    var msg = res.msg;
+                    if (status == 0) {
+                        /* $(obj).parents("tr").remove();*/
+                        layer.msg('已删除!', {icon: 1, time: 3000});
+                        pageSkip(1);
+                        //window.location.reload();
+
+                    } else {
+                        layer.alert(msg, {
+                            icon: 0,
+                            skin: 'layer-ext-moon'
+                        });
+                    }
+
+                },
+                error: function (res) {
+                    layer.alert(res, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                },
+            });
+        });
+    }
+
 
     //清空查询条件
+    $("#empty").click(function () {
+        empty();
+    });
+
     function empty() {
-        $("#query_custom_id").val("");
-        $("#query_custom_name").val("");
-        $("#query_custom_env").val("");
-        $("#query_custom_user").val(null).trigger("change");
+        $("#q_customId").val("");
+        $("#q_jobName").val("");
+        $("#q_jobGroup").val("");
+        $("#q_jobState").val("");
     }
 </script>
 </body>

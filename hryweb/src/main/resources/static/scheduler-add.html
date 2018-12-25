@@ -26,7 +26,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <span class="select-box">
                     <select class="select" size="1" name="customId" id="customId">
-                        <option value="" selected>--选择定制--</option>
+                        <option value="" selected>--选择任务--</option>
                     </select>
 				</span>
             </div>
@@ -46,8 +46,9 @@
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <button type="button" id="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"
-                        ><i class="icon-ok"></i> 提交
+                <button type="button" id="submit" class="btn btn-success radius" id="admin-role-save"
+                        name="admin-role-save"
+                ><i class="icon-ok"></i> 提交
                 </button>
                 <button type="button" class="btn btn-success radius" id="admin-role-close" name="admin-role-close"
                         onclick="layer_close()"><i class="icon-ok"></i> 关闭
@@ -98,14 +99,66 @@
     });
 
     //提交表单
-    $("#submit").click(function(){
-        var customId=$("#customId").val();
-        var group=$("#jobGroup").val();
-        var cronExp=$("#cronExp").val();
+    $("#submit").click(function () {
+        var customId = $("#customId").val();
+        var group = $("#jobGroup").val();
+        var cronExp = $("#cronExp").val();
+        if (customId.trim == "" || group.trim() == "" || cronExp.trim() == "") {
+            layer.msg("任务,任务组,CronExpression必填!");
+            return;
+        }
         layerIndex = layer.load(1, {shade: [0.01, '#fff']});
+        var selectedText = $("#customId").find("option:selected").text();//类似:(127_鲁奇伟_CS1)鲁奇伟的定制测试-Scheduler专用定制
+
+        /*
+        var text = selectedText.substring(selectedText.indexOf("(") + 1, selectedText.indexOf(")"))//127_鲁奇伟_CS1
+        var strings = text.split("_");
+        var customUserName = strings[1];
+        var env = strings[2];
+        */
+
+        var jobDataMap = {};
+        jobDataMap.customId = customId;
+        jobDataMap.executeUserId = $.cookie("uidCookie");
+        jobDataMap.executeUserName = $.cookie("realnameCookie");
+        var param = {};
+        param.jobName = customId;
+        param.jobGroup = group;
+        param.desc = selectedText;
+        param.cronExp = cronExp;
+        param.jobDataMap = jobDataMap;
+
         $.ajax({
-            type:"post",
-            url:"/"
+            type: "post",
+            url: "/scheduler/addJob",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(param),
+            dataType: "json",
+            success: function (res) {
+                layer.close(layerIndex);
+                if (res.status == 0) {//添加成功
+                    parent.window.location.reload();
+                } else {
+                    layer.alert(res.msg, {
+                        icon: 0,
+                        skin: 'layer-ext-moon'
+                    });
+                }
+            },
+            fail: function (res) {
+                layer.close(layerIndex);
+                layer.alert(JSON.stringify(res), {
+                    icon: 0,
+                    skin: 'layer-ext-moon'
+                });
+            },
+            error: function (xhr) {
+                layer.close(layerIndex);
+                layer.alert('Error' + JSON.stringify(xhr), {
+                    icon: 2,
+                    skin: 'layer-ext-moon'
+                });
+            }
         });
     });
 

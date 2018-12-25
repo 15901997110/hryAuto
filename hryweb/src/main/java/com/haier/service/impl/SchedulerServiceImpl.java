@@ -1,11 +1,17 @@
 package com.haier.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.haier.mapper.SchedulerMapper;
+import com.haier.po.HryJob;
+import com.haier.po.HryScheduler;
 import com.haier.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description:
@@ -22,8 +28,11 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Resource
     JobDetail jobDetail;
 
+    @Resource
+    SchedulerMapper mapper;
+
     @Override
-    public void addJob(String triggerName, String triggerGroup, String desc,JobDataMap jobDataMap, String cronExp) throws SchedulerException {
+    public void addJob(String triggerName, String triggerGroup, String desc, JobDataMap jobDataMap, String cronExp) throws SchedulerException {
         CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
                 .cronSchedule(cronExp)
                 .withMisfireHandlingInstructionDoNothing();
@@ -38,7 +47,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         try {
             scheduler.scheduleJob(trigger);
-            scheduler.start();
+            if (!scheduler.isStarted()) {
+                scheduler.start();
+            }
         } catch (SchedulerException e) {
             log.error("创建Job失败", e);
             throw new RuntimeException("创建Job失败", e);
@@ -65,7 +76,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
 
     @Override
-    public void updateJob(String triggerName, String triggerGroup,String desc, String cronExp) throws SchedulerException {
+    public void updateJob(String triggerName, String triggerGroup, String desc, String cronExp) throws SchedulerException {
         TriggerKey triggerKey = TriggerKey.triggerKey(triggerName, triggerGroup);
         CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
         trigger = trigger.getTriggerBuilder()
@@ -81,5 +92,23 @@ public class SchedulerServiceImpl implements SchedulerService {
         return scheduler.checkExists(TriggerKey.triggerKey(triggerName, triggerGroup));
     }
 
+    @Override
+    public List<HryScheduler> selectByCondition(HryScheduler hryScheduler) {
+        return mapper.selectAll(hryScheduler);
+    }
+
+    @Override
+    public PageInfo<HryScheduler> pageInfo(HryScheduler hryScheduler, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<HryScheduler> hrySchedulers = selectByCondition(hryScheduler);
+        PageInfo<HryScheduler> pageInfo = new PageInfo<>(hrySchedulers);
+        return pageInfo;
+    }
+
+    @Override
+    public HryScheduler selectJob(HryJob hryJob) {
+        List<HryScheduler> hrySchedulers = mapper.selectHryJob(hryJob);
+        return hrySchedulers.size() > 0 ? hrySchedulers.get(0) : null;
+    }
 
 }

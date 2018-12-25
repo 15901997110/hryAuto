@@ -1,7 +1,12 @@
 package com.haier.service;
 
+import com.github.pagehelper.PageInfo;
+import com.haier.po.HryJob;
+import com.haier.po.HryScheduler;
 import org.quartz.JobDataMap;
 import org.quartz.SchedulerException;
+
+import java.util.List;
 
 /**
  * @Description: 封装对任务的控制
@@ -20,4 +25,10 @@ public interface SchedulerService {
     void updateJob(String triggerName, String triggerGroup, String desc, String cronExp) throws SchedulerException;
 
     Boolean checkExists(String triggerName, String triggerGroup) throws SchedulerException;
+
+    List<HryScheduler> selectByCondition(HryScheduler hryScheduler);
+
+    PageInfo<HryScheduler> pageInfo(HryScheduler hryScheduler, Integer pageNum, Integer pageSize);
+
+    HryScheduler selectJob(HryJob hryJob);
 }

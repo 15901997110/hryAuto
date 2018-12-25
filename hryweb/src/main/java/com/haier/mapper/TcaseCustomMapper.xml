@@ -67,6 +67,7 @@
         </if>
     </select>
     <select id="selectCaseDesigners" resultType="java.lang.String">
-        SELECT DISTINCT(tcase.`author`) FROM tcase
+        SELECT DISTINCT (tcase.`author`)
+        FROM tcase
     </select>
 </mapper>

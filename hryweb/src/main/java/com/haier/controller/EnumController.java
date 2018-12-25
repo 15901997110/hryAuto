@@ -99,4 +99,9 @@ public class EnumController {
     public List<Map<String, Object>> getReplaceEnumExamples() {
         return EnumUtil.getEnumList(ReplaceRegexEnum.values());
     }
+
+    @GetMapping("/triggerState")
+    public List<Map<String, Object>> getTriggerState() {
+        return EnumUtil.getEnumList(TriggerState.values());
+    }
 }

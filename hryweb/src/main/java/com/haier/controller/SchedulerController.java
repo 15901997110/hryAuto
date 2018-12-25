@@ -1,9 +1,11 @@
 package com.haier.controller;
 
+import com.haier.dto.HrySchedulerQueryDto;
 import com.haier.enums.JobDataMapKey;
 import com.haier.enums.StatusCodeEnum;
 import com.haier.exception.HryException;
 import com.haier.po.HryJob;
+import com.haier.po.HryScheduler;
 import com.haier.response.Result;
 import com.haier.service.SchedulerService;
 import com.haier.util.ResultUtil;
@@ -112,5 +114,33 @@ public class SchedulerController {
     public Result deleteJob(@RequestBody @Validated HryJob hryJob) throws SchedulerException {
         schedulerService.deleteJob(hryJob.getJobName(), hryJob.getJobGroup());
         return ResultUtil.success("success");
+    }
+
+    @PostMapping("/selectList")
+    public Result selectList(@RequestBody HryScheduler hryScheduler) {
+        return ResultUtil.success(schedulerService.selectByCondition(hryScheduler));
+    }
+
+    @PostMapping("/selectPageInfo")
+    public Result selectPageInfo(@RequestBody HrySchedulerQueryDto hrySchedulerQueryDto) {
+        Integer pageNum = 1, pageSize = 10;
+        if (hrySchedulerQueryDto != null) {
+            if (hrySchedulerQueryDto.getPageNum() != null) {
+                pageNum = hrySchedulerQueryDto.getPageNum();
+            }
+            if (hrySchedulerQueryDto.getPageSize() != null) {
+                pageSize = hrySchedulerQueryDto.getPageSize();
+            }
+        }
+        return ResultUtil.success(schedulerService.pageInfo(hrySchedulerQueryDto.getHryScheduler(), pageNum, pageSize));
+    }
+
+    @PostMapping("/selectOneJob")
+    public Result selectOneJob(@RequestBody @Validated HryJob hryJob) {
+        HryScheduler hryScheduler = schedulerService.selectJob(hryJob);
+        if (hryScheduler == null) {
+            throw new HryException(StatusCodeEnum.NOT_FOUND, "JobName=" + hryJob.getJobName() + ",JobGroup=" + hryJob.getJobGroup());
+        }
+        return ResultUtil.success(hryScheduler);
     }
 }

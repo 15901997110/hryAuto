@@ -22,10 +22,10 @@ public class RunCustomJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
 
-        JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+        JobDataMap jobDataMap = context.getMergedJobDataMap();
 
-        Integer customId = jobDataMap.getInt(JobDataMapKey.CUSTOM_ID.getKey());//定制ID
-        Integer executeUserId = jobDataMap.getInt(JobDataMapKey.EXECUTE_USER_ID.getKey());//执行用户ID
+        Integer customId = Integer.valueOf(jobDataMap.getString(JobDataMapKey.CUSTOM_ID.getKey()));//定制ID
+        Integer executeUserId = Integer.valueOf(jobDataMap.getString(JobDataMapKey.EXECUTE_USER_ID.getKey()));//执行用户ID
         String executeUserName = jobDataMap.getString(JobDataMapKey.EXECUTE_USER_NAME.getKey());//执行用户RealName
         TriggerKey triggerKey = context.getTrigger().getKey();
         if (!ObjectUtils.allNotNull(customId, executeUserId, executeUserName)) {
@@ -33,13 +33,13 @@ public class RunCustomJob extends QuartzJobBean {
             log.error("JobDataMap入参有误,需要customId,executeUserId,executeUserName缺一不可");
             return;
         }
-        User executeUser = new User();
+/*        User executeUser = new User();
         executeUser.setId(executeUserId);
         executeUser.setRealname(executeUserName);
 
         TcustomService tcustomService = SpringContextHolder.getBean(TcustomService.class);
-        tcustomService.run(customId, executeUser, true);
-        log.info("triggerName=" + triggerKey + ",triggerGroup="
-                + triggerKey.getGroup() + "成功触发了定制Id=" + customId + "的执行");
+        tcustomService.run(customId, executeUser, true);*/
+        log.info("triggerName=" + triggerKey.getName() + ",triggerGroup="
+                + triggerKey.getGroup() + ",成功触发了定制Id=" + customId + "的执行");
     }
 }
