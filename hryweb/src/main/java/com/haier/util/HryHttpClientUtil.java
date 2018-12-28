@@ -2,7 +2,9 @@ package com.haier.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.parser.Feature;
 import com.arronlong.httpclientutil.HttpClientUtil;
+import com.arronlong.httpclientutil.builder.HCB;
 import com.arronlong.httpclientutil.common.HttpConfig;
 import com.arronlong.httpclientutil.common.HttpMethods;
 import com.arronlong.httpclientutil.exception.HttpProcessException;
@@ -17,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.message.BasicHeader;
 import org.testng.Reporter;
@@ -36,9 +39,18 @@ import java.util.stream.Collectors;
 public class HryHttpClientUtil {
     private static Boolean debugFlag;
 
+    private static HCB hcb;
+
     static {
         ZdyProperty bean = SpringContextHolder.getBean(ZdyProperty.class);
         debugFlag = bean.getDebug();
+        try {
+            hcb = HCB.custom()
+                    .pool(100, 10)
+                    .timeout(30 * 1000, false);//30秒超时设置,阻止自动重定向
+        } catch (HttpProcessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -59,6 +71,7 @@ public class HryHttpClientUtil {
             methodType = HttpMethods.GET;
         }
 
+
         //请求Header
         Header header;
         if (ContentTypeEnum.getValue(contentType) != null) {
@@ -66,7 +79,32 @@ public class HryHttpClientUtil {
         } else {//如果不指明ContentType类型,默认按照浏览器请求处理
             header = new BasicHeader("Content-Type", ContentTypeEnum.X_WWW_FORM_URLENCODED.getValue());
         }
-        Header[] requestHeaders = ArrayUtils.add(headers, header);
+
+        Header[] requestHeaders = headers;
+        if (HttpMethods.POST.equals(methodType)) {//如果是Post请求,则标识Content-Type,如果是Get请求,则不需要标识ContentType
+            requestHeaders = ArrayUtils.add(headers, header);
+        } else if (HttpMethods.GET.equals(methodType)) {
+            /**
+             * 如果是get请求,并且param符合json格式,则将把param拼接到url后面
+             */
+            JSONObject p = JSONUtil.str2JSONObj(param);
+            String urlParam = null;
+            if (p != null) {
+                for (String s : p.keySet()) {
+                    String pValue = p.getString(s);
+                    if (StringUtils.isNotBlank(pValue)) {
+                        urlParam += "&" + s + "=" + pValue;
+                    }
+                }
+            }
+            if (urlParam != null) {
+                if (url.contains("?")) {
+                    url += urlParam;
+                } else {
+                    url += "?" + urlParam.substring(1);
+                }
+            }
+        }
 
         //HryCookie
         HttpClientContext context = null;
@@ -75,8 +113,19 @@ public class HryHttpClientUtil {
             context.setCookieStore(cookieStore);
         }
 
+        HttpClient client = hcb.build();
 
-        HttpConfig config = HttpConfig.custom().url(url).encoding("utf-8").method(methodType).headers(requestHeaders);
+       /* log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        log.info("hcb对象:" + hcb.hashCode());
+        log.info("client对象:" + client.hashCode());
+        log.info("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");*/
+        HttpConfig config = HttpConfig
+                .custom()
+                .url(url)
+                .encoding("utf-8")
+                .method(methodType)
+                .headers(requestHeaders, true)
+                .client(client);
 
         if (context != null) {
             config.context(context);
@@ -87,10 +136,9 @@ public class HryHttpClientUtil {
             if (requestParamType.equals(RequestParamTypeEnum.JSON.getId())) {
                 config.json(param);
             } else if (requestParamType.equals(RequestParamTypeEnum.MAP.getId())) {
-                Map map = JSON.parseObject(param).toJavaObject(Map.class);
+                Map map = JSON.parseObject(param, Feature.OrderedField).toJavaObject(Map.class);
                 config.map(map);
             }
-
         }
 
         //发送请求
@@ -98,6 +146,20 @@ public class HryHttpClientUtil {
         long startTime = System.currentTimeMillis();
         try {
             responseEntity = HttpClientUtil.send(config);
+            //如果返回Headers中存在 location,则认为是重定向,将location的值返回
+            Header[] resHeaders = config.headers();
+            for (Header h : resHeaders) {
+                if (h.getName().equalsIgnoreCase("location")) {
+                    if (StringUtils.isBlank(responseEntity)) {
+                        responseEntity = h.getValue();
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("location", responseEntity);
+                        responseEntity = jsonObject.toJSONString();
+                    }
+                    break;
+                }
+            }
+
         } catch (HttpProcessException e) {
             log.error("", e);
             responseEntity = e.getMessage();
