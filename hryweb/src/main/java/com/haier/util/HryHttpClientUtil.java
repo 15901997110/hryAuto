@@ -73,16 +73,16 @@ public class HryHttpClientUtil {
 
 
         //请求Header
-        Header header;
+        Header contentTypeHeader;
         if (ContentTypeEnum.getValue(contentType) != null) {
-            header = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
+            contentTypeHeader = new BasicHeader("Content-Type", ContentTypeEnum.getValue(contentType));
         } else {//如果不指明ContentType类型,默认按照浏览器请求处理
-            header = new BasicHeader("Content-Type", ContentTypeEnum.X_WWW_FORM_URLENCODED.getValue());
+            contentTypeHeader = new BasicHeader("Content-Type", ContentTypeEnum.X_WWW_FORM_URLENCODED.getValue());
         }
 
         Header[] requestHeaders = headers;
         if (HttpMethods.POST.equals(methodType)) {//如果是Post请求,则标识Content-Type,如果是Get请求,则不需要标识ContentType
-            requestHeaders = ArrayUtils.add(headers, header);
+            requestHeaders = ArrayUtils.add(headers, contentTypeHeader);
         } else if (HttpMethods.GET.equals(methodType)) {
             /**
              * 如果是get请求,并且param符合json格式,则将把param拼接到url后面
