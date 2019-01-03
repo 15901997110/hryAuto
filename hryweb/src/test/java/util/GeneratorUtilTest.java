@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 public class GeneratorUtilTest {
     @Test
     public void generateChineseNameTest() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 100; i++) {
             System.out.println(GenerateUtil.generateChineseName());
         }
 
