@@ -16,6 +16,9 @@ public enum ReplaceRegexEnum {
      */
     UUID("(?i)<uuid\\(?\\d*\\)?>", "<uuid(num)>", "随机唯一字符串"),
 
+    ID("(?i)<id>", "<id>", "随机一个身份证号(以当前时间计算,18-120岁)"),
+
+    NAME("(?i)<name>", "<name>", "随机一个姓名(百家姓+任意汉字)"),
     /**
      * <longdate>,当前时间戳,以1970-1-1 00:00:00 GMT标准计算出的毫秒数
      */
@@ -63,7 +66,6 @@ public enum ReplaceRegexEnum {
      * <randomF(10.123,20.456)>:将从[10.123,20.456)区间中随机一个浮点数,浮点数的精度为0.001,结果:18.236
      */
     RANDOM_F("(?i)<randomF\\((\\d+\\.\\d+)?,?(\\d+\\.\\d+)?\\)>", "<randomF(min,max)>", "随机浮点数"),
-
 
     /**
      * <pureSql(pureDmlSql)> 执行sql语句,pureDmlSql为纯sql,可直接去数据库中执行,不需要再进一步做处理的sql

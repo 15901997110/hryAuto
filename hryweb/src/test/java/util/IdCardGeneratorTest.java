@@ -1,8 +1,5 @@
 package util;
 
-import com.haier.util.IdCardGenerator;
-import org.testng.annotations.Test;
-
 /**
  * @Description:
  * @Author: luqiwei

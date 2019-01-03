@@ -96,6 +96,14 @@ public class ReplaceUtil {
             base = replaceUUID(base);
         }
 
+        if (base.matches(".*" + ReplaceRegexEnum.ID.getPattern() + ".*")) {
+            base = replaceID(base);
+        }
+
+        if (base.matches(".*" + ReplaceRegexEnum.NAME.getPattern() + ".*")) {
+            base = replaceName(base);
+        }
+
         /**
          * 匹配到日期和时间,做相应的处理
          */
@@ -161,6 +169,27 @@ public class ReplaceUtil {
 
         return base;
     }
+
+    private static String replaceID(String base) {
+        Pattern pattern = Pattern.compile(ReplaceRegexEnum.ID.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            base = matcher.replaceFirst(GenerateUtil.generateID());
+            matcher.reset(base);
+        }
+        return base;
+    }
+
+    private static String replaceName(String base) {
+        Pattern pattern = Pattern.compile(ReplaceRegexEnum.NAME.getPattern());
+        Matcher matcher = pattern.matcher(base);
+        while (matcher.find()) {
+            base = matcher.replaceFirst(GenerateUtil.generateChineseName());
+            matcher.reset(base);
+        }
+        return base;
+    }
+
 
     /**
      * 将字符串base中的关键字"<var(requestNo)>" 替换成调用者对象中字段名requestNo的值
