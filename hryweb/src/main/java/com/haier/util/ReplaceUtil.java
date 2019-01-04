@@ -170,21 +170,39 @@ public class ReplaceUtil {
         return base;
     }
 
+    /**
+     * 随机一个身份证
+     *
+     * @param base
+     * @return
+     */
     private static String replaceID(String base) {
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.ID.getPattern());
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
-            base = matcher.replaceFirst(GenerateUtil.generateID());
+            String group = matcher.group();
+            String id = GenerateUtil.generateID();
+            base = matcher.replaceFirst(id);
+            rLog(group, id);
             matcher.reset(base);
         }
         return base;
     }
 
+    /**
+     * 随机一个名字
+     *
+     * @param base
+     * @return
+     */
     private static String replaceName(String base) {
         Pattern pattern = Pattern.compile(ReplaceRegexEnum.NAME.getPattern());
         Matcher matcher = pattern.matcher(base);
         while (matcher.find()) {
-            base = matcher.replaceFirst(GenerateUtil.generateChineseName());
+            String group = matcher.group();
+            String name = GenerateUtil.generateChineseName();
+            base = matcher.replaceFirst(name);
+            rLog(group, name);
             matcher.reset(base);
         }
         return base;
