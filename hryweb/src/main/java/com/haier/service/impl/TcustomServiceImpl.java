@@ -214,8 +214,11 @@ public class TcustomServiceImpl implements TcustomService {
         }
         //映射校验
         verify_Service_Env_Mapping(vo);
+        //收集测试内容
         XmlSuite xmlSuite = collectSuite(vo);
+        //预生成测试报告
         Treport treport = treportService.insertOne(vo,isScheduler);
+        //运行测试,并且更新测试报告
         runner.run(treport.getId(), treport.getReportname(), vo.getCustomname(), xmlSuite);
         return treport.getReportname();
     }
@@ -226,6 +229,12 @@ public class TcustomServiceImpl implements TcustomService {
         return tcustomCustomMapper.selectCustomUsers();
     }
 
+    /**
+     * 根据定制类型,将定制的所有内容,转换成至XmlSuite中
+     *
+     * @param vo
+     * @return
+     */
     public XmlSuite collectSuite(CustomVO vo) {
 
         XmlSuite suite = new XmlSuite();
@@ -413,6 +422,10 @@ public class TcustomServiceImpl implements TcustomService {
         return suite;
     }
 
+    /**
+     * 校验此定制中需要测试的服务与之相对应的环境信息是否维护
+     * @param vo
+     */
     public void verify_Service_Env_Mapping(CustomVO vo) {
         if (vo == null) {
             throw new HryException(StatusCodeEnum.RUN_ERROR, "定制不存在");
