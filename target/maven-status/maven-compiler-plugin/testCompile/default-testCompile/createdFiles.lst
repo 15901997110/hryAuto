@@ -1,0 +1,5 @@
+util\JSONUtilTest.class
+util\AssertUtilTest.class
+util\GeneratorUtilTest.class
+util\IdCardGeneratorTest.class
+ApplicationTest.class

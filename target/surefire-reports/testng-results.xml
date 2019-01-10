@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="5" passed="5">
+  <reporter-output>
+    <line>
+      <![CDATA[断言类型 : key-value]]>
+    </line>
+    <line>
+      <![CDATA[期望结果 :{"RSP_BODY":{}}]]>
+    </line>
+    <line>
+      <![CDATA[实际结果 :{"RSP_BODY":{},"RSP_HEAD":{"TRAN_SUCCESS":true}}]]>
+    </line>
+  </reporter-output>
+  <suite name="Surefire suite" duration-ms="221" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+    <groups>
+    </groups>
+    <test name="Surefire test" duration-ms="221" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+      <class name="util.GeneratorUtilTest">
+        <test-method status="PASS" signature="generateChineseNameTest()[pri:0, instance:util.GeneratorUtilTest@d2cc05a]" name="generateChineseNameTest" duration-ms="23" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- generateChineseNameTest -->
+      </class> <!-- util.GeneratorUtilTest -->
+      <class name="util.AssertUtilTest">
+        <test-method status="PASS" signature="isMatchTest()[pri:0, instance:util.AssertUtilTest@7dc7cbad]" name="isMatchTest" duration-ms="137" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- isMatchTest -->
+        <test-method status="PASS" signature="superAssertTest()[pri:0, instance:util.AssertUtilTest@7dc7cbad]" name="superAssertTest" duration-ms="6" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+          <reporter-output>
+            <line>
+              <![CDATA[断言类型 : key-value]]>
+            </line>
+            <line>
+              <![CDATA[期望结果 :{"RSP_BODY":{}}]]>
+            </line>
+            <line>
+              <![CDATA[实际结果 :{"RSP_BODY":{},"RSP_HEAD":{"TRAN_SUCCESS":true}}]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- superAssertTest -->
+      </class> <!-- util.AssertUtilTest -->
+      <class name="util.JSONUtilTest">
+        <test-method status="PASS" signature="getValueTest()[pri:0, instance:util.JSONUtilTest@4f933fd1]" name="getValueTest" duration-ms="31" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getValueTest -->
+        <test-method status="PASS" signature="json2MapTest()[pri:0, instance:util.JSONUtilTest@4f933fd1]" name="json2MapTest" duration-ms="0" started-at="2019-01-10T06:01:45Z" finished-at="2019-01-10T06:01:45Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- json2MapTest -->
+      </class> <!-- util.JSONUtilTest -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
