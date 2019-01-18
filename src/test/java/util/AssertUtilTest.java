@@ -3,6 +3,7 @@ package util;
 import com.haier.enums.AssertTypeEnum;
 import com.haier.util.AssertUtil;
 import com.haier.util.JSONUtil;
+import org.junit.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -15,7 +16,8 @@ public class AssertUtilTest {
     public void isMatchTest(){
         String expected="{\"RSP_BODY\":{},\"TRAN_SUCCESS\":true}";
         String actual="{\"RSP_BODY\":{},\"RSP_HEAD\":{\"TRAN_SUCCESS\":true}}";
-        AssertUtil.isMatch(JSONUtil.str2JSONObj(actual),JSONUtil.str2JSONObj(expected));
+        Boolean match = AssertUtil.isMatch(JSONUtil.str2JSONObj(actual), JSONUtil.str2JSONObj(expected));
+        Assert.assertTrue(match);
     }
     @Test
     public void superAssertTest(){
