@@ -34,6 +34,7 @@ public enum StatusCodeEnum {
 
     BIND_ERROR(1999, "Spring参数绑定异常"),
 
+    NO_LOGIN(8888, "尚未登录！"),
     DB_ERROR(9001, "数据库错误！"),
     PARSE_DATE_ERROR(9002, "时间转换出错！"),
     SYSTEM_MAINTAIN(9990, "第三方系统维护中！"),
